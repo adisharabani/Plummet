@@ -55,6 +55,7 @@
 //  C :  Save calibration
 //  ? :  Show help
 
+#define PLUMMET_VERSION "0.17"
 
 #include <Servo.h>
 #include "pitches.h"
@@ -779,6 +780,9 @@ void waitForSteadiness(int threshold) {
 
 void setup() {  
   Serial.begin(38400);
+  
+  Serial.write(PLUMMET_VERSION);
+
   nextSerial.begin(38400);
   prevSerial.begin(38400);
 
