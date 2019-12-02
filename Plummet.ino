@@ -55,11 +55,10 @@
 //  C :  Save calibration
 //  ? :  Show help
 
-#define PLUMMET_VERSION "0.17"
+#define PLUMMET_VERSION "0.18"
 
 #include <Servo.h>
-#include "pitches.h"
-#include "TimerOne.h"
+//LIB #include "TimerOne.h"
 #include <SoftwareSerial.h> // soft serial
 #include <EEPROM.h>
 
@@ -81,8 +80,9 @@
 int defaultLoopTime = 3158; //Palo Alto: 3080; // 3160; // 3420;
 // int defaultLoopTime = 3080; // Palo Alto
 
-//unsigned long commands[] = {1000, 'r', 5000, 's', 15000, '2', 30000,'9'};
-unsigned long commands [] = {};
+//unsigned long commands[] = {1000, '1', 25000, '9'};
+unsigned long commands[] = {500, '9'};
+//unsigned long commands [] = {};
 
 int commandsP = 0;
 int commandsN = sizeof(commands)/sizeof(unsigned long);
@@ -91,7 +91,7 @@ int commandsN = sizeof(commands)/sizeof(unsigned long);
 // Calibrate(2): 98.00 457 665 261
 // Calibrate(3): 101.00 525 351 697
 
-boolean SERVO_VIA_TIMER1 = true;
+boolean SERVO_VIA_TIMER1 = false;
 
 boolean printMeasures = false; 
 boolean enablePrint = false;
@@ -151,6 +151,10 @@ enum left_right_e {
 left_right_e side = LEFT;
 
 
+#define NOTE_A5 880
+#define NOTE_G5 784
+#define NOTE_G6 1568
+
 ///////////////////////////
 /// SERVO
 ///////////////////////////
@@ -174,7 +178,7 @@ void myservowrite(double pos) {
 
   if (SERVO_VIA_TIMER1) {
     int duty = int(double(map(int(pos), 0,180,544.0,2400.0))/SERVO_PWM_RATE*1024);
-    Timer1.pwm(servoPin, duty);
+//LIB    Timer1.pwm(servoPin, duty);
   } else {
     myservo.write(int(pos));
   }
@@ -194,7 +198,7 @@ void myservoattach(int pin) {
   if (SERVO_VIA_TIMER1) {
     if (originalTCCR1A == 0) {
       pinMode(pin, OUTPUT);
-      Timer1.initialize(SERVO_PWM_RATE);
+//LIB      Timer1.initialize(SERVO_PWM_RATE);
     } else {
       TCCR1A = originalTCCR1A;
     }
@@ -214,7 +218,7 @@ boolean myservoattached() {
 void myservodetach() {
   if (SERVO_VIA_TIMER1) {
     originalTCCR1A = TCCR1A;
-    Timer1.disablePwm(servoPin);
+//LIB    Timer1.disablePwm(servoPin);
     servoAttached = false;
   } else {
     myservo.detach();
@@ -251,7 +255,7 @@ void waitForDesiredPos() {
       time = millis();
   }
   if (time>timeout) {
-     tone(7, NOTE_E7, 1000);
+      tone(7, NOTE_E7, 1000);
   }
 }*/
 
@@ -781,7 +785,8 @@ void waitForSteadiness(int threshold) {
 void setup() {  
   Serial.begin(38400);
   
-  Serial.write(PLUMMET_VERSION);
+  Serial.println(String("v") + String(PLUMMET_VERSION));
+  Serial.println("Type 'e' for enabling output");
 
   nextSerial.begin(38400);
   prevSerial.begin(38400);
