@@ -56,10 +56,10 @@
 //  ? :  Show help
 
 #define PLUMMET_VERSION "0.18"
-
+#include "NeoSWSerial.h"
 #include <Servo.h>
 //LIB #include "TimerOne.h"
-#include <SoftwareSerial.h> // soft serial
+//#include <SoftwareSerial.h> // soft serial
 #include <EEPROM.h>
 
 #define rxPinPrev 2 // soft serial
@@ -128,10 +128,10 @@ double syncRopeAngle;
 double syncPhase;
 boolean updateSlaveClock = false;
 
-SoftwareSerial prevSerial = SoftwareSerial (rxPinPrev, txPinPrev);
-SoftwareSerial nextSerial = SoftwareSerial (rxPinNext, txPinNext);
+NeoSWSerial prevSerial(rxPinPrev, txPinPrev);
+NeoSWSerial nextSerial(rxPinNext, txPinNext);
 
-SoftwareSerial audioSerial(AUDIO_RX, AUDIO_TX);
+NeoSWSerial audioSerial(AUDIO_RX, AUDIO_TX);
 static int8_t Send_Audio_buf[8] = {0} ;
 
 boolean isMaster = true;
@@ -521,12 +521,25 @@ byte readByteFromRecord() {
     return b;
   }
 }
+
+String readAllBytes(const NeoSWSerial &s) {
+ String ret = "";
+ while (s.available()) {
+   ret += String(s.read());
+ }
+ return ret;
+}
+
 byte readByte() {
   unsigned long timeout = millis() + 100;
   while (millis() < timeout) {
     if (Serial.available()) {
       return Serial.read();
     } else if (prevSerial.available()){
+      Serial.write("2");
+      while (prevSerial.available()) {
+        Serial.write(prevSerial.read());
+      } Serial.write("__"); return '7';
       isMaster = false;
       return prevSerial.read();
     } else if (recordAvailable()) {
@@ -544,6 +557,7 @@ int readNumber() {
   while (millis() < timeout) {
     if (Serial.available()) {
       return Serial.parseInt();
+
     } else if (prevSerial.available()){
       return prevSerial.parseInt();
     }
@@ -705,12 +719,12 @@ void handleKeyboardInput() {
          myservoattach(servoPin);
       }
       break;
-    case '~': // Change Servo type (Timer1 vs Servo library)
-      myservodetach();
-      SERVO_VIA_TIMER1 = !SERVO_VIA_TIMER1;
-      myservoattach(servoPin);
-      sprintln(SERVO_VIA_TIMER1 ? "Using Timer1" : "Using Servo lib");
-      break;
+//    case '~': // Change Servo type (Timer1 vs Servo library)
+//      myservodetach();
+//      SERVO_VIA_TIMER1 = !SERVO_VIA_TIMER1;
+//      myservoattach(servoPin);
+//      sprintln(SERVO_VIA_TIMER1 ? "Using Timer1" : "Using Servo lib");
+//      break;
     case 'b': // Beep
       tone(7, NOTE_A5, 1000);
       break;
@@ -784,14 +798,16 @@ void waitForSteadiness(int threshold) {
 
 void setup() {  
   Serial.begin(38400);
-  
   Serial.println(String("v") + String(PLUMMET_VERSION));
+
   Serial.println("Type 'e' for enabling output");
 
   nextSerial.begin(38400);
   prevSerial.begin(38400);
 
-  audioSerial.begin(9600); delay(500); sendAudioCommand(0X09, 0X02); delay(200);
+  audioSerial.begin(9600); delay(500); 
+
+  sendAudioCommand(0X09, 0X02); delay(200);
  
   nextSerial.write("9"); // let the following arduino know you are here and set on HALT mode;
   

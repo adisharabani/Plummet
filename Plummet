@@ -9,6 +9,10 @@ if [ $# -eq 0 ]; then
  echo "Use args compile, upload, upload_many, interact, update, listDevices, install"
 fi
 
+if [ $1 = "cui" ] ; then
+ $0 compile && $0 upload && $0 interact
+fi
+
 if [ "$1" = "install" ]; then
  command -v inotifywait > /dev/null || sudo apt-get install inotify-tools
  command -v screen > /dev/null || sudo apt-get install screen
@@ -19,13 +23,15 @@ fi
 if [ "$1" = "compile" ]; then
  echo "Compiling Plummet"
  mkdir -p build
- arduino-builder -hardware ${ARDLIB}/hardware -tools ${ARDLIB}/hardware/tools/avr -tools ${ARDLIB}/tools-builder -libraries ${ARDLIB}/libraries -fqbn arduino:avr:uno -prefs=compiler.path=${ARDLIB}/hardware/tools/avr/bin/ -prefs=tools.ctags.path=${ARDLIB}/tools-builder/ctags/5.8-arduino11 -build-path build Plummet.ino 
+ ${ARDLIB}/arduino-builder -hardware ${ARDLIB}/hardware -tools ${ARDLIB}/hardware/tools/avr -tools ${ARDLIB}/tools-builder -libraries ${ARDLIB}/libraries -libraries Libraries -fqbn arduino:avr:uno -prefs=compiler.path=${ARDLIB}/hardware/tools/avr/bin/ -prefs=tools.ctags.path=${ARDLIB}/tools-builder/ctags/5.8-arduino11 -build-path build Plummet.ino 
+ exit $? 
 fi
 
 if [ "$1" = "upload" ]; then
  echo "Uploading Plummet"
  screen -R -S ${ARDTTY} -X quit
  ${ARDLIB}/hardware/tools/avr/bin/avrdude -C${ARDLIB}/hardware/tools/avr/etc/avrdude.conf -patmega328p -carduino -P/dev/${ARDTTY} -b115200 -Uflash:w:build/Plummet.ino.hex:i 
+ exit $?
 fi
 
 if [ "$1" = "upload_many" ]; then
@@ -46,6 +52,7 @@ fi
 if [ "$1" = "update" ]; then
  echo Updating app from the internet
  git pull
+ exit $?
 fi
 
 if [ "$1" = "listCommands" ]; then
@@ -53,14 +60,19 @@ if [ "$1" = "listCommands" ]; then
 fi
 
 if [ "$1" = "interact" ]; then
- $0 listCommands
- echo ""
- echo "Connecting:"
+ echo "Connecting to ${ARDTTY}:"
 
- $0 listCommands > `cat /tmp/screen${ARDTTY}`
- screen -R -S ${ARDTTY} bash -c 'tty > /tmp/screen${ARDTTY}; '$0' listCommands; cu -l /dev/'${ARDTTY}' -s 38400'
+ $0 listCommands > $(cat /tmp/screen${ARDTTY})
+ screen -R -S ${ARDTTY} /dev/${ARDTTY} 38400
+
+ #screen -R -S ${ARDTTY} bash -c 'tty > /tmp/screen${ARDTTY}; '$0' listCommands; cu -l /dev/'${ARDTTY}' -s 38400'
  #screen -R -S ${ARDTTY} bash -c 'tty > /tmp/screen${ARDTTY}; '$0' listCommands; tail -f /dev/'${ARDTTY}' &; cat > /dev/'${ARDTTY}
  # ~. to quit CU process
+fi
+
+if [ "$1" = "kill" ]; then
+ echo "Killing connection to ${ARDTTY}"
+ screen -R -S ${ARDTTY} -X quit
 fi
 
 if [ "$1" = "listDevices" ]; then
