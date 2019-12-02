@@ -1,26 +1,46 @@
 #! /bin/bash
 
 ARDLIB=/home/pi/arduino-1.8.10
-ARDTTY=${2:-ttyACM0}
+
+ARDTTY_PATTERN="[UA][SC][BM]"
+ARDTTY=${2:-$(ls /dev/*${ARDTTY_PATTERN}* 2>/dev/null | cut -c 6- | head -1)}
 
 if [ $# -eq 0 ]; then
- echo "Use args compile, upload, upload_many, interact, update, listDevices"
+ echo "Use args compile, upload, upload_many, interact, update, listDevices, install"
+fi
+
+if [ "$1" = "install" ]; then
+ command -v inotifywait > /dev/null || sudo apt-get install inotify-tools
+ command -v screen > /dev/null || sudo apt-get install screen
+ command -v cu > /dev/null || sudo apt-get install cu
+#sudo apt-get  install avahi-daemon
 fi
 
 if [ "$1" = "compile" ]; then
  echo "Compiling Plummet"
+ mkdir -p build
  arduino-builder -hardware ${ARDLIB}/hardware -tools ${ARDLIB}/hardware/tools/avr -tools ${ARDLIB}/tools-builder -libraries ${ARDLIB}/libraries -fqbn arduino:avr:uno -prefs=compiler.path=${ARDLIB}/hardware/tools/avr/bin/ -prefs=tools.ctags.path=${ARDLIB}/tools-builder/ctags/5.8-arduino11 -build-path build Plummet.ino 
 fi
 
 if [ "$1" = "upload" ]; then
  echo "Uploading Plummet"
- screen -R -S Arduino0 -X quit
+ screen -R -S ${ARDTTY} -X quit
  ${ARDLIB}/hardware/tools/avr/bin/avrdude -C${ARDLIB}/hardware/tools/avr/etc/avrdude.conf -patmega328p -carduino -P/dev/${ARDTTY} -b115200 -Uflash:w:build/Plummet.ino.hex:i 
 fi
 
 if [ "$1" = "upload_many" ]; then
  echo "continuesly uploading to any arduino attached"
-
+ for ard in $($0 listDevices); do
+   echo "uploading to $ard"
+   $0 upload $ard
+ done
+ inotifywait -m /dev -e create -e moved_to |
+    while read path action ard; do
+        if [[ $ard =~ $ARDTTY_PATTERN ]]; then # && [ $action = "CREATE" ]; then
+           echo "New arduino connection detected ($ard)"
+           $0 upload $ard
+        fi
+    done
 fi
 
 if [ "$1" = "update" ]; then
@@ -37,24 +57,17 @@ if [ "$1" = "interact" ]; then
  echo ""
  echo "Connecting:"
 
- command -v screen > /dev/null || sudo apt-get install screen
- command -v cu > /dev/null || sudo apt-get install cu
- $0 listCommands > `cat /tmp/screen`
- screen -R -S Arduino0 bash -c 'tty > /tmp/screen; '$0' listCommands; cu -l /dev/'${ARDTTY}' -s 38400'
- #screen -R -S Arduino0 bash -c 'tty > /tmp/screen; '$0' listCommands; tail -f /dev/'${ARDTTY}' &; cat > /dev/'${ARDTTY}
+ $0 listCommands > `cat /tmp/screen${ARDTTY}`
+ screen -R -S ${ARDTTY} bash -c 'tty > /tmp/screen${ARDTTY}; '$0' listCommands; cu -l /dev/'${ARDTTY}' -s 38400'
+ #screen -R -S ${ARDTTY} bash -c 'tty > /tmp/screen${ARDTTY}; '$0' listCommands; tail -f /dev/'${ARDTTY}' &; cat > /dev/'${ARDTTY}
  # ~. to quit CU process
 fi
 
-#git clone https://github.com/adisharabani/Plummet
-#sudo apt-get  install avahi-daemon
-
 if [ "$1" = "listDevices" ]; then
- ls /dev/*[UA][SC][BM]*
+ ls /dev/*[UA][SC][BM]* 2>/dev/null | cut -c 6- 
 fi
 
 #stty -F /dev/${ARDTTY} cs8 38400 ignbrk -brkint -icrnl -imaxbel -opost -onlcr -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke noflsh -ixon -crtscts
-
 #cat >> /dev/${ARDTTY}
-#sudo apt-get install cu
 
 
