@@ -6,7 +6,7 @@ ARDTTY_PATTERN="[UA][SC][BM]"
 ARDTTY=${2:-$(ls /dev/*${ARDTTY_PATTERN}* 2>/dev/null | cut -c 6- | head -1)}
 
 if [ $# -eq 0 ]; then
- echo "Use args compile, upload, upload_many, attach, update, listDevices, listCommands, install"
+ echo "Use args install, compile, upload, upload_many, attach, update, listDevices, listCommands, install"
 fi
 
 if [ $1 = "cua" ] ; then
@@ -63,7 +63,9 @@ if [ "$1" = "attach" ]; then
  echo "Connecting to ${ARDTTY}:"
 
  $0 listCommands > $(cat /tmp/screen${ARDTTY})
- screen -R -S ${ARDTTY} /dev/${ARDTTY} 38400
+
+ stty -F /dev/${ARDTTY} cs8 38400 ignbrk -brkint -icrnl -imaxbel -opost -onlcr -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke noflsh -ixon -crtscts
+ screen -R -S ${ARDTTY} /dev/${ARDTTY} 9600
 
  #screen -R -S ${ARDTTY} bash -c 'tty > /tmp/screen${ARDTTY}; '$0' listCommands; cu -l /dev/'${ARDTTY}' -s 38400'
  #screen -R -S ${ARDTTY} bash -c 'tty > /tmp/screen${ARDTTY}; '$0' listCommands; tail -f /dev/'${ARDTTY}' &; cat > /dev/'${ARDTTY}
@@ -79,7 +81,6 @@ if [ "$1" = "listDevices" ]; then
  ls /dev/*[UA][SC][BM]* 2>/dev/null | cut -c 6- 
 fi
 
-#stty -F /dev/${ARDTTY} cs8 38400 ignbrk -brkint -icrnl -imaxbel -opost -onlcr -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke noflsh -ixon -crtscts
 #cat >> /dev/${ARDTTY}
 
 

@@ -55,8 +55,11 @@
 //  C :  Save calibration
 //  ? :  Show help
 
-#define PLUMMET_VERSION "0.18"
+#define PLUMMET_VERSION "0.19"
 #include "NeoSWSerial.h"
+// #include "NeoHWSerial.h"
+// #define Serial NeoSerial
+
 #include <Servo.h>
 //LIB #include "TimerOne.h"
 //#include <SoftwareSerial.h> // soft serial
@@ -263,6 +266,7 @@ void waitForDesiredPos() {
 
 
 void sprint(String s)   { if (enablePrint) Serial.print(s);   }
+void sprint(char s)   { if (enablePrint) Serial.print(String(s));   }
 void sprintln(String s) { if (enablePrint) Serial.println(s); }
 void debugLog(String x) { if (debug) Serial.print(x);         }
 
@@ -523,6 +527,7 @@ byte readByteFromRecord() {
 }
 
 String readAllBytes(const NeoSWSerial &s) {
+ unsigned long timeout = millis() + 100;
  String ret = "";
  while (s.available()) {
    ret += String(s.read());
@@ -532,14 +537,22 @@ String readAllBytes(const NeoSWSerial &s) {
 
 byte readByte() {
   unsigned long timeout = millis() + 100;
+  char b;
   while (millis() < timeout) {
     if (Serial.available()) {
-      return Serial.read();
+      b = Serial.read();
+      sprint(b);
+      return b;
     } else if (prevSerial.available()){
       isMaster = false;
-      return prevSerial.read();
+      char b = prevSerial.read();
+//      if (b=='~') { Serial.write("Error:"); delay(100); while (prevSerial.available()) Serial.print("~"+String(int(prevSerial.read()))); Serial.println("");}
+      sprint(b);
+      return b;
     } else if (recordAvailable()) {
-      return readByteFromRecord();
+      char b = readByteFromRecord();
+      sprint(b);
+      return b;
     }
   }
 }
@@ -549,16 +562,20 @@ bool readByteAvailable() {
 }
 
 int readNumber() {
-  unsigned long timeout = millis() + 100;
+  unsigned long timeout = millis() + 5000;
+  int num;
   while (millis() < timeout) {
     if (Serial.available()) {
-      return Serial.parseInt();
-
+      num = Serial.parseInt();
+      sprint(String(num));
+      return num;
     } else if (prevSerial.available()){
-      return prevSerial.parseInt();
+      num = prevSerial.parseInt();
+      sprint(String(num));
+      return num;
     }
   }
-  return prevSerial.parseInt();
+  return 0; // prevSerial.parseInt();
 }
 
 void handleKeyboardInput() {
@@ -567,6 +584,7 @@ void handleKeyboardInput() {
   char inByte = 0;
 
   if (readByteAvailable()) {
+    sprint("New Command: ");
     inByte = readByte(); 
     if (inByte == ':') {
        int id = readNumber();
@@ -589,16 +607,17 @@ void handleKeyboardInput() {
          nextSerial.print(wr);
          //nextSerial.write(':'); nextSerial.write(id-1); nextSerial.write(inByte);
          inByte = 0; //ignore this command as it is not for this arduino.
+         sprintln("");
          return;
        }
     }
     else if ((inByte == 'e') || (inByte == 'p') || (inByte == 'd') || (inByte == ' ') || (inByte ==10)) {
       // do not notify other arduinos on commands that changes the output.
     } else {
-      sprintln("forwarding "+ String(inByte));
+      //sprintln("forwarding: "+ String(int(inByte)));
       nextSerial.write(inByte); 
     }
-    sprintln("New command: " + String(inByte));
+    //sprintln(""); // New command: " + String(inByte));
   } else {
     return;
   }
@@ -692,8 +711,8 @@ void handleKeyboardInput() {
       break;
     case '=': // Move servo to specific location
       s = readNumber();
-      nextSerial.print(s);
-      smoothMove(s);
+      if (s!=0) nextSerial.print(s);
+      if (s!=0) smoothMove(s);
       // myservo.write(n);
       break;
     case '+': // Move servo one step forwards
@@ -744,16 +763,17 @@ void handleKeyboardInput() {
     default:
       break;
   }
+  sprintln("");
 }
 
 
 //////////////////////////////
 // Audio
-//////////////////////////////
+//////ֿ////////////////////////
 
 void sendAudioCommand(int8_t command, int16_t dat)
 {
-  delay(20);
+  //delay(20);
   Send_Audio_buf[0] = 0x7e; //starting byte
   Send_Audio_buf[1] = 0xff; //version
   Send_Audio_buf[2] = 0x06; //the number of bytes of the command without starting byte and ending byte
@@ -791,15 +811,18 @@ void waitForSteadiness(int threshold) {
   }
 }
 
+static void handleRxChar( uint8_t c ) {}
 
 void setup() {  
-  //Serial.begin(38400);
-  //Serial.println(String("v") + String(PLUMMET_VERSION));
+  Serial.begin(9600);
+  Serial.println(String("v") + String(PLUMMET_VERSION));
 
-  //Serial.println("Type 'e' for enabling output");
+  Serial.println("Type 'e' for enabling output");
 
   nextSerial.begin(9600);
   prevSerial.begin(9600);
+
+  audioSerial.attachInterrupt(handleRxChar);
 
   audioSerial.begin(9600); delay(500); 
 
