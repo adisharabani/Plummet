@@ -9,7 +9,7 @@ if [ $# -eq 0 ]; then
 fi
 
 if [ "$1" = "cua" ] ; then
- $0 compile && $0 upload && $0 attach
+ $0 compile && $0 upload $2 && $0 attach $2
 fi
 
 if [ "$1" = "install" ]; then
@@ -60,7 +60,7 @@ if [ "$1" = "listCommands" ]; then
  cat Plummet.ino | grep "case '" | sed s/case\ \'//g | sed s_\':\ //_:_g | awk '{printf "%s\r\n", $0} END {printf "  <Ctrl+A+D>: Detach\r\n"}'
 fi
 
-if [ "$1" = "attach" ]; then
+if [ "$1" = "attach_old" ]; then
  ard=$($0 listDevices $2| tail -1)
  if [ "$ard" == "" ]; then
    echo "No device matched attached. Following are the devices connected:"
@@ -73,6 +73,34 @@ if [ "$1" = "attach" ]; then
 
  stty -F /dev/${ard} cs8 38400 ignbrk -brkint -icrnl -imaxbel -opost -ocrnl -onlret -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke noflsh -ixon -crtscts
  screen -R -S ${ard} /dev/${ard} 9600
+
+ #screen -R -S ${ard} bash -c 'tty > /tmp/screen${ard}; '$0' listCommands; cu -l /dev/'${ard}' -s 38400'
+ #screen -R -S ${ard} bash -c 'tty > /tmp/screen${ard}; '$0' listCommands; tail -f /dev/'${ard}' &; cat > /dev/'${ard}
+ # ~. to quit CU process
+fi
+
+if [ "$1" = "attach" ]; then
+ while [ $(screen -ls | grep '(' | wc -l) -gt 0 ]; do screen -S $(screen -ls | grep '(' | head -1 | cut -d. -f 1) -X kill; sleep 0.1; done
+ echo > /tmp/.screens
+ isFirst=1
+ for ard in $($0 listDevices $2); do
+   stty -F /dev/${ard} cs8 38400 ignbrk -brkint -icrnl -imaxbel -opost -ocrnl -onlret -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke noflsh -ixon -crtscts
+   if [ "$isFirst" = "0" ]; then
+      echo split >> /tmp/.screens
+      echo focus >> /tmp/.screens
+   fi
+   echo screen /dev/${ard} >> /tmp/.screens
+   if [ "$isFirst" = "1" ]; then
+      echo split -v >> /tmp/.screens
+      echo focus >> /tmp/.screens
+      echo screen bash -c '"' $0 listCommands ';' exec bash  '"' >> /tmp/.screens
+      echo focus prev >> /tmp/.screens
+   fi
+   isFirst=0
+ done;
+ echo "hardstatus alwayslastline" >> /tmp/.screens
+ echo "hardstatus string 'Type <CTRL-A>+TAB to switch a tab. Type <CTRL-a>+d to detach (quit)'" >> /tmp/.screens
+ screen -c /tmp/.screens
 
  #screen -R -S ${ard} bash -c 'tty > /tmp/screen${ard}; '$0' listCommands; cu -l /dev/'${ard}' -s 38400'
  #screen -R -S ${ard} bash -c 'tty > /tmp/screen${ard}; '$0' listCommands; tail -f /dev/'${ard}' &; cat > /dev/'${ard}

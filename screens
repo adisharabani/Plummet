@@ -1,0 +1,6 @@
+screen /dev/ttyACM0
+screen /dev/ttyACM1
+split
+focus
+hardstatus alwayslastline
+hardstatus string 'type'
