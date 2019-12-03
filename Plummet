@@ -57,7 +57,7 @@ if [ "$1" = "update" ]; then
 fi
 
 if [ "$1" = "listCommands" ]; then
- cat Plummet.ino | grep "case '" | sed s/case\ \'//g | sed s_\':\ //_:_g | awk '{printf "%s\r\n", $0} END {printf "  <Ctrl+A+D>: Detach\r\n"}'
+ cat Plummet.ino | grep "case '" | sed s/case\ \'//g | sed s_\':\ //_:_g | awk 'BEGIN {printf " AvailableCommands:\r\n";} {printf "%s\r\n", $0} END {printf "  <Tab> or <Shift-Tab>: switch between tabs\r\n  <Ctrl+a+d>: Detach (quit)\r\n"}'
 fi
 
 if [ "$1" = "attach_old" ]; then
@@ -80,8 +80,9 @@ if [ "$1" = "attach_old" ]; then
 fi
 
 if [ "$1" = "attach" ]; then
- while [ $(screen -ls | grep '(' | wc -l) -gt 0 ]; do screen -S $(screen -ls | grep '(' | head -1 | cut -d. -f 1) -X kill; sleep 0.1; done
- echo > /tmp/.screens
+ $0 kill
+ echo 'bindkey -k kB focus prev' > /tmp/.screens
+ echo 'bindkey "	" focus next' >> /tmp/.screens
  isFirst=1
  for ard in $($0 listDevices $2); do
    stty -F /dev/${ard} cs8 38400 ignbrk -brkint -icrnl -imaxbel -opost -ocrnl -onlret -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke noflsh -ixon -crtscts
@@ -93,13 +94,13 @@ if [ "$1" = "attach" ]; then
    if [ "$isFirst" = "1" ]; then
       echo split -v >> /tmp/.screens
       echo focus >> /tmp/.screens
-      echo screen bash -c '"' $0 listCommands ';' exec bash  '"' >> /tmp/.screens
+      echo screen bash -c '"' $0 listCommands ';' cat  '"' >> /tmp/.screens
       echo focus prev >> /tmp/.screens
    fi
    isFirst=0
  done;
  echo "hardstatus alwayslastline" >> /tmp/.screens
- echo "hardstatus string 'Type <CTRL-A>+TAB to switch a tab. Type <CTRL-a>+d to detach (quit)'" >> /tmp/.screens
+ echo "hardstatus string 'Type <Ctrl-a>+d to detach (quit)'" >> /tmp/.screens
  screen -c /tmp/.screens
 
  #screen -R -S ${ard} bash -c 'tty > /tmp/screen${ard}; '$0' listCommands; cu -l /dev/'${ard}' -s 38400'
@@ -108,10 +109,7 @@ if [ "$1" = "attach" ]; then
 fi
 
 if [ "$1" = "kill" ]; then
- for ard in $($0 listDevices $2); do
-    echo "Killing connection to ${ard}"
-    screen -R -S ${ard} -X quit
- done
+while [ $(screen -ls | grep '(' | wc -l) -gt 0 ]; do screen -S $(screen -ls | grep '(' | head -1 | cut -d. -f 1) -X kill; sleep 0.1; done
 fi
 
 if [ "$1" = "listDevices" ]; then

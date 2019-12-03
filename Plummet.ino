@@ -569,6 +569,22 @@ bool readByteAvailable() {
   return (Serial.available() || prevSerial.available() || recordAvailable());
 }
 
+String readStringUntil(char b) {
+ unsigned long timeout = millis() + 5000;
+ String s;
+ while (millis() < timeout) {
+   if (Serial.available()) {
+    s = Serial.readStringUntil("\n");
+    sprint(s);
+    return s;
+   } else if (prevSerial.available()) {
+    s = prevSerial.readStringUntil("\n");
+    sprint(s);
+    return s;
+   }
+ }
+}
+
 int readNumber() {
   unsigned long timeout = millis() + 5000;
   int num;
