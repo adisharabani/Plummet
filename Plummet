@@ -5,7 +5,7 @@ ARDLIB=/home/pi/arduino-1.8.10
 ARDTTY_PATTERN="tty(USB|ACM)"
 
 if [ $# -eq 0 ]; then
- echo "Use args install, compile, upload, upload_loop, attach, update, listDevices, listCommands, install"
+ echo "Use args compile, upload, upload_loop, attach, update, listDevices, listCommands, install"
 fi
 
 if [ "$1" = "cua" ] ; then
@@ -17,6 +17,8 @@ if [ "$1" = "install" ]; then
  command -v screen > /dev/null || sudo apt-get install screen
  command -v cu > /dev/null || sudo apt-get install cu
 #sudo apt-get  install avahi-daemon
+ #curl -L -o arduino-1.8.10-linuxarm.tar.xz https://www.arduino.cc/download.php?f=/arduino-1.8.10-linuxarm.tar.xz
+ #tar -xf arduino-1.8.10-linuxarm.tar.xz 
 fi
 
 if [ "$1" = "compile" ]; then
