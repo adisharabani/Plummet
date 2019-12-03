@@ -6,11 +6,11 @@ ARDTTY_PATTERN="[UA][SC][BM]"
 ARDTTY=${2:-$(ls /dev/*${ARDTTY_PATTERN}* 2>/dev/null | cut -c 6- | head -1)}
 
 if [ $# -eq 0 ]; then
- echo "Use args compile, upload, upload_many, interact, update, listDevices, install"
+ echo "Use args compile, upload, upload_many, attach, update, listDevices, listCommands, install"
 fi
 
-if [ $1 = "cui" ] ; then
- $0 compile && $0 upload && $0 interact
+if [ $1 = "cua" ] ; then
+ $0 compile && $0 upload && $0 attach
 fi
 
 if [ "$1" = "install" ]; then
@@ -59,7 +59,7 @@ if [ "$1" = "listCommands" ]; then
  cat Plummet.ino | grep "case '" | sed s/case\ \'//g | sed s_\':\ //_:_g | awk '{printf "%s\r\n", $0} END {printf "  <Ctrl+A+D>: Detach\r\n"}'
 fi
 
-if [ "$1" = "interact" ]; then
+if [ "$1" = "attach" ]; then
  echo "Connecting to ${ARDTTY}:"
 
  $0 listCommands > $(cat /tmp/screen${ARDTTY})

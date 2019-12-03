@@ -536,10 +536,6 @@ byte readByte() {
     if (Serial.available()) {
       return Serial.read();
     } else if (prevSerial.available()){
-      Serial.write("2");
-      while (prevSerial.available()) {
-        Serial.write(prevSerial.read());
-      } Serial.write("__"); return '7';
       isMaster = false;
       return prevSerial.read();
     } else if (recordAvailable()) {
@@ -797,13 +793,13 @@ void waitForSteadiness(int threshold) {
 
 
 void setup() {  
-  Serial.begin(38400);
-  Serial.println(String("v") + String(PLUMMET_VERSION));
+  //Serial.begin(38400);
+  //Serial.println(String("v") + String(PLUMMET_VERSION));
 
-  Serial.println("Type 'e' for enabling output");
+  //Serial.println("Type 'e' for enabling output");
 
-  nextSerial.begin(38400);
-  prevSerial.begin(38400);
+  nextSerial.begin(9600);
+  prevSerial.begin(9600);
 
   audioSerial.begin(9600); delay(500); 
 
