@@ -1,6 +1,7 @@
 //  Arduino connections:
 //  ---------------------
 //  analog  1: Potentiometer Bit
+//  digital 1 (serialTx): connect to rx of the audio player (no need to connect tx of the player to anything)
 //  digital 2 (rxPrev): connect to digital 5(tx) of the previous arduino (no connection if master)
 //  digital 3 (txPrev): connect to digital 4(rx) of the previous arduino (no connection if master)
 //  digital 4 (rxNext): connect to digital 3(rx) of the next arduino
@@ -9,8 +10,9 @@
 //  digital 10: Servo bit
 //  digital 11: (rxAudio)
 //  digital 12: (txAudio)
-//  Ground: Servo ground, potentiometer ground
-//  5V: Potntiometer +
+//  Ground: Servo ground, potentiometer ground, Servo Power ground, audio device ground
+//  5V: Potntiometer VCC (+)
+//  Vin: audio device VCC (+)
 //  
 //  Servo power need to connect directly to power
 //  Servo power ground need to connect with arduino ground.
@@ -56,7 +58,11 @@
 //  ? :  Show help
 
 #define PLUMMET_VERSION "0.19"
-#include "NeoSWSerial.h"
+
+//#include "SoftwareSerial.h"
+
+#include <SoftwareSerial.h>
+
 // #include "NeoHWSerial.h"
 // #define Serial NeoSerial
 
@@ -99,6 +105,7 @@ boolean SERVO_VIA_TIMER1 = false;
 boolean printMeasures = false; 
 boolean enablePrint = false;
 boolean debug = false;
+boolean ENABLE_AUDIO = true;
 
 //servo
 int loopTime = defaultLoopTime;
@@ -131,10 +138,11 @@ double syncRopeAngle;
 double syncPhase;
 boolean updateSlaveClock = false;
 
-NeoSWSerial prevSerial(rxPinPrev, txPinPrev);
-NeoSWSerial nextSerial(rxPinNext, txPinNext);
+SoftwareSerial prevSerial(rxPinPrev, txPinPrev);
+SoftwareSerial nextSerial(rxPinNext, txPinNext);
 
-NeoSWSerial audioSerial(AUDIO_RX, AUDIO_TX);
+//SoftwareSerial audioSerial(AUDIO_RX, AUDIO_TX);
+#define audioSerial Serial
 static int8_t Send_Audio_buf[8] = {0} ;
 
 boolean isMaster = true;
@@ -233,7 +241,7 @@ void smoothMove(double desiredPosition) {
   for (int i=0; i<100; i++) {
      double np = sl*(100-i)/100.0 + desiredPosition*(i)/100.0;
      myservowrite(np);
-     debugLog("moving Servo from "+String(sl)+ " to "+String(desiredPosition) + " Step("+i+"): "+np+"\n");
+     debugLog("moving Servo from "+String(sl)+ " to "+String(desiredPosition) + " Step("+i+"): "+np+"\n\r");
      delay(20);
   }
 }
@@ -526,7 +534,7 @@ byte readByteFromRecord() {
   }
 }
 
-String readAllBytes(const NeoSWSerial &s) {
+String readAllBytes(const SoftwareSerial &s) {
  unsigned long timeout = millis() + 100;
  String ret = "";
  while (s.available()) {
@@ -585,7 +593,10 @@ void handleKeyboardInput() {
 
   if (readByteAvailable()) {
     sprint("New Command: ");
-    inByte = readByte(); 
+    inByte = readByte();
+    if (inByte=='\r') return;
+    if (inByte == '\n') {sprint("\r"); return; } 
+    sprint("(" + String(int(inByte)) + ")");
     if (inByte == ':') {
        int id = readNumber();
        if (id<=0){
@@ -611,7 +622,7 @@ void handleKeyboardInput() {
          return;
        }
     }
-    else if ((inByte == 'e') || (inByte == 'p') || (inByte == 'd') || (inByte == ' ') || (inByte ==10)) {
+    else if ((inByte == 'e') || (inByte == 'p') || (inByte == 'd') || (inByte == ' ') || (inByte == '\n') || (inByte == '\r')) {
       // do not notify other arduinos on commands that changes the output.
     } else {
       //sprintln("forwarding: "+ String(int(inByte)));
@@ -773,7 +784,9 @@ void handleKeyboardInput() {
 
 void sendAudioCommand(int8_t command, int16_t dat)
 {
-  //delay(20);
+  if (!ENABLE_AUDIO) return;
+  sprintln("audio");
+  delay(20);
   Send_Audio_buf[0] = 0x7e; //starting byte
   Send_Audio_buf[1] = 0xff; //version
   Send_Audio_buf[2] = 0x06; //the number of bytes of the command without starting byte and ending byte
@@ -796,7 +809,7 @@ void waitForSteadiness(int threshold) {
   boolean steady = false;
   while (!steady) {
     double potRead = potentiometerRead();
-    debugLog("Comparing potentiometer to " + String(potRead) + "\n");
+    debugLog("Comparing potentiometer to " + String(potRead) + "\n\r");
     steady=true;
     unsigned long timeout = millis()+5000;
     while ((millis() < timeout) && (steady))
@@ -813,6 +826,10 @@ void waitForSteadiness(int threshold) {
 
 static void handleRxChar( uint8_t c ) {}
 
+static void t(uint8_t c) {
+sprintln("handleRX " + String(c));
+}
+
 void setup() {  
   Serial.begin(9600);
   Serial.println(String("v") + String(PLUMMET_VERSION));
@@ -822,11 +839,15 @@ void setup() {
   nextSerial.begin(9600);
   prevSerial.begin(9600);
 
-  audioSerial.attachInterrupt(handleRxChar);
-
-  audioSerial.begin(9600); delay(500); 
-
-  sendAudioCommand(0X09, 0X02); delay(200);
+  //prevSerial.attachInterrupt(t);
+  
+  if (ENABLE_AUDIO) {
+    //audioSerial.attachInterrupt(handleRxChar);
+    //audioSerial.begin(9600);
+    delay(500); 
+    sendAudioCommand(0X09, 0X02);
+    delay(200);
+  }
  
   nextSerial.write("9"); // let the following arduino know you are here and set on HALT mode;
   
@@ -898,7 +919,6 @@ void loop(){
   }
 
   if ((time-rightTime+AUDIO_DELAY >= loopTime/4) && (lastIterationTime-rightTime+AUDIO_DELAY < loopTime/4)) {
-    sprintln("audio");
     sendAudioCommand(0X22, 0X1E01);
   }
 
@@ -943,7 +963,7 @@ void loop(){
     debugLog("desiredServoPos: "); debugLog(String(desiredServoPos)); debugLog("  ");
   }
 
-   debugLog("\n");
+   debugLog("\n\r");
 
   // Update clock of slaves
   if (updateSlaveClock && isMaster && (mode == SYNCED_RUNNING)) {

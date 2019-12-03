@@ -6,7 +6,7 @@ ARDTTY_PATTERN="[UA][SC][BM]"
 ARDTTY=${2:-$(ls /dev/*${ARDTTY_PATTERN}* 2>/dev/null | cut -c 6- | head -1)}
 
 if [ $# -eq 0 ]; then
- echo "Use args install, compile, upload, upload_many, attach, update, listDevices, listCommands, install"
+ echo "Use args install, compile, upload, upload_loop, attach, update, listDevices, listCommands, install"
 fi
 
 if [ $1 = "cua" ] ; then
@@ -29,17 +29,22 @@ fi
 
 if [ "$1" = "upload" ]; then
  echo "Uploading Plummet"
- screen -R -S ${ARDTTY} -X quit
- ${ARDLIB}/hardware/tools/avr/bin/avrdude -C${ARDLIB}/hardware/tools/avr/etc/avrdude.conf -patmega328p -carduino -P/dev/${ARDTTY} -b115200 -Uflash:w:build/Plummet.ino.hex:i 
+ if [ "${2:-all}" = "all" ]; then
+   for ard in $($0 listDevices); do
+     echo "uploading to $ard"
+     $0 upload $ard &
+   done
+   wait
+ else 
+   screen -R -S ${ARDTTY} -X quit
+   ${ARDLIB}/hardware/tools/avr/bin/avrdude -C${ARDLIB}/hardware/tools/avr/etc/avrdude.conf -patmega328p -carduino -P/dev/${ARDTTY} -b115200 -Uflash:w:build/Plummet.ino.hex:i 
+ fi
  exit $?
 fi
 
 if [ "$1" = "upload_many" ]; then
+ $0 upload all
  echo "continuesly uploading to any arduino attached"
- for ard in $($0 listDevices); do
-   echo "uploading to $ard"
-   $0 upload $ard
- done
  inotifywait -m /dev -e create -e moved_to |
     while read path action ard; do
         if [[ $ard =~ $ARDTTY_PATTERN ]]; then # && [ $action = "CREATE" ]; then
@@ -64,7 +69,7 @@ if [ "$1" = "attach" ]; then
 
  $0 listCommands > $(cat /tmp/screen${ARDTTY})
 
- stty -F /dev/${ARDTTY} cs8 38400 ignbrk -brkint -icrnl -imaxbel -opost -onlcr -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke noflsh -ixon -crtscts
+ stty -F /dev/${ARDTTY} cs8 38400 ignbrk -brkint -icrnl -imaxbel -opost -ocrnl -onlret -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke noflsh -ixon -crtscts
  screen -R -S ${ARDTTY} /dev/${ARDTTY} 9600
 
  #screen -R -S ${ARDTTY} bash -c 'tty > /tmp/screen${ARDTTY}; '$0' listCommands; cu -l /dev/'${ARDTTY}' -s 38400'
