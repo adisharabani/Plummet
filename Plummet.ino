@@ -90,7 +90,7 @@ int defaultLoopTime = 3158; //Palo Alto: 3080; // 3160; // 3420;
 // int defaultLoopTime = 3080; // Palo Alto
 
 //unsigned long commands[] = {1000, '1', 25000, '9'};
-unsigned long commands[] = {500, '9'};
+unsigned long commands[] = {};
 //unsigned long commands [] = {};
 
 int commandsP = 0;
@@ -105,7 +105,7 @@ boolean SERVO_VIA_TIMER1 = false;
 boolean printMeasures = false; 
 boolean enablePrint = true;
 boolean debug = false;
-boolean ENABLE_AUDIO = true;
+boolean enableAudio = true;
 
 //servo
 int loopTime = defaultLoopTime;
@@ -419,7 +419,7 @@ void updateAmpAndTimeForStopping() {
 
   if (servoAmp < 10) { servoAmp = 0; }        // was <10
   
-  sprintln("--- Update ServoAmp: maxRight("+String(ropeMaxRightAngle)+")-maxLeft(" + String(ropeMaxLeftAngle) + ")="+ String(ropeMaxRightAngle-ropeMaxLeftAngle) + " ==> servoAmp set to: "+String(servoAmp) + " ---");
+  sprintln("- Update ServoAmp: maxRight("+String(ropeMaxRightAngle)+")-maxLeft(" + String(ropeMaxLeftAngle) + ")="+ String(ropeMaxRightAngle-ropeMaxLeftAngle) + " ==> New servoAmp: "+String(servoAmp) + " -");
 }
 
 void updateAmpAndTimeForMaintaining() {
@@ -602,52 +602,72 @@ int readNumber() {
   return 0; // prevSerial.parseInt();
 }
 
+String keyboardBuffer = "";
+
 void handleKeyboardInput() {
   ////////////
   // input
   char inByte = 0;
-
-  if (readByteAvailable()) {
-    inByte = readByte();
-    if (inByte=='\r') {return; }
-    if (inByte == '\n') {return; } 
-    sprint("New Command: "+String(inByte)+ "("+String(int(inByte))+")");
-    if (inByte == ':') {
-       int id = readNumber(); sprint(String(id));
-       if (id<=0){
-         inByte = readByte(); sprint(inByte);
-         if (inByte != ':') sprintln("Error"+String(inByte));
-         inByte = readByte(); sprint(inByte);
-         sprintln("command only to me: "+String(inByte));
-         // do not notify other arduinos
-       } else {
-         inByte = readByte(); sprint(inByte);
-         if (inByte != ':') sprintln("Error"+String(inByte));
-         // if (inByte == ':') {}
-         inByte = readByte(); sprint(inByte);
-         
-         // notify other arduinos
-         String wr = String(":") + String(id-1) + String(":")+ String(inByte);
-         sprintln("command to another: "+String(id) + " " + String(inByte)+" ==> '"+ wr +"'");
-        
-         nextSerial.print(wr);
-         //nextSerial.write(':'); nextSerial.write(id-1); nextSerial.write(inByte);
-         inByte = 0; //ignore this command as it is not for this arduino.
-         sprintln("");
-         return;
-       }
-    }
-    else if ((inByte == 'e') || (inByte == 'E') || (inByte == 'p') || (inByte == 'd') || (inByte == ' ') || (inByte == '\n') || (inByte == '\r')) {
-      // do not notify other arduinos on commands that changes the output.
-    } else {
-      //sprintln("forwarding: "+ String(int(inByte)));
-      nextSerial.write(inByte); 
-    }
-    //sprintln(""); // New command: " + String(inByte));
-  } else {
-    return;
+  if (keyboardBuffer.length() > 0) {
+     inByte = keyboardBuffer[keyboardBuffer.length()-1];
   }
 
+  while (readByteAvailable() && (inByte != '\n')) {
+     inByte = readByte();
+
+     if ((inByte=='\r') || (inByte=='\n')) {
+       //convert \r to \n
+       keyboardBuffer += "\n";
+       inByte = '\n';
+       if (keyboardBuffer.length()>1) sprintln("");
+     } else if (inByte == 127) {
+       //handle backspace
+       if (keyboardBuffer.length()>0) {
+         keyboardBuffer = keyboardBuffer.substring(0,keyboardBuffer.length()-1);
+         inByte = keyboardBuffer[keyboardBuffer.length()-1];
+         sprint("\b\b\b   \r"+keyboardBuffer);
+       } else {
+         inByte = 0;
+       }
+     } else {
+       keyboardBuffer += String(inByte);
+       sprint(inByte);
+     }
+  }
+  if (inByte != '\n') {
+    return;
+  }
+  if (keyboardBuffer.length() == 0) return;
+
+  inByte = keyboardBuffer[0]; keyboardBuffer = keyboardBuffer.substring(1);
+
+  if (inByte == '\n') {return; } 
+  
+  if (inByte == ':') {
+     int id = keyboardBuffer.substring(0,keyboardBuffer.indexOf(":")).toInt();
+     keyboardBuffer = keyboardBuffer.substring(keyboardBuffer.indexOf(":")+1);
+  
+     inByte = keyboardBuffer[0]; keyboardBuffer = keyboardBuffer.substring(1);
+     if (id>0){
+       // notify other arduinos
+       String wr = String(":") + String(id-1) + String(":")+ String(inByte) + keyboardBuffer;
+       sprintln("Command forwarded to the next device");
+       nextSerial.println(wr);
+       inByte = 0; keyboardBuffer = ""; //ignore this command as it is not for this arduino.
+       return;
+     } else {
+       // do not notify other arduinos
+       sprintln("Command is directed to me only");
+     }
+  }
+  else if (inByte == '=') {
+    nextSerial.println(String(inByte) + keyboardBuffer);
+  } else if ((inByte != 'e') && (inByte != 'E') && (inByte != 'p') && (inByte != 'd') && (inByte != ' ') && (inByte != '\n')) {
+    //sprintln("forwarding: "+ String(int(inByte)));
+    nextSerial.println(String(inByte)); 
+  } else {
+    // do not notify other arduinos on commands that changes the output.
+  }
 
   int s;
   switch (inByte) {
@@ -669,42 +689,43 @@ void handleKeyboardInput() {
       smoothMove(servoCenter);
       break;
     case '1': // START 
-      mode = START; sprint("START");
+      mode = START; sprintln("START");
       break;
     case '2': // STOP
-      mode = STOP; sprint("STOP");
+      mode = STOP; sprintln("STOP");
       break;
     case '9': // HALT -> STOP and dont move anymore;
-      mode = HALT; sprint("HALT");
+      mode = HALT; sprintln("HALT");
       smoothMove(servoCenter);
       break;
     case 'm': // MAINTAIN
-      mode = MAINTAIN; sprint("MAINTAIN");
+      mode = MAINTAIN; sprintln("MAINTAIN");
       break;
     case 't': // TEST
-      mode = TEST; sprint("TEST");
+      mode = TEST; sprintln("TEST");
       break;
     case ']': // Increase TEST Phase
       testPhase = (int((testPhase + 0.05)*100) % 100) /100.0;
-      sprint("Testing phase is now "+String(testPhase));
+      sprintln("Testing phase is now "+String(testPhase));
+
       break;
     case '[': // Decrease TEST phase
       testPhase = (int((testPhase - 0.05)*100) % 100) /100.0;
-      sprint("Testing phase is now "+String(testPhase));
+      sprintln("Testing phase is now "+String(testPhase));
       break;
     case '>': // Increase TEST amplitude
       testAmp = min(testAmp + 5,100);
-      sprint("Testing amp is now "+String(testAmp));
+      sprintln("Testing amp is now "+String(testAmp));
       break;
     case '<': // Decrease TEST amplitude
       testAmp = max(testAmp -5,0);
-      sprint("Testing amp is now "+String(testAmp));
+      sprintln("Testing amp is now "+String(testAmp));
       break;
     case 's': // SYNC
       syncInitTime = millis();
       servoAmp = 20;
       syncInitTimeOffset = 0;
-      mode = SYNCED_RUN; sprint("SYNC");
+      mode = SYNCED_RUN; sprintln("SYNC");
       break;
     case 'S': // SYNC to an already set clock (don't update the clock)
       mode = SYNCED_RUN; 
@@ -731,15 +752,14 @@ void handleKeyboardInput() {
       break;
     case 'w': // Create a wave 
       mode = SYNCED_RUN; 
-      nextSerial.write('{'); 
+      nextSerial.println("{"); 
       break;
     case 'W': // Create a backward wave
       mode = SYNCED_RUN; 
-      nextSerial.write('}'); 
+      nextSerial.println("{"); 
       break;
     case '=': // Move servo to specific location
-      s = readNumber(); sprint(s);
-      if (s!=0) nextSerial.print(s);
+      s = keyboardBuffer.toInt(); keyboardBuffer = "";
       if (s!=0) smoothMove(s);
       // myservo.write(n);
       break;
@@ -747,13 +767,13 @@ void handleKeyboardInput() {
       s = myservoread(); 
       sprintln("servo was " + String(s));
       myservowrite(s+1);
-      sprint("servo is " + String(myservoread()));    
+      sprintln("servo is " + String(myservoread()));    
       break;
     case '-': // Move servo one step backwards
       s = myservoread();
       sprintln("servo was " + String(s));
       myservowrite(s-1);
-      sprint("servo is " + String(myservoread()));    
+      sprintln("servo is " + String(myservoread()));    
       break;
     case '_': // Detach or reattach servo
       if (myservoattached()) {
@@ -772,7 +792,7 @@ void handleKeyboardInput() {
       tone(7, NOTE_A5, 1000);
       break;
     case 'B': // Beep if master
-      sprint(isMaster ? "I am master" : "I am slave"); 
+      sprintln(isMaster ? "I am master" : "I am slave"); 
       if (isMaster) tone(7, NOTE_A5, 1000);
       break;
     case 'c': // Calibrate
@@ -784,14 +804,14 @@ void handleKeyboardInput() {
     case 'a': // play audio
       sendAudioCommand(0X22, 0X1E01);
       break;
-    case 'A': // Stop audio
-      sendAudioCommand(0x16 , 0x0D);
+    case 'A': // enable/disable audio
+      enableAudio = !enableAudio;
+      sprintln(String("Audio ")+(enableAudio ? "enabled" : "disabled"));
       break;
       
     default:
       break;
   }
-  sprintln("");
 }
 
 
@@ -801,7 +821,7 @@ void handleKeyboardInput() {
 
 void sendAudioCommand(int8_t command, int16_t dat)
 {
-  if (!ENABLE_AUDIO) return;
+  if (!enableAudio) return;
   debugLog("audio");
   Send_Audio_buf[0] = 0x7e; //starting byte
   Send_Audio_buf[1] = 0xff; //version
@@ -856,20 +876,12 @@ void setup() {
   nextSerial.begin(9600);
   prevSerial.begin(9600);
 
-  nextSerial.write("9"); // let the following arduino know you are here and set on HALT mode;
+  nextSerial.println("9"); // let the following arduino know you are here and set on HALT mode;
 
   //prevSerial.attachInterrupt(t);
   
-  if (ENABLE_AUDIO) {
-    //audioSerial.attachInterrupt(handleRxChar);
-    //audioSerial.begin(9600);
-    delay(500); 
-    sendAudioCommand(0X09, 0X02);
-    delay(200);
-  }
-  
-   
-  
+  sendAudioCommand(0X09, 0X02);
+  sprintln("");
   readCalibration();
 
   myservoattach(servoPin);
@@ -889,8 +901,8 @@ void setup() {
 
 unsigned long keepalive = 0;
 void loop(){
-  if (time > keepalive) { nextSerial.write("\n"); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
-  if (prevSerial.available()) {if (isMaster) sprintln("I am slave"); isMaster = false;} // inform 
+  if (time > keepalive) { nextSerial.println(""); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
+  if (prevSerial.available()) {if (isMaster) sprintln("I am now a slave"); isMaster = false;} // inform 
   // if (isMaster) { tone(7, NOTE_F5,100); }   // If master make noise
   
   time = millis();
@@ -941,7 +953,9 @@ void loop(){
       break;
   }
 
-  if ((time-rightTime+AUDIO_DELAY >= loopTime/4) && (lastIterationTime-rightTime+AUDIO_DELAY < loopTime/4)) {
+  if ((time-rightTime+AUDIO_DELAY >= loopTime/4) && 
+      (lastIterationTime-rightTime+AUDIO_DELAY < loopTime/4) &&
+      (ropeMaxRightAngle>0.05) && (ropeMaxLeftAngle<-0.05)) {
     sendAudioCommand(0X22, 0X1E01);
   }
 
@@ -996,7 +1010,7 @@ void loop(){
   if (updateSlaveClock && isMaster && (mode == SYNCED_RUNNING)) {
     if ((time-syncInitTime)%syncLoopTime  < (lastIterationTime-syncInitTime) % syncLoopTime) {
       // this means we just got to the init time frame;
-      nextSerial.write("T"); // update the clock...     
+      nextSerial.println("T"); // update the clock...     
       updateSlaveClock == false;
     }
   }

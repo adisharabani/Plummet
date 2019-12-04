@@ -37,7 +37,7 @@ if [ "$1" = "upload" ]; then
  echo "Uploading Plummet to ${2:-all connected devices}"
  for ard in $($0 listDevices $2); do
    echo "uploading to $ard"
-   ${ARDLIB}/hardware/tools/avr/bin/avrdude -C${ARDLIB}/hardware/tools/avr/etc/avrdude.conf -patmega328p -carduino -P/dev/${ard} -b115200 -Uflash:w:build/Plummet.ino.hex:i  &
+   ${ARDLIB}/hardware/tools/avr/bin/avrdude -C${ARDLIB}/hardware/tools/avr/etc/avrdude.conf -patmega328p -carduino -P/dev/${ard} -b115200 -Uflash:w:build/Plummet.ino.hex:i -F &
  done
  wait
 fi
@@ -108,7 +108,7 @@ if [ "$1" = "attach" ]; then
       echo focus >> /tmp/.screens
    fi
    echo screen /dev/${ard} >> /tmp/.screens
-   echo stuff eB >> /tmp/.screens
+   echo stuff "e\nB\n \n" >> /tmp/.screens
    if [ "$isFirst" = "1" ]; then
       echo split -v >> /tmp/.screens
       echo focus >> /tmp/.screens
