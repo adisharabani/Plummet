@@ -56,7 +56,11 @@ fi
 
 if [ "$1" = "update" ]; then
  echo Updating app from the internet
- git pull
+ if [ "$(git pull)" = "Already up to date." ]; then 
+   echo "Already up to date."
+ else
+   $0 compile
+ fi
  exit $?
 fi
 
