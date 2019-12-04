@@ -5,7 +5,7 @@ ARDLIB=/home/pi/arduino-1.8.10
 ARDTTY_PATTERN="tty(USB|ACM)"
 
 if [ $# -eq 0 ]; then
- echo "Use args compile, upload, upload_loop, attach, update, listDevices, listCommands, install"
+ echo "Use args attach, upload, upload_loop, listConnections, listDevices, listCommands, update, compile, install, cbu"
 fi
 
 if [ "$1" = "cua" ] ; then
@@ -62,6 +62,10 @@ if [ "$1" = "update" ]; then
    $0 compile
  fi
  exit $?
+fi
+
+if [ "$1" = "listConnections" ]; then
+ cat Plummet.ino | cut -c 3- | awk 'BEGIN {p=1} /Help/ {p=0} (p==1) {printf "%s\r\n" , $0} '
 fi
 
 if [ "$1" = "listCommands" ]; then

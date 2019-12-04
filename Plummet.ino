@@ -1,25 +1,17 @@
 //  Arduino connections:
 //  ---------------------
 //  analog  1: Potentiometer Bit
-//  digital 1 (serialTx): connect to rx of the audio player (no need to connect tx of the player to anything)
-//  digital 2 (rxPrev): connect to digital 5(tx) of the previous arduino (no connection if master)
-//  digital 3 (txPrev): connect to digital 4(rx) of the previous arduino (no connection if master)
-//  digital 4 (rxNext): connect to digital 3(rx) of the next arduino
-//  digital 5 (txNext): connect to digital 2(rx) of the next arduino
-//  digital 7: Tone bit
+//  digital 1: (serialTx): connect to rx of the audio player (no need to connect tx of the player to anything)
+//  digital 2: (rxPrev): connect to digital 5(tx) of the previous arduino (no connection if master)
+//  digital 5: (txNext): connect to digital 2(rx) of the next arduino
+//  digital 7: Tone bit (not important)
 //  digital 10: Servo bit
-//  digital 11: (rxAudio)
-//  digital 12: (txAudio)
-//  Ground: Servo ground, potentiometer ground, Servo Power ground, audio device ground
+//  Ground: Servo ground, potentiometer ground, Servo Power ground, audio device ground, next & prev arduino Ground
 //  5V: Potntiometer VCC (+)
 //  Vin: audio device VCC (+)
+// 
+//  Servo power VCC (+) need to connect directly to its own power
 //  
-//  Servo power need to connect directly to power
-//  Servo power ground need to connect with arduino ground.
-//  Aruino to Arduino ground should also be connected.
-//  
-//  REMINDER: TYPE :0:B to check if you are connected to the master (if you are in mode e, it will also say so)
-//
 //  Help:
 //  -----
 //  e :  Enable output
