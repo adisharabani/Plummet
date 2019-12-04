@@ -113,7 +113,7 @@ if [ "$1" = "attach" ]; then
       echo split -v >> /tmp/.screens
       echo focus >> /tmp/.screens
       #echo screen bash -c '"' $0 listCommands ';' cat  '"' >> /tmp/.screens
-      echo screen bash -c '"' $0 listCommands '|' less -S -# 5 '"' >> /tmp/.screens
+      echo screen -t Help bash -c '"' $0 listCommands '|' less -S -# 5 '"' >> /tmp/.screens
       echo resize -h 30 >> /tmp/.screens
       echo focus prev >> /tmp/.screens
    fi
