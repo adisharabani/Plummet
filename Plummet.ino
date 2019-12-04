@@ -103,7 +103,7 @@ int commandsN = sizeof(commands)/sizeof(unsigned long);
 boolean SERVO_VIA_TIMER1 = false;
 
 boolean printMeasures = false; 
-boolean enablePrint = false;
+boolean enablePrint = true;
 boolean debug = false;
 boolean ENABLE_AUDIO = true;
 
@@ -549,17 +549,17 @@ byte readByte() {
   while (millis() < timeout) {
     if (Serial.available()) {
       b = Serial.read();
-      sprint(b);
+      //sprint(b);
       return b;
     } else if (prevSerial.available()){
       isMaster = false;
       char b = prevSerial.read();
 //      if (b=='~') { Serial.write("Error:"); delay(100); while (prevSerial.available()) Serial.print("~"+String(int(prevSerial.read()))); Serial.println("");}
-      sprint(b);
+      //sprint(b);
       return b;
     } else if (recordAvailable()) {
       char b = readByteFromRecord();
-      sprint(b);
+      //sprint(b);
       return b;
     }
   }
@@ -574,12 +574,12 @@ String readStringUntil(char b) {
  String s;
  while (millis() < timeout) {
    if (Serial.available()) {
-    s = Serial.readStringUntil("\n");
-    sprint(s);
+    s = Serial.readStringUntil(b);
+    //sprint(s);
     return s;
    } else if (prevSerial.available()) {
-    s = prevSerial.readStringUntil("\n");
-    sprint(s);
+    s = prevSerial.readStringUntil(b);
+    //sprint(s);
     return s;
    }
  }
@@ -591,11 +591,11 @@ int readNumber() {
   while (millis() < timeout) {
     if (Serial.available()) {
       num = Serial.parseInt();
-      sprint(String(num));
+      //sprint(String(num));
       return num;
     } else if (prevSerial.available()){
       num = prevSerial.parseInt();
-      sprint(String(num));
+      //sprint(String(num));
       return num;
     }
   }
@@ -608,24 +608,23 @@ void handleKeyboardInput() {
   char inByte = 0;
 
   if (readByteAvailable()) {
-    sprint("New Command: ");
     inByte = readByte();
-    if (inByte=='\r') return;
-    if (inByte == '\n') {sprint("\r"); return; } 
-    sprint("(" + String(int(inByte)) + ")");
+    if (inByte=='\r') {return; }
+    if (inByte == '\n') {return; } 
+    sprint("New Command: "+String(inByte)+ "("+String(int(inByte))+")");
     if (inByte == ':') {
-       int id = readNumber();
+       int id = readNumber(); sprint(String(id));
        if (id<=0){
-         inByte = readByte();
+         inByte = readByte(); sprint(inByte);
          if (inByte != ':') sprintln("Error"+String(inByte));
-         inByte = readByte(); 
+         inByte = readByte(); sprint(inByte);
          sprintln("command only to me: "+String(inByte));
          // do not notify other arduinos
        } else {
-         inByte = readByte(); 
+         inByte = readByte(); sprint(inByte);
          if (inByte != ':') sprintln("Error"+String(inByte));
          // if (inByte == ':') {}
-         inByte = readByte(); 
+         inByte = readByte(); sprint(inByte);
          
          // notify other arduinos
          String wr = String(":") + String(id-1) + String(":")+ String(inByte);
@@ -638,7 +637,7 @@ void handleKeyboardInput() {
          return;
        }
     }
-    else if ((inByte == 'e') || (inByte == 'p') || (inByte == 'd') || (inByte == ' ') || (inByte == '\n') || (inByte == '\r')) {
+    else if ((inByte == 'e') || (inByte == 'E') || (inByte == 'p') || (inByte == 'd') || (inByte == ' ') || (inByte == '\n') || (inByte == '\r')) {
       // do not notify other arduinos on commands that changes the output.
     } else {
       //sprintln("forwarding: "+ String(int(inByte)));
@@ -653,7 +652,10 @@ void handleKeyboardInput() {
   int s;
   switch (inByte) {
     case 'e': // Enable output
-      enablePrint = !enablePrint;
+      enablePrint = true;
+      break;
+    case 'E': // Disable output
+      enablePrint = false;
       break;
     case 'd': // Debug
       debug = !debug;
@@ -667,43 +669,42 @@ void handleKeyboardInput() {
       smoothMove(servoCenter);
       break;
     case '1': // START 
-      mode = START; sprintln("START");
+      mode = START; sprint("START");
       break;
     case '2': // STOP
-      mode = STOP; sprintln("STOP");
+      mode = STOP; sprint("STOP");
       break;
     case '9': // HALT -> STOP and dont move anymore;
-      mode = HALT;
-      sprintln("MODE=== " + String(mode)+")  ");
+      mode = HALT; sprint("HALT");
       smoothMove(servoCenter);
       break;
     case 'm': // MAINTAIN
-      mode = MAINTAIN;
+      mode = MAINTAIN; sprint("MAINTAIN");
       break;
     case 't': // TEST
-      mode = TEST;
+      mode = TEST; sprint("TEST");
       break;
     case ']': // Increase TEST Phase
       testPhase = (int((testPhase + 0.05)*100) % 100) /100.0;
-      sprintln("Testing phase is now "+String(testPhase));
+      sprint("Testing phase is now "+String(testPhase));
       break;
     case '[': // Decrease TEST phase
       testPhase = (int((testPhase - 0.05)*100) % 100) /100.0;
-      sprintln("Testing phase is now "+String(testPhase));
+      sprint("Testing phase is now "+String(testPhase));
       break;
     case '>': // Increase TEST amplitude
       testAmp = min(testAmp + 5,100);
-      sprintln("Testing amp is now "+String(testAmp));
+      sprint("Testing amp is now "+String(testAmp));
       break;
     case '<': // Decrease TEST amplitude
       testAmp = max(testAmp -5,0);
-      sprintln("Testing amp is now "+String(testAmp));
+      sprint("Testing amp is now "+String(testAmp));
       break;
     case 's': // SYNC
       syncInitTime = millis();
       servoAmp = 20;
       syncInitTimeOffset = 0;
-      mode = SYNCED_RUN; 
+      mode = SYNCED_RUN; sprint("SYNC");
       break;
     case 'S': // SYNC to an already set clock (don't update the clock)
       mode = SYNCED_RUN; 
@@ -737,22 +738,22 @@ void handleKeyboardInput() {
       nextSerial.write('}'); 
       break;
     case '=': // Move servo to specific location
-      s = readNumber();
+      s = readNumber(); sprint(s);
       if (s!=0) nextSerial.print(s);
       if (s!=0) smoothMove(s);
       // myservo.write(n);
       break;
     case '+': // Move servo one step forwards
-      s = myservoread();
+      s = myservoread(); 
       sprintln("servo was " + String(s));
       myservowrite(s+1);
-      sprintln("servo is " + String(myservoread()));    
+      sprint("servo is " + String(myservoread()));    
       break;
     case '-': // Move servo one step backwards
       s = myservoread();
       sprintln("servo was " + String(s));
       myservowrite(s-1);
-      sprintln("servo is " + String(myservoread()));    
+      sprint("servo is " + String(myservoread()));    
       break;
     case '_': // Detach or reattach servo
       if (myservoattached()) {
@@ -771,7 +772,7 @@ void handleKeyboardInput() {
       tone(7, NOTE_A5, 1000);
       break;
     case 'B': // Beep if master
-      sprintln(isMaster ? "I am master" : "I am slave"); 
+      sprint(isMaster ? "I am master" : "I am slave"); 
       if (isMaster) tone(7, NOTE_A5, 1000);
       break;
     case 'c': // Calibrate
@@ -801,8 +802,7 @@ void handleKeyboardInput() {
 void sendAudioCommand(int8_t command, int16_t dat)
 {
   if (!ENABLE_AUDIO) return;
-  sprintln("audio");
-  delay(20);
+  debugLog("audio");
   Send_Audio_buf[0] = 0x7e; //starting byte
   Send_Audio_buf[1] = 0xff; //version
   Send_Audio_buf[2] = 0x06; //the number of bytes of the command without starting byte and ending byte
@@ -847,13 +847,16 @@ sprintln("handleRX " + String(c));
 }
 
 void setup() {  
+  initTime = millis();
+  randomSeed(initTime % 30000);
+
   Serial.begin(9600);
   Serial.println(String("v") + String(PLUMMET_VERSION));
 
-  Serial.println("Type 'e' for enabling output");
-
   nextSerial.begin(9600);
   prevSerial.begin(9600);
+
+  nextSerial.write("9"); // let the following arduino know you are here and set on HALT mode;
 
   //prevSerial.attachInterrupt(t);
   
@@ -864,8 +867,8 @@ void setup() {
     sendAudioCommand(0X09, 0X02);
     delay(200);
   }
- 
-  nextSerial.write("9"); // let the following arduino know you are here and set on HALT mode;
+  
+   
   
   readCalibration();
 
@@ -873,17 +876,21 @@ void setup() {
   smoothMove(servoCenter);
   tone(7, NOTE_G5, 100);
   
-  initTime = millis();
-  randomSeed(initTime % 30000);
 
   mode=HALT;
   updateAmpAndTime();
+
+  // wait 3 seconds to see if you are a slave
+  while ((millis() < initTime + 3000) && isMaster) {
+     if (prevSerial.available()) {isMaster = false; } 
+  }
+  sprintln(isMaster ? "I am master" : "I am slave"); 
 }
 
 unsigned long keepalive = 0;
 void loop(){
-  if (time > keepalive) { nextSerial.write("\n"); keepalive = time + 1000*5; }  // inform slaves they are slaves every 5 seconds;
-  if (prevSerial.available()) {isMaster == false;} // inform 
+  if (time > keepalive) { nextSerial.write("\n"); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
+  if (prevSerial.available()) {if (isMaster) sprintln("I am slave"); isMaster = false;} // inform 
   // if (isMaster) { tone(7, NOTE_F5,100); }   // If master make noise
   
   time = millis();
@@ -943,7 +950,7 @@ void loop(){
     side = LEFT;
     lastLoopTime = time-leftTime;
     leftTime = time;
-    sprintln("### Loop: Time("+String(lastLoopTime)+")" + (side==LEFT ? " [LEFT] :" : " [RIGHT]:") + "maxRight("+String(ropeMaxRightAngle)+")-maxLeft(" + String(ropeMaxLeftAngle) + ")="+ String(ropeMaxRightAngle-ropeMaxLeftAngle)+ " ###");
+    sprintln("# Loop: Time("+String(lastLoopTime)+")" + (side==LEFT ? " [LEFT] :" : " [RIGHT]:") + "maxRight("+String(ropeMaxRightAngle)+")-maxLeft(" + String(ropeMaxLeftAngle) + ")="+ String(ropeMaxRightAngle-ropeMaxLeftAngle)+ " #");
     tone(7, NOTE_G6, 100);
 
     if (mode != RUNNING) updateAmpAndTime();
@@ -955,31 +962,35 @@ void loop(){
     side = RIGHT;
     lastLoopTime = time-rightTime;
     rightTime = time;
-    sprintln("### Loop: Time("+String(lastLoopTime)+")" + (side==LEFT ? " [LEFT] :" : " [RIGHT]:") + "maxRight("+String(ropeMaxRightAngle)+")-maxLeft(" + String(ropeMaxLeftAngle) + ")="+ String(ropeMaxRightAngle-ropeMaxLeftAngle)+ " ###");
+    sprintln("# Loop: Time("+String(lastLoopTime)+")" + (side==LEFT ? " [LEFT] :" : " [RIGHT]:") + "maxRight("+String(ropeMaxRightAngle)+")-maxLeft(" + String(ropeMaxLeftAngle) + ")="+ String(ropeMaxRightAngle-ropeMaxLeftAngle)+ " #");
     tone(7, NOTE_G5, 100);
     
     if (mode != RUNNING) updateAmpAndTime();
     
     ropeMaxRightAngle = 0;
   }
-
+/*
   debugLog("Mode: "); debugLog(String(mode)); debugLog("  ");
   debugLog("currentServoPos: "); debugLog(String(currentServoPos)); debugLog("  ");
   debugLog("servoAngle: "); debugLog(String(servoAngle)); debugLog("  ");
   debugLog("pot: "); debugLog(String(potRead)); debugLog("  ");
   debugLog("potAngle: "); debugLog(String(potAngle)); debugLog("  ");
   debugLog("ropeAngle: "); debugLog(String(ropeAngle)); debugLog("  ");
-
+*/
   // Set oscilator movement if needed;
   if ((mode==STOPPING) || (mode==RUNNING) || (mode==MAINTAINING) || (mode==TESTING) || (mode==SYNCED_RUNNING)) {
     double desiredServoPos = getOcsilatorPos();
     smoothWrite(desiredServoPos);
     //myservowrite(desiredServoPos);
     //myservo.writeMicroseconds(sin(((time-initTime)%loopTime)*2*PI/loopTime - PI)*100/2+1500);
+/*
     debugLog("desiredServoPos: "); debugLog(String(desiredServoPos)); debugLog("  ");
+*/
   }
 
+/*
    debugLog("\n\r");
+*/
 
   // Update clock of slaves
   if (updateSlaveClock && isMaster && (mode == SYNCED_RUNNING)) {
