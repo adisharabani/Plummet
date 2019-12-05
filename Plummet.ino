@@ -368,15 +368,16 @@ void calibrateLoopTime() {
         side = LEFT;
         if (initLeftTime == 0) {
            initLeftTime = millis();
-           sprintln("LeftSide - initTime: " + String(initLeftTime));
+           sprintln("LeftSide initTime: " + String(initLeftTime));
         } else {
           sprintln("Cycle "+String(cycles)+" complete. Average loop time: "+String((millis()-initLeftTime)/cycles));
           cycles ++;
         }
      } else if ((side==LEFT) && (potRead > potCenter)) {
+        sprintln("Right side");
         side = RIGHT;
      }
-  } while (cycles < 5) ;
+  } while ((cycles < 5) && (millis() < initTime + 6000 + 3000 + 4000*5);
 
   sprintln("loopTime Calibration: " + String((millis() - initLeftTime)/cycles));
 }
