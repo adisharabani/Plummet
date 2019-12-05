@@ -389,19 +389,22 @@ void calibrateLoopTime() {
   
   sprintln("Analyzing movement");
   do {
+     time = millis();
      potRead = potentiometerRead();
-     if ((side==RIGHT) && (potRead < potCenter)) {
+     if ((side==RIGHT) && (potRead < potCenter) && (time-rightTime>loopTime/5) ) {
         side = LEFT;
+        leftTime = time;
         if (initLeftTime == 0) {
-           initLeftTime = millis();
+           initLeftTime = time;
            sprintln("LeftSide initTime: " + String(initLeftTime));
         } else {
-          sprintln("Cycle "+String(cycles)+" complete. Average loop time: "+String((millis()-initLeftTime)/cycles));
           cycles ++;
+          sprintln("Cycle "+String(cycles)+" complete. Average loop time: "+String((time-initLeftTime)/cycles));
         }
-     } else if ((side==LEFT) && (potRead > potCenter)) {
+     } else if ((side==LEFT) && (potRead > potCenter) && (time-leftTime>loopTime/5) ) {
         sprintln("Right side");
         side = RIGHT;
+        rightTime = time;
      }
   } while ((cycles < 5) && (millis() < initTime + 6000 + 3000 + 4000*5));
 
