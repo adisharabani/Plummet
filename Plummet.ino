@@ -78,7 +78,7 @@
 #define SYNC_MAGIC_NUMBER 0
 #define AUDIO_DELAY 0
 
-int defaultLoopTime = 3158; //Palo Alto: 3080; // 3160; // 3420;
+int defaultLoopTime = 3167; //Palo Alto: 3080; // 3160; // 3420;
 // int defaultLoopTime = 3080; // Palo Alto
 
 //unsigned long commands[] = {1000, '1', 25000, '9'};
