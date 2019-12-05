@@ -49,7 +49,7 @@
 //  C :  Save calibration
 //  ? :  Show help
 
-#define PLUMMET_VERSION "0.19"
+#define PLUMMET_VERSION "0.2"
 
 //#include "SoftwareSerial.h"
 

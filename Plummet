@@ -5,7 +5,51 @@ ARDLIB=/home/pi/arduino-1.8.10
 ARDTTY_PATTERN="tty(USB|ACM)"
 
 if [ $# -eq 0 ]; then
- echo "Use args attach, upload, upload_loop, listConnections, listDevices, listCommands, update, compile, install, cbu"
+
+ while : ; do
+   cmd=$(whiptail --title "Plummet 2.0" --menu "Choose an option" 25 78 16 \
+         "Attach" "View and control connected Arduinos" \
+         "Upload" "Upload app to the connected Arduinos" \
+         "Upload Loop" "Continuesly upload to Arduinos" \
+         "List Connections" "Show wiring instructions" \
+         "List Devices" "Show all connected Arduinos" \
+         "List Commands" "Show list of commands" \
+         "Update" "Update app from the internet" \
+         "Compile" "Compile the Arduino code" \
+         "Setup" "First time setup" \
+"test" "test" \
+         "cua" "Compile, Upload and Attach" 3>&2 2>&1 1>&3 )
+
+   [ "$cmd" = "" ] && break;
+   cmd="${cmd// /}";
+   cmd="${cmd,}"
+   
+   case "$cmd" in 
+     attach)
+        $0 $cmd 
+     ;;
+     test | upload | uploadLoop | compile | setup | update | cua)
+        $0 $cmd 2>&1 | tee /tmp/output | awk -W interactive 'BEGIN {i=1;status=""} {if ($0 != "") status=$0; printf "XXX\n%d\n%s\nXXX\n",i,status; i=i+1}' |whiptail --title "$cmd" --gauge "$cmd" 6 60 0
+        if [ ${PIPESTATUS[0]} != 0 ]; then
+            whiptail --title "There was an error" --textbox /tmp/output 25 78
+        fi
+     ;;
+     *)
+        whiptail --textbox /dev/stdin 25 78 <<<"$($0 $cmd)"
+     ;;
+   esac
+ done
+fi
+if [ "$1" = "test" ] ; then
+ echo 1
+ sleep 1
+ echo 2
+ sleep 1
+ ls -l /dev
+ exit 2
+fi
+if [ "$1" = "help" ] ; then
+ echo "Use args attach, upload, upload_loop, listConnections, listDevices, listCommands, update, compile, install, cua"
 fi
 
 if [ "$1" = "cua" ] ; then
