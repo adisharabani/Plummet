@@ -37,6 +37,7 @@ if [ $# -eq 0 ]; then
        whiptail --scrolltext --textbox /dev/stdin 25 78 <<<"$($0 $cmd | tr -d '\r')" 
      ;;
    esac
+   echo "Type ./Plummet to restart the program"
  done
 fi
 if [ "$1" = "test" ] ; then
