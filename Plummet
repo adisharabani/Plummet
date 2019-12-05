@@ -104,7 +104,7 @@ if [ "$1" = "update" ]; then
  if [ "$gitresults" = "Already up-to-date." ] || [ "$gitresults" = "Already up to date." ]; then 
    echo "Already up to date."
  else
-   $0 compile
+   $0 compile -verbose
  fi
  exit $?
 fi
