@@ -8,7 +8,7 @@ if [ $# -eq 0 ]; then
  whiptail --textbox Plummet.txt 25 78
 
  while : ; do
-   cmd=$(whiptail --title "Plummet 2.0" --menu "Choose an option:" 25 78 16 \
+   cmd=$(whiptail --title "Plummet 2.0" --cancel-button "Quit" --menu "Choose an option:" 25 78 16 \
          "Attach" "View and control connected Arduinos." \
          "Upload" "Upload app to the connected Arduinos." \
          "Upload Loop" "Continuesly upload to Arduinos." \
