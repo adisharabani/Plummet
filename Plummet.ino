@@ -351,17 +351,23 @@ void calibrateLoopTime() {
   sprintln("Calculating loop time");
   smoothMove(servoCenter-maxServoAmp);
   initTime = millis();
-  while (millis() < initTime + 6000) {
-    smoothWrite(getOcsilatorPos());
+  sprintln("Speed up");
+  while (millis() < initTime + 9000) {
+    myservowrite(getOcsilatorPos());
     delay(10);
   }
-  smoothWrite(servoCenter);
 
+  sprintln("Move to center");
+  smoothMove(servoCenter);
+
+  sprintln("Delay 3 seconds");
   delay(3000);
   double potRead;
   int cycles = 0;
   unsigned long initLeftTime = 0;
   side = RIGHT;
+  
+  sprintln("Analyzing movement");
   do {
      potRead = potentiometerRead();
      if ((side==RIGHT) && (potRead < potCenter)) {
@@ -377,7 +383,7 @@ void calibrateLoopTime() {
         sprintln("Right side");
         side = RIGHT;
      }
-  } while ((cycles < 5) && (millis() < initTime + 6000 + 3000 + 4000*5);
+  } while ((cycles < 5) && (millis() < initTime + 6000 + 3000 + 4000*5));
 
   sprintln("loopTime Calibration: " + String((millis() - initLeftTime)/cycles));
 }
