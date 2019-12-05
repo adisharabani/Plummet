@@ -350,19 +350,13 @@ void calibrateLoopTime() {
   sprintln("");
   sprintln("Calculating loop time");
   smoothMove(servoCenter-maxServoAmp);
-  for (int j=0; j<2; j++) {
-    for (int i=servoCenter-maxServoAmp; i<servoCenter+maxServoAmp; i++) {
-      myservowrite(i);
-      delay(3000/(maxServoAmp*4));
-    }
-    for (int i=servoCenter-maxServoAmp; i<servoCenter+maxServoAmp; i++) {
-      myservowrite(i);
-      delay(3000/(maxServoAmp*4));
-    }
+  initTime = millis();
+  while (millis() < initTime + 6000) {
+    smoothWrite(getOcsilatorPos());
+    delay(10);
   }
-  for (int i=servoCenter-maxServoAmp; i<servoCenter; i++) {
-     myservowrite(i);
-  }
+  smoothWrite(servoCenter);
+
   delay(3000);
   double potRead;
   int cycles = 0;
