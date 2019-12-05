@@ -305,6 +305,23 @@ int posAvg() {
   return s/POSITIONS_STACK_SIZE;
 }
 
+///////////////////////////
+/// Modes
+///////////////////////////
+enum mode_e {
+  STOP,
+  STOPPING,
+  HALT,
+  START,
+  RUNNING,
+  MAINTAIN,
+  MAINTAINING,
+  TEST,
+  TESTING,
+  SYNCED_RUN,
+  SYNCED_RUNNING
+};
+mode_e mode;
 
 
 //////////////////////////////
@@ -352,10 +369,13 @@ void calibrateLoopTime() {
   smoothMove(servoCenter-maxServoAmp);
   initTime = millis();
   sprintln("Speed up");
-  while (millis() < initTime + 9000) {
-    myservowrite(getOcsilatorPos());
-    delay(10);
+  unsigned long t = millis();
+  mode = START;
+  while (millis() < t + 9000) {
+    loop();
   }
+  mode = HALT;
+  loop();
 
   sprintln("Move to center");
   smoothMove(servoCenter);
@@ -411,23 +431,6 @@ void readCalibration() {
   }
 }
 
-///////////////////////////
-/// Modes
-///////////////////////////
-enum mode_e {
-  STOP,
-  STOPPING,
-  HALT,
-  START,
-  RUNNING,
-  MAINTAIN,
-  MAINTAINING,
-  TEST,
-  TESTING,
-  SYNCED_RUN,
-  SYNCED_RUNNING
-};
-mode_e mode;
 
 void updateAmpAndTimeForStopping() {
   loopTime != defaultLoopTime;
