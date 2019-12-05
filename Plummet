@@ -5,20 +5,19 @@ ARDLIB=/home/pi/arduino-1.8.10
 ARDTTY_PATTERN="tty(USB|ACM)"
 
 if [ $# -eq 0 ]; then
+ whiptail --textbox Plummet.txt 25 78
 
  while : ; do
-   cmd=$(whiptail --title "Plummet 2.0" --menu "Choose an option" 25 78 16 \
-         "Attach" "View and control connected Arduinos" \
-         "Upload" "Upload app to the connected Arduinos" \
-         "Upload Loop" "Continuesly upload to Arduinos" \
-         "List Connections" "Show wiring instructions" \
-         "List Devices" "Show all connected Arduinos" \
-         "List Commands" "Show list of commands" \
-         "Update" "Update app from the internet" \
-         "Compile" "Compile the Arduino code" \
-         "Setup" "First time setup" \
-"test" "test" \
-         "cua" "Compile, Upload and Attach" 3>&2 2>&1 1>&3 )
+   cmd=$(whiptail --title "Plummet 2.0" --menu "Choose an option:" 25 78 16 \
+         "Attach" "View and control connected Arduinos." \
+         "Upload" "Upload app to the connected Arduinos." \
+         "Upload Loop" "Continuesly upload to Arduinos." \
+         "List Connections" "Show wiring instructions." \
+         "List Devices" "Show all connected Arduinos." \
+         "List Commands" "Show list of commands." \
+         "Update" "Update app from the internet." \
+         "Compile" "Compile the Arduino code." \
+         "Setup" "First time setup." 3>&2 2>&1 1>&3 )
 
    [ "$cmd" = "" ] && break;
    cmd="${cmd// /}";
@@ -28,14 +27,14 @@ if [ $# -eq 0 ]; then
      attach)
         $0 $cmd 
      ;;
-     test | upload | uploadLoop | compile | setup | update | cua)
-        $0 $cmd 2>&1 | tee /tmp/output | awk -W interactive 'BEGIN {i=1;status=""} {if ($0 != "") status=$0; printf "XXX\n%d\n%s\nXXX\n",i,status; i=i+1}' |whiptail --title "$cmd" --gauge "$cmd" 6 60 0
+     upload | uploadLoop | compile | setup | update )
+        $0 $cmd $([ "$cmd" = "compile" ] && echo -verbose ) 2>&1 | tee /tmp/output | awk -W interactive 'BEGIN {i=1;status=""} {if ($0 != "") status=$0; printf "XXX\n%d\n%s\nXXX\n",i,status; i=i+1}' |whiptail --title "$cmd" --gauge "$cmd" 6 60 0
         if [ ${PIPESTATUS[0]} != 0 ]; then
-            whiptail --title "There was an error" --textbox /tmp/output 25 78
+            whiptail --title "There was an error" --scrolltext --textbox /tmp/output 25 78
         fi
      ;;
      *)
-        whiptail --textbox /dev/stdin 25 78 <<<"$($0 $cmd)"
+       whiptail --scrolltext --textbox /dev/stdin 25 78 <<<"$($0 $cmd | tr -d '\r')" 
      ;;
    esac
  done
@@ -72,7 +71,7 @@ fi
 if [ "$1" = "compile" ]; then
  echo "Compiling Plummet"
  mkdir -p build
- ${ARDLIB}/arduino-builder -hardware ${ARDLIB}/hardware -tools ${ARDLIB}/hardware/tools/avr -tools ${ARDLIB}/tools-builder -libraries ${ARDLIB}/libraries -libraries Libraries -fqbn arduino:avr:uno -prefs=compiler.path=${ARDLIB}/hardware/tools/avr/bin/ -prefs=tools.ctags.path=${ARDLIB}/tools-builder/ctags/5.8-arduino11 -build-path build Plummet.ino 
+ ${ARDLIB}/arduino-builder -hardware ${ARDLIB}/hardware -tools ${ARDLIB}/hardware/tools/avr -tools ${ARDLIB}/tools-builder -libraries ${ARDLIB}/libraries -libraries Libraries -fqbn arduino:avr:uno -prefs=compiler.path=${ARDLIB}/hardware/tools/avr/bin/ -prefs=tools.ctags.path=${ARDLIB}/tools-builder/ctags/5.8-arduino11 -build-path build $2 Plummet.ino 
  exit $? 
 fi
 
@@ -169,7 +168,7 @@ if [ "$1" = "attach" ]; then
    isFirst=0
  done;
  echo "hardstatus alwayslastline" >> /tmp/.screens
- echo "hardstatus string 'Type <Esc> to quit'" >> /tmp/.screens
+ echo "hardstatus string 'Press <Esc> to quit'" >> /tmp/.screens
  echo "focus top" >> /tmp/.screens
  screen -c /tmp/.screens
  $0 kill
