@@ -343,28 +343,57 @@ void calibrate() {
   smoothMove(servoCenter);
 
   sprintln("Calibrate: " +String(servoCenter) + " " + String(potCenter) + " " + String(pot50) + " " + String(pot150));
-  //writeCalibration();
-  //myservoattach(servoPin);
-  //smoothMove(93);
-  //delay(2000);
-  //servoCenter = myservoread();
-  //sprintln("ServoCenter is: "+String(servoCenter));
 
-  return;
-  
+}
+
+void calibrateLoopTime() {
+  sprintln("");
+  sprintln("Calculating loop time");
+  smoothMove(servoCenter-maxServoAmp);
+  for (int j=0; j<2; j++) {
+    for (int i=servoCenter-maxServoAmp; i<servoCenter+maxServoAmp; i++) {
+      myservowrite(i);
+      delay(3000/(maxServoAmp*4));
+    }
+    for (int i=servoCenter-maxServoAmp; i<servoCenter+maxServoAmp; i++) {
+      myservowrite(i);
+      delay(3000/(maxServoAmp*4));
+    }
+  }
+  for (int i=servoCenter-maxServoAmp; i<servoCenter; i++) {
+     myservowrite(i);
+  }
+  delay(3000);
+  double potRead;
+  int cycles = 0;
+  unsigned long initLeftTime = 0;
+  side = RIGHT;
+  do {
+     potRead = potentiometerRead();
+     if ((side==RIGHT) && (potRead < potCenter)) {
+        side = LEFT;
+        if (initLeftTime == 0) {
+           initLeftTime = millis();
+           sprintln("LeftSide - initTime: " + String(initLeftTime));
+        } else {
+          sprintln("Cycle "+String(cycles)+" complete. Average loop time: "+String((millis()-initLeftTime)/cycles));
+          cycles ++;
+        }
+     } else if ((side==LEFT) && (potRead > potCenter)) {
+        side = RIGHT;
+     }
+  } while (cycles < 5) ;
+
+  sprintln("loopTime Calibration: " + String((millis() - initLeftTime)/cycles));
 }
 
 void writeCalibration() {
   EEPROM.write(0,1);
-  EEPROM.write(1,int(servoCenter/256));
-  EEPROM.write(2,int(servoCenter)%256);
-  EEPROM.write(3,int(potCenter/256));
-  EEPROM.write(4,int(potCenter)%256);
-  EEPROM.write(5,int(pot50/256));
-  EEPROM.write(6,int(pot50)%256);
-  EEPROM.write(7,int(pot150/256));
-  EEPROM.write(8,int(pot150)%256);
-//  EEPROM.write(9, enablePrint);
+  EEPROM.write(1,int(servoCenter/256)); EEPROM.write(2,int(servoCenter)%256);
+  EEPROM.write(3,int(potCenter/256));   EEPROM.write(4,int(potCenter)%256);
+  EEPROM.write(5,int(pot50/256));       EEPROM.write(6,int(pot50)%256);
+  EEPROM.write(7,int(pot150/256));      EEPROM.write(8,int(pot150)%256);
+
   sprintln("EEPROM: " +String(servoCenter) + " " + String(potCenter) + " " + String(pot50) + " " + String(pot150));
 }
 
@@ -792,6 +821,9 @@ void handleKeyboardInput() {
       break;
     case 'C': // Save calibration
       writeCalibration();
+      break;
+    case 'l': // Calibrate loop time
+      calibrateLoopTime();
       break;
     case 'a': // play audio
       sendAudioCommand(0X22, 0X1E01);
