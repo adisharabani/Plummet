@@ -336,18 +336,6 @@ mode_e mode;
 // Calibrate
 //////////////////////////////
 
-int avgPotRead(int time=4000) {
-  int t = millis();
-  int maxRead, minRead;
-  maxRead = minRead = potentiometerRead();
-  while (millis()<t + time) {
-    int read = potentiometerRead();
-    maxRead = max(maxRead, read);
-    minRead = min(minRead, read);
-  }
-  return (maxRead+minRead)/2;
-}
-
 double waitForSteadiness(double threshold, int steadyTime=5000) {
   double potRead, maxRead, minRead;
   unsigned long t;
@@ -626,14 +614,6 @@ byte readByteFromRecord() {
   }
 }
 
-String readAllBytes(const SoftwareSerial &s) {
- unsigned long timeout = millis() + 100;
- String ret = "";
- while (s.available()) {
-   ret += String(s.read());
- }
- return ret;
-}
 
 byte readByte() {
   unsigned long timeout = millis() + 100;
@@ -659,39 +639,6 @@ byte readByte() {
 
 bool readByteAvailable() {
   return (Serial.available() || prevSerial.available() || recordAvailable());
-}
-
-String readStringUntil(char b) {
- unsigned long timeout = millis() + 5000;
- String s;
- while (millis() < timeout) {
-   if (Serial.available()) {
-    s = Serial.readStringUntil(b);
-    //sprint(s);
-    return s;
-   } else if (prevSerial.available()) {
-    s = prevSerial.readStringUntil(b);
-    //sprint(s);
-    return s;
-   }
- }
-}
-
-int readNumber() {
-  unsigned long timeout = millis() + 5000;
-  int num;
-  while (millis() < timeout) {
-    if (Serial.available()) {
-      num = Serial.parseInt();
-      //sprint(String(num));
-      return num;
-    } else if (prevSerial.available()){
-      num = prevSerial.parseInt();
-      //sprint(String(num));
-      return num;
-    }
-  }
-  return 0; // prevSerial.parseInt();
 }
 
 String keyboardBuffer = "";
@@ -959,10 +906,6 @@ void sendAudioCommand(int8_t command, int16_t dat)
 
 static void handleRxChar( uint8_t c ) {}
 
-static void t(uint8_t c) {
-sprintln("handleRX " + String(c));
-}
-
 void setup() {  
 
   Serial.begin(9600);
@@ -1115,3 +1058,4 @@ void loop(){
    lastIterationTime = time;
 
 }
+
