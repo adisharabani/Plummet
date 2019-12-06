@@ -757,9 +757,8 @@ void handleKeyboardInput() {
   } else if (inByte == '=') {
     nextSerial.println(String(inByte) + keyboardBuffer);
   } else if (inByte == 's') {
-    if (keyboardBuffer.length() == 0) {
+    if (keyboardBuffer.toInt() == 0) {
        keyboardBuffer = String(defaultLoopTime + 16);
-       sprint(keyboardBuffer);
     }
     nextSerial.println(String(inByte) + keyboardBuffer);
   } else if ((inByte != 'e') && (inByte != 'E') && (inByte != 'p') && (inByte != 'd') && (inByte != ' ') && (inByte != '\n')) {
