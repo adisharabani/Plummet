@@ -374,12 +374,12 @@ void calibrate() {
 
   smoothMove(servoCenter-50,4000);
   sprintln("Pot50 was: "+String(pot50));
-  pot50 = waitForSteadiness(4);  
+  pot50 = waitForSteadiness(10);  
   sprintln("Pot50 is: "+String(pot50));
 
   smoothMove(servoCenter+50,8000);
   sprintln("Pot150 was: "+String(pot150));
-  pot150 = waitForSteadiness(4); 
+  pot150 = waitForSteadiness(10); 
   sprintln("Pot150 is: "+String(pot150));
   
   calibrateLoopTime();
