@@ -341,32 +341,44 @@ int avgPotRead(int time=4000) {
   return (maxRead+minRead)/2;
 }
 
+double waitForSteadiness(double threshold, int steadyTime=5000) {
+  double potRead, maxRead, minRead;
+  do {
+    unsigned long t = millis();
+    potRead = potentiometerRead();
+    maxRead=minRead=potRead;
+    while ((millis() < t + steadyTime))
+    {
+      potRead = potentiometerRead();
+      debugLog(" Potentiometer (min, max, read) is " + String(minRead) + "," + String(maxRead) + "," + String(potRead));
+      delay(20);
+      minRead = min(minRead, potRead);
+      maxRead = max(maxRead, potRead);
+    }
+  } while (maxRead-minRead <= threshold);
+  return (maxRead+minRead)/2;
+}
+
 void calibrate() {
   //myservo.detach();
   servoAmp = 0;
   
-  sprintln("Waiting for Steadiness");
   sprintln("servoCenter was: "+String(servoCenter));
   servoCenter = myservoread();
   sprintln("servoCenter is: "+String(servoCenter));
 
-  waitForSteadiness(1);  
   sprintln("PotCenter was: "+String(potCenter));
-  potCenter = avgPotRead();
+  potCenter = waitForSteadiness(2);  
   sprintln("PotCenter is: "+String(potCenter));
 
-  sprintln("Waiting for Steadiness");
   smoothMove(servoCenter-50,4000);
-  waitForSteadiness(4);  
   sprintln("Pot50 was: "+String(pot50));
-  pot50 = avgPotRead();
+  pot50 = waitForSteadiness(4);  
   sprintln("Pot50 is: "+String(pot50));
 
-  sprintln("Waiting for Steadiness");
   smoothMove(servoCenter+50,8000);
-  waitForSteadiness(4); 
   sprintln("Pot150 was: "+String(pot150));
-  pot150 = avgPotRead();
+  pot150 = waitForSteadiness(4); 
   sprintln("Pot150 is: "+String(pot150));
   
   calibrateLoopTime();
@@ -915,24 +927,6 @@ void sendAudioCommand(int8_t command, int16_t dat)
 // Main Code
 //////////////////////////////
 
-void waitForSteadiness(int threshold) {
-  boolean steady = false;
-  while (!steady) {
-    double potRead = potentiometerRead();
-    debugLog("Comparing potentiometer to " + String(potRead) + "\n\r");
-    steady=true;
-    unsigned long timeout = millis()+5000;
-    while ((millis() < timeout) && (steady))
-    {
-      double potRead2 = potentiometerRead();
-      debugLog(" Potentiometer is " + String(potRead2) + " (Diff: "+(abs(potRead-potRead2)) + ")");
-      delay(20);
-      if (abs(potRead - potRead2) > threshold) {
-        steady = false;
-      }
-    }
-  }
-}
 
 static void handleRxChar( uint8_t c ) {}
 
