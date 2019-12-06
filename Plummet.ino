@@ -409,8 +409,8 @@ void calibrateLoopTime() {
      }
   } while ((cycles < nCycles) && (millis() < initTime + 6000 + 3000 + 4000*(cycles+2)));
 
-  int newLoopTime = (cycles > 1) ? (time-initLeftTime)/(cycles-1) : loopTime;
-  sprintln("loopTime Calibration: " + String(loopTime));
+  int newLoopTime = (cycles == nCycles) ? (time-initLeftTime)/(cycles) : loopTime;
+  sprintln("loopTime Calibration ("+String(cycles)+"): " + String(loopTime));
 }
 
 void writeCalibration() {
