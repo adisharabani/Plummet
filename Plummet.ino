@@ -355,7 +355,7 @@ double waitForSteadiness(double threshold, int steadyTime=5000) {
       maxRead = max(maxRead, potRead);
       delay(20);
     }
-    sprintln(" Potentiometer (min, max, read) is " + String(minRead) + "," + String(maxRead) + "," + String(potRead) +"-->" + String(maxRead-minRead));
+    sprintln(" Potentiometer is " + String((minRead+maxRead)/2) + "+-" + String((maxRead-minRead)/2) + ". Threshold is " + String(threshold));
   } while (maxRead-minRead > threshold);
   return (maxRead+minRead)/2;
 }
@@ -411,7 +411,7 @@ void calibrateLoopTime() {
   delay(10000);
   double potRead;
   int cycles = 0;
-  int nCycles = 15;
+  int nCycles = 5;
   unsigned long initLeftTime = 0;
   side = LEFT;
   
