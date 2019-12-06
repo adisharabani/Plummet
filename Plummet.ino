@@ -328,6 +328,18 @@ mode_e mode;
 // Calibrate
 //////////////////////////////
 
+int avgPotRead(int time=4000) {
+  int t = millis();
+  int maxRead, minRead;
+  maxRead = minRead = potentiometerRead();
+  while (millis()<t + time) {
+    int read = potentiometerRead();
+    maxRead = max(maxRead, read);
+    minRead = min(minRead, read);
+  }
+  return (maxRead+minRead)/2;
+}
+
 void calibrate() {
   //myservo.detach();
   servoAmp = 0;
@@ -337,35 +349,34 @@ void calibrate() {
   servoCenter = myservoread();
   sprintln("servoCenter is: "+String(servoCenter));
 
-  waitForSteadiness(1);  
+  waitForSteadiness(2);  
   sprintln("PotCenter was: "+String(potCenter));
-  potCenter = potentiometerRead();
+  potCenter = avgPotRead();
   sprintln("PotCenter is: "+String(potCenter));
 
   sprintln("Waiting for Steadiness");
   smoothMove(servoCenter-50);
-  waitForSteadiness(2);  
+  waitForSteadiness(4);  
   sprintln("Pot50 was: "+String(pot50));
-  pot50 = potentiometerRead();
+  pot50 = avgPotRead();
   sprintln("Pot50 is: "+String(pot50));
 
   sprintln("Waiting for Steadiness");
   smoothMove(servoCenter+50);
-  waitForSteadiness(2);  
+  waitForSteadiness(4); 
   sprintln("Pot150 was: "+String(pot150));
-  pot150 = potentiometerRead();
+  pot150 = avgPotRead();
   sprintln("Pot150 is: "+String(pot150));
+  
+  calibrateLoopTime();
 
-
-  smoothMove(servoCenter);
-
-  sprintln("Calibrate: " +String(servoCenter) + " " + String(potCenter) + " " + String(pot50) + " " + String(pot150));
+  sprintln("Calibrate: " +String(servoCenter) + " " + String(potCenter) + " " + String(pot50) + " " + String(pot150) + " " + loopTime);
 
 }
 
 void calibrateLoopTime() {
   sprintln("");
-  sprintln("Calculating loop time");
+  sprintln("Calculating loop time. Previous loopTime was " + String(loopTime));
   smoothMove(servoCenter-maxServoAmp);
   initTime = millis();
   sprintln("Speed up");
@@ -400,37 +411,60 @@ void calibrateLoopTime() {
            sprintln("LeftSide initTime: " + String(initLeftTime));
         } else {
           cycles ++;
-          sprintln("Cycle "+String(cycles)+" complete. Average loop time: "+String((time-initLeftTime)/cycles));
+          sprintln("Cycle "+String(cycles)+" of "+String(nCycles) +" complete. Average loop time: "+String((time-initLeftTime)/cycles));
         }
      } else if ((side==LEFT) && (potRead > potCenter) && (time-leftTime>loopTime/5) ) {
-        sprintln("Right side");
+        //sprintln("Right side");
         side = RIGHT;
         rightTime = time;
      }
   } while ((cycles < nCycles)); // TIMEOUT:  && (millis() < initTime + 6000 + 3000 + 4000*(cycles+2)));
 
-  int newLoopTime = (cycles == nCycles) ? (time-initLeftTime)/(cycles) : loopTime;
+  defaultLoopTime = (cycles == nCycles) ? (time-initLeftTime)/(cycles) : loopTime;
+  loopTime = defaultLoopTime;
+
   sprintln("loopTime Calibration ("+String(cycles)+"): " + String(loopTime));
 }
 
-void writeCalibration() {
-  EEPROM.write(0,1);
-  EEPROM.write(1,int(servoCenter/256)); EEPROM.write(2,int(servoCenter)%256);
-  EEPROM.write(3,int(potCenter/256));   EEPROM.write(4,int(potCenter)%256);
-  EEPROM.write(5,int(pot50/256));       EEPROM.write(6,int(pot50)%256);
-  EEPROM.write(7,int(pot150/256));      EEPROM.write(8,int(pot150)%256);
+void ewrite(int data, int index=-1) {
+  static int eIndex = 0;
+  eIndex = (index==-1) ? eIndex : index;
 
-  sprintln("EEPROM: " +String(servoCenter) + " " + String(potCenter) + " " + String(pot50) + " " + String(pot150));
+  EEPROM.write(eIndex++, int(data/256));
+  EEPROM.write(eIndex++, int(data)%256);
+}
+int eread(int index=-1) {
+  static int eIndex = 0;
+  eIndex = (index==-1) ? eIndex : index;
+
+  return EEPROM.read(eIndex++)*256+EEPROM.read(eIndex++);
+}
+
+void writeCalibration() {
+  ewrite(5613,0); //magic number
+  ewrite(2); // calibration version
+  ewrite(servoCenter);
+  ewrite(potCenter);
+  ewrite(pot50);
+  ewrite(pot150);
+  ewrite(loopTime);
+  ewrite(0);
+  ewrite(0);
+  ewrite(0);
+  ewrite(0);
+
+  sprintln("EEPROM: " +String(servoCenter) + " " + String(potCenter) + " " + String(pot50) + " " + String(pot150) + " " + String(loopTime));
 }
 
 void readCalibration() {
-  if (EEPROM.read(0)==1) {
-    servoCenter = EEPROM.read(1)*256+EEPROM.read(2);
-    potCenter = EEPROM.read(3)*256+EEPROM.read(4);
-    pot50 = EEPROM.read(5)*256+EEPROM.read(6);
-    pot150 = EEPROM.read(7)*256+EEPROM.read(8);
-
-    sprintln("EEPROM: " +String(servoCenter) + " " + String(potCenter) + " " + String(pot50) + " " + String(pot150));
+  if (eread(0) == 5613) { // confirm magic number
+    eread(); // calibration version
+    servoCenter = eread();
+    potCenter = eread();
+    pot50 = eread();
+    pot150 = eread();
+    loopTime = eread(); defaultLoopTime = loopTime;
+    sprintln("EEPROM: " +String(servoCenter) + " " + String(potCenter) + " " + String(pot50) + " " + String(pot150) + " " + String(loopTime));
   } else {
     sprintln("No EEPROM");
   }
@@ -438,7 +472,7 @@ void readCalibration() {
 
 
 void updateAmpAndTimeForStopping() {
-  loopTime != defaultLoopTime;
+  loopTime = defaultLoopTime;
   initTime = millis()-loopTime*(side==LEFT ? 0.25 : 0.75) + SYNC_MAGIC_NUMBER;
 
   servoAmp = (angleToServo(ropeMaxRightAngle)-angleToServo(ropeMaxLeftAngle));
@@ -659,7 +693,10 @@ void handleKeyboardInput() {
        } else {
          inByte = 0;
        }
-     } else {
+     } else if (inByte == ' ') {
+       // disregard spaces
+       inByte = keyboardBuffer[keyboardBuffer.length()-1];
+     }else {
        keyboardBuffer += String(inByte);
        sprint(inByte);
      }
@@ -934,7 +971,7 @@ void setup() {
 
 unsigned long keepalive = 0;
 void loop(){
-  if (time > keepalive) { nextSerial.println(""); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
+  if (time > keepalive) { nextSerial.print(" "); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
   if (prevSerial.available()) {if (isMaster) sprintln("I am now a slave"); isMaster = false;} // inform 
   // if (isMaster) { tone(7, NOTE_F5,100); }   // If master make noise
   
