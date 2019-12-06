@@ -159,6 +159,8 @@ left_right_e side = LEFT;
 #define NOTE_G5 784
 #define NOTE_G6 1568
 
+void(* resetArduino) (void) = 0; //declare reset function @ address 0
+
 ///////////////////////////
 /// SERVO
 ///////////////////////////
@@ -552,8 +554,6 @@ void updateAmpAndTimeForTesting() {
 
 //int q = 0;
 void updateAmpAndTimeForSyncedRunning() {  
-  syncLoopTime = defaultLoopTime+16; // RONEN=3174;
-  syncRopeAngle = 0.3;
 
   // update loopTime
   //loopTime = syncLoopTime;
@@ -754,8 +754,13 @@ void handleKeyboardInput() {
        // do not notify other arduinos
        sprintln("Command is directed to me only");
      }
-  }
-  else if (inByte == '=') {
+  } else if (inByte == '=') {
+    nextSerial.println(String(inByte) + keyboardBuffer);
+  } else if (inByte == 's') {
+    if (keyboardBuffer.length() == 0) {
+       keyboardBuffer = String(defaultLoopTime + 16);
+       sprint(keyboardBuffer);
+    }
     nextSerial.println(String(inByte) + keyboardBuffer);
   } else if ((inByte != 'e') && (inByte != 'E') && (inByte != 'p') && (inByte != 'd') && (inByte != ' ') && (inByte != '\n')) {
     //sprintln("forwarding: "+ String(int(inByte)));
@@ -824,10 +829,13 @@ void handleKeyboardInput() {
       sprintln("Testing amp is now "+String(testAmp));
       break;
     case 's': // SYNC
+      s = keyboardBuffer.toInt(); keyboardBuffer = "";
+      syncLoopTime = (s!=0) ? s : 3185; //defaultLoopTime+16; // RONEN=3174
       syncInitTime = millis();
-      servoAmp = 20;
       syncInitTimeOffset = 0;
-      mode = SYNCED_RUN; sprintln("SYNC");
+      syncRopeAngle = 0.3;
+      servoAmp = 20;
+      mode = SYNCED_RUN; sprintln("SYNC" + String(syncLoopTime));
       break;
     case 'S': // SYNC to an already set clock (don't update the clock)
       mode = SYNCED_RUN; 
