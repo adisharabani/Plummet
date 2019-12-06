@@ -267,9 +267,13 @@ void waitForDesiredPos() {
 
 
 
-void sprint(String s)   { if (enablePrint) Serial.print(s);   }
-void sprint(char s)   { if (enablePrint) Serial.print(String(s));   }
-void sprintln(String s) { if (enablePrint) Serial.println(s); }
+#define sprint(s)   if (enablePrint) Serial.print(s)
+#define sprintln(s) if (enablePrint) Serial.println(s)
+
+//void sprint(String s)   { if (enablePrint) Serial.print(s);   }
+//void sprint(String s)   { if (enablePrint) Serial.print(s);   }
+//void sprint(char s)   { if (enablePrint) Serial.print(String(s));   }
+// void sprintln(String s) { if (enablePrint) Serial.println(s); }
 void debugLog(String x) { if (debug) Serial.print(x);         }
 
 
@@ -356,7 +360,12 @@ double waitForSteadiness(double threshold, int steadyTime=5000) {
       maxRead = max(maxRead, potRead);
       delay(20);
     }
-    sprintln(" Potentiometer is " + String((minRead+maxRead)/2) + "+-" + String((maxRead-minRead)/2) + ". Threshold is " + String(threshold));
+    sprint("Potentiometer is ");
+    sprint((maxRead+minRead)/2);
+    sprint("+-");
+    sprint((maxRead-minRead)/2);
+    sprint(". Threshold is ");
+    sprintln(threshold);
   } while (maxRead-minRead > threshold);
   return (maxRead+minRead)/2;
 }
@@ -364,30 +373,30 @@ double waitForSteadiness(double threshold, int steadyTime=5000) {
 void calibrate() {
   //myservo.detach();
   servoAmp = 0;
-  String calibrateWas = "Calibrate was: " +String(servoCenter) + " " + String(potCenter) + " " + String(pot50) + " " + String(pot150) + " " + loopTime;
+  String oldCalibration = String(servoCenter) + " " + String(potCenter) + " " + String(pot50) + " " + String(pot150) + " " + loopTime;
   sprintln("servoCenter was: "+String(servoCenter));
   servoCenter = myservoread();
-  sprintln("servoCenter is: "+String(servoCenter));
+  sprintln("servoCenter is:  "+String(servoCenter));
 
   sprintln("PotCenter was: "+String(potCenter));
   potCenter = waitForSteadiness(3,6000);  
-  sprintln("PotCenter is: "+String(potCenter));
+  sprintln("PotCenter is:  "+String(potCenter));
 
   smoothMove(servoCenter-50,4000); delay(1000);
   sprintln("Pot50 was: "+String(pot50));
   pot50 = waitForSteadiness(18,6000);  
-  sprintln("Pot50 is: "+String(pot50));
+  sprintln("Pot50 is:  "+String(pot50));
 
   smoothMove(servoCenter+50,8000); delay(1000);
   sprintln("Pot150 was: "+String(pot150));
   pot150 = waitForSteadiness(18,6000); 
-  sprintln("Pot150 is: "+String(pot150));
+  sprintln("Pot150 is:  "+String(pot150));
   
   calibrateLoopTime();
 
   smoothMove(servoCenter);
-  sprintln(calibrateWas);
-  sprintln("Calibrate: " +String(servoCenter) + " " + String(potCenter) + " " + String(pot50) + " " + String(pot150) + " " + loopTime);
+  sprintln("Calibrate was: "+oldCalibration);
+  sprintln("Calibrate is:  " +String(servoCenter) + " " + String(potCenter) + " " + String(pot50) + " " + String(pot150) + " " + loopTime);
 
 }
 
