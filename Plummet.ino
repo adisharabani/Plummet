@@ -363,7 +363,7 @@ double waitForSteadiness(double threshold, int steadyTime=5000) {
 void calibrate() {
   //myservo.detach();
   servoAmp = 0;
-  String calibrateWas = "Calibrate was: " +String(servoCenter) + " " + String(potCenter) + " " + String(pot50) + " " + String(pot150) + " " + loopTime
+  String calibrateWas = "Calibrate was: " +String(servoCenter) + " " + String(potCenter) + " " + String(pot50) + " " + String(pot150) + " " + loopTime;
   sprintln("servoCenter was: "+String(servoCenter));
   servoCenter = myservoread();
   sprintln("servoCenter is: "+String(servoCenter));
