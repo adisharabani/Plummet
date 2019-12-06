@@ -343,18 +343,19 @@ int avgPotRead(int time=4000) {
 
 double waitForSteadiness(double threshold, int steadyTime=5000) {
   double potRead, maxRead, minRead;
+  unsigned long t;
   do {
-    unsigned long t = millis();
     potRead = potentiometerRead();
     maxRead=minRead=potRead;
+    t = millis();
     while ((millis() < t + steadyTime))
     {
       potRead = potentiometerRead();
-      debugLog(" Potentiometer (min, max, read) is " + String(minRead) + "," + String(maxRead) + "," + String(potRead));
       delay(20);
       minRead = min(minRead, potRead);
       maxRead = max(maxRead, potRead);
     }
+    debugLog(" Potentiometer (min, max, read) is " + String(minRead) + "," + String(maxRead) + "," + String(potRead) +"-->" + String(maxRead-minRead) + "\n");
   } while (maxRead-minRead <= threshold);
   return (maxRead+minRead)/2;
 }
