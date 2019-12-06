@@ -363,29 +363,29 @@ double waitForSteadiness(double threshold, int steadyTime=5000) {
 void calibrate() {
   //myservo.detach();
   servoAmp = 0;
-  
+  String calibrateWas = "Calibrate was: " +String(servoCenter) + " " + String(potCenter) + " " + String(pot50) + " " + String(pot150) + " " + loopTime
   sprintln("servoCenter was: "+String(servoCenter));
   servoCenter = myservoread();
   sprintln("servoCenter is: "+String(servoCenter));
 
-  delay(1000);
   sprintln("PotCenter was: "+String(potCenter));
-  potCenter = waitForSteadiness(20,6000);  
+  potCenter = waitForSteadiness(3,6000);  
   sprintln("PotCenter is: "+String(potCenter));
 
   smoothMove(servoCenter-50,4000); delay(1000);
   sprintln("Pot50 was: "+String(pot50));
-  pot50 = waitForSteadiness(20,6000);  
+  pot50 = waitForSteadiness(18,6000);  
   sprintln("Pot50 is: "+String(pot50));
 
   smoothMove(servoCenter+50,8000); delay(1000);
   sprintln("Pot150 was: "+String(pot150));
-  pot150 = waitForSteadiness(20,6000); 
+  pot150 = waitForSteadiness(18,6000); 
   sprintln("Pot150 is: "+String(pot150));
   
   calibrateLoopTime();
 
   smoothMove(servoCenter);
+  sprintln(calibrateWas);
   sprintln("Calibrate: " +String(servoCenter) + " " + String(potCenter) + " " + String(pot50) + " " + String(pot150) + " " + loopTime);
 
 }
@@ -407,8 +407,8 @@ void calibrateLoopTime() {
   sprintln("Move to center");
   smoothMove(servoCenter);
 
-  sprintln("Delay 6 seconds");
-  delay(6000);
+  sprintln("Delay 10 seconds");
+  delay(10000);
   double potRead;
   int cycles = 0;
   int nCycles = 15;
