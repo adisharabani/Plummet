@@ -338,7 +338,7 @@ void calibrate() {
   sprintln("servoCenter is: "+String(servoCenter));
 
   waitForSteadiness(1);  
-  sprintln("PotCenter is: "+String(potCenter));
+  sprintln("PotCenter was: "+String(potCenter));
   potCenter = potentiometerRead();
   sprintln("PotCenter is: "+String(potCenter));
 
@@ -384,6 +384,7 @@ void calibrateLoopTime() {
   delay(3000);
   double potRead;
   int cycles = 0;
+  int nCycles = 15;
   unsigned long initLeftTime = 0;
   side = RIGHT;
   
@@ -406,9 +407,10 @@ void calibrateLoopTime() {
         side = RIGHT;
         rightTime = time;
      }
-  } while ((cycles < 5) && (millis() < initTime + 6000 + 3000 + 4000*5));
+  } while ((cycles < nCycles) && (millis() < initTime + 6000 + 3000 + 4000*(cycles+2)));
 
-  sprintln("loopTime Calibration: " + String((millis() - initLeftTime)/cycles));
+  int newLoopTime = (cycles > 1) ? (time-initLeftTime)/(cycles-1) : loopTime;
+  sprintln("loopTime Calibration: " + String(loopTime));
 }
 
 void writeCalibration() {
