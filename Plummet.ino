@@ -386,7 +386,7 @@ void calibrateLoopTime() {
   int cycles = 0;
   int nCycles = 15;
   unsigned long initLeftTime = 0;
-  side = RIGHT;
+  side = LEFT;
   
   sprintln("Analyzing movement");
   do {
@@ -407,7 +407,7 @@ void calibrateLoopTime() {
         side = RIGHT;
         rightTime = time;
      }
-  } while ((cycles < nCycles) && (millis() < initTime + 6000 + 3000 + 4000*(cycles+2)));
+  } while ((cycles < nCycles)); // TIMEOUT:  && (millis() < initTime + 6000 + 3000 + 4000*(cycles+2)));
 
   int newLoopTime = (cycles == nCycles) ? (time-initLeftTime)/(cycles) : loopTime;
   sprintln("loopTime Calibration ("+String(cycles)+"): " + String(loopTime));
