@@ -467,7 +467,8 @@ void readCalibration() {
     sprintln("EEPROM: " +String(servoCenter) + " " + String(potCenter) + " " + String(pot50) + " " + String(pot150) + " " + String(loopTime));
   } else {
     sprintln("No EEPROM");
-    sprintln("ServoCenter?="+eread(1));
+    sprintln("ServoCenter?="+String(eread(1)));
+    servoCenter = eread(1);
   }
 }
 
