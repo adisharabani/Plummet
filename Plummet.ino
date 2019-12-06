@@ -405,8 +405,8 @@ void calibrateLoopTime() {
   sprintln("Move to center");
   smoothMove(servoCenter);
 
-  sprintln("Delay 3 seconds");
-  delay(3000);
+  sprintln("Delay 6 seconds");
+  delay(6000);
   double potRead;
   int cycles = 0;
   int nCycles = 15;
