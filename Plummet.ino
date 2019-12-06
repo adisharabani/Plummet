@@ -366,7 +366,7 @@ double waitForSteadiness(double threshold, int steadyTime=5000) {
     sprint((maxRead-minRead)/2);
     sprint(". Threshold is ");
     sprintln(threshold);
-  } while (maxRead-minRead > threshold);
+  } while ((maxRead-minRead)/2 > threshold);
   return (maxRead+minRead)/2;
 }
 
@@ -379,17 +379,17 @@ void calibrate() {
   sprintln("servoCenter is:  "+String(servoCenter));
 
   sprintln("PotCenter was: "+String(potCenter));
-  potCenter = waitForSteadiness(3,6000);  
+  potCenter = waitForSteadiness(1,6000);  
   sprintln("PotCenter is:  "+String(potCenter));
 
   smoothMove(servoCenter-50,4000); delay(1000);
   sprintln("Pot50 was: "+String(pot50));
-  pot50 = waitForSteadiness(18,6000);  
+  pot50 = waitForSteadiness(10,6000);  
   sprintln("Pot50 is:  "+String(pot50));
 
   smoothMove(servoCenter+50,8000); delay(1000);
   sprintln("Pot150 was: "+String(pot150));
-  pot150 = waitForSteadiness(18,6000); 
+  pot150 = waitForSteadiness(10,6000); 
   sprintln("Pot150 is:  "+String(pot150));
   
   calibrateLoopTime();
