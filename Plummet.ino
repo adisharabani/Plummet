@@ -171,9 +171,9 @@ double smoothWrite(double desiredPosition) {
   //myservowrite(desiredPosition); return desiredPosition;
   double maxServoMove = double(time-lastIterationTime)/defaultLoopTime * max(servoAmp,5) * 2 * maxSpeed; // Max 3 times average speed under current servo.
   double servoPosition_new = max(min(desiredPosition, lastServoWriteValue+maxServoMove), lastServoWriteValue-maxServoMove);
-  if (servoPosition_new != desiredPosition) {
+//  if (servoPosition_new != desiredPosition) {
     //sprintln("^^^ desiredPosition="+String(desiredPosition)+" lastServoWriteValue="+String(lastServoWriteValue)+" MaxMove="+String(maxServoMove) + "  newpos="+String(servoPosition_new));
-  }
+//  }
   myservowrite(servoPosition_new);
   return servoPosition_new;
 }
@@ -272,10 +272,6 @@ void waitForDesiredPos() {
 #define sprint(s)   if (enablePrint) Serial.print(s)
 #define sprintln(s) if (enablePrint) Serial.println(s)
 
-//void sprint(String s)   { if (enablePrint) Serial.print(s);   }
-//void sprint(String s)   { if (enablePrint) Serial.print(s);   }
-//void sprint(char s)   { if (enablePrint) Serial.print(String(s));   }
-// void sprintln(String s) { if (enablePrint) Serial.println(s); }
 void debugLog(String x) { if (debug) Serial.print(x);         }
 
 
@@ -363,7 +359,8 @@ double waitForSteadiness(double threshold, int steadyTime=5000) {
 void calibrate() {
   //myservo.detach();
   servoAmp = 0;
-  String oldCalibration = String(servoCenter) + " " + String(potCenter) + " " + String(pot50) + " " + String(pot150) + " " + loopTime;
+
+  //String oldCalibration = String(servoCenter) + " " + String(potCenter) + " " + String(pot50) + " " + String(pot150) + " " + loopTime;
   sprintln("servoCenter was: "+String(servoCenter));
   servoCenter = myservoread();
   sprintln("servoCenter is:  "+String(servoCenter));
@@ -385,9 +382,12 @@ void calibrate() {
   calibrateLoopTime();
 
   smoothMove(servoCenter);
-  sprintln("Calibrate was: "+oldCalibration);
-  sprintln("Calibrate is:  " +String(servoCenter) + " " + String(potCenter) + " " + String(pot50) + " " + String(pot150) + " " + loopTime);
-
+  sprint("Calibrate is:  ");
+  sprint(servoCenter); sprint(" ");
+  sprint(potCenter); sprint(" ");
+  sprint(pot50); sprint(" ");
+  sprint(pot150); sprint(" ");
+  sprint(loopTime); sprintln("");
 }
 
 void calibrateLoopTime() {
@@ -587,7 +587,10 @@ void updateAmpAndTimeForSyncedRunning() {
     initTime = millis()-loopTime*(side==LEFT ? syncPhase+0.5 : syncPhase);
     
     sprint("Syncing: Offset(" + String(offset) + "), ropeAmp("+ String(ropeMaxRightAngle-ropeMaxLeftAngle));
-    sprintln(") ==> loopTime=" + String(syncLoopTime) + "; ServoAmp=" + String(servoAmp)+"; phase="+String(syncPhase) +"(wanted"+String(desiredPhase)+")" );
+    sprint(") ==> loopTime=" + String(syncLoopTime));
+    sprint("; ServoAmp=" + String(servoAmp));
+    sprint("; phase="+String(syncPhase));
+    sprintln("(wanted"+String(desiredPhase)+")" );
   }
 }
 
@@ -708,7 +711,7 @@ void handleKeyboardInput() {
        keyboardBuffer = String(defaultLoopTime + 16);
     }
     nextSerial.println(String(inByte) + keyboardBuffer);
-  } else if ((inByte != 'e') && (inByte != 'E') && (inByte != 'p') && (inByte != 'd') && (inByte != ' ') && (inByte != '\n')) {
+  } else if ((inByte != 'e') && (inByte != 'E') && (inByte != 'p') && (inByte != 'd') && (inByte != '"') && (inByte != ' ') && (inByte != '\n')) {
     //sprintln("forwarding: "+ String(int(inByte)));
     nextSerial.println(String(inByte)); 
   } else {
