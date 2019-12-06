@@ -98,6 +98,7 @@ boolean printMeasures = false;
 boolean enablePrint = true;
 boolean debug = false;
 boolean enableAudio = true;
+boolean showLoopEvents = false;
 
 //servo
 int loopTime = defaultLoopTime;
@@ -501,7 +502,7 @@ void updateAmpAndTimeForStopping() {
 
   if (servoAmp < 10) { servoAmp = 0; }        // was <10
   
-  sprintln("- Update ServoAmp: maxRight("+String(ropeMaxRightAngle)+")-maxLeft(" + String(ropeMaxLeftAngle) + ")="+ String(ropeMaxRightAngle-ropeMaxLeftAngle) + " ==> New servoAmp: "+String(servoAmp) + " -");
+  if (showLoopEvents) sprintln("- Update ServoAmp: maxRight("+String(ropeMaxRightAngle)+")-maxLeft(" + String(ropeMaxLeftAngle) + ")="+ String(ropeMaxRightAngle-ropeMaxLeftAngle) + " ==> New servoAmp: "+String(servoAmp) + " -");
 }
 
 void updateAmpAndTimeForMaintaining() {
@@ -765,10 +766,17 @@ void handleKeyboardInput() {
     case 'd': // Debug
       debug = !debug;
       enablePrint = true;
+      sprintln("debug is "+ String(debug ? "on" : "off"));
       break;
     case 'p': // Print measurements (potentiometer, servo, etc.)
       printMeasures = !printMeasures;
       enablePrint = true;
+      sprintln("printMeasures is "+ String(printMeasures ? "on" : "off"));
+      break;
+    case '"': // Print loop evnets (move from RIGHT to left)
+      showLoopEvents = !showLoopEvents;
+      enablePrint = true;
+      sprintln("showLoopEvents is "+ String(showLoopEvents ? "on" : "off"));
       break;
     case '0': // temporary move servo to center
       smoothMove(servoCenter);
@@ -817,6 +825,9 @@ void handleKeyboardInput() {
       break;
     case 'T': // Only set the clock for SYNC
       syncInitTime = millis();
+      break;
+    case 'u': // How long was the syncInitTime ago?
+      sprintln("syncInitTime was "+ String(millis()-syncInitTime) + " milliseconds ago");
       break;
     case 'U': // Only update the slave's clock;
       updateSlaveClock = true;
@@ -1034,7 +1045,7 @@ void loop(){
     side = LEFT;
     lastLoopTime = time-leftTime;
     leftTime = time;
-    sprintln("# Loop: Time("+String(lastLoopTime)+")" + (side==LEFT ? " [LEFT] :" : " [RIGHT]:") + "maxRight("+String(ropeMaxRightAngle)+")-maxLeft(" + String(ropeMaxLeftAngle) + ")="+ String(ropeMaxRightAngle-ropeMaxLeftAngle)+ " #");
+    if (showLoopEvents) sprintln("# Loop: Time("+String(lastLoopTime)+")" + (side==LEFT ? " [LEFT] :" : " [RIGHT]:") + "maxRight("+String(ropeMaxRightAngle)+")-maxLeft(" + String(ropeMaxLeftAngle) + ")="+ String(ropeMaxRightAngle-ropeMaxLeftAngle)+ " #");
     tone(7, NOTE_G6, 100);
 
     if (mode != RUNNING) updateAmpAndTime();
@@ -1046,7 +1057,7 @@ void loop(){
     side = RIGHT;
     lastLoopTime = time-rightTime;
     rightTime = time;
-    sprintln("# Loop: Time("+String(lastLoopTime)+")" + (side==LEFT ? " [LEFT] :" : " [RIGHT]:") + "maxRight("+String(ropeMaxRightAngle)+")-maxLeft(" + String(ropeMaxLeftAngle) + ")="+ String(ropeMaxRightAngle-ropeMaxLeftAngle)+ " #");
+    if (showLoopEvents) sprintln("# Loop: Time("+String(lastLoopTime)+")" + (side==LEFT ? " [LEFT] :" : " [RIGHT]:") + "maxRight("+String(ropeMaxRightAngle)+")-maxLeft(" + String(ropeMaxLeftAngle) + ")="+ String(ropeMaxRightAngle-ropeMaxLeftAngle)+ " #");
     tone(7, NOTE_G5, 100);
     
     if (mode != RUNNING) updateAmpAndTime();
