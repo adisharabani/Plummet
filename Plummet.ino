@@ -368,18 +368,19 @@ void calibrate() {
   servoCenter = myservoread();
   sprintln("servoCenter is: "+String(servoCenter));
 
+  delay(1000);
   sprintln("PotCenter was: "+String(potCenter));
-  potCenter = waitForSteadiness(3);  
+  potCenter = waitForSteadiness(20,6000);  
   sprintln("PotCenter is: "+String(potCenter));
 
   smoothMove(servoCenter-50,4000); delay(1000);
   sprintln("Pot50 was: "+String(pot50));
-  pot50 = waitForSteadiness(10);  
+  pot50 = waitForSteadiness(20,6000);  
   sprintln("Pot50 is: "+String(pot50));
 
   smoothMove(servoCenter+50,8000); delay(1000);
   sprintln("Pot150 was: "+String(pot150));
-  pot150 = waitForSteadiness(20); 
+  pot150 = waitForSteadiness(20,6000); 
   sprintln("Pot150 is: "+String(pot150));
   
   calibrateLoopTime();
@@ -423,7 +424,7 @@ void calibrateLoopTime() {
         leftTime = time;
         if (initLeftTime == 0) {
            initLeftTime = time;
-           sprintln("LeftSide initTime: " + String(initLeftTime));
+           sprintln("Starting cycle analysis");
         } else {
           cycles ++;
           sprintln("Cycle "+String(cycles)+" of "+String(nCycles) +" complete. Average loop time: "+String((time-initLeftTime)/cycles));
