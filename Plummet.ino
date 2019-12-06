@@ -228,12 +228,13 @@ void myservodetach() {
   }
 }
 
-void smoothMove(double desiredPosition) {
+void smoothMove(double desiredPosition, int totalTime = 2000) {
   double sl = myservoread();
-  for (int i=0; i<100; i++) {
-     double np = sl*(100-i)/100.0 + desiredPosition*(i)/100.0;
+  int iterations = totalTime/20;
+  for (int i=0; i<=iterations; i++) {
+     double np = sl*double(iterations-i)/iterations + desiredPosition*double(i)/iterations;
      myservowrite(np);
-     debugLog("moving Servo from "+String(sl)+ " to "+String(desiredPosition) + " Step("+i+"): "+np+"\n\r");
+     debugLog("moving Servo from "+String(sl)+ " to "+String(desiredPosition) + " Step("+String(i)+" of "+String(iterations)+"): "+np+"\n\r");
      delay(20);
   }
 }
@@ -355,14 +356,14 @@ void calibrate() {
   sprintln("PotCenter is: "+String(potCenter));
 
   sprintln("Waiting for Steadiness");
-  smoothMove(servoCenter-50);
+  smoothMove(servoCenter-50,4000);
   waitForSteadiness(4);  
   sprintln("Pot50 was: "+String(pot50));
   pot50 = avgPotRead();
   sprintln("Pot50 is: "+String(pot50));
 
   sprintln("Waiting for Steadiness");
-  smoothMove(servoCenter+50);
+  smoothMove(servoCenter+50,8000);
   waitForSteadiness(4); 
   sprintln("Pot150 was: "+String(pot150));
   pot150 = avgPotRead();
@@ -370,6 +371,7 @@ void calibrate() {
   
   calibrateLoopTime();
 
+  smoothMove(servoCenter);
   sprintln("Calibrate: " +String(servoCenter) + " " + String(potCenter) + " " + String(pot50) + " " + String(pot150) + " " + loopTime);
 
 }
