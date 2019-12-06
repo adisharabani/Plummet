@@ -351,11 +351,11 @@ double waitForSteadiness(double threshold, int steadyTime=5000) {
     while ((millis() < t + steadyTime))
     {
       potRead = potentiometerRead();
-      delay(20);
       minRead = min(minRead, potRead);
       maxRead = max(maxRead, potRead);
+      delay(20);
     }
-    debugLog(" Potentiometer (min, max, read) is " + String(minRead) + "," + String(maxRead) + "," + String(potRead) +"-->" + String(maxRead-minRead) + "\n");
+    sprintln(" Potentiometer (min, max, read) is " + String(minRead) + "," + String(maxRead) + "," + String(potRead) +"-->" + String(maxRead-minRead));
   } while (maxRead-minRead <= threshold);
   return (maxRead+minRead)/2;
 }
