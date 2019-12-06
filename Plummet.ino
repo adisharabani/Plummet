@@ -368,7 +368,7 @@ void calibrate() {
   sprintln("servoCenter is: "+String(servoCenter));
 
   sprintln("PotCenter was: "+String(potCenter));
-  potCenter = waitForSteadiness(2);  
+  potCenter = waitForSteadiness(3);  
   sprintln("PotCenter is: "+String(potCenter));
 
   smoothMove(servoCenter-50,4000);
