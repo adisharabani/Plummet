@@ -964,8 +964,6 @@ sprintln("handleRX " + String(c));
 }
 
 void setup() {  
-  initTime = millis();
-  randomSeed(initTime % 30000);
 
   Serial.begin(9600);
   Serial.println(String("v") + String(PLUMMET_VERSION));
@@ -987,6 +985,8 @@ void setup() {
   
 
   mode=HALT;
+  initTime = millis();
+  randomSeed((initTime + potentiometerRead()*10) % 30000);
   updateAmpAndTime();
 
   // wait 3 seconds to see if you are a slave
