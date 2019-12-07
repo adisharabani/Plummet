@@ -661,27 +661,37 @@ void handleKeyboardInput() {
              keyboardBuffer += inByte;
              byte k = keyboardBuffer[0];
              int id;
-             
-			 switch (k) {
-			  case ':':
-			     id = keyboardBuffer.substring(1,keyboardBuffer.indexOf(":",1)).toInt();
+             if (k==':') {
+			     String who = keyboardBuffer.substring(1,keyboardBuffer.indexOf(":",1));
 			     keyboardBuffer = keyboardBuffer.substring(keyboardBuffer.indexOf(":",1)+1,keyboardBuffer.length());
-			     if (id>0){
-			       // notify other arduinos
-			       String wr = String(":") + String(id-1) + String(":") + keyboardBuffer;
-			       //sprintln("Command forwarded to the next device");
-			       nextSerial.println(wr);
-			       inByte = 0; keyboardBuffer = ""; //ignore this command as it is not for this arduino.
-			     } /*else {
-			       // do not notify other arduinos
-			       //sprintln("Command is directed to me only");
-			     }*/
-			     break;
+			     if (who=="e") {
+			     	String wr = String(":o:") + keyboardBuffer;
+			     	nextSerial.println(wr);
+			     } else if (who=="o") {
+			     	String wr = String(":e:") + keyboardBuffer;
+			     	nextSerial.println(wr);
+			     	inByte = 0; keyboardBuffer = ""; //ignore this command as it is not for this arduino.
+			     } else {
+				     id = who.toInt();
+				     if (id>0){
+				       // notify other arduinos
+				       String wr = String(":") + String(id-1) + String(":") + keyboardBuffer;
+				       //sprintln("Command forwarded to the next device");
+				       nextSerial.println(wr);
+				       inByte = 0; keyboardBuffer = ""; //ignore this command as it is not for this arduino.
+			     	} else {
+				       // do not notify other arduinos
+				       //sprintln("Command is directed to me only");
+				     }
+			     }
+			 }
+			 switch (k) {
+ 			   case ':':
 			   case 'e':
 			   case 'E':
 			   case 'p':
 			   case 'd':
-			   case '"':
+			   case 'L':
 			   case '$':
 			   case '%':
 			   case '?':
@@ -740,12 +750,12 @@ void handleKeyboardInput() {
       enablePrint = true;
       sprintln("printMeasures is "+ String(printMeasures ? "on" : "off"));
       break;
-    case '"': // Print loop events (move from RIGHT to left)
+    case 'L': // Print loop events (move from RIGHT to left)
       showLoopEvents = !showLoopEvents;
       enablePrint = true;
       sprintln("showLoopEvents is "+ String(showLoopEvents ? "on" : "off"));
       break;
-    case '0': // temporary move servo to center
+    case '0': /* temporary move servo to center */
       smoothMove(servoCenter);
       break;
     case '1': // START 
@@ -754,30 +764,30 @@ void handleKeyboardInput() {
     case '2': // STOP
       mode = STOP; sprintln("STOP");
       break;
-    case '9': // HALT -> STOP and dont move anymore;
+    case '9': // HALT: STOP and dont move anymore;
       mode = HALT; sprintln("HALT");
       smoothMove(servoCenter);
       break;
     case 'm': // MAINTAIN
       mode = MAINTAIN; sprintln("MAINTAIN");
       break;
-    case 't': // TEST
+    case 't': /* TEST */
       mode = TEST; sprintln("TEST");
       break;
-    case ']': // Increase TEST Phase
+    case ']': /* Increase TEST Phase */
       testPhase = (int((testPhase + 0.05)*100) % 100) /100.0;
       sprintln("Testing phase is "+String(testPhase));
 
       break;
-    case '[': // Decrease TEST phase
+    case '[': /* Decrease TEST phase */
       testPhase = (int((testPhase - 0.05)*100) % 100) /100.0;
       sprintln("Testing phase is "+String(testPhase));
       break;
-    case '>': // Increase TEST amplitude
+    case '>': /* Increase TEST amplitude */
       testAmp = min(testAmp + 5,100);
       sprintln("Testing amp is "+String(testAmp));
       break;
-    case '<': // Decrease TEST amplitude
+    case '<': /* Decrease TEST amplitude */
       testAmp = max(testAmp -5,0);
       sprintln("Testing amp is "+String(testAmp));
       break;
@@ -793,21 +803,21 @@ void handleKeyboardInput() {
     case 'S': // SYNC to an already set clock (don't update the clock)
       mode = SYNCED_RUN; 
       break;
-    case 'T': // Only set the clock for SYNC
+    case 'T': // Set the clock for SYNC
       syncInitTime = millis();
       break;
     case 'u': // How long was the syncInitTime ago?
       sprintln("syncInitTime was "+ String(millis()-syncInitTime) + " milliseconds ago");
       break;
-    case 'U': // Only update the slave's clock;
+    case 'U': // Update slaves on current Sync Clock
       updateSlaveClock = true;
       break;
-    case '{': // Offset the SYNC clock forward
-      syncInitTimeOffset -= 100;
+    case '{': // Offset the SYNC clock forward (1/32 of a loop)
+      syncInitTimeOffset -= syncLoopTime/32;
       mode = SYNCED_RUN; 
       break;
-    case '}': // Offset the SYNC clock backwards
-      syncInitTimeOffset += 100;
+    case '}': // Offset the SYNC clock backwards (1/32 of a loop)
+      syncInitTimeOffset += syncLoopTime/32;
       mode = SYNCED_RUN; 
       break;
     case 'r': // Randomize the SYNC clock 
@@ -817,9 +827,11 @@ void handleKeyboardInput() {
       mode = SYNCED_RUN; 
       break;
     case 'w': // Create a wave 
+     nextSerial.write("{");
       mode = SYNCED_RUN; 
       break;
     case 'W': // Create a backward wave
+     nextSerial.write("}");
       mode = SYNCED_RUN; 
       break;
     case '=': // Move servo to specific location
@@ -852,11 +864,11 @@ void handleKeyboardInput() {
 //      myservoattach(servoPin);
 //      sprintln(SERVO_VIA_TIMER1 ? "Using Timer1" : "Using Servo lib");
 //      break;
-    case 'b': // Beep
+    case 'b': /* Beep */
       tone(7, NOTE_A5, 1000);
       break;
-    case 'B': // Beep if master
-      sprintln(isMaster ? "I am master" : "I am slave"); 
+    case 'B': // Are you a master?
+      sprintln(isMaster ? "I am a master" : "I am a slave"); 
       if (isMaster) tone(7, NOTE_A5, 1000);
       break;
     case 'c': // Calibrate
@@ -906,9 +918,9 @@ void handleKeyboardInput() {
         recordInitTime = millis();
       }
       break;
-    case '?': //Show upcoming recorded commands;
+    case '?': //Show recorded commands;
       unsigned int commandTime = eread(EEPROM_COMMANDS_LOC);
-      sprintln("Upcoming Commands:");
+      sprintln("Recorded Commands:");
       while (commandTime != MAX_UINT) {
       	 sprint(commandTime);
       	 sprint("s: ");
