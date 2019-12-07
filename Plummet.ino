@@ -13,67 +13,24 @@
 //  Servo power VCC (+) need to connect directly to its own power
 //  
 //  Help:
-//  -----
-//  e :  Enable output
-//  d :  Debug
-//  p :  Print measurements (potentiometer, servo, etc.)
-//  0 :  temporary move servo to center
-//  1 :  START 
-//  2 :  STOP
-//  9 :  HALT -> STOP and dont move anymore;
-//  m :  MAINTAIN
-//  t :  TEST
-//  ] :  Increase TEST Phase
-//  [ :  Decrease TEST phase
-//  > :  Increase TEST amplitude
-//  < :  Decrease TEST amplitude
-//  s :  SYNC
-//  S :  SYNC to an already set clock (don't update the clock)
-//  T :  Only set the clock for SYNC
-//  U :  Update slaves clock for SYNC
-//  { :  Offset the SYNC clock forward
-//  } :  Offset the SYNC clock backwards
-//  r :  Randomize the SYNC clock 
-//  w :  Create a wave 
-//  W :  Create a backward wave
-//  = :  Move servo to specific location
-//  + :  Move servo one step forwards
-//  - :  Move servo one step backwards
-//  _ :  Detach or reattach servo
-//  ~ :  Switch implementation between Timer1 and Servo lib
-//  b :  Beep
-//  B :  Beep if master
-//  a :  Play audio
-//  A :  Stop audio
-//  c :  Calibrate
-//  C :  Save calibration
-//  ? :  Show help
 
-#define PLUMMET_VERSION "0.2"
-
-//#include "SoftwareSerial.h"
+#define PLUMMET_VERSION "0.21"
 
 #include <SoftwareSerial.h>
-
-// #include "NeoHWSerial.h"
-// #define Serial NeoSerial
-
 #include <Servo.h>
-//LIB #include "TimerOne.h"
-//#include <SoftwareSerial.h> // soft serial
 #include <EEPROM.h>
 
 #define rxPinPrev 2 // soft serial
 #define txPinPrev 3 // soft serial
 #define rxPinNext 4 // soft serial
 #define txPinNext 5 // soft serial
-
 #define tonePin 7 // digital
 #define servoPin 10 // digital
-#define potPin 1 // analog
-
 #define AUDIO_RX 11 //should connect to TX of the Serial MP3 Player module
 #define AUDIO_TX 12 //connect to RX of the module
+
+#define potPin 1 // analog
+
 
 #define SYNC_MAGIC_NUMBER 0
 #define AUDIO_DELAY 0
@@ -81,12 +38,7 @@
 int defaultLoopTime = 3167; //Palo Alto: 3080; // 3160; // 3420;
 // int defaultLoopTime = 3080; // Palo Alto
 
-//unsigned long commands[] = {1000, '1', 25000, '9'};
-unsigned long commands[] = {};
-//unsigned long commands [] = {};
-
-int commandsP = 0;
-int commandsN = sizeof(commands)/sizeof(unsigned long);
+#define EPPROM
 
 // Calibrate(1): 86.00 489 711 293
 // Calibrate(2): 98.00 457 665 261
@@ -99,6 +51,18 @@ boolean enablePrint = true;
 boolean debug = false;
 boolean enableAudio = true;
 boolean showLoopEvents = false;
+
+#define EEPROM_MAGIC 5613
+#define EEPROM_COMMANDS_LOC 100
+#define MAX_UINT 65535
+
+unsigned int nextCommandTime = MAX_UINT;
+int nextCommandLoc = 0;
+unsigned long playInitTime;
+unsigned long recordInitTime;
+bool isRecording =false;
+bool isPlaying = false;
+int recordingLoc;
 
 //servo
 int loopTime = defaultLoopTime;
@@ -136,7 +100,6 @@ SoftwareSerial nextSerial(rxPinNext, txPinNext);
 
 //SoftwareSerial audioSerial(AUDIO_RX, AUDIO_TX);
 #define audioSerial Serial
-static int8_t Send_Audio_buf[8] = {0} ;
 
 boolean isMaster = true;
 
@@ -144,7 +107,6 @@ unsigned long rightTime = 0;
 unsigned long leftTime = 0;
 
 unsigned long startTime = millis();
-
 
 enum left_right_e {
   LEFT,
@@ -159,7 +121,62 @@ left_right_e side = LEFT;
 #define NOTE_G5 784
 #define NOTE_G6 1568
 
+
+
+#define sprint(s)   if (enablePrint) Serial.print(s)
+// void sprint(String s){}; void sprint(double s) {}
+
+#define sprintln(s) if (enablePrint) Serial.println(s)
+
+void debugLog(String x) { if (debug) Serial.print(x);         }
+
+
+
+///////////////////////////
+/// Utils
+///////////////////////////
+
 void(* resetArduino) (void) = 0; //declare reset function @ address 0
+
+static int eIndex = 0;
+void ewrite(unsigned int data, int index=-1) {
+  if (index!=-1) eIndex = index;
+  
+  EEPROM.write(eIndex++, byte(data/256));
+  EEPROM.write(eIndex++, byte(data%256));
+}
+
+void ewrite(String data, int index=-1) {
+	if (index !=-1) eIndex = index;
+	
+	for (int i=0; i<data.length(); i++) {
+		EEPROM.write(eIndex++, data[i]);
+	}
+	EEPROM.write(eIndex++, 0);
+}
+
+unsigned int eread(int index=-1) {
+  if (index!=-1) eIndex = index;
+  
+  return EEPROM.read(eIndex++)*256+EEPROM.read(eIndex++);
+}
+
+char ereadchar(int index=-1) {
+	if (index != -1) eIndex = index;
+	
+	return EEPROM.read(eIndex++);
+}
+
+String ereadstr(int index=-1) {
+  if (index!=-1) eIndex = index;
+  
+  String s = "";
+  char c;
+  while (c = EEPROM.read(eIndex++)) {
+  	s += c;
+  }
+  return s;
+}
 
 ///////////////////////////
 /// SERVO
@@ -254,34 +271,13 @@ double getOcsilatorPos(){
   return sin(((time-initTime)%loopTime)*2*PI/loopTime - PI)*servoAmp/2+servoCenter;
 }
 
-/*
-void waitForDesiredPos() {
-  double currentServoPos = myservoread();
-  unsigned long timeout = time + 5000;
-  while ((time<timeout) && (abs(getOcsilatorPos()-currentServoPos) >2)) {
-      time = millis();
-  }
-  if (time>timeout) {
-      tone(7, NOTE_E7, 1000);
-  }
-}*/
-
-
-
-
-#define sprint(s)   if (enablePrint) Serial.print(s)
-#define sprintln(s) if (enablePrint) Serial.println(s)
-
-void debugLog(String x) { if (debug) Serial.print(x);         }
-
-
 ///////////////////////////
 /// Potentiometer
 ///////////////////////////
 
 // Potentiometer position history
 #define POSITIONS_STACK_SIZE 10
-int positions[POSITIONS_STACK_SIZE];
+int positions[POSITIONS_STACK_SIZE]; 
 unsigned int positionsPTR = POSITIONS_STACK_SIZE;
 #define push(p) positions[(++positionsPTR)%POSITIONS_STACK_SIZE] = p
 #define getPos(i) positions[(positionsPTR-i)%POSITIONS_STACK_SIZE]
@@ -361,23 +357,23 @@ void calibrate() {
   servoAmp = 0;
 
   //String oldCalibration = String(servoCenter) + " " + String(potCenter) + " " + String(pot50) + " " + String(pot150) + " " + loopTime;
-  sprintln("servoCenter was: "+String(servoCenter));
+  sprint("Old ");sprintln("servoCenter: "+String(servoCenter));
   servoCenter = myservoread();
-  sprintln("servoCenter is:  "+String(servoCenter));
-
-  sprintln("PotCenter was: "+String(potCenter));
+  sprintln("servoCenter: "+String(servoCenter));
+  
+  sprint("Old ");sprintln("PotCenter: "+String(potCenter));
   potCenter = waitForSteadiness(1,6000);  
-  sprintln("PotCenter is:  "+String(potCenter));
+  sprintln("PotCenter:  "+String(potCenter));
 
   smoothMove(servoCenter-50,4000); delay(1000);
-  sprintln("Pot50 was: "+String(pot50));
+  sprint("Old ");sprintln("Pot50: "+String(pot50));
   pot50 = waitForSteadiness(10,6000);  
-  sprintln("Pot50 is:  "+String(pot50));
+  sprintln("Pot50:  "+String(pot50));
 
   smoothMove(servoCenter+50,8000); delay(1000);
-  sprintln("Pot150 was: "+String(pot150));
+  sprint("Old ");sprintln("Pot150: "+String(pot150));
   pot150 = waitForSteadiness(10,6000); 
-  sprintln("Pot150 is:  "+String(pot150));
+  sprintln("Pot150:  "+String(pot150));
   
   calibrateLoopTime();
 
@@ -392,7 +388,7 @@ void calibrate() {
 
 void calibrateLoopTime() {
   sprintln("");
-  sprintln("Calculating loop time. Previous loopTime was " + String(loopTime));
+  sprintln("Old LoopTime " + String(loopTime));
   smoothMove(servoCenter-maxServoAmp);
   initTime = millis();
   sprintln("Speed up");
@@ -404,7 +400,7 @@ void calibrateLoopTime() {
   mode = HALT;
   loop();
 
-  sprintln("Move to center");
+  //sprintln("Move to center");
   smoothMove(servoCenter);
 
   sprintln("Delay 10 seconds");
@@ -442,22 +438,8 @@ void calibrateLoopTime() {
   sprintln("loopTime Calibration ("+String(cycles)+"): " + String(loopTime));
 }
 
-void ewrite(int data, int index=-1) {
-  static int eIndex = 0;
-  eIndex = (index==-1) ? eIndex : index;
-
-  EEPROM.write(eIndex++, int(data/256));
-  EEPROM.write(eIndex++, int(data)%256);
-}
-int eread(int index=-1) {
-  static int eIndex = 0;
-  eIndex = (index==-1) ? eIndex : index;
-
-  return EEPROM.read(eIndex++)*256+EEPROM.read(eIndex++);
-}
-
 void writeCalibration() {
-  ewrite(5613,0); //magic number
+  ewrite(EEPROM_MAGIC,0); //magic number
   ewrite(2); // calibration version
   ewrite(servoCenter);
   ewrite(potCenter);
@@ -471,9 +453,10 @@ void writeCalibration() {
 
   sprintln("EEPROM: " +String(servoCenter) + " " + String(potCenter) + " " + String(pot50) + " " + String(pot150) + " " + String(loopTime));
 }
+ 
 
 void readCalibration() {
-  if (eread(0) == 5613) { // confirm magic number
+  if (eread(0) == EEPROM_MAGIC) { // confirm magic number
     eread(); // calibration version
     servoCenter = eread();
     potCenter = eread();
@@ -606,15 +589,15 @@ void updateAmpAndTime() {
 /// User Data
 ///////////////////////////
 
-boolean recordAvailable() {
-  return ((commandsP<commandsN) && (commands[commandsP]+startTime<millis()));
+boolean commandAvailable() {
+  return (isPlaying && (nextCommandTime != MAX_UINT) && (millis() > nextCommandTime*1000+playInitTime));
 }
-byte readByteFromRecord() {
-  if (recordAvailable()) {
-    byte b = commands[commandsP+1];
-    commandsP = commandsP + 2;
-    return b;
-  }
+
+String readCommand() {
+	String command = ereadstr(nextCommandLoc);
+	nextCommandTime = eread();
+	nextCommandLoc = eIndex;
+	return command;
 }
 
 
@@ -632,16 +615,13 @@ byte readByte() {
 //      if (b=='~') { Serial.write("Error:"); delay(100); while (prevSerial.available()) Serial.print("~"+String(int(prevSerial.read()))); Serial.println("");}
       //sprint(b);
       return b;
-    } else if (recordAvailable()) {
-      char b = readByteFromRecord();
-      //sprint(b);
-      return b;
     }
   }
+sprint("?");
 }
 
 bool readByteAvailable() {
-  return (Serial.available() || prevSerial.available() || recordAvailable());
+  return (Serial.available() || prevSerial.available());
 }
 
 String keyboardBuffer = "";
@@ -653,31 +633,51 @@ void handleKeyboardInput() {
   if (keyboardBuffer.length() > 0) {
      inByte = keyboardBuffer[keyboardBuffer.length()-1];
   }
-
-  while (readByteAvailable() && (inByte != '\n')) {
-     inByte = readByte();
-
-     if ((inByte=='\r') || (inByte=='\n')) {
-       //convert \r to \n
-       keyboardBuffer += "\n";
-       inByte = '\n';
-       if (keyboardBuffer.length()>1) sprintln("");
-     } else if (inByte == 127) {
-       //handle backspace
-       if (keyboardBuffer.length()>0) {
-         keyboardBuffer = keyboardBuffer.substring(0,keyboardBuffer.length()-1);
-         inByte = keyboardBuffer[keyboardBuffer.length()-1];
-         sprint("\b\b\b   \r"+keyboardBuffer);
-       } else {
-         inByte = 0;
-       }
-     } else if (inByte == ' ') {
-       // disregard spaces
-       inByte = keyboardBuffer[keyboardBuffer.length()-1];
-     }else {
-       keyboardBuffer += String(inByte);
-       sprint(inByte);
-     }
+  if (commandAvailable()) {
+     String cmd = readCommand();
+     sprintln(cmd);
+   	 keyboardBuffer += (cmd + "\n");
+	 if ((keyboardBuffer.length()==0) || (keyboardBuffer[keyboardBuffer.length()-1] != '\n')) {
+  		sprint("BAD COMMAND:");
+  		sprintln(keyboardBuffer);
+  		keyboardBuffer = "";
+  		return;
+  	}
+  	inByte = '\n';
+  } else {
+	  while (readByteAvailable() && (inByte != '\n')) {
+	     inByte = readByte();
+	     if ((inByte=='\r') || (inByte=='\n')) {
+	       //convert \r to \n
+	       inByte = '\n';
+	       if (keyboardBuffer.length()>0) {
+	       	 sprintln("");
+             if (isRecording) {
+	           ewrite((millis()-recordInitTime)/1000, recordingLoc);
+	           ewrite(keyboardBuffer);
+	           recordingLoc = eIndex;
+	           ewrite(MAX_UINT);
+	         }
+             keyboardBuffer += inByte;
+	       }
+	     } else if (inByte == 127) {
+	       //handle backspace
+	       if (keyboardBuffer.length()>0) {
+	         keyboardBuffer = keyboardBuffer.substring(0,keyboardBuffer.length()-1);
+	         inByte = keyboardBuffer[keyboardBuffer.length()-1];
+	         sprint("\b\b\b   \r");
+	         sprint(keyboardBuffer);
+	       } else {
+	         inByte = 0;
+	       }
+	     } else if (inByte == ' ') {
+	       // disregard spaces
+	       inByte = keyboardBuffer[keyboardBuffer.length()-1];
+	     }else {
+	       keyboardBuffer += String(inByte);
+	       sprint(inByte);
+	     }
+	  }
   }
   if (inByte != '\n') {
     return;
@@ -696,13 +696,13 @@ void handleKeyboardInput() {
      if (id>0){
        // notify other arduinos
        String wr = String(":") + String(id-1) + String(":")+ String(inByte) + keyboardBuffer;
-       sprintln("Command forwarded to the next device");
+       //sprintln("Command forwarded to the next device");
        nextSerial.println(wr);
        inByte = 0; keyboardBuffer = ""; //ignore this command as it is not for this arduino.
        return;
      } else {
        // do not notify other arduinos
-       sprintln("Command is directed to me only");
+       //sprintln("Command is directed to me only");
      }
   } else if (inByte == '=') {
     nextSerial.println(String(inByte) + keyboardBuffer);
@@ -711,7 +711,7 @@ void handleKeyboardInput() {
        keyboardBuffer = String(defaultLoopTime + 16);
     }
     nextSerial.println(String(inByte) + keyboardBuffer);
-  } else if ((inByte != 'e') && (inByte != 'E') && (inByte != 'p') && (inByte != 'd') && (inByte != '"') && (inByte != ' ') && (inByte != '\n')) {
+  } else if ((inByte != 'e') && (inByte != 'E') && (inByte != 'p') && (inByte != 'd') && (inByte != '"') && (inByte != '$') && (inByte != '%') && (inByte != '?') && (inByte != ' ') && (inByte != '\n')) {
     //sprintln("forwarding: "+ String(int(inByte)));
     nextSerial.println(String(inByte)); 
   } else {
@@ -736,7 +736,7 @@ void handleKeyboardInput() {
       enablePrint = true;
       sprintln("printMeasures is "+ String(printMeasures ? "on" : "off"));
       break;
-    case '"': // Print loop evnets (move from RIGHT to left)
+    case '"': // Print loop events (move from RIGHT to left)
       showLoopEvents = !showLoopEvents;
       enablePrint = true;
       sprintln("showLoopEvents is "+ String(showLoopEvents ? "on" : "off"));
@@ -762,20 +762,20 @@ void handleKeyboardInput() {
       break;
     case ']': // Increase TEST Phase
       testPhase = (int((testPhase + 0.05)*100) % 100) /100.0;
-      sprintln("Testing phase is now "+String(testPhase));
+      sprintln("Testing phase is "+String(testPhase));
 
       break;
     case '[': // Decrease TEST phase
       testPhase = (int((testPhase - 0.05)*100) % 100) /100.0;
-      sprintln("Testing phase is now "+String(testPhase));
+      sprintln("Testing phase is "+String(testPhase));
       break;
     case '>': // Increase TEST amplitude
       testAmp = min(testAmp + 5,100);
-      sprintln("Testing amp is now "+String(testAmp));
+      sprintln("Testing amp is "+String(testAmp));
       break;
     case '<': // Decrease TEST amplitude
       testAmp = max(testAmp -5,0);
-      sprintln("Testing amp is now "+String(testAmp));
+      sprintln("Testing amp is "+String(testAmp));
       break;
     case 's': // SYNC
       s = keyboardBuffer.toInt(); keyboardBuffer = "";
@@ -873,7 +873,47 @@ void handleKeyboardInput() {
       enableAudio = !enableAudio;
       sprintln(String("Audio ")+(enableAudio ? "enabled" : "disabled"));
       break;
-      
+    case '$': //Play
+      if (!isPlaying) {
+        nextCommandTime = eread(EEPROM_COMMANDS_LOC);
+        nextCommandLoc = eIndex;
+        if (nextCommandTime == MAX_UINT) {
+        	sprintln("No recorded actions");
+        } else {
+	      	isPlaying = true;
+    	  	playInitTime = millis();
+	        sprint("Next action in ");
+	        sprint(nextCommandTime);
+	        sprintln(" seconds");
+        }
+      } else {
+      	sprintln("Playback stopped");
+      	nextCommandTime = MAX_UINT;
+      	isPlaying = false;
+      }
+      break;
+    case '%': //Record
+      if (isPlaying) {
+      	sprintln("Playback finished");
+      	isPlaying = false;
+        nextCommandTime = MAX_UINT; // stop playback if needed;
+      } else {
+        isRecording = !isRecording;
+        sprintln(isRecording ? "Recording on" : "Recording off");
+        recordingLoc = EEPROM_COMMANDS_LOC;
+        recordInitTime = millis();
+      }
+      break;
+    case '?': //Show upcoming recorded commands;
+      unsigned int commandTime = eread(EEPROM_COMMANDS_LOC);
+      sprintln("Upcoming Commands:");
+      while (commandTime != MAX_UINT) {
+      	 sprint(commandTime);
+      	 sprint("s: ");
+      	 sprint(ereadstr());
+      	 commandTime = eread();
+      }
+	  break;
     default:
       break;
   }
@@ -886,6 +926,8 @@ void handleKeyboardInput() {
 
 void sendAudioCommand(int8_t command, int16_t dat)
 {
+  static int8_t Send_Audio_buf[8] = {0x7e, 0xff, 0x06, 0, 0, 0, 0, 0xef} ;
+
   if (!enableAudio) return;
   debugLog("audio");
   Send_Audio_buf[0] = 0x7e; //starting byte
@@ -960,7 +1002,7 @@ void loop(){
 
   ropeMaxRightAngle = max(ropeAngle,ropeMaxRightAngle);
   ropeMaxLeftAngle = min(ropeAngle,ropeMaxLeftAngle);
-
+/*
   if (printMeasures) {
     sprint("potRead: "+String(potRead) + "  ");
     sprint("currentServoPos: "+String(currentServoPos) + "  ");
@@ -969,6 +1011,7 @@ void loop(){
     sprint("ropeAngle: "+String(ropeAngle) + "  ");
     sprintln("");
   }
+  */
   
   switch (mode) {
     case SYNCED_RUN:
@@ -1007,7 +1050,7 @@ void loop(){
     side = LEFT;
     lastLoopTime = time-leftTime;
     leftTime = time;
-    if (showLoopEvents) sprintln("# Loop: Time("+String(lastLoopTime)+")" + (side==LEFT ? " [LEFT] :" : " [RIGHT]:") + "maxRight("+String(ropeMaxRightAngle)+")-maxLeft(" + String(ropeMaxLeftAngle) + ")="+ String(ropeMaxRightAngle-ropeMaxLeftAngle)+ " #");
+    if (showLoopEvents) sprintln("# Loop: Time("+String(lastLoopTime)+")" + (side==LEFT ? " [L] :" : " [R:") + "maxRight("+String(ropeMaxRightAngle)+")-maxLeft(" + String(ropeMaxLeftAngle) + ")="+ String(ropeMaxRightAngle-ropeMaxLeftAngle)+ " #");
     tone(7, NOTE_G6, 100);
 
     if (mode != RUNNING) updateAmpAndTime();
@@ -1019,7 +1062,7 @@ void loop(){
     side = RIGHT;
     lastLoopTime = time-rightTime;
     rightTime = time;
-    if (showLoopEvents) sprintln("# Loop: Time("+String(lastLoopTime)+")" + (side==LEFT ? " [LEFT] :" : " [RIGHT]:") + "maxRight("+String(ropeMaxRightAngle)+")-maxLeft(" + String(ropeMaxLeftAngle) + ")="+ String(ropeMaxRightAngle-ropeMaxLeftAngle)+ " #");
+    if (showLoopEvents) sprintln("# Loop: Time("+String(lastLoopTime)+")" + (side==LEFT ? " [L] :" : " [R]:") + "maxRight("+String(ropeMaxRightAngle)+")-maxLeft(" + String(ropeMaxLeftAngle) + ")="+ String(ropeMaxRightAngle-ropeMaxLeftAngle)+ " #");
     tone(7, NOTE_G5, 100);
     
     if (mode != RUNNING) updateAmpAndTime();
