@@ -665,19 +665,22 @@ void handleKeyboardInput() {
 			     String who = keyboardBuffer.substring(1,keyboardBuffer.indexOf(":",1));
 			     keyboardBuffer = keyboardBuffer.substring(keyboardBuffer.indexOf(":",1)+1,keyboardBuffer.length());
 			     if (who=="e") {
-			     	String wr = String(":o:") + keyboardBuffer;
-			     	nextSerial.println(wr);
+			     	nextSerial.println(String(":o:")+keyboardBuffer);
 			     } else if (who=="o") {
-			     	String wr = String(":e:") + keyboardBuffer;
-			     	nextSerial.println(wr);
+			     	nextSerial.println(String(":e:")+keyboardBuffer);
 			     	inByte = 0; keyboardBuffer = ""; //ignore this command as it is not for this arduino.
+			     } else if (who=="w") {
+			     	nextSerial.println(String(":w:")+keyboardBuffer);
+			     	delay(50);
+			     	nextSerial.println(keyboardBuffer);
 			     } else {
 				     id = who.toInt();
 				     if (id>0){
 				       // notify other arduinos
-				       String wr = String(":") + String(id-1) + String(":") + keyboardBuffer;
+				       nextSerial.println(String(":") + String(id-1)+String(":") + keyboardBuffer);
+//				       String wr = String(":") + String(id-1) + String(":") + keyboardBuffer;
 				       //sprintln("Command forwarded to the next device");
-				       nextSerial.println(wr);
+//				       nextSerial.println(wr);
 				       inByte = 0; keyboardBuffer = ""; //ignore this command as it is not for this arduino.
 			     	} else {
 				       // do not notify other arduinos
@@ -826,14 +829,16 @@ void handleKeyboardInput() {
       servoAmp = 20;
       mode = SYNCED_RUN; 
       break;
-    case 'w': // Create a wave 
+/*
+    case 'w': / Create a wave 
      nextSerial.write("{");
       mode = SYNCED_RUN; 
       break;
-    case 'W': // Create a backward wave
+    case 'W': / Create a backward wave
      nextSerial.write("}");
       mode = SYNCED_RUN; 
       break;
+*/
     case '=': // Move servo to specific location
       s = keyboardBuffer.toInt(); keyboardBuffer = "";
       if (s!=0) smoothMove(s);
@@ -858,12 +863,13 @@ void handleKeyboardInput() {
          myservoattach(servoPin);
       }
       break;
-//    case '~': // Change Servo type (Timer1 vs Servo library)
-//      myservodetach();
-//      SERVO_VIA_TIMER1 = !SERVO_VIA_TIMER1;
-//      myservoattach(servoPin);
-//      sprintln(SERVO_VIA_TIMER1 ? "Using Timer1" : "Using Servo lib");
-//      break;
+/*   case '~': 
+	 // Change Servo type (Timer1 vs Servo library)
+     myservodetach();
+     SERVO_VIA_TIMER1 = !SERVO_VIA_TIMER1;
+     myservoattach(servoPin);
+     sprintln(SERVO_VIA_TIMER1 ? "Using Timer1" : "Using Servo lib");
+     break; */
     case 'b': /* Beep */
       tone(7, NOTE_A5, 1000);
       break;
