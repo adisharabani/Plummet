@@ -659,6 +659,40 @@ void handleKeyboardInput() {
 	           ewrite(MAX_UINT);
 	         }
              keyboardBuffer += inByte;
+             byte k = keyboardBuffer[0];
+             int id;
+             
+			 switch (k) {
+			  case ':':
+			     id = keyboardBuffer.substring(1,keyboardBuffer.indexOf(":",1)).toInt();
+			     keyboardBuffer = keyboardBuffer.substring(keyboardBuffer.indexOf(":",1)+1,keyboardBuffer.length());
+			     if (id>0){
+			       // notify other arduinos
+			       String wr = String(":") + String(id-1) + String(":") + keyboardBuffer;
+			       //sprintln("Command forwarded to the next device");
+			       nextSerial.println(wr);
+			       inByte = 0; keyboardBuffer = ""; //ignore this command as it is not for this arduino.
+			     } /*else {
+			       // do not notify other arduinos
+			       //sprintln("Command is directed to me only");
+			     }*/
+			     break;
+			   case 'e':
+			   case 'E':
+			   case 'p':
+			   case 'd':
+			   case '"':
+			   case '$':
+			   case '%':
+			   case '?':
+			   case ' ':
+			   case '\n':
+			     break;
+			   default:
+			     nextSerial.print(keyboardBuffer);
+			     break;
+			  }
+			  inByte = '\n';
 	       }
 	     } else if (inByte == 127) {
 	       //handle backspace
@@ -687,36 +721,6 @@ void handleKeyboardInput() {
   inByte = keyboardBuffer[0]; keyboardBuffer = keyboardBuffer.substring(1);
 
   if (inByte == '\n') {return; } 
-  
-  if (inByte == ':') {
-     int id = keyboardBuffer.substring(0,keyboardBuffer.indexOf(":")).toInt();
-     keyboardBuffer = keyboardBuffer.substring(keyboardBuffer.indexOf(":")+1);
-  
-     inByte = keyboardBuffer[0]; keyboardBuffer = keyboardBuffer.substring(1);
-     if (id>0){
-       // notify other arduinos
-       String wr = String(":") + String(id-1) + String(":")+ String(inByte) + keyboardBuffer;
-       //sprintln("Command forwarded to the next device");
-       nextSerial.println(wr);
-       inByte = 0; keyboardBuffer = ""; //ignore this command as it is not for this arduino.
-       return;
-     } else {
-       // do not notify other arduinos
-       //sprintln("Command is directed to me only");
-     }
-  } else if (inByte == '=') {
-    nextSerial.println(String(inByte) + keyboardBuffer);
-  } else if (inByte == 's') {
-    if (keyboardBuffer.toInt() == 0) {
-       keyboardBuffer = String(defaultLoopTime + 16);
-    }
-    nextSerial.println(String(inByte) + keyboardBuffer);
-  } else if ((inByte != 'e') && (inByte != 'E') && (inByte != 'p') && (inByte != 'd') && (inByte != '"') && (inByte != '$') && (inByte != '%') && (inByte != '?') && (inByte != ' ') && (inByte != '\n')) {
-    //sprintln("forwarding: "+ String(int(inByte)));
-    nextSerial.println(String(inByte)); 
-  } else {
-    // do not notify other arduinos on commands that changes the output.
-  }
 
   int s;
   switch (inByte) {
@@ -814,11 +818,9 @@ void handleKeyboardInput() {
       break;
     case 'w': // Create a wave 
       mode = SYNCED_RUN; 
-      nextSerial.println("{"); 
       break;
     case 'W': // Create a backward wave
       mode = SYNCED_RUN; 
-      nextSerial.println("{"); 
       break;
     case '=': // Move servo to specific location
       s = keyboardBuffer.toInt(); keyboardBuffer = "";
@@ -827,13 +829,13 @@ void handleKeyboardInput() {
       break;
     case '+': // Move servo one step forwards
       s = myservoread(); 
-      sprintln("servo was " + String(s));
+      sprint("Old "); sprintln("servo is " + String(s));
       myservowrite(s+1);
       sprintln("servo is " + String(myservoread()));    
       break;
     case '-': // Move servo one step backwards
       s = myservoread();
-      sprintln("servo was " + String(s));
+      sprint("Old "); sprintln("servo is " + String(s));
       myservowrite(s-1);
       sprintln("servo is " + String(myservoread()));    
       break;

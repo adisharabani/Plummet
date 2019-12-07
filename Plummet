@@ -114,7 +114,7 @@ if [ "$1" = "listConnections" ]; then
 fi
 
 if [ "$1" = "listCommands" ]; then
- cat Plummet.ino | grep "case '" | sed s/\ *case\ \'//g | sed s_\':\ //_:_g | awk 'BEGIN {printf " AvailableCommands:\r\n";} {printf "%s\r\n", $0} END {printf "  <Tab> or <Shift-Tab>: switch between tabs\r\n  <Esc>: quit\r\n"}'
+ cat Plummet.ino | grep "case '" | grep // | sed s/\ *case\ \'//g | sed s_\':\ //_:_g | awk 'BEGIN {printf " AvailableCommands:\r\n";} {printf "%s\r\n", $0} END {printf "  <Tab> or <Shift-Tab>: switch between tabs\r\n  <Esc>: quit\r\n"}'
 fi
 
 if [ "$1" = "attach_old" ]; then
