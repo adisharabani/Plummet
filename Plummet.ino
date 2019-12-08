@@ -913,18 +913,27 @@ void updateAmpAndTimeForTesting() {
 //  servoAmp = testAmp;
 //
 //  initTime = millis()-loopTime-loopTime*(side==LEFT ? 0.5+testPhase : testPhase) + SYNC_MAGIC_NUMBER;
+  if (initTime == 0) { 
+     initTime = millis()-loopTime*(side==LEFT ? 0.25 : 0.75) + SYNC_MAGIC_NUMBER;
+     sprintln("initTime set");
+  }
+  if ((millis()-initTime)> loopTime*5) {
+     mode = HALT;
+     sprintln("HALT");
+  }
   
-  initTime = millis()-loopTime*(side==LEFT ? 0.25 : 0.75) + SYNC_MAGIC_NUMBER;
-
+  sprint("- Update ServoAmp: maxRight("); sprint(ropeMaxRightAngle); sprint(")-maxLeft("); sprint(ropeMaxLeftAngle);
+  sprint(")="); sprint(ropeMaxRightAngle-ropeMaxLeftAngle);
   servoAmp = (angleToServo(ropeMaxRightAngle)-angleToServo(ropeMaxLeftAngle));
+  sprint (" | a="); sprint(servoAmp);
   servoAmp = servoAmp*1.5;
   servoAmp = max(min(maxServoAmp,servoAmp),0);
 //  servoAmp = servoAmp*servoAmp/40;
   if (servoAmp < 25) { servoAmp = servoAmp/2; } // was 25,servoAmp/2
 
-  if (servoAmp < 10) { servoAmp = servoAmp/2; }        // was <10,0
+  if (servoAmp < 5) { servoAmp = servoAmp/2; }        // was <10,0
 
-  if (showLoopEvents) sprintln("- Update ServoAmp: maxRight("+String(ropeMaxRightAngle)+")-maxLeft(" + String(ropeMaxLeftAngle) + ")="+ String(ropeMaxRightAngle-ropeMaxLeftAngle) + " ==> New servoAmp: "+String(servoAmp) + " -");  
+  sprintln(" ==> New servoAmp: "+String(servoAmp) + " -");  
 //  if (ropeMaxRightAngle-ropeMaxLeftAngle < 0.4) {
 //    servoAmp = 10;
 //  } else {
@@ -1050,23 +1059,22 @@ void loop(){
 
   ropeMaxRightAngle = max(ropeAngle,ropeMaxRightAngle);
   ropeMaxLeftAngle = min(ropeAngle,ropeMaxLeftAngle);
-/*
+
   if (printMeasures) {
-    sprint("potRead: "+String(potRead) + "  ");
-    sprint("currentServoPos: "+String(currentServoPos) + "  ");
-    sprint("potAngle: "+String(potAngle) + "  ");
-    sprint("servoAngle: "+String(servoAngle) + "  ");
-    sprint("ropeAngle: "+String(ropeAngle) + "  ");
+    sprint(" potRead: "); sprint(potRead);
+    sprint(" ServoPos: "); sprint(currentServoPos);
+    sprint(" potAngle: "); sprint(potAngle);
+    sprint(" servoAngle: "); sprint(servoAngle);
+    sprint(" ropeAngle: "); sprint(ropeAngle);
     sprintln("");
   }
-  */
   
   switch (mode) {
     case SYNCED_RUN:
       mode = SYNCED_RUNNING;
       break;
     case TEST:
-      initTime = time;
+      initTime = 0;
       mode = TESTING;
       updateAmpAndTime();
       sprintln("testPhase is: "+String(testPhase));
