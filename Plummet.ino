@@ -113,15 +113,27 @@ enum left_right_e {
   RIGHT
 };
 
-
 left_right_e side = LEFT;
+
+enum mode_e {
+  STOP,
+  STOPPING,
+  HALT,
+  START,
+  RUNNING,
+  MAINTAIN,
+  MAINTAINING,
+  TEST,
+  TESTING,
+  SYNCED_RUN,
+  SYNCED_RUNNING
+};
+mode_e mode;
 
 
 #define NOTE_A5 880
 #define NOTE_G5 784
 #define NOTE_G6 1568
-
-
 
 #define sprint(s)   if (enablePrint) Serial.print(s)
 // void sprint(String s){}; void sprint(double s) {}
@@ -305,23 +317,6 @@ int posAvg() {
   return s/POSITIONS_STACK_SIZE;
 }
 
-///////////////////////////
-/// Modes
-///////////////////////////
-enum mode_e {
-  STOP,
-  STOPPING,
-  HALT,
-  START,
-  RUNNING,
-  MAINTAIN,
-  MAINTAINING,
-  TEST,
-  TESTING,
-  SYNCED_RUN,
-  SYNCED_RUNNING
-};
-mode_e mode;
 
 
 //////////////////////////////
@@ -470,6 +465,10 @@ void readCalibration() {
     servoCenter = eread(1);
   }
 }
+
+///////////////////////////
+/// Modes
+///////////////////////////
 
 
 void updateAmpAndTimeForStopping() {
@@ -678,9 +677,6 @@ void handleKeyboardInput() {
 				     if (id>0){
 				       // notify other arduinos
 				       nextSerial.println(String(":") + String(id-1)+String(":") + keyboardBuffer);
-//				       String wr = String(":") + String(id-1) + String(":") + keyboardBuffer;
-				       //sprintln("Command forwarded to the next device");
-//				       nextSerial.println(wr);
 				       inByte = 0; keyboardBuffer = ""; //ignore this command as it is not for this arduino.
 			     	} else {
 				       // do not notify other arduinos
@@ -964,13 +960,10 @@ void sendAudioCommand(int8_t command, int16_t dat)
   }
 }
 
+
 //////////////////////////////
 // Main Code
 //////////////////////////////
-
-
-static void handleRxChar( uint8_t c ) {}
-
 void setup() {  
 
   Serial.begin(9600);
