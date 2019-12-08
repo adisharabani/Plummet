@@ -1116,8 +1116,8 @@ void loop(){
   if (updateSlaveClock && isMaster && (mode == SYNCED_RUNNING)) {
     if ((time-syncInitTime)%syncLoopTime  < (lastIterationTime-syncInitTime) % syncLoopTime) {
       // this means we just got to the init time frame;
-      nextSerial.println("T"); // update the clock...     
       updateSlaveClock == false;
+      nextSerial.println("T"); // update the clock...     
     }
   }
 
