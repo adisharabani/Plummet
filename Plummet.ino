@@ -50,6 +50,8 @@ boolean printMeasures = false;
 boolean enablePrint = true;
 boolean debug = false;
 boolean enableAudio = true;
+int8_t audioSongNumber = 1;
+int8_t audioVolume = 30;
 boolean showLoopEvents = false;
 
 #define EEPROM_MAGIC 5613
@@ -189,6 +191,40 @@ String ereadstr(int index=-1) {
   }
   return s;
 }
+
+//////////////////////////////
+// Audio
+//////ֿ////////////////////////
+
+void sendAudioCommand(int8_t command, int16_t dat) {
+	sendAudioCommand(command, (int8_t)(dat >>8), (int8_t)(dat));
+}
+
+void sendAudioCommand(int8_t command, int8_t datah, int8_t datal) {
+//7E FF 06 22 00 0F 02 EF --> Set the volume to 15(0x0f is 15) and play the second song
+
+  static int8_t Send_Audio_buf[8] = {0x7e, 0xff, 0x06, 0, 0, 0, 0, 0xef} ;
+
+  if (!enableAudio) return;
+  debugLog("audio");
+  Send_Audio_buf[0] = 0x7e; //starting byte
+  Send_Audio_buf[1] = 0xff; //version
+  Send_Audio_buf[2] = 0x06; //the number of bytes of the command without starting byte and ending byte
+  Send_Audio_buf[3] = command; //
+  Send_Audio_buf[4] = 0x00;//0x00 = no feedback, 0x01 = feedback
+  Send_Audio_buf[5] = datah;//datah
+  Send_Audio_buf[6] = datal; //datal
+  Send_Audio_buf[7] = 0xef; //ending byte
+  for(uint8_t i=0; i<8; i++)//
+  {
+    audioSerial.write(Send_Audio_buf[i]) ;
+  }
+}
+
+void playSong(int8_t songNumber=1, int8_t volume=30) {
+	sendAudioCommand(22, volume, songNumber);
+}
+
 
 ///////////////////////////
 /// SERVO
@@ -731,7 +767,7 @@ void handleKeyboardInput() {
 
   if (inByte == '\n') {return; } 
 
-  int s;
+  int s,p;
   switch (inByte) {
     case 'e': // Enable output
       enablePrint = true;
@@ -883,11 +919,23 @@ void handleKeyboardInput() {
       calibrateLoopTime();
       break;
     case 'a': // play audio
-      sendAudioCommand(0X22, 0X1E01);
+      playSong(audioSongNumber, audioVolume);
       break;
-    case 'A': // enable/disable audio
-      enableAudio = !enableAudio;
-      sprintln(String("Audio ")+(enableAudio ? "enabled" : "disabled"));
+    case 'A': // Audio config for example A2,25 (song 2 volume 25)
+      if (keyboardBuffer.length()==0){
+      	enableAudio = !enableAudio;
+      }
+      s = keyboardBuffer.toInt();
+      if (s>0) {
+      	audioSongNumber = s;
+      } 
+      p = keyboardBuffer.indexOf(",");
+      if (p!=-1) {
+         s = keyboardBuffer.substring(p+1).toInt();
+         audioVolume = s;
+      }
+      keyboardBuffer = "";
+      sprint("Audio "); sprint(enableAudio ? "enabled" : "disabled"); sprint(" songNumber="); sprint(audioSongNumber); sprint(" volume="); sprintln(audioVolume);
       break;
     case '$': //Play
       if (!isPlaying) {
@@ -936,30 +984,6 @@ void handleKeyboardInput() {
 }
 
 
-//////////////////////////////
-// Audio
-//////ֿ////////////////////////
-
-void sendAudioCommand(int8_t command, int16_t dat)
-{
-  static int8_t Send_Audio_buf[8] = {0x7e, 0xff, 0x06, 0, 0, 0, 0, 0xef} ;
-
-  if (!enableAudio) return;
-  debugLog("audio");
-  Send_Audio_buf[0] = 0x7e; //starting byte
-  Send_Audio_buf[1] = 0xff; //version
-  Send_Audio_buf[2] = 0x06; //the number of bytes of the command without starting byte and ending byte
-  Send_Audio_buf[3] = command; //
-  Send_Audio_buf[4] = 0x00;//0x00 = no feedback, 0x01 = feedback
-  Send_Audio_buf[5] = (int8_t)(dat >> 8);//datah
-  Send_Audio_buf[6] = (int8_t)(dat); //datal
-  Send_Audio_buf[7] = 0xef; //ending byte
-  for(uint8_t i=0; i<8; i++)//
-  {
-    audioSerial.write(Send_Audio_buf[i]) ;
-  }
-}
-
 
 //////////////////////////////
 // Main Code
@@ -976,7 +1000,7 @@ void setup() {
 
   //prevSerial.attachInterrupt(t);
   
-  sendAudioCommand(0X09, 0X02);
+  sendAudioCommand(0X09, 0X02); // Select TF Card
   sprintln("");
   readCalibration();
 
@@ -1055,7 +1079,7 @@ void loop(){
   if ((time-rightTime+AUDIO_DELAY >= loopTime/4) && 
       (lastIterationTime-rightTime+AUDIO_DELAY < loopTime/4) &&
       (ropeMaxRightAngle>0.05) && (ropeMaxLeftAngle<-0.05)) {
-    sendAudioCommand(0X22, 0X1E01);
+	  playSong(audioSongNumber,audioVolume);
   }
 
   if ((ropeAngle<0) && (side==RIGHT) && (time-rightTime>loopTime/5)) {
