@@ -486,10 +486,10 @@ void writeCalibration() {
 
 void printCurrentCalibration() {
   sprint("ServoCenter="); sprint(servoCenter);
-  sprint("potCenter="); sprint(potCenter);
-  sprint("pot50="); sprint(pot50);
-  sprint("pot150="); sprint(pot150);
-  sprint("loopTime="); sprint(loopTime);
+  sprint(" potCenter="); sprint(potCenter);
+  sprint(" pot50="); sprint(pot50);
+  sprint(" pot150="); sprint(pot150);
+  sprint(" loopTime="); sprint(loopTime);
   sprintln("");
 }
 
@@ -892,7 +892,9 @@ void updateAmpAndTimeForStopping() {
 
   if (servoAmp < 10) { servoAmp = 0; }        // was <10
   
-  if (showLoopEvents) sprintln("- Update ServoAmp: maxRight("+String(ropeMaxRightAngle)+")-maxLeft(" + String(ropeMaxLeftAngle) + ")="+ String(ropeMaxRightAngle-ropeMaxLeftAngle) + " ==> New servoAmp: "+String(servoAmp) + " -");
+  sprint("- Update ServoAmp: maxRight("); sprint(ropeMaxRightAngle); sprint(")-maxLeft("); sprint(ropeMaxLeftAngle);
+  sprint(")="); sprint(ropeMaxRightAngle-ropeMaxLeftAngle);
+  sprint(" ==> New servoAmp: "); sprint(servoAmp); sprintln(" -");  
 }
 
 void updateAmpAndTimeForMaintaining() {
@@ -1117,7 +1119,11 @@ void loop(){
     side = LEFT;
     lastLoopTime = time-leftTime;
     leftTime = time;
-    if (showLoopEvents) sprintln("# Loop: Time("+String(lastLoopTime)+")" + (side==LEFT ? " [L] :" : " [R:") + "maxRight("+String(ropeMaxRightAngle)+")-maxLeft(" + String(ropeMaxLeftAngle) + ")="+ String(ropeMaxRightAngle-ropeMaxLeftAngle)+ " #");
+    if (showLoopEvents) {
+    	sprint("# Loop: Time(");sprint(lastLoopTime);sprint(")"); sprint(side==LEFT ? " [L] :" : " [R]:");
+    	sprint("maxRight(");sprint(ropeMaxRightAngle); sprint(")-maxLeft("); sprint(ropeMaxLeftAngle);
+    	sprint(")=");sprint(ropeMaxRightAngle-ropeMaxLeftAngle); sprintln(" #");
+    }
     tone(7, NOTE_G6, 100);
 
     if (mode != RUNNING) updateAmpAndTime();
@@ -1129,7 +1135,11 @@ void loop(){
     side = RIGHT;
     lastLoopTime = time-rightTime;
     rightTime = time;
-    if (showLoopEvents) sprintln("# Loop: Time("+String(lastLoopTime)+")" + (side==LEFT ? " [L] :" : " [R]:") + "maxRight("+String(ropeMaxRightAngle)+")-maxLeft(" + String(ropeMaxLeftAngle) + ")="+ String(ropeMaxRightAngle-ropeMaxLeftAngle)+ " #");
+    if (showLoopEvents) {
+    	sprint("# Loop: Time(");sprint(lastLoopTime);sprint(")"); sprint(side==LEFT ? " [L] :" : " [R]:");
+    	sprint("maxRight(");sprint(ropeMaxRightAngle); sprint(")-maxLeft("); sprint(ropeMaxLeftAngle);
+    	sprint(")=");sprint(ropeMaxRightAngle-ropeMaxLeftAngle); sprintln(" #");
+    }
     tone(7, NOTE_G5, 100);
     
     if (mode != RUNNING) updateAmpAndTime();
