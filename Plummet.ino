@@ -479,10 +479,19 @@ void writeCalibration() {
   ewrite(0);
   ewrite(0);
   ewrite(0);
-
-  sprintln("EEPROM: " +String(servoCenter) + " " + String(potCenter) + " " + String(pot50) + " " + String(pot150) + " " + String(loopTime));
+  
+  sprint("EEPROM: ");
+  printCurrentCalibration();
 }
- 
+
+void printCurrentCalibration() {
+  sprint("ServoCenter="); sprint(servoCenter);
+  sprint("potCenter="); sprint(potCenter);
+  sprint("pot50="); sprint(pot50);
+  sprint("pot150="); sprint(pot150);
+  sprint("loopTime="); sprint(loopTime);
+  sprintln("");
+}
 
 void readCalibration() {
   if (eread(0) == EEPROM_MAGIC) { // confirm magic number
@@ -492,12 +501,12 @@ void readCalibration() {
     pot50 = eread();
     pot150 = eread();
     loopTime = eread(); defaultLoopTime = loopTime;
-    sprintln("EEPROM: " +String(servoCenter) + " " + String(potCenter) + " " + String(pot50) + " " + String(pot150) + " " + String(loopTime));
   } else {
     sprintln("No EEPROM");
     sprintln("ServoCenter?="+String(eread(1)));
     servoCenter = eread(1);
   }
+  printCurrentCalibration();
 }
 
 ///////////////////////////
@@ -798,6 +807,8 @@ void handleKeyboardInput() {
     case 'l': // Calibrate loop time
       calibrateLoopTime();
       break;
+    case '&': // Print current calibration
+      printCurrentCalibration();
     case 'a': // play audio
       playSong(audioSongNumber, audioVolume);
       break;
@@ -1101,7 +1112,7 @@ void loop(){
 	  playSong(audioSongNumber,audioVolume);
   }
 
-  if ((ropeAngle<0) && (side==RIGHT) && (time-leftTime>loopTime/2)) {
+  if ((ropeAngle<0) && (side==RIGHT) && (time-rightTime>loopTime/4)) {
       // This section is if we are now moving to the left side;
     side = LEFT;
     lastLoopTime = time-leftTime;
@@ -1113,7 +1124,7 @@ void loop(){
 
     ropeMaxLeftAngle = 0;
       
-  } else if ((ropeAngle>0) && (side==LEFT)&& (time-rightTime>loopTime/2)) {
+  } else if ((ropeAngle>0) && (side==LEFT)&& (time-leftTime>loopTime/4)) {
     // This section is if we are now moving to the right side;
     side = RIGHT;
     lastLoopTime = time-rightTime;
