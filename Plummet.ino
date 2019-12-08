@@ -503,124 +503,6 @@ void readCalibration() {
 }
 
 ///////////////////////////
-/// Modes
-///////////////////////////
-
-
-void updateAmpAndTimeForStopping() {
-  loopTime = defaultLoopTime;
-  initTime = millis()-loopTime*(side==LEFT ? 0.25 : 0.75) + SYNC_MAGIC_NUMBER;
-
-  servoAmp = (angleToServo(ropeMaxRightAngle)-angleToServo(ropeMaxLeftAngle));
-  servoAmp = servoAmp*1.5;
-  servoAmp = max(min(maxServoAmp,servoAmp),0);
-//  servoAmp = servoAmp*servoAmp/40;
-  if (servoAmp < 25) { servoAmp = servoAmp/2; } // was servoAmp/2
-
-  if (servoAmp < 10) { servoAmp = 0; }        // was <10
-  
-  if (showLoopEvents) sprintln("- Update ServoAmp: maxRight("+String(ropeMaxRightAngle)+")-maxLeft(" + String(ropeMaxLeftAngle) + ")="+ String(ropeMaxRightAngle-ropeMaxLeftAngle) + " ==> New servoAmp: "+String(servoAmp) + " -");
-}
-
-void updateAmpAndTimeForMaintaining() {
-  loopTime = defaultLoopTime;
-//  initTime = millis()-loopTime*(side==LEFT ? 0.75 : 0.25) + SYNC_MAGIC_NUMBER;
-  initTime = millis()-loopTime*(side==LEFT ? 0.5 : 0) + SYNC_MAGIC_NUMBER;
-  // Maybe add MAINTAIN looptime:::  if (time-leftTime >2000) { loopTime = time-leftTime;}
-  double desiredAngle = 0.4;
-  double ropeAngle = ropeMaxRightAngle-ropeMaxLeftAngle;
-  if ( ropeAngle > desiredAngle*1.2) {
-    servoAmp = 0;
-  } else if (ropeAngle > desiredAngle*1.1) {
-    servoAmp = (angleToServo(desiredAngle/2)-servoCenter)*2 * 0.8;
-  }  else {
-    servoAmp = (angleToServo(desiredAngle/2)-servoCenter)*2 * 0.8 + (1 - ropeAngle/desiredAngle)*maxServoAmp;
-  }
-    sprintln("ServoAmp: "+ String(servoAmp) +" baseline: "+ String((angleToServo(desiredAngle/2)-servoCenter)*2 * 0.8));
-}
-
-void updateAmpAndTimeForRunning() {
-  loopTime = defaultLoopTime;
-  initTime = millis()-loopTime*(side==LEFT ? 0.75 : 0.25) + SYNC_MAGIC_NUMBER;
-  servoAmp = maxServoAmp;
-}
-
-
-void updateAmpAndTimeForTesting() {
-  loopTime = defaultLoopTime;
-  servoAmp = testAmp;
-//
-  initTime = millis()-loopTime-loopTime*(side==LEFT ? 0.5+testPhase : testPhase) + SYNC_MAGIC_NUMBER;
-//  if (ropeMaxRightAngle-ropeMaxLeftAngle < 0.4) {
-//    servoAmp = 10;
-//  } else {
-//    servoAmp = 0;
-//  }
-}
-
-//int q = 0;
-void updateAmpAndTimeForSyncedRunning() {  
-
-  // update loopTime
-  //loopTime = syncLoopTime;
-
-  // update servoAmp
-  double offsetRopeAngle = ropeMaxRightAngle-ropeMaxLeftAngle - syncRopeAngle;
-  if (offsetRopeAngle < 0) {
-    servoAmp = min(servoAmp + 1, maxServoAmp);
-  } else {
-    servoAmp = max(servoAmp - 1, 3);
-  }
-
-/*
-  if (abs(offsetRopeAngle)>0.02) {
-    servoAmp = max(min( servoAmp - offsetRopeAngle * 100 ,maxServoAmp),3);
-  }
-*/
-  // speed up or slow down (only do this when getting to right side - just to reduce amount of updates).
-  if (side==RIGHT) {
-    double offset = ((millis()-(syncInitTime+syncInitTimeOffset))%syncLoopTime) / double(syncLoopTime);
-    if (offset > 0.5) offset = offset-1;
-    
-    double desiredPhase = 0.25;
-    if (abs(offset) <0.15) {
-      if (servoAmp>maxServoAmp-10)  {
-        servoAmp = 20;
-      }
-      if (abs(offset) < 0.02) {
-        desiredPhase = 0.25;
-      } else {
-      //      // Linear calculation, offset:0==>phase:0.25; offset:0.05==>0.5; offset:-0.05==> 0; trim for phase to be between 0 to 0.5;
-        desiredPhase = max(min(0.25 + offset/0.05*0.25, 0.5), 0);
-      }
-    } else if (offset>0) {
-      desiredPhase = 0.6;
-      servoAmp = maxServoAmp;
-    } else if (offset<0) {
-      desiredPhase = 0.9;
-      servoAmp = maxServoAmp;
-    }
-//    syncPhase = (desiredPhase*0.5 + syncPhase*0.5);
-    syncPhase = desiredPhase;
-    initTime = millis()-loopTime*(side==LEFT ? syncPhase+0.5 : syncPhase);
-    
-    sprint("Syncing: Offset(" + String(offset) + "), ropeAmp("+ String(ropeMaxRightAngle-ropeMaxLeftAngle));
-    sprint(") ==> loopTime=" + String(syncLoopTime));
-    sprint("; ServoAmp=" + String(servoAmp));
-    sprint("; phase="+String(syncPhase));
-    sprintln("(wanted"+String(desiredPhase)+")" );
-  }
-}
-
-void updateAmpAndTime() {
-    if (mode == RUNNING)        { updateAmpAndTimeForRunning();      }
-    if (mode == MAINTAINING)    { updateAmpAndTimeForMaintaining();      }
-    if (mode == TESTING)        { updateAmpAndTimeForTesting();          }
-    if (mode == STOPPING)       { updateAmpAndTimeForStopping();         }
-    if (mode == SYNCED_RUNNING) { updateAmpAndTimeForSyncedRunning();    }
-}
-
-///////////////////////////
 /// User Data
 ///////////////////////////
 
@@ -984,6 +866,125 @@ void handleKeyboardInput() {
 }
 
 
+///////////////////////////
+/// Modes
+///////////////////////////
+
+
+void updateAmpAndTimeForStopping() {
+  loopTime = defaultLoopTime;
+  initTime = millis()-loopTime*(side==LEFT ? 0.25 : 0.75) + SYNC_MAGIC_NUMBER;
+
+  servoAmp = (angleToServo(ropeMaxRightAngle)-angleToServo(ropeMaxLeftAngle));
+  servoAmp = servoAmp*1.5;
+  servoAmp = max(min(maxServoAmp,servoAmp),0);
+//  servoAmp = servoAmp*servoAmp/40;
+  if (servoAmp < 25) { servoAmp = servoAmp/2; } // was servoAmp/2
+
+  if (servoAmp < 10) { servoAmp = 0; }        // was <10
+  
+  if (showLoopEvents) sprintln("- Update ServoAmp: maxRight("+String(ropeMaxRightAngle)+")-maxLeft(" + String(ropeMaxLeftAngle) + ")="+ String(ropeMaxRightAngle-ropeMaxLeftAngle) + " ==> New servoAmp: "+String(servoAmp) + " -");
+}
+
+void updateAmpAndTimeForMaintaining() {
+  loopTime = defaultLoopTime;
+//  initTime = millis()-loopTime*(side==LEFT ? 0.75 : 0.25) + SYNC_MAGIC_NUMBER;
+  initTime = millis()-loopTime*(side==LEFT ? 0.5 : 0) + SYNC_MAGIC_NUMBER;
+  // Maybe add MAINTAIN looptime:::  if (time-leftTime >2000) { loopTime = time-leftTime;}
+  double desiredAngle = 0.4;
+  double ropeAngle = ropeMaxRightAngle-ropeMaxLeftAngle;
+  if ( ropeAngle > desiredAngle*1.2) {
+    servoAmp = 0;
+  } else if (ropeAngle > desiredAngle*1.1) {
+    servoAmp = (angleToServo(desiredAngle/2)-servoCenter)*2 * 0.8;
+  }  else {
+    servoAmp = (angleToServo(desiredAngle/2)-servoCenter)*2 * 0.8 + (1 - ropeAngle/desiredAngle)*maxServoAmp;
+  }
+    sprintln("ServoAmp: "+ String(servoAmp) +" baseline: "+ String((angleToServo(desiredAngle/2)-servoCenter)*2 * 0.8));
+}
+
+void updateAmpAndTimeForRunning() {
+  loopTime = defaultLoopTime;
+  initTime = millis()-loopTime*(side==LEFT ? 0.75 : 0.25) + SYNC_MAGIC_NUMBER;
+  servoAmp = maxServoAmp;
+}
+
+
+void updateAmpAndTimeForTesting() {
+  loopTime = defaultLoopTime;
+  servoAmp = testAmp;
+//
+  initTime = millis()-loopTime-loopTime*(side==LEFT ? 0.5+testPhase : testPhase) + SYNC_MAGIC_NUMBER;
+//  if (ropeMaxRightAngle-ropeMaxLeftAngle < 0.4) {
+//    servoAmp = 10;
+//  } else {
+//    servoAmp = 0;
+//  }
+}
+
+//int q = 0;
+void updateAmpAndTimeForSyncedRunning() {  
+
+  // update loopTime
+  //loopTime = syncLoopTime;
+
+  // update servoAmp
+  double offsetRopeAngle = ropeMaxRightAngle-ropeMaxLeftAngle - syncRopeAngle;
+  if (offsetRopeAngle < 0) {
+    servoAmp = min(servoAmp + 1, maxServoAmp);
+  } else {
+    servoAmp = max(servoAmp - 1, 3);
+  }
+
+/*
+  if (abs(offsetRopeAngle)>0.02) {
+    servoAmp = max(min( servoAmp - offsetRopeAngle * 100 ,maxServoAmp),3);
+  }
+*/
+  // speed up or slow down (only do this when getting to right side - just to reduce amount of updates).
+  if (side==RIGHT) {
+    double offset = ((millis()-(syncInitTime+syncInitTimeOffset))%syncLoopTime) / double(syncLoopTime);
+    if (offset > 0.5) offset = offset-1;
+    
+    double desiredPhase = 0.25;
+    if (abs(offset) <0.15) {
+      if (servoAmp>maxServoAmp-10)  {
+        servoAmp = 20;
+      }
+      if (abs(offset) < 0.02) {
+        desiredPhase = 0.25;
+      } else {
+      //      // Linear calculation, offset:0==>phase:0.25; offset:0.05==>0.5; offset:-0.05==> 0; trim for phase to be between 0 to 0.5;
+        desiredPhase = max(min(0.25 + offset/0.05*0.25, 0.5), 0);
+      }
+    } else if (offset>0) {
+      desiredPhase = 0.6;
+      servoAmp = maxServoAmp;
+    } else if (offset<0) {
+      desiredPhase = 0.9;
+      servoAmp = maxServoAmp;
+    }
+//    syncPhase = (desiredPhase*0.5 + syncPhase*0.5);
+    syncPhase = desiredPhase;
+    initTime = millis()-loopTime*(side==LEFT ? syncPhase+0.5 : syncPhase);
+    
+    sprint("Syncing: Offset(" + String(offset) + "), ropeAmp("+ String(ropeMaxRightAngle-ropeMaxLeftAngle));
+    sprint(") ==> loopTime=" + String(syncLoopTime));
+    sprint("; ServoAmp=" + String(servoAmp));
+    sprint("; phase="+String(syncPhase));
+    sprintln("(wanted"+String(desiredPhase)+")" );
+  }
+}
+
+void updateAmpAndTime() {
+    if (mode == RUNNING)        { updateAmpAndTimeForRunning();      }
+    if (mode == MAINTAINING)    { updateAmpAndTimeForMaintaining();      }
+    if (mode == TESTING)        { updateAmpAndTimeForTesting();          }
+    if (mode == STOPPING)       { updateAmpAndTimeForStopping();         }
+    if (mode == SYNCED_RUNNING) { updateAmpAndTimeForSyncedRunning();    }
+}
+
+
 
 //////////////////////////////
 // Main Code
@@ -1133,7 +1134,7 @@ void loop(){
   if (updateSlaveClock && isMaster && (mode == SYNCED_RUNNING)) {
     if ((time-syncInitTime)%syncLoopTime  < (lastIterationTime-syncInitTime) % syncLoopTime) {
       // this means we just got to the init time frame;
-      updateSlaveClock == false;
+      updateSlaveClock = false;
       nextSerial.println("T"); // update the clock...     
     }
   }
