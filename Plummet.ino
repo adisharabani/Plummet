@@ -425,9 +425,7 @@ void calibrateLoopTime() {
   sprintln("Speed up");
   unsigned long t = millis();
   mode = START;
-  while (millis() < t + 9000) {
-    loop();
-  }
+  while (millis() < t + 9000) { loop();  }
   mode = HALT;
   loop();
 
@@ -912,9 +910,21 @@ void updateAmpAndTimeForRunning() {
 
 void updateAmpAndTimeForTesting() {
   loopTime = defaultLoopTime;
-  servoAmp = testAmp;
+//  servoAmp = testAmp;
 //
-  initTime = millis()-loopTime-loopTime*(side==LEFT ? 0.5+testPhase : testPhase) + SYNC_MAGIC_NUMBER;
+//  initTime = millis()-loopTime-loopTime*(side==LEFT ? 0.5+testPhase : testPhase) + SYNC_MAGIC_NUMBER;
+  
+  initTime = millis()-loopTime*(side==LEFT ? 0.25 : 0.75) + SYNC_MAGIC_NUMBER;
+
+  servoAmp = (angleToServo(ropeMaxRightAngle)-angleToServo(ropeMaxLeftAngle));
+  servoAmp = servoAmp*1.5;
+  servoAmp = max(min(maxServoAmp,servoAmp),0);
+//  servoAmp = servoAmp*servoAmp/40;
+  if (servoAmp < 25) { servoAmp = servoAmp/2; } // was 25,servoAmp/2
+
+  if (servoAmp < 10) { servoAmp = servoAmp/2; }        // was <10,0
+
+  if (showLoopEvents) sprintln("- Update ServoAmp: maxRight("+String(ropeMaxRightAngle)+")-maxLeft(" + String(ropeMaxLeftAngle) + ")="+ String(ropeMaxRightAngle-ropeMaxLeftAngle) + " ==> New servoAmp: "+String(servoAmp) + " -");  
 //  if (ropeMaxRightAngle-ropeMaxLeftAngle < 0.4) {
 //    servoAmp = 10;
 //  } else {
