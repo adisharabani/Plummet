@@ -933,7 +933,7 @@ void updateAmpAndTimeForTesting() {
 
   if (servoAmp < 5) { servoAmp = servoAmp/2; }        // was <10,0
 
-  sprintln(" ==> New servoAmp: "+String(servoAmp) + " -");  
+  sprint(" ==> New servoAmp: "); sprint(servoAmp); sprintln(" -");  
 //  if (ropeMaxRightAngle-ropeMaxLeftAngle < 0.4) {
 //    servoAmp = 10;
 //  } else {
@@ -1101,7 +1101,7 @@ void loop(){
 	  playSong(audioSongNumber,audioVolume);
   }
 
-  if ((ropeAngle<0) && (side==RIGHT) && (time-rightTime>loopTime/5)) {
+  if ((ropeAngle<0) && (side==RIGHT) && (time-leftTime>loopTime/2)) {
       // This section is if we are now moving to the left side;
     side = LEFT;
     lastLoopTime = time-leftTime;
@@ -1113,7 +1113,7 @@ void loop(){
 
     ropeMaxLeftAngle = 0;
       
-  } else if ((ropeAngle>0) && (side==LEFT)&& (time-leftTime>loopTime/5)) {
+  } else if ((ropeAngle>0) && (side==LEFT)&& (time-rightTime>loopTime/2)) {
     // This section is if we are now moving to the right side;
     side = RIGHT;
     lastLoopTime = time-rightTime;
