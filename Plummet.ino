@@ -930,10 +930,10 @@ void updateAmpAndTimeForTesting() {
      initTime = millis()-loopTime*(side==LEFT ? 0.25 : 0.75) + SYNC_MAGIC_NUMBER;
      sprintln("initTime set");
   }
-  if ((millis()-initTime)> loopTime*5) {
+/*  if ((millis()-initTime)> loopTime*5) {
      mode = HALT;
      sprintln("HALT");
-  }
+  }*/
   
   sprint("- Update ServoAmp: maxRight("); sprint(ropeMaxRightAngle); sprint(")-maxLeft("); sprint(ropeMaxLeftAngle);
   sprint(")="); sprint(ropeMaxRightAngle-ropeMaxLeftAngle);
