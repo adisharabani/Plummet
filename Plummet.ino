@@ -667,17 +667,17 @@ void handleKeyboardInput() {
     case 'd': // Debug
       debug = !debug;
       enablePrint = true;
-      sprintln("debug is "+ String(debug ? "on" : "off"));
+      sprintln("debug="+ String(debug ? "on" : "off"));
       break;
     case 'p': // Print measurements (potentiometer, servo, etc.)
       printMeasures = !printMeasures;
       enablePrint = true;
-      sprintln("printMeasures is "+ String(printMeasures ? "on" : "off"));
+      sprintln("printMeasures="+ String(printMeasures ? "on" : "off"));
       break;
     case 'L': // Print loop events (move from RIGHT to left)
       showLoopEvents = !showLoopEvents;
       enablePrint = true;
-      sprintln("showLoopEvents is "+ String(showLoopEvents ? "on" : "off"));
+      sprintln("showLoopEvents="+ String(showLoopEvents ? "on" : "off"));
       break;
     case '0': /* temporary move servo to center */
       smoothMove(servoCenter);
@@ -700,24 +700,27 @@ void handleKeyboardInput() {
       break;
     case ']': /* Increase TEST Phase */
       testPhase = (int((testPhase + 0.05)*100) % 100) /100.0;
-      sprintln("Testing phase is "+String(testPhase));
+      sprintln("tPhase="+String(testPhase));
 
       break;
     case '[': /* Decrease TEST phase */
       testPhase = (int((testPhase - 0.05)*100) % 100) /100.0;
-      sprintln("Testing phase is "+String(testPhase));
+      sprintln("tPhase="+String(testPhase));
       break;
     case '>': /* Increase TEST amplitude */
       testAmp = min(testAmp + 5,100);
-      sprintln("Testing amp is "+String(testAmp));
+      sprintln("tAmp="+String(testAmp));
       break;
     case '<': /* Decrease TEST amplitude */
       testAmp = max(testAmp -5,0);
-      sprintln("Testing amp is "+String(testAmp));
+      sprintln("tAmp="+String(testAmp));
       break;
     case 's': // SYNC
       s = keyboardBuffer.toInt(); keyboardBuffer = "";
       syncLoopTime = (s!=0) ? s : defaultLoopTime + 10; //defaultLoopTime+16; // RONEN=3174
+      if (isMaster && (s==0)) {
+      	nextSerial.println(String("S")+String(syncLoopTime));
+      }
       syncInitTime = millis();
       syncInitTimeOffset = 0;
       syncRopeAngle = 0.3;
@@ -725,6 +728,8 @@ void handleKeyboardInput() {
       mode = SYNCED_RUN; sprintln("SYNC" + String(syncLoopTime));
       break;
     case 'S': // SYNC to an already set clock (don't update the clock)
+      s = keyboardBuffer.toInt(); keyboardBuffer = "";
+      if (s!=0) syncLoopTime = s;
       mode = SYNCED_RUN; 
       syncInitTimeOffset = 0;
       break;
@@ -768,15 +773,15 @@ void handleKeyboardInput() {
       break;
     case '+': // Move servo one step forwards
       s = myservoread(); 
-      sprint("Old "); sprintln("servo is " + String(s));
+      sprint("Old "); sprintln("servo=" + String(s));
       myservowrite(s+1);
-      sprintln("servo is " + String(myservoread()));    
+      sprintln("servo=" + String(myservoread()));    
       break;
     case '-': // Move servo one step backwards
       s = myservoread();
-      sprint("Old "); sprintln("servo is " + String(s));
+      sprint("Old "); sprintln("servo=" + String(s));
       myservowrite(s-1);
-      sprintln("servo is " + String(myservoread()));    
+      sprintln("servo=" + String(myservoread()));    
       break;
     case '_': // Detach or reattach servo
       if (myservoattached()) {
@@ -796,7 +801,8 @@ void handleKeyboardInput() {
       tone(7, NOTE_A5, 1000);
       break;
     case 'B': // Are you a master?
-      sprintln(isMaster ? "I am a master" : "I am a slave"); 
+      sprint("I am a ");
+      sprintln(isMaster ? "master" : "slave"); 
       if (isMaster) tone(7, NOTE_A5, 1000);
       break;
     case 'c': // Calibrate
@@ -827,42 +833,42 @@ void handleKeyboardInput() {
          audioVolume = s;
       }
       keyboardBuffer = "";
-      sprint("Audio "); sprint(enableAudio ? "enabled" : "disabled"); sprint(" songNumber="); sprint(audioSongNumber); sprint(" volume="); sprintln(audioVolume);
+      sprint("Audio "); sprint(enableAudio ? "on" : "off"); sprint(" song="); sprint(audioSongNumber); sprint(" vol="); sprintln(audioVolume);
       break;
     case '$': //Play
       if (!isPlaying) {
         nextCommandTime = eread(EEPROM_COMMANDS_LOC);
         nextCommandLoc = eIndex;
         if (nextCommandTime == MAX_UINT) {
-        	sprintln("No recorded actions");
+        	sprintln("No "); sprintln("Recorded Commands");
         } else {
 	      	isPlaying = true;
     	  	playInitTime = millis();
 	        sprint("Next action in ");
 	        sprint(nextCommandTime);
-	        sprintln(" seconds");
+	        sprintln("s");
         }
       } else {
-      	sprintln("Playback stopped");
+      	sprint("Playback "); sprintln("stopped");
       	nextCommandTime = MAX_UINT;
       	isPlaying = false;
       }
       break;
     case '%': //Record
       if (isPlaying) {
-      	sprintln("Playback finished");
+      	sprint("Playback "); sprintln("finished");
       	isPlaying = false;
         nextCommandTime = MAX_UINT; // stop playback if needed;
       } else {
         isRecording = !isRecording;
-        sprintln(isRecording ? "Recording on" : "Recording off");
+        sprint("Recording "); sprintln(isRecording ? "on" : "off");
         recordingLoc = EEPROM_COMMANDS_LOC;
         recordInitTime = millis();
       }
       break;
     case '?': //Show recorded commands;
       unsigned int commandTime = eread(EEPROM_COMMANDS_LOC);
-      sprintln("Recorded Commands:");
+      sprintln("Recorded Commands");
       while (commandTime != MAX_UINT) {
       	 sprint(commandTime);
       	 sprint("s: ");
