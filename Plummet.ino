@@ -717,7 +717,7 @@ void handleKeyboardInput() {
       break;
     case 's': // SYNC
       s = keyboardBuffer.toInt(); keyboardBuffer = "";
-      syncLoopTime = (s!=0) ? s : 3185; //defaultLoopTime+16; // RONEN=3174
+      syncLoopTime = (s!=0) ? s : defaultLoopTime + 10; //defaultLoopTime+16; // RONEN=3174
       syncInitTime = millis();
       syncInitTimeOffset = 0;
       syncRopeAngle = 0.3;
@@ -726,12 +726,13 @@ void handleKeyboardInput() {
       break;
     case 'S': // SYNC to an already set clock (don't update the clock)
       mode = SYNCED_RUN; 
+      syncInitTimeOffset = 0;
       break;
-    case 'T': // Set the clock for SYNC
+    case 'T': /* Set the clock for SYNC */
       syncInitTime = millis();
       break;
-    case 'u': // How long was the syncInitTime ago?
-      sprintln("syncInitTime was "+ String(millis()-syncInitTime) + " milliseconds ago");
+    case 'u': // Print phase compared to sync clock
+      sprint("phase compared to sync clock is ");sprintln((millis()-syncInitTime) % syncLoopTime);
       break;
     case 'U': // Update slaves on current Sync Clock
       updateSlaveClock = true;
