@@ -32,7 +32,7 @@
 #define potPin 1 // analog
 
 
-#define SYNC_MAGIC_NUMBER 0
+int SYNC_MAGIC_NUMBER=0;
 #define AUDIO_DELAY 0
 
 int defaultLoopTime = 3167; //Palo Alto: 3080; // 3160; // 3420;
@@ -138,9 +138,10 @@ mode_e mode;
 #define NOTE_G6 1568
 
 #define sprint(s)   if (enablePrint) Serial.print(s)
-// void sprint(String s){}; void sprint(double s) {}
-
 #define sprintln(s) if (enablePrint) Serial.println(s)
+// void sprint(String s){}; void sprint(double s) {}
+// #define sprint(s) 
+// #define sprintln(s)
 
 void debugLog(String x) { if (debug) Serial.print(x);         }
 
@@ -708,11 +709,11 @@ void handleKeyboardInput() {
       sprintln("tPhase="+String(testPhase));
       break;
     case '>': /* Increase TEST amplitude */
-      testAmp = min(testAmp + 5,100);
+      testAmp = min(testAmp + 1,100);
       sprintln("tAmp="+String(testAmp));
       break;
     case '<': /* Decrease TEST amplitude */
-      testAmp = max(testAmp -5,0);
+      testAmp = max(testAmp -1,0);
       sprintln("tAmp="+String(testAmp));
       break;
     case 's': // SYNC
@@ -766,6 +767,16 @@ void handleKeyboardInput() {
       mode = SYNCED_RUN; 
       break;
 */
+    case 'M': // Set magic number
+      sprint("Old ");
+      sprint("Magic Number=");
+      sprint(SYNC_MAGIC_NUMBER);
+      s = keyboardBuffer.toInt(); keyboardBuffer = "";
+      SYNC_MAGIC_NUMBER = s;
+      sprint("Magic Number=");
+      sprint(SYNC_MAGIC_NUMBER);
+      break;
+      
     case '=': // Move servo to specific location
       s = keyboardBuffer.toInt(); keyboardBuffer = "";
       if (s!=0) smoothMove(s);
@@ -789,6 +800,7 @@ void handleKeyboardInput() {
       } else {
          myservoattach(servoPin);
       }
+      sprint("Servo "); sprintln(myservoattached() ? "attached" : "detached");
       break;
 /*   case '~': 
 	 // Change Servo type (Timer1 vs Servo library)
@@ -933,10 +945,10 @@ void updateAmpAndTimeForTesting() {
 //  servoAmp = testAmp;
 //
 //  initTime = millis()-loopTime-loopTime*(side==LEFT ? 0.5+testPhase : testPhase) + SYNC_MAGIC_NUMBER;
-  if (initTime == 0) { 
+//  if (initTime == 0) { 
      initTime = millis()-loopTime*(side==LEFT ? 0.25 : 0.75) + SYNC_MAGIC_NUMBER;
-     sprintln("initTime set");
-  }
+//     sprintln("initTime set");
+// }
 /*  if ((millis()-initTime)> loopTime*5) {
      mode = HALT;
      sprintln("HALT");
@@ -949,9 +961,10 @@ void updateAmpAndTimeForTesting() {
   servoAmp = servoAmp*1.5;
   servoAmp = max(min(maxServoAmp,servoAmp),0);
 //  servoAmp = servoAmp*servoAmp/40;
-  if (servoAmp < 25) { servoAmp = servoAmp/2; } // was 25,servoAmp/2
+//  if (servoAmp < 25) { servoAmp = servoAmp/2; } // was 25,servoAmp/2
 
-  if (servoAmp < 5) { servoAmp = servoAmp/2; }        // was <10,0
+  servoAmp = servoAmp*testAmp/20;
+  //if (servoAmp < 5) { servoAmp = servoAmp/2; }        // was <10,0
 
   sprint(" ==> New servoAmp: "); sprint(servoAmp); sprintln(" -");  
 //  if (ropeMaxRightAngle-ropeMaxLeftAngle < 0.4) {
@@ -1062,12 +1075,20 @@ void setup() {
 }
 
 unsigned long keepalive = 0;
+
+left_right_e direction = RIGHT;
+
 void loop(){
   if (time > keepalive) { nextSerial.print(" "); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
   if (prevSerial.available()) {if (isMaster) sprintln("I am now a slave"); isMaster = false;} // inform 
   // if (isMaster) { tone(7, NOTE_F5,100); }   // If master make noise
-  
+  //if (millis()-lastIterationTime<50) {
+  //	delay(50-(millis()-lastIterationTime));
+  //}
   time = millis();
+  
+  //sprint(time-lastIterationTime);
+  //sprint("...\r");
 
   handleKeyboardInput();
 
@@ -1079,6 +1100,17 @@ void loop(){
 
   ropeMaxRightAngle = max(ropeAngle,ropeMaxRightAngle);
   ropeMaxLeftAngle = min(ropeAngle,ropeMaxLeftAngle);
+  
+/*  if ((direction == RIGHT) && (ropeAngle < ropeMaxRightAngle)) {
+  	direction = LEFT;
+  	sprintln ("right peak");
+  	ropeMaxLeftAngle = ropeAngle;
+  } else if ((direction == LEFT) && (ropeAngle > ropeMaxLeftAngle)) {
+  	direction = RIGHT;
+  	sprintln ("left peak");
+  	ropeMaxRightAngle = ropeAngle;
+  }
+  */
 
   if (printMeasures) {
     sprint(" potRead: "); sprint(potRead);
@@ -1153,6 +1185,7 @@ void loop(){
     
     ropeMaxRightAngle = 0;
   }
+  
 /*
   debugLog("Mode: "); debugLog(String(mode)); debugLog("  ");
   debugLog("currentServoPos: "); debugLog(String(currentServoPos)); debugLog("  ");
