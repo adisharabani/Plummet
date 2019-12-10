@@ -32,7 +32,8 @@
 #define potPin 1 // analog
 
 
-int SYNC_MAGIC_NUMBER=0;
+int SYNC_MAGIC_NUMBER=-70;
+
 #define AUDIO_DELAY 0
 
 int defaultLoopTime = 3167; //Palo Alto: 3080; // 3160; // 3420;
@@ -961,11 +962,11 @@ void updateAmpAndTimeForTesting() {
   servoAmp = servoAmp*1.5;
   servoAmp = max(min(maxServoAmp,servoAmp),0);
 //  servoAmp = servoAmp*servoAmp/40;
-//  if (servoAmp < 25) { servoAmp = servoAmp/2; } // was 25,servoAmp/2
+  if (servoAmp < 25) { servoAmp = servoAmp/2; } // was 25,servoAmp/2
+
+  if (servoAmp < 10) { servoAmp = servoAmp/2; }        // was <10,0
 
   servoAmp = servoAmp*testAmp/20;
-  //if (servoAmp < 5) { servoAmp = servoAmp/2; }        // was <10,0
-
   sprint(" ==> New servoAmp: "); sprint(servoAmp); sprintln(" -");  
 //  if (ropeMaxRightAngle-ropeMaxLeftAngle < 0.4) {
 //    servoAmp = 10;
