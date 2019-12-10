@@ -88,13 +88,13 @@ unsigned long initTime;
 unsigned long time;
 unsigned long lastIterationTime  = millis();
 
-double ropeMaxLeftAngle;
-double ropeMaxRightAngle;
+float ropeMaxLeftAngle;
+float ropeMaxRightAngle;
 
 unsigned long syncInitTime;
 int syncInitTimeOffset;
 int syncLoopTime=0;
-double syncRopeAngle;
+float syncRopeAngle;
 double syncPhase;
 boolean updateSlaveClock = false;
 
@@ -309,11 +309,11 @@ void smoothMove(double desiredPosition, int totalTime = 2000) {
   }
 }
 
-double getServoAngle() {
+float getServoAngle() {
   return -(0.0+myservoread()-servoCenter)/100*(PI/2);
 }
 
-int angleToServo(double angle) {
+int angleToServo(float angle) {
   return angle/(PI/2)*100+servoCenter;
 }
 
@@ -327,20 +327,20 @@ double getOcsilatorPos(){
 
 // Potentiometer position history
 #define POSITIONS_STACK_SIZE 10
-int positions[POSITIONS_STACK_SIZE]; 
+double positions[POSITIONS_STACK_SIZE]; 
 unsigned int positionsPTR = POSITIONS_STACK_SIZE;
 #define push(p) positions[(++positionsPTR)%POSITIONS_STACK_SIZE] = p
 #define getPos(i) positions[(positionsPTR-i)%POSITIONS_STACK_SIZE]
 #define lastPos getPos(0)
 
 
-int potentiometerRead() {
-  push(int(analogRead(potPin)));
+double potentiometerRead() {
+  push(double(analogRead(potPin)));
   return posAvg();
 }
 
-double getPotAngle() {
-  int p = potentiometerRead();
+float getPotAngle() {
+  double p = potentiometerRead();
   return (0.0+p-potCenter)/(pot150-pot50)*(PI/2);
 //  p-pot150
 }
@@ -922,8 +922,8 @@ void updateAmpAndTimeForMaintaining() {
 //  initTime = millis()-loopTime*(side==LEFT ? 0.75 : 0.25) + SYNC_MAGIC_NUMBER;
   initTime = millis()-loopTime*(side==LEFT ? 0.5 : 0) + SYNC_MAGIC_NUMBER;
   // Maybe add MAINTAIN looptime:::  if (time-leftTime >2000) { loopTime = time-leftTime;}
-  double desiredAngle = 0.4;
-  double ropeAngle = ropeMaxRightAngle-ropeMaxLeftAngle;
+  float desiredAngle = 0.4;
+  float ropeAngle = ropeMaxRightAngle-ropeMaxLeftAngle;
   if ( ropeAngle > desiredAngle*1.2) {
     servoAmp = 0;
   } else if (ropeAngle > desiredAngle*1.1) {
@@ -940,8 +940,11 @@ void updateAmpAndTimeForRunning() {
   servoAmp = maxServoAmp;
 }
 
+#define MAP(v,fromL,fromH,toL,toH) ((v-fromL)/(fromH-fromL)*(toH-toL) + toL)
 
 void updateAmpAndTimeForTesting() {
+  double ropeAmp;
+  static double lastRopeAmp=0;
   loopTime = defaultLoopTime;
 //  servoAmp = testAmp;
 //
@@ -957,16 +960,41 @@ void updateAmpAndTimeForTesting() {
   
   sprint("- Update ServoAmp: maxRight("); sprint(ropeMaxRightAngle); sprint(")-maxLeft("); sprint(ropeMaxLeftAngle);
   sprint(")="); sprint(ropeMaxRightAngle-ropeMaxLeftAngle);
-  servoAmp = (angleToServo(ropeMaxRightAngle)-angleToServo(ropeMaxLeftAngle));
-  sprint (" | a="); sprint(servoAmp);
-  servoAmp = servoAmp*1.5;
-  servoAmp = max(min(maxServoAmp,servoAmp),0);
-//  servoAmp = servoAmp*servoAmp/40;
-  if (servoAmp < 25) { servoAmp = servoAmp/2; } // was 25,servoAmp/2
+  ropeAmp = (angleToServo(ropeMaxRightAngle)-angleToServo(ropeMaxLeftAngle));
+  sprint (" | a="); sprint(ropeAmp);
+  
+  if (lastRopeAmp > ropeAmp) {
+  	servoAmp = max(0,ropeAmp-(lastRopeAmp-ropeAmp));
+    sprint (" | c="); sprint(servoAmp);
+  } else {
+  	servoAmp = ropeAmp;
+  }
+  lastRopeAmp = ropeAmp;
 
-  if (servoAmp < 10) { servoAmp = servoAmp/2; }        // was <10,0
+  servoAmp = servoAmp * 1.5;
+  
+  if (servoAmp>=40) { 
+     servoAmp = maxServoAmp;
+  } else if (servoAmp>=35) {
+  	 servoAmp = MAP(servoAmp, 35, 40, 25, maxServoAmp);
+   } else if (servoAmp>=10) {
+     servoAmp = MAP(servoAmp,10,35,10,25);
+  } else if (servoAmp>=3) {
+  	servoAmp = MAP(servoAmp, 3, 10, 0, 10); 
+  } else {
+  	servoAmp = 0;
+  }
+
+/*  servoAmp = servoAmp*1.5;
+//  servoAmp = servoAmp*servoAmp/40;
+  if (servoAmp < 25) { servoAmp = servoAmp; } // was 25,servoAmp/2
+
+  if (servoAmp < 10) { servoAmp = max(0,servoAmp-2); }        // was <10,0
+  */
 
   servoAmp = servoAmp*testAmp/20;
+
+  servoAmp = max(min(maxServoAmp,servoAmp),0);
   sprint(" ==> New servoAmp: "); sprint(servoAmp); sprintln(" -");  
 //  if (ropeMaxRightAngle-ropeMaxLeftAngle < 0.4) {
 //    servoAmp = 10;
@@ -982,7 +1010,7 @@ void updateAmpAndTimeForSyncedRunning() {
   //loopTime = syncLoopTime;
 
   // update servoAmp
-  double offsetRopeAngle = ropeMaxRightAngle-ropeMaxLeftAngle - syncRopeAngle;
+  float offsetRopeAngle = ropeMaxRightAngle-ropeMaxLeftAngle - syncRopeAngle;
   if (offsetRopeAngle < 0) {
     servoAmp = min(servoAmp + 1, maxServoAmp);
   } else {
@@ -1065,7 +1093,7 @@ void setup() {
 
   mode=HALT;
   initTime = millis();
-  randomSeed((initTime + potentiometerRead()*10) % 30000);
+  randomSeed((initTime + int(potentiometerRead()*100)) % 30000);
   updateAmpAndTime();
 
   // wait 3 seconds to see if you are a slave
@@ -1095,9 +1123,9 @@ void loop(){
 
   int potRead = potentiometerRead();
   double currentServoPos = myservoread();
-  double potAngle = getPotAngle();
-  double servoAngle = getServoAngle();
-  double ropeAngle = potAngle+servoAngle;
+  float potAngle = getPotAngle();
+  float servoAngle = getServoAngle();
+  float ropeAngle = potAngle+servoAngle;
 
   ropeMaxRightAngle = max(ropeAngle,ropeMaxRightAngle);
   ropeMaxLeftAngle = min(ropeAngle,ropeMaxLeftAngle);
