@@ -37,8 +37,8 @@ if [ $# -eq 0 ]; then
        whiptail --scrolltext --textbox /dev/stdin 25 78 <<<"$($0 $cmd | tr -d '\r')" 
      ;;
    esac
-   echo "Type ./Plummet to restart the program"
  done
+ echo "Type ./Plummet to restart the program"
 fi
 if [ "$1" = "test" ] ; then
  echo 1
@@ -117,15 +117,6 @@ if [ "$1" = "listCommands" ]; then
  cat Plummet.ino | grep "case '" | grep // | sed s/\ *case\ \'//g | sed s_\':\ //_:_g | awk 'BEGIN {printf " AvailableCommands:\r\n";} {printf "%s\r\n", $0} END {printf "  <Tab> or <Shift-Tab>: switch between tabs\r\n  <Esc>: quit\r\n"}'
 fi
 
-if [ "$1" = "control" ]; then
-# cat Plummet.ino | grep "case '" | grep // | sed s/\ *case\ \'//g | sed s_\':\ //_:_g | tr -d "'" |  awk -F ":" "BEGIN {printf \" whiptail --title 'Plummet 2.0' --menu 'Choose an option:' 25 78 16 \";}  {printf \"'%s' '%s' \", \$1, \$2} END {printf \"\\r\\n\"}"
- read -ra array <<< $(cat Plummet.ino | grep "case '" | grep // | sed s/\ *case\ \'//g | sed s_\':\ //_:_g | sed -e "s:\":\\\":g" | awk -F ':' '{print $1; print $2}')
- whiptail --title \"Plummet 2.0\" --menu \"Choose an option:\" 25 78 16 "${array[@]}"
- 
- 
-fi
-
-
 if [ "$1" = "attach_old" ]; then
  ard=$($0 listDevices $2| tail -1)
  if [ "$ard" == "" ]; then
@@ -165,14 +156,15 @@ if [ "$1" = "attach" ]; then
       echo split >> /tmp/.screens
       echo focus >> /tmp/.screens
    fi
-   echo screen /dev/${ard} >> /tmp/.screens
-   echo stuff "e\nB\n \n" >> /tmp/.screens
+   echo screen -t ${ard} /dev/${ard} >> /tmp/.screens
+   echo 'stuff "e\nB\n \n"' >> /tmp/.screens
    if [ "$isFirst" = "1" ]; then
       echo split -v >> /tmp/.screens
       echo focus >> /tmp/.screens
       #echo screen bash -c '"' $0 listCommands ';' cat  '"' >> /tmp/.screens
-      echo screen -t Help bash -c '"' $0 listCommands '|' less -S -# 5 '"' >> /tmp/.screens
-      echo resize -h 30 >> /tmp/.screens
+      #echo screen -t Help bash -c '"' $0 listCommands '|' less -S -# 5 '"' >> /tmp/.screens
+      echo screen -t Help bash -c '"' $0 control '"' >> /tmp/.screens
+      echo resize -h 40 >> /tmp/.screens
       echo focus prev >> /tmp/.screens
    fi
    isFirst=0
@@ -180,6 +172,9 @@ if [ "$1" = "attach" ]; then
  echo "hardstatus alwayslastline" >> /tmp/.screens
  echo "hardstatus string 'Press <Esc> to quit'" >> /tmp/.screens
  echo "focus top" >> /tmp/.screens
+ echo "focus right" >> /tmp/.screens
+ echo "msgwait 0" >> /tmp/.screens
+ echo "layout save default" >> /tmp/.screens 
  screen -c /tmp/.screens
  $0 kill
  #screen -R -S ${ard} bash -c 'tty > /tmp/screen${ard}; '$0' listCommands; cu -l /dev/'${ard}' -s 38400'
@@ -195,5 +190,43 @@ if [ "$1" = "listDevices" ]; then
  find /dev/ -type c -regextype "posix-extended" -iregex '/dev/('${2}'|'${ARDTTY_PATTERN}${2}'.*)' | cut -c 6- 
 fi
 
+if [ "$1" = "getMaster" ]; then
+  # send the B command
+  for i in $(screen -Q windows | tr " " : | sed -e 's/::/\n/g'); do
+    if [[ ${i#*:} =~ $ARDTTY_PATTERN ]]; then
+        screen -X at ${i%:*} stuff "B\n";
+    fi
+  done
+  # wait a sec
+  sleep 0.5;
+  # read who is master and who is slave
+  for i in $(screen -Q windows | tr " " : | sed -e 's/::/\n/g'); do
+    if [[ ${i#*:} =~ $ARDTTY_PATTERN ]]; then
+        screenType=$(screen -X at ${i%:*} hardcopy -h /tmp/.hardcopy; cat /tmp/.hardcopy |grep "I am" | tail -1 | tr " " "\n" | grep -E '(slave|master)');
+        
+        #echo ${i%:*} ${i#*:} is $screenType
+        if [ "$screenType" == "master" ]; then
+        	masterScreen=${i%:*}
+        fi
+        rm /tmp/.hardcopy
+    fi
+  done
+  echo $masterScreen
+fi	
 
+if [ "$1" = "control" ]; then
+  readarray -t -d "|" options <<< $( cat Plummet.ino | grep "case '" | grep // | sed s/\ *case\ \'//g | sed s_\':\ //_:_g | sed -e "s:\":\\\":g" | awk -F ':' '{print t $1 "|" $2 } {t="|"}' )
+  cmd=""
+  while : ; do
+    cmd=$(whiptail --title "Plummet 2.0" --nocancel --default-item "${cmd}" --menu "Choose an option:" 39 56 33 "${options[@]}"  3>&2 2>&1 1>&3 )
+    
+    if [ "$cmd" == "" ]; then 
+      break
+    fi
+    if [ "$masterScreen" == "" ]; then 
+       masterScreen=$($0 getMaster)
+    fi
+    screen -X at $masterScreen stuff "${cmd}\n"
+  done
+fi
 

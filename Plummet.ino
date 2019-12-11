@@ -612,15 +612,18 @@ void handleKeyboardInput() {
 			     }
 			 }
 			 switch (k) {
+			 // Do not forward the following commands
  			   case ':':
 			   case 'e':
 			   case 'E':
 			   case 'p':
 			   case 'd':
 			   case 'L':
-			   case '$':
-			   case '%':
-			   case '?':
+			   case '=':
+			   case '+':
+			   case '-':
+			   case 'P':
+			   case 'R':
 			   case ' ':
 			   case '\n':
 			     break;
@@ -660,13 +663,13 @@ void handleKeyboardInput() {
 
   int s,p;
   switch (inByte) {
-    case 'e': // Enable output
+    case 'e': /* Enable output */
       enablePrint = true;
       break;
-    case 'E': // Disable output
+    case 'E': /* Disable output */
       enablePrint = false;
       break;
-    case 'd': // Debug
+    case 'd': /* Debug */
       debug = !debug;
       enablePrint = true;
       sprintln("debug="+ String(debug ? "on" : "off"));
@@ -697,7 +700,7 @@ void handleKeyboardInput() {
     case 'm': // MAINTAIN
       mode = MAINTAIN; sprintln("MAINTAIN");
       break;
-    case 't': /* TEST */
+    case 't': // TEST 
       mode = TEST; sprintln("TEST");
       break;
     case ']': /* Increase TEST Phase */
@@ -729,12 +732,6 @@ void handleKeyboardInput() {
       servoAmp = 20;
       mode = SYNCED_RUN; sprintln("SYNC" + String(syncLoopTime));
       break;
-    case 'S': // SYNC to an already set clock (don't update the clock)
-      s = keyboardBuffer.toInt(); keyboardBuffer = "";
-      if (s!=0) syncLoopTime = s;
-      mode = SYNCED_RUN; 
-      syncInitTimeOffset = 0;
-      break;
     case 'T': /* Set the clock for SYNC */
       syncInitTime = millis();
       break;
@@ -752,11 +749,21 @@ void handleKeyboardInput() {
       syncInitTimeOffset += syncLoopTime/32;
       mode = SYNCED_RUN; 
       break;
+    case 'h': // Offset the Sync clock by half loop
+      syncInitTimeOffset -= syncLoopTime/2;
+      mode = SYNCED_RUN;
+      break;
     case 'r': // Randomize the SYNC clock 
       syncInitTime = millis() - random(0,defaultLoopTime);
       syncInitTimeOffset = 0;
       servoAmp = 20;
       mode = SYNCED_RUN; 
+      break;
+    case 'S': /* SYNC to an already set clock (don't update the clock) */
+      s = keyboardBuffer.toInt(); keyboardBuffer = "";
+      if (s!=0) syncLoopTime = s;
+      mode = SYNCED_RUN; 
+      syncInitTimeOffset = 0;
       break;
 /*
     case 'w': / Create a wave 
@@ -824,7 +831,7 @@ void handleKeyboardInput() {
     case 'C': // Save calibration
       writeCalibration();
       break;
-    case 'l': // Calibrate loop time
+    case 'l': /* Calibrate loop time */
       calibrateLoopTime();
       break;
     case '&': // Print current calibration
@@ -848,8 +855,17 @@ void handleKeyboardInput() {
       keyboardBuffer = "";
       sprint("Audio "); sprint(enableAudio ? "on" : "off"); sprint(" song="); sprint(audioSongNumber); sprint(" vol="); sprintln(audioVolume);
       break;
-    case '$': //Play
+    case 'P': // Play
       if (!isPlaying) {
+        // Print commands:
+        unsigned int commandTime = eread(EEPROM_COMMANDS_LOC);
+      	sprintln("Playing Sequence:");
+      	while (commandTime != MAX_UINT) {
+      		 sprint(commandTime);
+      		 sprint("s: ");
+      	     sprintln(ereadstr());
+      	     commandTime = eread();
+        }
         nextCommandTime = eread(EEPROM_COMMANDS_LOC);
         nextCommandLoc = eIndex;
         if (nextCommandTime == MAX_UINT) {
@@ -867,7 +883,7 @@ void handleKeyboardInput() {
       	isPlaying = false;
       }
       break;
-    case '%': //Record
+    case 'R': // Record
       if (isPlaying) {
       	sprint("Playback "); sprintln("finished");
       	isPlaying = false;
@@ -879,16 +895,6 @@ void handleKeyboardInput() {
         recordInitTime = millis();
       }
       break;
-    case '?': //Show recorded commands;
-      unsigned int commandTime = eread(EEPROM_COMMANDS_LOC);
-      sprintln("Recorded Commands");
-      while (commandTime != MAX_UINT) {
-      	 sprint(commandTime);
-      	 sprint("s: ");
-      	 sprint(ereadstr());
-      	 commandTime = eread();
-      }
-	  break;
     default:
       break;
   }
@@ -1097,7 +1103,7 @@ void setup() {
   updateAmpAndTime();
 
   // wait 3 seconds to see if you are a slave
-  while ((millis() < initTime + 3000) && isMaster) {
+  while ((millis() < initTime + 1500) && isMaster) {
      if (prevSerial.available()) {isMaster = false; } 
   }
   sprintln(isMaster ? "I am master" : "I am slave"); 
