@@ -506,7 +506,7 @@ void readCalibration() {
   } else {
     sprintln("No EEPROM");
     sprintln("ServoCenter?="+String(eread(1)));
-    servoCenter = eread(1);
+    //servoCenter = eread(1);
   }
   printCurrentCalibration();
 }
@@ -1102,7 +1102,7 @@ void setup() {
   randomSeed((initTime + int(potentiometerRead()*100)) % 30000);
   updateAmpAndTime();
 
-  // wait 3 seconds to see if you are a slave
+  // wait 1.5 seconds to see if you are a slave
   while ((millis() < initTime + 1500) && isMaster) {
      if (prevSerial.available()) {isMaster = false; } 
   }
