@@ -508,6 +508,7 @@ void readCalibration() {
     sprintln("ServoCenter?="+String(eread(1)));
     //servoCenter = eread(1);
   }
+  if (servoCenter>1000) servoCenter = 95;
   printCurrentCalibration();
 }
 
