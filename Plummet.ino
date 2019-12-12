@@ -779,11 +779,11 @@ void handleKeyboardInput() {
     case 'M': // Set magic number
       sprint("Old ");
       sprint("Magic Number=");
-      sprint(SYNC_MAGIC_NUMBER);
+      sprintln(SYNC_MAGIC_NUMBER);
       s = keyboardBuffer.toInt(); keyboardBuffer = "";
       SYNC_MAGIC_NUMBER = s;
       sprint("Magic Number=");
-      sprint(SYNC_MAGIC_NUMBER);
+      sprintln(SYNC_MAGIC_NUMBER);
       break;
       
     case '=': // Move servo to specific location

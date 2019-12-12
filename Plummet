@@ -28,7 +28,10 @@ if [ $# -eq 0 ]; then
         $0 $cmd 
      ;;
      upload | uploadLoop | compile | setup | update )
-        $0 $cmd $([ "$cmd" = "compile" ] && echo -verbose ) 2>&1 | tee /tmp/output | awk -W interactive 'BEGIN {i=1;status=""} {if ($0 != "") status=$0; printf "XXX\n%d\n%s\nXXX\n",i,status; i=i+1}' |whiptail --title "$cmd" --gauge "$cmd" 6 60 0
+     	nDevices=$( $0 listDevices | wc -l )
+     	cmdSuffix=" (${nDevices} arduino${nDevices:+s} connected)"
+        
+        $0 $cmd $([ "$cmd" = "compile" ] && echo -verbose ) 2>&1 | tee /tmp/output | awk -W interactive 'BEGIN {i=1;status=""} {if ($0 != "") status=$0; printf "XXX\n%d\n%s\nXXX\n",i,status; i=i+1}' |whiptail --title "$cmd${cmdSuffix}" --gauge "$cmd" 6 60 0
         if [ ${PIPESTATUS[0]} != 0 ]; then
             whiptail --title "There was an error" --scrolltext --textbox /tmp/output 25 78
         fi
@@ -216,13 +219,33 @@ fi
 
 if [ "$1" = "control" ]; then
   readarray -t -d "|" options <<< $( cat Plummet.ino | grep "case '" | grep // | sed s/\ *case\ \'//g | sed s_\':\ //_:_g | sed -e "s:\":\\\":g" | awk -F ':' '{print t $1 "|" $2 } {t="|"}' )
+  options+=(":" "Special (try me out)")
   cmd=""
   while : ; do
     cmd=$(whiptail --title "Plummet 2.0" --nocancel --default-item "${cmd}" --menu "Choose an option:" 39 56 33 "${options[@]}"  3>&2 2>&1 1>&3 )
-    
+        
+    if [[ "$cmd" =~ [AM=:] ]]; then
+		for index in "${!options[@]}"; do
+      		if [[ "${options[$index]}" = "${cmd}" ]]; then
+       			break;
+     		fi
+    	done
+    	title="$cmd ${options[$index+1]}"
+    	if [ "$cmd" == ":" ]; then
+    		helpInfo=". Examples:\n :0:9  =>  Send 9 to the master\n :1:9  => Send 9 to the 2nd slave\n :e:h  => Send h to even arduinos\n :o:h  => Send h to odd arduinos\n :w:}} => Send '}}' to master,\n      '}}}}' to next arduino and\n      '}}}}}}' to the following one\n"
+    	else
+    		helpInfo=""
+    	fi
+
+    	cmd=$(whiptail --title "${title}" --nocancel --inputbox "Enter arguments${helpInfo}" 0 40 "$cmd" 3>&2 2>&1 1>&3 )
+   	fi
+
     if [ "$cmd" == "" ]; then 
       break
     fi
+    
+    
+
     if [ "$masterScreen" == "" ]; then 
        masterScreen=$($0 getMaster)
     fi
