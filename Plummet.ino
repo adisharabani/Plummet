@@ -65,6 +65,7 @@ unsigned long playInitTime;
 unsigned long recordInitTime;
 bool isRecording =false;
 bool isPlaying = false;
+bool isAutoPlay = false;
 int recordingLoc;
 
 //servo
@@ -419,7 +420,7 @@ void calibrate() {
   sprint(loopTime); sprintln("");
 }
 
-void calibrateLoopTime() {
+void calibrateLoopTime() { 
   sprintln("");
   sprintln("Old LoopTime " + String(loopTime));
   smoothMove(servoCenter-maxServoAmp);
@@ -466,7 +467,7 @@ void calibrateLoopTime() {
   defaultLoopTime = (cycles == nCycles) ? (time-initLeftTime)/(cycles) : loopTime;
   loopTime = defaultLoopTime;
 
-  sprintln("loopTime Calibration ("+String(cycles)+"): " + String(loopTime));
+  sprintln("loopTime Calibration ("+String(cycles)+"): " + String(loopTime)); 
 }
 
 void writeCalibration() {
@@ -492,7 +493,7 @@ void printCurrentCalibration() {
   sprint(" pot50="); sprint(pot50);
   sprint(" pot150="); sprint(pot150);
   sprint(" loopTime="); sprint(loopTime);
-  sprintln("");
+  sprintln(""); 
 }
 
 void readCalibration() {
@@ -524,6 +525,7 @@ String readCommand() {
 	String command = ereadstr(nextCommandLoc);
 	nextCommandTime = eread();
 	nextCommandLoc = eIndex;
+		
 	return command;
 }
 
@@ -553,87 +555,91 @@ bool readByteAvailable() {
 
 String keyboardBuffer = "";
 
+void forwardKeyboardInput() {
+    if (keyboardBuffer.length()==0) return;
+	if (isRecording) {
+       ewrite((millis()-recordInitTime)/1000, recordingLoc);
+       ewrite(keyboardBuffer);
+       recordingLoc = eIndex;
+       ewrite(MAX_UINT);
+    }
+
+	byte k = keyboardBuffer[0];
+	int id;
+	if (k==':') {
+	     String who = keyboardBuffer.substring(1,keyboardBuffer.indexOf(":",1));
+	     keyboardBuffer = keyboardBuffer.substring(keyboardBuffer.indexOf(":",1)+1);
+	     if (who=="e") {
+	     	nextSerial.println(String(":o:")+keyboardBuffer);
+	     } else if (who=="o") {
+	     	nextSerial.println(String(":e:")+keyboardBuffer);
+	     	keyboardBuffer = ""; //ignore this command as it is not for this arduino.
+	     } else if (who=="w") {
+	     	nextSerial.println(String(":w:")+keyboardBuffer);
+	     	delay(50);
+	     	nextSerial.println(keyboardBuffer);
+	     } else {
+		     id = who.toInt();
+		     if (id>0){
+		       // notify other arduinos
+		       nextSerial.println(String(":") + String(id-1)+String(":") + keyboardBuffer);
+		       keyboardBuffer = ""; //ignore this command as it is not for this arduino.
+	     	} else {
+		       // do not notify other arduinos
+		       //sprintln("Command is directed to me only");
+		     }
+	     }
+	 }
+	 switch (k) {
+	 // Do not forward the following commands
+		   case ':':
+	   case 'e':
+	   case 'E':
+	   case 'p':
+	   case 'd':
+	   case 'L':
+	   case '=':
+	   case '+':
+	   case '-':
+	   case 'P':
+	   case 'R':
+	   case 'Y':
+	   case ' ':
+	   case '\n':
+	     break;
+	   default:
+	     nextSerial.println(keyboardBuffer);
+	     break;
+	  }
+}
+
 void handleKeyboardInput() {
-  ////////////
-  // input
-  char inByte = 0;
-  if (keyboardBuffer.length() > 0) {
-     inByte = keyboardBuffer[keyboardBuffer.length()-1];
-  }
-  if (commandAvailable()) {
-     String cmd = readCommand();
-     sprintln(cmd);
-   	 keyboardBuffer += (cmd + "\n");
-	 if ((keyboardBuffer.length()==0) || (keyboardBuffer[keyboardBuffer.length()-1] != '\n')) {
-  		sprint("BAD COMMAND:");
-  		sprintln(keyboardBuffer);
-  		keyboardBuffer = "";
-  		return;
-  	}
-  	inByte = '\n';
-  } else {
+	////////////
+	// input
+	bool cmdOriginFromRecordedSequence = false;
+    if (commandAvailable()) {
+      String cmd = readCommand();
+      sprintln(cmd);
+   	  keyboardBuffer += cmd ;
+   	  if (keyboardBuffer.length()==0) {
+   	  	return;
+   	  }
+  	  forwardKeyboardInput();
+  	  keyboardBuffer += "\n";
+	  cmdOriginFromRecordedSequence = true;
+    } else {
+      char inByte = 0;
+	  if (keyboardBuffer.length() > 0) {
+         inByte = keyboardBuffer[keyboardBuffer.length()-1];
+      }
 	  while (readByteAvailable() && (inByte != '\n')) {
 	     inByte = readByte();
 	     if ((inByte=='\r') || (inByte=='\n')) {
+	       sprintln("");
+	       forwardKeyboardInput();
 	       //convert \r to \n
 	       inByte = '\n';
-	       if (keyboardBuffer.length()>0) {
-	       	 sprintln("");
-             if (isRecording) {
-	           ewrite((millis()-recordInitTime)/1000, recordingLoc);
-	           ewrite(keyboardBuffer);
-	           recordingLoc = eIndex;
-	           ewrite(MAX_UINT);
-	         }
-             keyboardBuffer += inByte;
-             byte k = keyboardBuffer[0];
-             int id;
-             if (k==':') {
-			     String who = keyboardBuffer.substring(1,keyboardBuffer.indexOf(":",1));
-			     keyboardBuffer = keyboardBuffer.substring(keyboardBuffer.indexOf(":",1)+1,keyboardBuffer.length());
-			     if (who=="e") {
-			     	nextSerial.println(String(":o:")+keyboardBuffer);
-			     } else if (who=="o") {
-			     	nextSerial.println(String(":e:")+keyboardBuffer);
-			     	inByte = 0; keyboardBuffer = ""; //ignore this command as it is not for this arduino.
-			     } else if (who=="w") {
-			     	nextSerial.println(String(":w:")+keyboardBuffer);
-			     	delay(50);
-			     	nextSerial.println(keyboardBuffer);
-			     } else {
-				     id = who.toInt();
-				     if (id>0){
-				       // notify other arduinos
-				       nextSerial.println(String(":") + String(id-1)+String(":") + keyboardBuffer);
-				       inByte = 0; keyboardBuffer = ""; //ignore this command as it is not for this arduino.
-			     	} else {
-				       // do not notify other arduinos
-				       //sprintln("Command is directed to me only");
-				     }
-			     }
-			 }
-			 switch (k) {
-			 // Do not forward the following commands
- 			   case ':':
-			   case 'e':
-			   case 'E':
-			   case 'p':
-			   case 'd':
-			   case 'L':
-			   case '=':
-			   case '+':
-			   case '-':
-			   case 'P':
-			   case 'R':
-			   case ' ':
-			   case '\n':
-			     break;
-			   default:
-			     nextSerial.print(keyboardBuffer);
-			     break;
-			  }
-			  inByte = '\n';
-	       }
+	       keyboardBuffer += String(inByte);
 	     } else if (inByte == 127) {
 	       //handle backspace
 	       if (keyboardBuffer.length()>0) {
@@ -652,18 +658,18 @@ void handleKeyboardInput() {
 	       sprint(inByte);
 	     }
 	  }
-  }
-  if (inByte != '\n') {
-    return;
-  }
-  if (keyboardBuffer.length() == 0) return;
+	}
 
-  inByte = keyboardBuffer[0]; keyboardBuffer = keyboardBuffer.substring(1);
+	
+	if (keyboardBuffer.length() == 0) return;
+	if (keyboardBuffer[keyboardBuffer.length()-1] != '\n') return;
 
-  if (inByte == '\n') {return; } 
+  char cmd = keyboardBuffer[0]; keyboardBuffer = keyboardBuffer.substring(1);
+
+  if (cmd == '\n') {return; } 
 
   int s,p;
-  switch (inByte) {
+  switch (cmd) {
     case 'e': /* Enable output */
       enablePrint = true;
       break;
@@ -858,50 +864,69 @@ void handleKeyboardInput() {
       break;
     case 'P': // Play
       if (!isPlaying) {
-        // Print commands:
-        unsigned int commandTime = eread(EEPROM_COMMANDS_LOC);
-      	sprintln("Playing Sequence:");
-      	while (commandTime != MAX_UINT) {
-      		 sprint(commandTime);
-      		 sprint("s: ");
-      	     sprintln(ereadstr());
-      	     commandTime = eread();
-        }
-        nextCommandTime = eread(EEPROM_COMMANDS_LOC);
-        nextCommandLoc = eIndex;
-        if (nextCommandTime == MAX_UINT) {
-        	sprintln("No "); sprintln("Recorded Commands");
-        } else {
-	      	isPlaying = true;
-    	  	playInitTime = millis();
-	        sprint("Next action in ");
-	        sprint(nextCommandTime);
-	        sprintln("s");
-        }
+        startPlaySequence();
       } else {
-      	sprint("Playback "); sprintln("stopped");
-      	nextCommandTime = MAX_UINT;
-      	isPlaying = false;
+        stopPlaySequence();
       }
       break;
     case 'R': // Record
-      if (isPlaying) {
-      	sprint("Playback "); sprintln("finished");
-      	isPlaying = false;
-        nextCommandTime = MAX_UINT; // stop playback if needed;
+      if (cmdOriginFromRecordedSequence) {
+      	if (isPlaying) {
+      		if (isAutoPlay) {
+      			startPlaySequence();
+      		} else {
+      			stopPlaySequence();
+      		}
+      	} else {sprintln("this is weird");}
       } else {
+        if (isPlaying) stopPlaySequence();
         isRecording = !isRecording;
         sprint("Recording "); sprintln(isRecording ? "on" : "off");
+        ewrite(EEPROM_MAGIC, EEPROM_COMMANDS_LOC - 2);
         recordingLoc = EEPROM_COMMANDS_LOC;
         recordInitTime = millis();
       }
       break;
+    case 'Y': // Autoplay and loop on restart
+      isAutoPlay = !isAutoPlay;
+      sprint("auto play is ");
+      sprintln(isAutoPlay ? "on" : "off");
+      ewrite((int)isAutoPlay, EEPROM_COMMANDS_LOC - 4);
     default:
       break;
   }
 }
 
 
+void startPlaySequence() {
+    if (eread(EEPROM_COMMANDS_LOC-2) != EEPROM_MAGIC) {
+    	sprint("No recording saved");
+    }
+    // Print commands:
+    unsigned int commandTime = eread(EEPROM_COMMANDS_LOC);
+  	sprintln("Playing Sequence:");
+  	while (commandTime != MAX_UINT) {
+  		 sprint(commandTime);
+  		 sprint("s: ");
+  	     sprintln(ereadstr());
+  	     commandTime = eread();
+    }
+    
+    nextCommandTime = eread(EEPROM_COMMANDS_LOC);
+    nextCommandLoc = eIndex;
+    if (nextCommandTime == MAX_UINT) {
+    	sprintln("No "); sprintln("Recorded Commands");
+    } else {
+      	isPlaying = true;
+	  	playInitTime = millis();
+    }
+}
+
+void stopPlaySequence() {
+  	sprint("Playback "); sprintln("stopped");
+  	nextCommandTime = MAX_UINT;
+  	isPlaying = false;
+}
 ///////////////////////////
 /// Modes
 ///////////////////////////
@@ -1092,7 +1117,7 @@ void setup() {
   sendAudioCommand(0X09, 0X02); // Select TF Card
   sprintln("");
   readCalibration();
-
+    
   myservoattach(servoPin);
   smoothMove(servoCenter);
   tone(7, NOTE_G5, 100);
@@ -1108,6 +1133,12 @@ void setup() {
      if (prevSerial.available()) {isMaster = false; } 
   }
   sprintln(isMaster ? "I am master" : "I am slave"); 
+  
+  if ( eread(EEPROM_COMMANDS_LOC-2) == EEPROM_MAGIC) {
+  	isAutoPlay = eread(EEPROM_COMMANDS_LOC-4);
+  }
+  if (isAutoPlay) startPlaySequence();
+
 }
 
 unsigned long keepalive = 0;
