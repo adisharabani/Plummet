@@ -1105,7 +1105,7 @@ void updateAmpAndTime() {
 // Main Code
 //////////////////////////////
 void setup() {  
-
+  pinMode(13, OUTPUT); digitalWrite(13, HIGH);
   Serial.begin(9600);
   Serial.println(String("v") + String(PLUMMET_VERSION));
 
@@ -1142,6 +1142,7 @@ void setup() {
   }
   if (isAutoPlay) startPlaySequence();
 
+  pinMode(13, OUTPUT); digitalWrite(13, LOW);
 }
 
 unsigned long keepalive = 0;
