@@ -1089,7 +1089,7 @@ void updateAmpAndTimeForSyncedRunning() {
 }
 
 void updateAmpAndTime() {
-    if (mode == RUNNING)        { updateAmpAndTimeForRunning();      }
+    if (mode == RUNNING)        { updateAmpAndTimeForRunning();          }
     if (mode == MAINTAINING)    { updateAmpAndTimeForMaintaining();      }
     if (mode == TESTING)        { updateAmpAndTimeForTesting();          }
     if (mode == STOPPING)       { updateAmpAndTimeForStopping();         }
@@ -1147,22 +1147,33 @@ unsigned long keepalive = 0;
 left_right_e direction = RIGHT;
 #define itIsTime(x) ((time>=x) && (lastIterationTime<x))
 
-unsigned long snapToGrid(unsigned long t) {
-// syncLoopTime; syncInitTime; syncInitTimeOffset; 
-	if (mode != SYNCED_RUNNING) return t;
-	int offset = ((t- (syncInitTime + syncInitTimeOffset)) % syncLoopTime) % audioSnapToGrid ;
-	// new t is either t-offset or t-offset + snapToGrid
-	if (offset < audioSnapToGrid/2) {
-		return t - offset;
-	} else {
-		return t -offset + audioSnapToGrid;
-	}
-}
+unsigned long audioTime=0;
+void playAudioIn(int phase, int syncedPhase) {
+	audioTime = time + phase;
+	if (mode == SYNCED_RUNNING) {
+		// Snap to Sync
+		int offsetToSync = (audioTime - (syncInitTime+syncInitTimeOffset)) % syncLoopTime - syncedPhase;
+		//sprint("offSetToSync: ");
+		//sprintln(offsetToSync);
+		if (abs(offsetToSync) <= audioSnapToSync) {
+			audioTime = audioTime - offsetToSync;
+		} else {
+			int offsetToGrid = ((audioTime - (syncInitTime+syncInitTimeOffset)) % syncLoopTime) % audioSnapToGrid;
+			//sprint("offsetToGrid: ");
+			//sprintln(offsetToGrid);
 
-//unsigned long snapToSync(unsigned long t, int syncPhase) {
-//	if (mode != SYNCED_RUNNING) return t;
-//	int offset =
-//}
+			// new audioTime is either audioTime-offsetToGrid or audioTime-offsetToGrid+snapToGrid;
+			if (offsetToGrid < audioSnapToGrid/2) {
+				audioTime = audioTime - offsetToGrid;
+			} else {
+				audioTime = audioTime - offsetToGrid + audioSnapToGrid;
+			}
+			
+		}
+	}
+	sprint("*** audio in ");
+	sprintln(audioTime - time);
+}
 
 void loop(){
   if (time > keepalive) { nextSerial.print(" "); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
@@ -1233,7 +1244,7 @@ void loop(){
       break;
   }
 
-  if (itIsTime(rightTime+loopTime/4+audioDelay) &&
+  if (itIsTime(audioTime+audioDelay) &&
       (ropeMaxRightAngle>0.05) && (ropeMaxLeftAngle<-0.05)) {
 	  playSong(audioSongNumber,audioVolume);
   }
@@ -1259,6 +1270,7 @@ void loop(){
     side = RIGHT;
     lastLoopTime = time-rightTime;
     rightTime = time;
+    playAudioIn(loopTime/4,syncLoopTime/4);
     if (showLoopEvents) {
     	sprint("# Loop: Time(");sprint(lastLoopTime);sprint(")"); sprint(side==LEFT ? " [L] :" : " [R]:");
     	sprint("maxRight(");sprint(ropeMaxRightAngle); sprint(")-maxLeft("); sprint(ropeMaxLeftAngle);
