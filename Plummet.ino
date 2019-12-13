@@ -13,6 +13,9 @@
 //  Servo power VCC (+) need to connect directly to its own power
 //  
 //  Help:
+//
+//  TODO: 
+//    create an EEPROM Editor
 
 #define PLUMMET_VERSION "0.22"
 
@@ -1109,14 +1112,13 @@ void setup() {
   nextSerial.begin(9600);
   prevSerial.begin(9600);
 
-  nextSerial.println("9"); // let the following arduino know you are here and set on HALT mode;
+  nextSerial.println(" "); // let the following arduino know you are here and set on HALT mode;
 
   //prevSerial.attachInterrupt(t);
-  delay(500);
+  delay(200);
   sendAudioCommand(0X09, 0X02); // Select TF Card
   sprintln("");
   readCalibration();
-  delay(200);
   sendAudioCommand(0X22, 0X1E01);
   
   myservoattach(servoPin);
