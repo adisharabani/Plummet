@@ -147,8 +147,8 @@ mode_e mode;
 // #define sprint(s) 
 // #define sprintln(s)
 
-void debugLog(String x) { if (debug) Serial.print(x);         }
-
+//void debugLog(const char *x) { if (debug) Serial.print(x);         }
+#define debugLog(x) {if (debug) Serial.print(x);}
 
 
 ///////////////////////////
@@ -165,7 +165,7 @@ void ewrite(unsigned int data, int index=-1) {
   EEPROM.write(eIndex++, byte(data%256));
 }
 
-void ewrite(String data, int index=-1) {
+void ewrite(const String &data, int index=-1) {
 	if (index !=-1) eIndex = index;
 	
 	for (int i=0; i<data.length(); i++) {
@@ -307,7 +307,7 @@ void smoothMove(double desiredPosition, int totalTime = 2000) {
   for (int i=0; i<=iterations; i++) {
      double np = sl*double(iterations-i)/iterations + desiredPosition*double(i)/iterations;
      myservowrite(np);
-     debugLog("moving Servo from "+String(sl)+ " to "+String(desiredPosition) + " Step("+String(i)+" of "+String(iterations)+"): "+np+"\n\r");
+     debugLog("moving Servo from ");debugLog(sl); debugLog(" to "); debugLog(desiredPosition);debugLog(" Step(");debugLog(i);debugLog(" of ");debugLog(iterations);debugLog("): "); debugLog(np); debugLog("\n\r");
      delay(20);
   }
 }
@@ -393,23 +393,23 @@ void calibrate() {
   servoAmp = 0;
 
   //String oldCalibration = String(servoCenter) + " " + String(potCenter) + " " + String(pot50) + " " + String(pot150) + " " + loopTime;
-  sprint("Old ");sprintln("servoCenter: "+String(servoCenter));
+  sprint("Old ");sprint("servoCenter: "); sprintln(servoCenter);
   servoCenter = myservoread();
-  sprintln("servoCenter: "+String(servoCenter));
+  sprint("servoCenter: "); sprintln(servoCenter);
   
-  sprint("Old ");sprintln("PotCenter: "+String(potCenter));
+  sprint("Old ");sprint("PotCenter: "); sprintln(potCenter);
   potCenter = waitForSteadiness(1,6000);  
-  sprintln("PotCenter:  "+String(potCenter));
+  sprint("PotCenter:  "); sprintln(potCenter);
 
   smoothMove(servoCenter-50,4000); delay(1000);
-  sprint("Old ");sprintln("Pot50: "+String(pot50));
+  sprint("Old ");sprint("Pot50: ");sprintln(pot50);
   pot50 = waitForSteadiness(10,6000);  
-  sprintln("Pot50:  "+String(pot50));
+  sprint("Pot50:  ");sprintln(pot50);
 
   smoothMove(servoCenter+50,8000); delay(1000);
-  sprint("Old ");sprintln("Pot150: "+String(pot150));
+  sprint("Old ");sprint("Pot150: "); sprintln(pot150);
   pot150 = waitForSteadiness(10,6000); 
-  sprintln("Pot150:  "+String(pot150));
+  sprint("Pot150:  ");sprintln(pot150);
   
   calibrateLoopTime();
 
@@ -424,7 +424,7 @@ void calibrate() {
 
 void calibrateLoopTime() { 
   sprintln("");
-  sprintln("Old LoopTime " + String(loopTime));
+  sprint("Old LoopTime "); sprintln(loopTime);
   smoothMove(servoCenter-maxServoAmp);
   initTime = millis();
   sprintln("Speed up");
@@ -457,7 +457,7 @@ void calibrateLoopTime() {
            sprintln("Starting cycle analysis");
         } else {
           cycles ++;
-          sprintln("Cycle "+String(cycles)+" of "+String(nCycles) +" complete. Average loop time: "+String((time-initLeftTime)/cycles));
+          sprint("Cycle ");sprint(cycles);sprint(" of ");sprint(nCycles);sprint(" complete. Average loop time: "); sprintln((time-initLeftTime)/cycles);
         }
      } else if ((side==LEFT) && (potRead > potCenter) && (time-leftTime>loopTime/5) ) {
         //sprintln("Right side");
@@ -469,7 +469,7 @@ void calibrateLoopTime() {
   defaultLoopTime = (cycles == nCycles) ? (time-initLeftTime)/(cycles) : loopTime;
   loopTime = defaultLoopTime;
 
-  sprintln("loopTime Calibration ("+String(cycles)+"): " + String(loopTime)); 
+  sprint("loopTime Calibration ("); sprint(cycles); sprint("): "); sprintln(loopTime); 
 }
 
 void writeCalibration() {
@@ -508,7 +508,6 @@ void readCalibration() {
     loopTime = eread(); defaultLoopTime = loopTime;
   } else {
     sprintln("No EEPROM");
-    sprintln("ServoCenter?="+String(eread(1)));
     //servoCenter = eread(1);
   }
   if (servoCenter>1000) servoCenter = 95;
@@ -595,6 +594,7 @@ void forwardKeyboardInput() {
 	 switch (k) {
 	 // Do not forward the following commands
 		   case ':':
+	   case 's': /* will be send via the s command with the right synclooptime */
 	   case 'e':
 	   case 'E':
 	   case 'p':
@@ -681,17 +681,17 @@ void handleKeyboardInput() {
     case 'd': /* Debug */
       debug = !debug;
       enablePrint = true;
-      sprintln("debug="+ String(debug ? "on" : "off"));
+      sprint("debug="); sprintln(debug ? "on" : "off");
       break;
     case 'p': // Print measurements (potentiometer, servo, etc.)
       printMeasures = !printMeasures;
       enablePrint = true;
-      sprintln("printMeasures="+ String(printMeasures ? "on" : "off"));
+      sprint("printMeasures="); sprintln(printMeasures ? "on" : "off");
       break;
     case 'L': // Print loop events (move from RIGHT to left)
       showLoopEvents = !showLoopEvents;
       enablePrint = true;
-      sprintln("showLoopEvents="+ String(showLoopEvents ? "on" : "off"));
+      sprint("showLoopEvents="); sprintln(showLoopEvents ? "on" : "off");
       break;
     case '0': /* temporary move servo to center */
       smoothMove(servoCenter);
@@ -714,32 +714,32 @@ void handleKeyboardInput() {
       break;
     case ']': /* Increase TEST Phase */
       testPhase = (int((testPhase + 0.05)*100) % 100) /100.0;
-      sprintln("tPhase="+String(testPhase));
+      sprint("tPhase="); sprintln(testPhase);
 
       break;
     case '[': /* Decrease TEST phase */
       testPhase = (int((testPhase - 0.05)*100) % 100) /100.0;
-      sprintln("tPhase="+String(testPhase));
+      sprint("tPhase="); sprintln(testPhase);
       break;
     case '>': /* Increase TEST amplitude */
       testAmp = min(testAmp + 1,100);
-      sprintln("tAmp="+String(testAmp));
+      sprint("tAmp="); sprintln(testAmp);
       break;
     case '<': /* Decrease TEST amplitude */
       testAmp = max(testAmp -1,0);
-      sprintln("tAmp="+String(testAmp));
+      sprint("tAmp="); sprintln(testAmp);
       break;
     case 's': // SYNC
       s = keyboardBuffer.toInt(); keyboardBuffer = "";
       syncLoopTime = (s!=0) ? s : defaultLoopTime + 10; //defaultLoopTime+16; // RONEN=3174
-      if (isMaster && (s==0)) {
-      	nextSerial.println(String("S")+String(syncLoopTime));
-      }
+      //if (isMaster && (s==0)) {
+      	nextSerial.println(String("s")+String(syncLoopTime));
+      //}
       syncInitTime = millis();
       syncInitTimeOffset = 0;
       syncRopeAngle = 0.3;
       servoAmp = 20;
-      mode = SYNCED_RUN; sprintln("SYNC" + String(syncLoopTime));
+      mode = SYNCED_RUN; sprint("SYNC");sprintln(syncLoopTime);
       break;
     case 'T': /* Set the clock for SYNC */
       syncInitTime = millis();
@@ -797,19 +797,20 @@ void handleKeyboardInput() {
     case '=': // Move servo to specific location
       s = keyboardBuffer.toInt(); keyboardBuffer = "";
       if (s!=0) smoothMove(s);
+      sprint("servo="); sprintln(myservoread());    
       // myservo.write(n);
       break;
     case '+': // Move servo one step forwards
       s = myservoread(); 
-      sprint("Old "); sprintln("servo=" + String(s));
+      sprint("Old "); sprint("servo=");sprintln(s);
       myservowrite(s+1);
-      sprintln("servo=" + String(myservoread()));    
+      sprint("servo="); sprintln(myservoread());    
       break;
     case '-': // Move servo one step backwards
       s = myservoread();
-      sprint("Old "); sprintln("servo=" + String(s));
+      sprint("Old "); sprint("servo=");sprintln(s);
       myservowrite(s-1);
-      sprintln("servo=" + String(myservoread()));    
+      sprint("servo="); sprintln(myservoread());    
       break;
     case '_': // Detach or reattach servo
       if (myservoattached()) {
@@ -830,8 +831,8 @@ void handleKeyboardInput() {
       tone(7, NOTE_A5, 1000);
       break;
     case 'B': // Are you a master?
-      sprint("I am a ");
-      sprintln(isMaster ? "master" : "slave"); 
+      Serial.print("I am a ");
+      Serial.println(isMaster ? "master" : "slave"); 
       if (isMaster) tone(7, NOTE_A5, 1000);
       break;
     case 'c': // Calibrate
@@ -965,7 +966,7 @@ void updateAmpAndTimeForMaintaining() {
   }  else {
     servoAmp = (angleToServo(desiredAngle/2)-servoCenter)*2 * 0.8 + (1 - ropeAngle/desiredAngle)*maxServoAmp;
   }
-    sprintln("ServoAmp: "+ String(servoAmp) +" baseline: "+ String((angleToServo(desiredAngle/2)-servoCenter)*2 * 0.8));
+    sprint("ServoAmp: ");sprint(servoAmp); sprint(" baseline: "); sprintln((angleToServo(desiredAngle/2)-servoCenter)*2 * 0.8);
 }
 
 void updateAmpAndTimeForRunning() {
@@ -1083,11 +1084,12 @@ void updateAmpAndTimeForSyncedRunning() {
     syncPhase = desiredPhase;
     initTime = millis()-loopTime*(side==LEFT ? syncPhase+0.5 : syncPhase);
     
-    sprint("Syncing: Offset(" + String(offset) + "), ropeAmp("+ String(ropeMaxRightAngle-ropeMaxLeftAngle));
-    sprint(") ==> loopTime=" + String(syncLoopTime));
-    sprint("; ServoAmp=" + String(servoAmp));
-    sprint("; phase="+String(syncPhase));
-    sprintln("(wanted"+String(desiredPhase)+")" );
+    sprint("Syncing: Offset("); sprint(offset);sprint("), ropeAmp("); sprint(ropeMaxRightAngle-ropeMaxLeftAngle);
+    sprint(") ==> loopTime="); sprint(syncLoopTime);
+    sprint("; ServoAmp="); sprint(servoAmp);
+    sprint("; phase="); sprint(syncPhase);
+    sprint("(wanted"); sprint(desiredPhase);
+    sprintln(")");
   }
 }
 
@@ -1107,7 +1109,8 @@ void updateAmpAndTime() {
 void setup() {  
   pinMode(13, OUTPUT); digitalWrite(13, HIGH);
   Serial.begin(9600);
-  Serial.println(String("v") + String(PLUMMET_VERSION));
+  Serial.print("v");
+  Serial.print(PLUMMET_VERSION);
 
   nextSerial.begin(9600);
   prevSerial.begin(9600);
@@ -1135,7 +1138,7 @@ void setup() {
   while ((millis() < initTime + 1500) && isMaster) {
      if (prevSerial.available()) {isMaster = false; } 
   }
-  sprintln(isMaster ? "I am master" : "I am slave"); 
+  Serial.println(isMaster ? "I am master" : "I am slave"); 
   
   if ( eread(EEPROM_COMMANDS_LOC-2) == EEPROM_MAGIC) {
   	isAutoPlay = eread(EEPROM_COMMANDS_LOC-4);
@@ -1180,7 +1183,7 @@ void playAudioIn(int phase, int syncedPhase) {
 
 void loop(){
   if (time > keepalive) { nextSerial.print(" "); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
-  if (prevSerial.available()) {if (isMaster) sprintln("I am now a slave"); isMaster = false;} // inform 
+  if (prevSerial.available()) {if (isMaster) Serial.println("I am now a slave"); isMaster = false;} // inform 
   // if (isMaster) { tone(7, NOTE_F5,100); }   // If master make noise
   //if (millis()-lastIterationTime<50) {
   //	delay(50-(millis()-lastIterationTime));
@@ -1229,7 +1232,7 @@ void loop(){
       initTime = 0;
       mode = TESTING;
       updateAmpAndTime();
-      sprintln("testPhase is: "+String(testPhase));
+      sprint("testPhase: "); sprintln(testPhase);
       break;
     case START:
       mode = RUNNING;
