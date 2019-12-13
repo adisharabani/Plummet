@@ -14,9 +14,10 @@
 //  
 //  Help:
 
-#define PLUMMET_VERSION "0.21"
+#define PLUMMET_VERSION "0.22"
 
 #include <SoftwareSerial.h>
+#include <TimerOne.h>
 #include <Servo.h>
 #include <EEPROM.h>
 
@@ -26,15 +27,11 @@
 #define txPinNext 5 // soft serial
 #define tonePin 7 // digital
 #define servoPin 10 // digital
-#define AUDIO_RX 11 //should connect to TX of the Serial MP3 Player module
-#define AUDIO_TX 12 //connect to RX of the module
 
 #define potPin 1 // analog
 
 
 int SYNC_MAGIC_NUMBER=-70;
-
-#define AUDIO_DELAY 0
 
 int defaultLoopTime = 3167; //Palo Alto: 3080; // 3160; // 3420;
 // int defaultLoopTime = 3080; // Palo Alto
@@ -45,7 +42,7 @@ int defaultLoopTime = 3167; //Palo Alto: 3080; // 3160; // 3420;
 // Calibrate(2): 98.00 457 665 261
 // Calibrate(3): 101.00 525 351 697
 
-boolean SERVO_VIA_TIMER1 = false;
+boolean SERVO_VIA_TIMER1 = true;
 
 boolean printMeasures = false; 
 boolean enablePrint = true;
@@ -53,6 +50,9 @@ boolean debug = false;
 boolean enableAudio = true;
 int8_t audioSongNumber = 1;
 int8_t audioVolume = 30;
+unsigned int audioDelay = 0; // in milliseconds
+unsigned int audioSnapToGrid = 10; // in milliseconds
+unsigned int audioSnapToSync = 50;
 boolean showLoopEvents = false;
 
 #define EEPROM_MAGIC 5613
@@ -102,7 +102,6 @@ boolean updateSlaveClock = false;
 SoftwareSerial prevSerial(rxPinPrev, txPinPrev);
 SoftwareSerial nextSerial(rxPinNext, txPinNext);
 
-//SoftwareSerial audioSerial(AUDIO_RX, AUDIO_TX);
 #define audioSerial Serial
 
 boolean isMaster = true;
@@ -225,7 +224,7 @@ void sendAudioCommand(int8_t command, int8_t datah, int8_t datal) {
 }
 
 void playSong(int8_t songNumber=1, int8_t volume=30) {
-	sendAudioCommand(22, volume, songNumber);
+	sendAudioCommand(0x22, volume, songNumber);
 }
 
 
@@ -252,7 +251,7 @@ void myservowrite(double pos) {
 
   if (SERVO_VIA_TIMER1) {
     int duty = int(double(map(int(pos), 0,180,544.0,2400.0))/SERVO_PWM_RATE*1024);
-//LIB    Timer1.pwm(servoPin, duty);
+    Timer1.pwm(servoPin, duty);
   } else {
     myservo.write(int(pos));
   }
@@ -272,7 +271,7 @@ void myservoattach(int pin) {
   if (SERVO_VIA_TIMER1) {
     if (originalTCCR1A == 0) {
       pinMode(pin, OUTPUT);
-//LIB      Timer1.initialize(SERVO_PWM_RATE);
+      Timer1.initialize(SERVO_PWM_RATE);
     } else {
       TCCR1A = originalTCCR1A;
     }
@@ -292,7 +291,7 @@ boolean myservoattached() {
 void myservodetach() {
   if (SERVO_VIA_TIMER1) {
     originalTCCR1A = TCCR1A;
-//LIB    Timer1.disablePwm(servoPin);
+    Timer1.disablePwm(servoPin);
     servoAttached = false;
   } else {
     myservo.detach();
@@ -1113,11 +1112,13 @@ void setup() {
   nextSerial.println("9"); // let the following arduino know you are here and set on HALT mode;
 
   //prevSerial.attachInterrupt(t);
-  
+  delay(500);
   sendAudioCommand(0X09, 0X02); // Select TF Card
   sprintln("");
   readCalibration();
-    
+  delay(200);
+  sendAudioCommand(0X22, 0X1E01);
+  
   myservoattach(servoPin);
   smoothMove(servoCenter);
   tone(7, NOTE_G5, 100);
@@ -1144,6 +1145,24 @@ void setup() {
 unsigned long keepalive = 0;
 
 left_right_e direction = RIGHT;
+#define itIsTime(x) ((time>=x) && (lastIterationTime<x))
+
+unsigned long snapToGrid(unsigned long t) {
+// syncLoopTime; syncInitTime; syncInitTimeOffset; 
+	if (mode != SYNCED_RUNNING) return t;
+	int offset = ((t- (syncInitTime + syncInitTimeOffset)) % syncLoopTime) % audioSnapToGrid ;
+	// new t is either t-offset or t-offset + snapToGrid
+	if (offset < audioSnapToGrid/2) {
+		return t - offset;
+	} else {
+		return t -offset + audioSnapToGrid;
+	}
+}
+
+//unsigned long snapToSync(unsigned long t, int syncPhase) {
+//	if (mode != SYNCED_RUNNING) return t;
+//	int offset =
+//}
 
 void loop(){
   if (time > keepalive) { nextSerial.print(" "); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
@@ -1214,8 +1233,7 @@ void loop(){
       break;
   }
 
-  if ((time-rightTime+AUDIO_DELAY >= loopTime/4) && 
-      (lastIterationTime-rightTime+AUDIO_DELAY < loopTime/4) &&
+  if (itIsTime(rightTime+loopTime/4+audioDelay) &&
       (ropeMaxRightAngle>0.05) && (ropeMaxLeftAngle<-0.05)) {
 	  playSong(audioSongNumber,audioVolume);
   }
