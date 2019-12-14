@@ -34,6 +34,7 @@ if [ $# -eq 0 ]; then
         $0 $cmd $([ "$cmd" = "compile" ] && echo -verbose ) 2>&1 | tee /tmp/output | awk -W interactive 'BEGIN {i=1;status=""} {if ($0 != "") status=$0; printf "XXX\n%d\n%s\nXXX\n",i,status; i=i+1}' |whiptail --title "$cmd${cmdSuffix}" --gauge "$cmd" 6 60 0
         if [ ${PIPESTATUS[0]} != 0 ]; then
             whiptail --title "There was an error" --scrolltext --textbox /tmp/output 25 78
+            rm -rf /tmp/output
         fi
      ;;
      *)
@@ -223,7 +224,7 @@ if [ "$1" = "getMaster" ]; then
   # read who is master and who is slave
   for i in $(screen -Q windows | tr " " : | sed -e 's/::/\n/g'); do
     if [[ ${i#*:} =~ $ARDTTY_PATTERN ]]; then
-        screenType=$(screen -X at ${i%:*} hardcopy -h /tmp/.hardcopy; cat /tmp/.hardcopy |grep -a "I am" | tail -1 | tr " " "\n" | grep -E '(slave|master)');
+        screenType=$(screen -X at ${i%:*} hardcopy -h /tmp/.hardcopy; cat /tmp/.hardcopy |grep -a "I am" | tr " " "\n" | grep -E '(slave|master)' | tail -1);
         
         #echo ${i%:*} ${i#*:} is $screenType
         if [ "$screenType" == "master" ]; then
@@ -266,12 +267,6 @@ if [ "$1" = "control" ]; then
 
     	cmd=$(whiptail --title "${title}" --nocancel --inputbox "Enter arguments${helpInfo}" 0 40 "$cmd" 3>&2 2>&1 1>&3 )
    	fi
-
-    if [ "$cmd" == "" ]; then 
-      break
-    fi
-    
-    
 
     if [ "$masterScreen" == "" ]; then 
        masterScreen=$($0 getMaster)
