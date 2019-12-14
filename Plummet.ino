@@ -401,12 +401,12 @@ void calibrate() {
   potCenter = waitForSteadiness(1,6000);  
   sprint("PotCenter:  "); sprintln(potCenter);
 
-  smoothMove(servoCenter-50,4000); delay(1000);
+  smoothMove(servoCenter-50,4000); 
   sprint("Old ");sprint("Pot50: ");sprintln(pot50);
   pot50 = waitForSteadiness(10,6000);  
   sprint("Pot50:  ");sprintln(pot50);
 
-  smoothMove(servoCenter+50,8000); delay(1000);
+  smoothMove(servoCenter+50,8000); 
   sprint("Old ");sprint("Pot150: "); sprintln(pot150);
   pot150 = waitForSteadiness(10,6000); 
   sprint("Pot150:  ");sprintln(pot150);
@@ -595,6 +595,7 @@ void forwardKeyboardInput() {
 	 // Do not forward the following commands
 		   case ':':
 	   case 's': /* will be send via the s command with the right synclooptime */
+	   case 'u': /* will be send via the u command with the right synclooptime */
 	   case 'e':
 	   case 'E':
 	   case 'p':
@@ -745,7 +746,10 @@ void handleKeyboardInput() {
       syncInitTime = millis();
       break;
     case 'u': // Print phase compared to sync clock
-      sprint("phase compared to sync clock is ");sprintln((millis()-syncInitTime) % syncLoopTime);
+      s = keyboardBuffer.toInt(); keyboardBuffer = "";
+      if (s==0) s = (millis()-syncInitTime) % syncLoopTime;      
+      nextSerial.println(String("u")+String(s));
+      sprint("phase compared to sync clock is ");sprint((millis()-syncInitTime) % syncLoopTime - s);sprintln("ms");
       break;
     case 'U': // Update slaves on current Sync Clock
       updateSlaveClock = true;
@@ -1084,7 +1088,7 @@ void updateAmpAndTimeForSyncedRunning() {
     syncPhase = desiredPhase;
     initTime = millis()-loopTime*(side==LEFT ? syncPhase+0.5 : syncPhase);
     
-    sprint("Syncing: Offset("); sprint(offset);sprint("), ropeAmp("); sprint(ropeMaxRightAngle-ropeMaxLeftAngle);
+    sprint("Syncing: Offset("); sprint(offset);sprint(" ==> "); sprint(int(offset*syncLoopTime));sprint("ms), ropeAmp("); sprint(ropeMaxRightAngle-ropeMaxLeftAngle);
     sprint(") ==> loopTime="); sprint(syncLoopTime);
     sprint("; ServoAmp="); sprint(servoAmp);
     sprint("; phase="); sprint(syncPhase);

@@ -179,7 +179,7 @@ if [ "$1" = "attach" ]; then
  echo "msgwait 0" >> /tmp/.screens
  echo "layout save default" >> /tmp/.screens 
  screen -c /tmp/.screens
- $0 kill
+ #$0 kill
  #screen -R -S ${ard} bash -c 'tty > /tmp/screen${ard}; '$0' listCommands; cu -l /dev/'${ard}' -s 38400'
  #screen -R -S ${ard} bash -c 'tty > /tmp/screen${ard}; '$0' listCommands; tail -f /dev/'${ard}' &; cat > /dev/'${ard}
  # ~. to quit CU process
@@ -205,7 +205,7 @@ if [ "$1" = "getMaster" ]; then
   # read who is master and who is slave
   for i in $(screen -Q windows | tr " " : | sed -e 's/::/\n/g'); do
     if [[ ${i#*:} =~ $ARDTTY_PATTERN ]]; then
-        screenType=$(screen -X at ${i%:*} hardcopy -h /tmp/.hardcopy; cat /tmp/.hardcopy |grep "I am" | tail -1 | tr " " "\n" | grep -E '(slave|master)');
+        screenType=$(screen -X at ${i%:*} hardcopy -h /tmp/.hardcopy; cat /tmp/.hardcopy |grep -a "I am" | tail -1 | tr " " "\n" | grep -E '(slave|master)');
         
         #echo ${i%:*} ${i#*:} is $screenType
         if [ "$screenType" == "master" ]; then
