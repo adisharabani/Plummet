@@ -142,6 +142,13 @@ if [ "$1" = "attach_old" ]; then
 fi
 
 if [ "$1" = "attach" ]; then
+ sttys=($(stty size))
+ if [ $(( ${sttys[0]} * 2 )) -lt ${sttys[1]} ]; then
+ 	layout="horizontal"
+ else
+    layout="vertical"
+ fi
+ 
  $0 kill
  echo 'bindkey -k kB focus prev' > /tmp/.screens
  echo 'bindkey "	" focus next' >> /tmp/.screens
@@ -176,7 +183,18 @@ if [ "$1" = "attach" ]; then
  echo "hardstatus string 'Press <Esc> to quit'" >> /tmp/.screens
  echo "focus top" >> /tmp/.screens
  echo "focus right" >> /tmp/.screens
+ echo "focus bottom" >> /tmp/.screens
  echo "msgwait 0" >> /tmp/.screens
+ 	  echo "layout save horizontal" >> /tmp/.screens
+  	  echo "remove" >> /tmp/.screens
+  	  echo "focus bottom" >> /tmp/.screens
+       echo split >> /tmp/.screens
+       echo focus >> /tmp/.screens
+#       #echo screen bash -c '"' $0 listCommands ';' cat  '"' >> /tmp/.screens
+#       #echo screen -t Help bash -c '"' $0 listCommands '|' less -S -# 5 '"' >> /tmp/.screens
+      echo screen -t Help bash -c '"' $0 control '"' >> /tmp/.screens
+ 	  echo "layout save vertical" >> /tmp/.screens 
+	  echo "layout select ${layout}" >> /tmp/.screens
  echo "layout save default" >> /tmp/.screens 
  screen -c /tmp/.screens
  #$0 kill
@@ -186,7 +204,7 @@ if [ "$1" = "attach" ]; then
 fi
 
 if [ "$1" = "kill" ]; then
-while [ $(screen -ls | grep '(' | wc -l) -gt 0 ]; do screen -S $(screen -ls | grep '(' | head -1 | cut -d. -f 1) -X kill; sleep 0.1; done
+while [ $(screen -ls | grep '(' | wc -l) -gt 0 ]; do screen -S $(screen -ls | grep '(' | head -1 | cut -d. -f 1) -X kill; screen -wipe; sleep 0.1; done
 fi
 
 if [ "$1" = "listDevices" ]; then
@@ -218,11 +236,20 @@ if [ "$1" = "getMaster" ]; then
 fi	
 
 if [ "$1" = "control" ]; then
+
   readarray -t -d "|" options <<< $( cat Plummet.ino | grep "case '" | grep // | sed s/\ *case\ \'//g | sed s_\':\ //_:_g | sed -e "s:\":\\\":g" | awk -F ':' '{print t $1 "|" $2 } {t="|"}' )
   options+=(":" "Special (try me out)")
   cmd=""
   while : ; do
-    cmd=$(whiptail --title "Plummet 2.0" --nocancel --default-item "${cmd}" --menu "Choose an option:" 39 56 33 "${options[@]}"  3>&2 2>&1 1>&3 )
+	 sttys=($(stty size))
+	 layout=vertical
+	 if [ ${sttys[0]} -lt 20 ]; then
+	 		screen -X layout select horizontal
+	 fi
+	 if [ ${sttys[1]} -lt 30 ]; then
+	 		screen -X layout select vertical
+	 fi
+    cmd=$(whiptail --title "Plummet 2.0" --nocancel --default-item "${cmd}" --menu "Choose an option:" 0 56 0 "${options[@]}"  3>&2 2>&1 1>&3 )
         
     if [[ "$cmd" =~ [AM=:] ]]; then
 		for index in "${!options[@]}"; do
