@@ -167,10 +167,10 @@ void ewrite(unsigned int data, int index=-1) {
   EEPROM.write(eIndex++, byte(data%256));
 }
 
-void ewrite(const String &data, int index=-1) {
+void ewrite(const char *data, int index=-1) {
 	if (index !=-1) eIndex = index;
 	
-	for (int i=0; i<data.length(); i++) {
+	for (int i=0; data[i] != 0; i++) {
 		EEPROM.write(eIndex++, data[i]);
 	}
 	EEPROM.write(eIndex++, 0);
@@ -188,17 +188,22 @@ char ereadchar(int index=-1) {
 	return EEPROM.read(eIndex++);
 }
 
-String ereadstr(int index=-1) {
+//Todo test this function;
+void ereadstr(int index, char *p, int maxSize) { // todo: MAXSIZE
   if (index!=-1) eIndex = index;
-  
-  String s = "";
-  char c;
-  while (c = EEPROM.read(eIndex++)) {
-  	s += c;
+  while (char c = EEPROM.read(eIndex++)) {
+  	*(p++) = c;
   }
-  return s;
+  *p = 0;
+  return;
 }
 
+void eprintstr(int index=-1) {
+  if (index!=-1) eIndex = index;
+  while (char c = EEPROM.read(eIndex++)) {
+  	sprint(c);
+  }
+}
 //////////////////////////////
 // Audio
 //////ֿ////////////////////////
@@ -482,10 +487,10 @@ void writeCalibration() {
   ewrite(pot50);
   ewrite(pot150);
   ewrite(loopTime);
-  ewrite(0);
-  ewrite(0);
-  ewrite(0);
-  ewrite(0);
+  ewrite((unsigned int)0);
+  ewrite((unsigned int)0);
+  ewrite((unsigned int)0);
+  ewrite((unsigned int)0);
   
   sprint("EEPROM: ");
   printCurrentCalibration();
@@ -519,17 +524,12 @@ void readCalibration() {
 ///////////////////////////
 /// User Data
 ///////////////////////////
+#define KBSIZE 33
+char KB[KBSIZE];
+char *CMD=KB;
 
 boolean commandAvailable() {
   return (isPlaying && (nextCommandTime != MAX_UINT) && (millis() > nextCommandTime*1000+playInitTime));
-}
-
-String readCommand() {
-	String command = ereadstr(nextCommandLoc);
-	nextCommandTime = eread();
-	nextCommandLoc = eIndex;
-		
-	return command;
 }
 
 
@@ -556,48 +556,72 @@ bool readByteAvailable() {
   return (Serial.available() || prevSerial.available());
 }
 
-String keyboardBuffer = "";
 
-void forwardKeyboardInput() {
-    if (keyboardBuffer.length()==0) return;
+
+int find(char *str, char c) {
+	for (int index = 0; str[index] != 0; index++) {
+		if (str[index] == c) return index;
+	}
+	return -1;
+}
+
+char * forwardCommand() {
+    if (KB[0]==0) return;
 	if (isRecording) {
        ewrite((millis()-recordInitTime)/1000, recordingLoc);
-       ewrite(keyboardBuffer);
+       ewrite(KB);
        recordingLoc = eIndex;
        ewrite(MAX_UINT);
     }
 
-	byte k = keyboardBuffer[0];
-	int id;
+	char k = KB[0];
 	if (k==':') {
-	     String who = keyboardBuffer.substring(1,keyboardBuffer.indexOf(":",1));
-	     keyboardBuffer = keyboardBuffer.substring(keyboardBuffer.indexOf(":",1)+1);
-	     if (who=="e") {
-	     	nextSerial.println(String(":o:")+keyboardBuffer);
-	     } else if (who=="o") {
-	     	nextSerial.println(String(":e:")+keyboardBuffer);
-	     	keyboardBuffer = ""; //ignore this command as it is not for this arduino.
-	     } else if (who=="w") {
-	     	nextSerial.println(String(":w:")+keyboardBuffer);
+		 int index = 1+find(KB+1, ':');
+		 if ((index==0) || (KB[index+1]==0)) {
+		 	sprint("Bad KB: ");
+		 	sprintln(KB);
+		 	KB[0]=0; CMD=KB;
+		 }
+		 CMD = KB + index + 1;
+	     if (KB[1]=='e') {
+	     	KB[1] = 'o';
+	     	nextSerial.println(KB);
+	     } else if (KB[1]=='o') {
+	     	KB[1] = 'e';
+	     	nextSerial.println(KB);
+	     	KB[0] = 0; CMD=KB; //ignore this command as it is not for this arduino.
+	     } else if (KB[1]=='w') {
+	     	nextSerial.println(KB);
 	     	delay(50);
-	     	nextSerial.println(keyboardBuffer);
+	     	nextSerial.println(CMD);
 	     } else {
-		     id = who.toInt();
+		     int id = atoi(KB+1);
 		     if (id>0){
+		       // id ==> id-1
+		       itoa(id-1, KB+1, 10);
+		       KB[strlen(KB)] = ' '; // remove the null terminated created by itoa;
+		       CMD[-1] = ':'; // return the ':' if deleted by atoi		       
 		       // notify other arduinos
-		       nextSerial.println(String(":") + String(id-1)+String(":") + keyboardBuffer);
-		       keyboardBuffer = ""; //ignore this command as it is not for this arduino.
+		       nextSerial.println(KB);
+		       KB[0] = 0; CMD = KB;
 	     	} else {
 		       // do not notify other arduinos
 		       //sprintln("Command is directed to me only");
 		     }
 	     }
 	 }
+	 int s;
 	 switch (k) {
 	 // Do not forward the following commands
-		   case ':':
+	   case ':':
 	   case 's': /* will be send via the s command with the right synclooptime */
+	      s = atoi(KB+1); 
+	      if (s==0) itoa(defaultLoopTime+10, KB+1, 10);
+	      nextSerial.println(KB);
 	   case 'u': /* will be send via the u command with the right synclooptime */
+	      s = atoi(KB+1); 
+	      if (s==0) itoa((millis()-syncInitTime) % syncLoopTime, KB+1, 10);
+	      nextSerial.println(KB);
 	   case 'e':
 	   case 'E':
 	   case 'p':
@@ -613,7 +637,7 @@ void forwardKeyboardInput() {
 	   case '\n':
 	     break;
 	   default:
-	     nextSerial.println(keyboardBuffer);
+	     nextSerial.println(KB);
 	     break;
 	  }
 }
@@ -622,56 +646,67 @@ void handleKeyboardInput() {
 	////////////
 	// input
 	bool cmdOriginFromRecordedSequence = false;
-    if (commandAvailable()) {
-      String cmd = readCommand();
-      sprintln(cmd);
-   	  keyboardBuffer += cmd ;
-   	  if (keyboardBuffer.length()==0) {
+    int kblength = strlen(KB);
+    char inByte = KB[kblength-1];
+    if (commandAvailable() && (inByte != '\n')) {
+	  ereadstr(nextCommandLoc, KB+kblength,KBSIZE-kblength);
+	  kblength = strlen(KB);
+      nextCommandTime = eread();
+	  nextCommandLoc = eIndex;
+      sprintln(KB);
+      if (kblength==0) {
    	  	return;
    	  }
-  	  forwardKeyboardInput();
-  	  keyboardBuffer += "\n";
+  	  forwardCommand();
+      kblength = strlen(KB);
+  	  KB[kblength++] = '\n';
+  	  KB[kblength] = 0;
 	  cmdOriginFromRecordedSequence = true;
     } else {
-      char inByte = 0;
-	  if (keyboardBuffer.length() > 0) {
-         inByte = keyboardBuffer[keyboardBuffer.length()-1];
-      }
 	  while (readByteAvailable() && (inByte != '\n')) {
 	     inByte = readByte();
 	     if ((inByte=='\r') || (inByte=='\n')) {
 	       sprintln("");
-	       forwardKeyboardInput();
+	       forwardCommand();
+	       kblength = strlen(KB);
 	       //convert \r to \n
 	       inByte = '\n';
-	       keyboardBuffer += String(inByte);
+	       KB[kblength++] = inByte;
+	       KB[kblength] = 0;
 	     } else if (inByte == 127) {
 	       //handle backspace
-	       if (keyboardBuffer.length()>0) {
-	         keyboardBuffer = keyboardBuffer.substring(0,keyboardBuffer.length()-1);
-	         inByte = keyboardBuffer[keyboardBuffer.length()-1];
+	       if (kblength > 0) {
+		     KB[--kblength] = 0;
+		     inByte = KB[kblength-1];
 	         sprint("\b\b\b   \r");
-	         sprint(keyboardBuffer);
+	         sprint(KB);
 	       } else {
 	         inByte = 0;
 	       }
 	     } else if (inByte == ' ') {
 	       // disregard spaces
-	       inByte = keyboardBuffer[keyboardBuffer.length()-1];
-	     }else {
-	       keyboardBuffer += String(inByte);
+	       inByte = KB[kblength-1];
+	     } else {
+	       KB[kblength++] = inByte;
+	       KB[kblength] = 0;
 	       sprint(inByte);
 	     }
 	  }
 	}
 
-	
-	if (keyboardBuffer.length() == 0) return;
-	if (keyboardBuffer[keyboardBuffer.length()-1] != '\n') return;
 
-  char cmd = keyboardBuffer[0]; keyboardBuffer = keyboardBuffer.substring(1);
-
-  if (cmd == '\n') {return; } 
+  
+  int CMDlength = strlen(CMD);
+  if ((CMDlength == 0) || (CMD[CMDlength-1] != '\n')) {
+  	CMD=KB;
+    return;
+  }
+  char cmd = *(CMD++);
+  
+  if (cmd == '\n') {
+	KB[0] = 0;CMD=KB;
+	return;
+  } 
 
   int s,p;
   switch (cmd) {
@@ -733,11 +768,8 @@ void handleKeyboardInput() {
       sprint("tAmp="); sprintln(testAmp);
       break;
     case 's': // SYNC
-      s = keyboardBuffer.toInt(); keyboardBuffer = "";
-      syncLoopTime = (s!=0) ? s : defaultLoopTime + 10; //defaultLoopTime+16; // RONEN=3174
-      //if (isMaster && (s==0)) {
-      	nextSerial.println(String("s")+String(syncLoopTime));
-      //}
+      syncLoopTime = atoi(CMD); KB[0] = 0; CMD=KB;
+
       syncInitTime = millis();
       syncInitTimeOffset = 0;
       syncRopeAngle = 0.3;
@@ -748,10 +780,10 @@ void handleKeyboardInput() {
       syncInitTime = millis();
       break;
     case 'u': // Print phase compared to sync clock
-      s = keyboardBuffer.toInt(); keyboardBuffer = "";
-      if (s==0) s = (millis()-syncInitTime) % syncLoopTime;      
-      nextSerial.println(String("u")+String(s));
-      sprint("phase compared to sync clock is ");sprint((millis()-syncInitTime) % syncLoopTime - s);sprintln("ms");
+      s = atoi(CMD); KB[0] = 0; CMD=KB;
+      sprint("phase compared to sync clock is ");
+      sprint((millis()-syncInitTime) % syncLoopTime - s);
+      sprintln("ms");
       break;
     case 'U': // Update slaves on current Sync Clock
       updateSlaveClock = true;
@@ -775,7 +807,7 @@ void handleKeyboardInput() {
       mode = SYNCED_RUN; 
       break;
     case 'S': /* SYNC to an already set clock (don't update the clock) */
-      s = keyboardBuffer.toInt(); keyboardBuffer = "";
+      s = atoi(CMD); KB[0]=0; CMD=KB;
       if (s!=0) syncLoopTime = s;
       mode = SYNCED_RUN; 
       syncInitTimeOffset = 0;
@@ -794,14 +826,14 @@ void handleKeyboardInput() {
       sprint("Old ");
       sprint("Magic Number=");
       sprintln(SYNC_MAGIC_NUMBER);
-      s = keyboardBuffer.toInt(); keyboardBuffer = "";
+      s = atoi(CMD); KB[0]=0; CMD=KB;
       SYNC_MAGIC_NUMBER = s;
       sprint("Magic Number=");
       sprintln(SYNC_MAGIC_NUMBER);
       break;
       
     case '=': // Move servo to specific location
-      s = keyboardBuffer.toInt(); keyboardBuffer = "";
+      s = atoi(CMD); KB[0]=0; CMD=KB;
       if (s!=0) smoothMove(s);
       sprint("servo="); sprintln(myservoread());    
       // myservo.write(n);
@@ -856,19 +888,19 @@ void handleKeyboardInput() {
       playSong(audioSongNumber, audioVolume);
       break;
     case 'A': // Audio config for example A2,25 (song 2 volume 25)
-      if (keyboardBuffer.length()==0){
+      if (CMD[0]==0){
       	enableAudio = !enableAudio;
       }
-      s = keyboardBuffer.toInt();
+      s = atoi(CMD);
       if (s>0) {
       	audioSongNumber = s;
       } 
-      p = keyboardBuffer.indexOf(",");
+      p = find(CMD, ',');
       if (p!=-1) {
-         s = keyboardBuffer.substring(p+1).toInt();
+         s = atoi(CMD+p+1);
          audioVolume = s;
       }
-      keyboardBuffer = "";
+      KB[0] = 0; CMD=KB;
       sprint("Audio "); sprint(enableAudio ? "on" : "off"); sprint(" song="); sprint(audioSongNumber); sprint(" vol="); sprintln(audioVolume);
       break;
     case 'P': // Play
@@ -917,7 +949,8 @@ void startPlaySequence() {
   	while (commandTime != MAX_UINT) {
   		 sprint(commandTime);
   		 sprint("s: ");
-  	     sprintln(ereadstr());
+  		 eprintstr();
+  		 sprintln("");
   	     commandTime = eread();
     }
     
@@ -1112,7 +1145,8 @@ void updateAmpAndTime() {
 //////////////////////////////
 // Main Code
 //////////////////////////////
-void setup() {  
+void setup() {
+  KB[0] = 0; CMD=KB;
   pinMode(13, OUTPUT); digitalWrite(13, HIGH);
   Serial.begin(9600);
   Serial.print("v");
