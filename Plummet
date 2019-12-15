@@ -159,6 +159,8 @@ if [ "$1" = "attach" ]; then
  echo 'bindkey "^[[1;2B" focus down' >> /tmp/.screens
  echo 'bindkey "^[[1;2C" focus right' >> /tmp/.screens
  echo 'bindkey "^[[1;2D" focus left' >> /tmp/.screens
+ echo 'bindkey "^z" layout next' >> /tmp/.screens
+
  echo 'mousetrack on' >> /tmp/.screens
  isFirst=1
  for ard in $($0 listDevices $2); do
