@@ -188,6 +188,7 @@ if [ "$1" = "attach" ]; then
  echo "msgwait 0" >> /tmp/.screens
  	  echo "layout save horizontal" >> /tmp/.screens
   	  echo "remove" >> /tmp/.screens
+  	  echo "layout save none" >> /tmp/.screens
   	  echo "focus bottom" >> /tmp/.screens
        echo split >> /tmp/.screens
        echo focus >> /tmp/.screens
