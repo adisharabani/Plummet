@@ -25,8 +25,8 @@
 #include <EEPROM.h>
 
 #define rxPinPrev 2 // soft serial
-#define txPinPrev 3 // soft serial
-#define rxPinNext 4 // soft serial
+// #define txPinPrev 3 // soft serial
+// #define rxPinNext 4 // soft serial
 #define txPinNext 5 // soft serial
 #define tonePin 7 // digital
 #define servoPin 10 // digital
@@ -102,8 +102,10 @@ float syncRopeAngle;
 double syncPhase;
 boolean updateSlaveClock = false;
 
-SoftwareSerial prevSerial(rxPinPrev, txPinPrev);
-SoftwareSerial nextSerial(rxPinNext, txPinNext);
+//SoftwareSerial prevSerial(rxPinPrev, txPinPrev);
+//SoftwareSerial nextSerial(rxPinNext, txPinNext);
+SoftwareSerial nextSerial(rxPinPrev, txPinNext);
+#define prevSerial nextSerial
 
 #define audioSerial Serial
 
