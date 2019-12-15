@@ -246,6 +246,9 @@ void playSong(int8_t songNumber=1, int8_t volume=30) {
 Servo myservo;  // create servo object to control a servo
 double lastServoWriteValue = 95;
 #define SERVO_PWM_RATE 3040
+boolean servoAttached = false;
+static int originalTCCR1A = 0;
+
 double smoothWrite(double desiredPosition) {
   //myservowrite(desiredPosition); return desiredPosition;
   double maxServoMove = double(time-lastIterationTime)/defaultLoopTime * max(servoAmp,5) * 2 * maxSpeed; // Max 3 times average speed under current servo.
@@ -258,6 +261,7 @@ double smoothWrite(double desiredPosition) {
 }
 
 void myservowrite(double pos) {
+  if (SERVO_VIA_TIMER1 && !servoAttached) return;
   lastServoWriteValue = pos;
   //Serial.println(duty);
 
@@ -277,8 +281,6 @@ double myservoread() {
   }
 }
 
-boolean servoAttached = false;
-static int originalTCCR1A = 0;
 void myservoattach(int pin) {
   if (SERVO_VIA_TIMER1) {
     if (originalTCCR1A == 0) {
