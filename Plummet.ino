@@ -1191,12 +1191,12 @@ void setup() {
   tone(7, NOTE_G5, 100);
   
   // Read all prevSerial data
+  sprintln("Waiting for prev data to be cleared out...")
   while (prevSerial.available()) {
-    sprintln("Read prev Data:");
   	while (prevSerial.available()) {Serial.write(prevSerial.read());}
-  	sprintln("Done.");
   	delay(50);
   }
+  sprintln("Done.");
   
   mode=HALT;
   initTime = millis();
