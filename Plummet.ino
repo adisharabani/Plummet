@@ -1143,7 +1143,7 @@ void updateAmpAndTimeForSyncedRunning() {
 
     if (offset > 0.5) offset = offset-1;
 
-    if (abs(offset) > 0.10) {
+    if (abs(offset) > 0.15) {
     	desiredPhase = (offset > 0) ? 0.6 : 0.9;
     	servoAmp = maxServoAmp; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
     } else if (abs(offset) > 0.02) {
@@ -1169,7 +1169,7 @@ void updateAmpAndTimeForSyncedRunning() {
     sprint(") Phase(");sprint(phaseOffset);
     sprint(")/Offset(");sprint(int(offset*syncLoopTime));sprint("ms / "); sprint(offset); sprint("%%");
     sprint(")  ==>  ServoAmp="); sprint(servoAmp);
-    sprintln("; phase="); sprint(syncPhase);
+    sprint("; phase="); sprintln(syncPhase);
 //    sprint("(wanted"); sprint(desiredPhase);
 //    sprintln(")");
   }
