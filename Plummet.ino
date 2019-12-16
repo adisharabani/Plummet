@@ -19,9 +19,9 @@
 
 #define PLUMMET_VERSION "0.22"
 
-#include <SoftwareSerial.h>
-// #include <NeoSWSerial.h>
-// #define SoftwareSerial NeoSWSerial
+// #include <SoftwareSerial.h>
+#include <NeoSWSerial.h>
+#define SoftwareSerial NeoSWSerial
 #include <TimerOne.h>
 #include <Servo.h>
 #include <EEPROM.h>
