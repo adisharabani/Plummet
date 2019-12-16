@@ -1304,12 +1304,14 @@ void loop(){
   handleKeyboardInput();
 
   // Update clock of slaves
-  if (updateSlaveClock) {
+  if (updateSlaveClock || mode==SYNCED_RUNNING) {
     if ((time-syncInitTime)%syncLoopTime  < (lastIterationTime-syncInitTime) % syncLoopTime) {
       // this means we just got to the init time frame;
-      updateSlaveClock = false;
-      sprint("updateslaveclock. Sync moved");
-      sprintln((millis()-syncInitTime) % syncLoopTime);
+	  if (updateSlaveClock) {
+	      updateSlaveClock = false;
+    	  sprint("updateslaveclock. Sync moved");
+      	  sprintln((millis()-syncInitTime) % syncLoopTime);
+      }
       syncInitTime = millis();
       nextSerial.println("T"); // update the clock...     
     }
