@@ -1232,11 +1232,15 @@ void setup() {
   randomSeed((initTime + int(potentiometerRead()*100)) % 30000);
   updateAmpAndTime();
 
-  // wait 1.5 seconds to see if you are a slave
-  while ((millis() < initTime + 1500) && isMaster) {
-     if (prevSerial.available()) {isMaster = false; } 
+  if (listenOnPrev) {
+	  // wait 1.5 seconds to see if you are a slave
+	  while ((millis() < initTime + 1500) && isMaster) {
+	     if (prevSerial.available()) {isMaster = false; } 
+	  }
+	  Serial.println(isMaster ? "I am master" : "I am slave"); 
+  } else {
+      Serial.println("I am probably master");
   }
-  Serial.println(isMaster ? "I am master" : "I am slave"); 
   
   if ( eread(EEPROM_COMMANDS_LOC-2) == EEPROM_MAGIC) {
   	isAutoPlay = eread(EEPROM_COMMANDS_LOC-4);
