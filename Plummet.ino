@@ -15,7 +15,7 @@
 //  Help:
 //
 //  TODO: 
-//    create an EEPROM Editor
+//	create an EEPROM Editor
 
 #define PLUMMET_VERSION "0.22"
 
@@ -154,7 +154,7 @@ mode_e mode;
 // #define sprint(s) 
 // #define sprintln(s)
 
-//void debugLog(const char *x) { if (debug) Serial.print(x);         }
+//void debugLog(const char *x) { if (debug) Serial.print(x);		 }
 #define debugLog(x) {if (debug) Serial.print(x);}
 
 
@@ -238,13 +238,13 @@ void sendAudioCommand(int8_t command, int8_t datah, int8_t datal) {
   Send_Audio_buf[7] = 0xef; //ending byte
   for(uint8_t i=0; i<8; i++)//
   {
-    audioSerial.write(Send_Audio_buf[i]) ;
+	audioSerial.write(Send_Audio_buf[i]) ;
   }
   audioSerial.write('\r');
 }
 
 void playSong(int8_t songNumber=1, int8_t volume=30) {
-    if (!enableAudio) return;
+	if (!enableAudio) return;
 	sendAudioCommand(0x22, volume, songNumber);
 }
 
@@ -263,7 +263,7 @@ double smoothWrite(double desiredPosition) {
   double maxServoMove = double(time-lastIterationTime)/defaultLoopTime * max(servoAmp,5) * 2 * maxSpeed; // Max 3 times average speed under current servo.
   double servoPosition_new = max(min(desiredPosition, lastServoWriteValue+maxServoMove), lastServoWriteValue-maxServoMove);
 //  if (servoPosition_new != desiredPosition) {
-    //sprintln("^^^ desiredPosition="+String(desiredPosition)+" lastServoWriteValue="+String(lastServoWriteValue)+" MaxMove="+String(maxServoMove) + "  newpos="+String(servoPosition_new));
+	//sprintln("^^^ desiredPosition="+String(desiredPosition)+" lastServoWriteValue="+String(lastServoWriteValue)+" MaxMove="+String(maxServoMove) + "  newpos="+String(servoPosition_new));
 //  }
   myservowrite(servoPosition_new);
   return servoPosition_new;
@@ -275,49 +275,49 @@ void myservowrite(double pos) {
   //Serial.println(duty);
 
   if (SERVO_VIA_TIMER1) {
-    int duty = int(double(map(int(pos), 0,180,544.0,2400.0))/SERVO_PWM_RATE*1024);
-    Timer1.pwm(servoPin, duty);
+	int duty = int(double(map(int(pos), 0,180,544.0,2400.0))/SERVO_PWM_RATE*1024);
+	Timer1.pwm(servoPin, duty);
   } else {
-    //LIBServo: myservo.write(int(pos));
+	//LIBServo: myservo.write(int(pos));
   }
 }
 
 double myservoread() {
   if (SERVO_VIA_TIMER1) {
-    return lastServoWriteValue;
+	return lastServoWriteValue;
   } else {
-    //LIBServo: return myservo.read();
+	//LIBServo: return myservo.read();
   }
 }
 
 void myservoattach(int pin) {
   if (SERVO_VIA_TIMER1) {
-    if (originalTCCR1A == 0) {
-      pinMode(pin, OUTPUT);
-      Timer1.initialize(SERVO_PWM_RATE);
-    } else {
-      TCCR1A = originalTCCR1A;
-    }
-    servoAttached = true;
+	if (originalTCCR1A == 0) {
+	  pinMode(pin, OUTPUT);
+	  Timer1.initialize(SERVO_PWM_RATE);
+	} else {
+	  TCCR1A = originalTCCR1A;
+	}
+	servoAttached = true;
   } else {
-    //LIBServo: myservo.attach(pin);
+	//LIBServo: myservo.attach(pin);
   }
 }
 
 boolean myservoattached() {
   if (SERVO_VIA_TIMER1) {
-    return servoAttached;
+	return servoAttached;
   } else {
-    //LIBServo: return myservo.attached();
+	//LIBServo: return myservo.attached();
   }
 }
 void myservodetach() {
   if (SERVO_VIA_TIMER1) {
-    originalTCCR1A = TCCR1A;
-    Timer1.disablePwm(servoPin);
-    servoAttached = false;
+	originalTCCR1A = TCCR1A;
+	Timer1.disablePwm(servoPin);
+	servoAttached = false;
   } else {
-    //LIBServo: myservo.detach();
+	//LIBServo: myservo.detach();
   }
 }
 
@@ -325,10 +325,10 @@ void smoothMove(double desiredPosition, int totalTime = 2000) {
   double sl = myservoread();
   int iterations = totalTime/20;
   for (int i=0; i<=iterations; i++) {
-     double np = sl*double(iterations-i)/iterations + desiredPosition*double(i)/iterations;
-     myservowrite(np);
-     debugLog("moving Servo from ");debugLog(sl); debugLog(" to "); debugLog(desiredPosition);debugLog(" Step(");debugLog(i);debugLog(" of ");debugLog(iterations);debugLog("): "); debugLog(np); debugLog("\n\r");
-     delay(20);
+	 double np = sl*double(iterations-i)/iterations + desiredPosition*double(i)/iterations;
+	 myservowrite(np);
+	 debugLog("moving Servo from ");debugLog(sl); debugLog(" to "); debugLog(desiredPosition);debugLog(" Step(");debugLog(i);debugLog(" of ");debugLog(iterations);debugLog("): "); debugLog(np); debugLog("\n\r");
+	 delay(20);
   }
 }
 
@@ -373,7 +373,7 @@ int posAvg() {
   int s = 0;
   for (int i=0; i< POSITIONS_STACK_SIZE; i++)
   {
-      s += positions[i];
+	  s += positions[i];
   }
   return s/POSITIONS_STACK_SIZE;
 }
@@ -388,22 +388,22 @@ double waitForSteadiness(double threshold, int steadyTime=5000) {
   double potRead, maxRead, minRead;
   unsigned long t;
   do {
-    potRead = potentiometerRead();
-    maxRead=minRead=potRead;
-    t = millis();
-    while ((millis() < t + steadyTime))
-    {
-      potRead = potentiometerRead();
-      minRead = min(minRead, potRead);
-      maxRead = max(maxRead, potRead);
-      delay(20);
-    }
-    sprint("Potentiometer is ");
-    sprint((maxRead+minRead)/2);
-    sprint("+-");
-    sprint((maxRead-minRead)/2);
-    sprint(". Threshold is ");
-    sprintln(threshold);
+	potRead = potentiometerRead();
+	maxRead=minRead=potRead;
+	t = millis();
+	while ((millis() < t + steadyTime))
+	{
+	  potRead = potentiometerRead();
+	  minRead = min(minRead, potRead);
+	  maxRead = max(maxRead, potRead);
+	  delay(20);
+	}
+	sprint("Potentiometer is ");
+	sprint((maxRead+minRead)/2);
+	sprint("+-");
+	sprint((maxRead-minRead)/2);
+	sprint(". Threshold is ");
+	sprintln(threshold);
   } while ((maxRead-minRead)/2 > threshold);
   return (maxRead+minRead)/2;
 }
@@ -467,23 +467,23 @@ void calibrateLoopTime() {
   
   sprintln("Analyzing movement");
   do {
-     time = millis();
-     potRead = potentiometerRead();
-     if ((side==RIGHT) && (potRead < potCenter) && (time-rightTime>loopTime/5) ) {
-        side = LEFT;
-        leftTime = time;
-        if (initLeftTime == 0) {
-           initLeftTime = time;
-           sprintln("Starting cycle analysis");
-        } else {
-          cycles ++;
-          sprint("Cycle ");sprint(cycles);sprint(" of ");sprint(nCycles);sprint(" complete. Average loop time: "); sprintln((time-initLeftTime)/cycles);
-        }
-     } else if ((side==LEFT) && (potRead > potCenter) && (time-leftTime>loopTime/5) ) {
-        //sprintln("Right side");
-        side = RIGHT;
-        rightTime = time;
-     }
+	 time = millis();
+	 potRead = potentiometerRead();
+	 if ((side==RIGHT) && (potRead < potCenter) && (time-rightTime>loopTime/5) ) {
+		side = LEFT;
+		leftTime = time;
+		if (initLeftTime == 0) {
+		   initLeftTime = time;
+		   sprintln("Starting cycle analysis");
+		} else {
+		  cycles ++;
+		  sprint("Cycle ");sprint(cycles);sprint(" of ");sprint(nCycles);sprint(" complete. Average loop time: "); sprintln((time-initLeftTime)/cycles);
+		}
+	 } else if ((side==LEFT) && (potRead > potCenter) && (time-leftTime>loopTime/5) ) {
+		//sprintln("Right side");
+		side = RIGHT;
+		rightTime = time;
+	 }
   } while ((cycles < nCycles)); // TIMEOUT:  && (millis() < initTime + 6000 + 3000 + 4000*(cycles+2)));
 
   defaultLoopTime = (cycles == nCycles) ? (time-initLeftTime)/(cycles) : loopTime;
@@ -520,15 +520,15 @@ void printCurrentCalibration() {
 
 void readCalibration() {
   if (eread(0) == EEPROM_MAGIC) { // confirm magic number
-    eread(); // calibration version
-    servoCenter = eread();
-    potCenter = eread();
-    pot50 = eread();
-    pot150 = eread();
-    loopTime = eread(); defaultLoopTime = loopTime;
+	eread(); // calibration version
+	servoCenter = eread();
+	potCenter = eread();
+	pot50 = eread();
+	pot150 = eread();
+	loopTime = eread(); defaultLoopTime = loopTime;
   } else {
-    sprintln("No EEPROM");
-    //servoCenter = eread(1);
+	sprintln("No EEPROM");
+	//servoCenter = eread(1);
   }
   if (servoCenter>1000) servoCenter = 95;
   printCurrentCalibration();
@@ -550,17 +550,17 @@ byte readByte() {
   unsigned long timeout = millis() + 100;
   char b;
   while (millis() < timeout) {
-    if (Serial.available()) {
-      b = Serial.read();
-      //sprint(b);
-      return b;
-    } else if (listenOnPrev && prevSerial.available()){
-      isMaster = false;
-      char b = prevSerial.read();
-//      if (b=='~') { Serial.write("Error:"); delay(100); while (prevSerial.available()) Serial.print("~"+String(int(prevSerial.read()))); Serial.println("");}
-      //sprint(b);
-      return b;
-    }
+	if (Serial.available()) {
+	  b = Serial.read();
+	  //sprint(b);
+	  return b;
+	} else if (listenOnPrev && prevSerial.available()){
+	  isMaster = false;
+	  char b = prevSerial.read();
+//	  if (b=='~') { Serial.write("Error:"); delay(100); while (prevSerial.available()) Serial.print("~"+String(int(prevSerial.read()))); Serial.println("");}
+	  //sprint(b);
+	  return b;
+	}
   }
 sprint("?");
 }
@@ -579,13 +579,13 @@ int find(char *str, char c) {
 }
 
 char * forwardCommand() {
-    if (KB[0]==0) return;
+	if (KB[0]==0) return;
 	if (isRecording) {
-       ewrite((millis()-recordInitTime)/1000, recordingLoc);
-       ewrite(KB);
-       recordingLoc = eIndex;
-       ewrite(MAX_UINT);
-    }
+	   ewrite((millis()-recordInitTime)/1000, recordingLoc);
+	   ewrite(KB);
+	   recordingLoc = eIndex;
+	   ewrite(MAX_UINT);
+	}
 
 	char k = KB[0];
 	if (k==':') {
@@ -596,59 +596,59 @@ char * forwardCommand() {
 		 	KB[0]=0; CMD=KB;
 		 }
 		 CMD = KB + index + 1;
-	     if (KB[1]=='e') {
-	     	KB[1] = 'o';
-	     	nextSerial.println(KB);
-	     } else if (KB[1]=='o') {
-	     	KB[1] = 'e';
-	     	nextSerial.println(KB);
-	     	KB[0] = 0; CMD=KB; //ignore this command as it is not for this arduino.
-	     } else if (KB[1]=='w') {
-	     	nextSerial.println(KB);
-	     	delay(50);
-	     	nextSerial.println(CMD);
-	     } else {
-		     int id = atoi(KB+1);
-		     if (id>0){
-		       // id ==> id-1
-		       itoa(id-1, KB+1, 10);
-		       KB[strlen(KB)] = ' '; // remove the null terminated created by itoa;
-		       CMD[-1] = ':'; // return the ':' if deleted by atoi		       
-		       // notify other arduinos
-		       nextSerial.println(KB);
-		       KB[0] = 0; CMD = KB;
-	     	} else {
-		       // do not notify other arduinos
-		       //sprintln("Command is directed to me only");
-		     }
-	     }
+		 if (KB[1]=='e') {
+		 	KB[1] = 'o';
+		 	nextSerial.println(KB);
+		 } else if (KB[1]=='o') {
+		 	KB[1] = 'e';
+		 	nextSerial.println(KB);
+		 	KB[0] = 0; CMD=KB; //ignore this command as it is not for this arduino.
+		 } else if (KB[1]=='w') {
+		 	nextSerial.println(KB);
+		 	delay(50);
+		 	nextSerial.println(CMD);
+		 } else {
+			 int id = atoi(KB+1);
+			 if (id>0){
+			   // id ==> id-1
+			   itoa(id-1, KB+1, 10);
+			   KB[strlen(KB)] = ' '; // remove the null terminated created by itoa;
+			   CMD[-1] = ':'; // return the ':' if deleted by atoi			   
+			   // notify other arduinos
+			   nextSerial.println(KB);
+			   KB[0] = 0; CMD = KB;
+		 	} else {
+			   // do not notify other arduinos
+			   //sprintln("Command is directed to me only");
+			 }
+		 }
 	 }
 	 int s;
 	 switch (k) {
 	 // Do not forward the following commands
 	   case 't':
 	   case 's': /* will be send via the s command with the right synclooptime */
-	      s = atoi(KB+1); 
-	      if (s==0) {
-	      	itoa(defaultLoopTime+30, KB+1, 10);
-	      	sprint(KB+1);
-	      	s = strlen(KB);
-	      	KB[s++] = '\n';
-	      	KB[s] = 0;
-	      }
-	      nextSerial.println(KB);
-	      break;
+		  s = atoi(KB+1); 
+		  if (s==0) {
+		  	itoa(defaultLoopTime+30, KB+1, 10);
+		  	sprint(KB+1);
+		  	s = strlen(KB);
+		  	KB[s++] = '\n';
+		  	KB[s] = 0;
+		  }
+		  nextSerial.println(KB);
+		  break;
 	   case 'u': /* will be send via the u command with the right synclooptime */
-	      s = atoi(KB+1); 
-	      if (s==0) {
-	      	itoa(int((millis()-(syncInitTime+syncInitTimeOffset)) % syncLoopTime), KB+1, 10);
-	      	sprint(KB+1);
-	      	s = strlen(KB);
-	      	KB[s++] = '\n';
-	      	KB[s] = 0;
-	      }
-	      nextSerial.println(KB);
-	      break;
+		  s = atoi(KB+1); 
+		  if (s==0) {
+		  	itoa(int((millis()-(syncInitTime+syncInitTimeOffset)) % syncLoopTime), KB+1, 10);
+		  	sprint(KB+1);
+		  	s = strlen(KB);
+		  	KB[s++] = '\n';
+		  	KB[s] = 0;
+		  }
+		  nextSerial.println(KB);
+		  break;
 	   case ':':
 	   case 'U':
 	   case 'e':
@@ -664,10 +664,10 @@ char * forwardCommand() {
 	   case 'Y':
 	   case ' ':
 	   case '\n':
-	     break;
+		 break;
 	   default:
-	     nextSerial.println(KB);
-	     break;
+		 nextSerial.println(KB);
+		 break;
 	  }
 }
 
@@ -675,59 +675,59 @@ void handleKeyboardInput() {
 	////////////
 	// input
 	bool cmdOriginFromRecordedSequence = false;
-    int kblength = strlen(KB);
-    char inByte = KB[kblength-1];
-    if (commandAvailable() && (inByte != '\n')) {
+	int kblength = strlen(KB);
+	char inByte = KB[kblength-1];
+	if (commandAvailable() && (inByte != '\n')) {
 	  ereadstr(nextCommandLoc, KB+kblength,KBSIZE-kblength);
 	  kblength = strlen(KB);
-      nextCommandTime = eread();
+	  nextCommandTime = eread();
 	  nextCommandLoc = eIndex;
-      sprintln(KB);
-      if (kblength==0) {
+	  sprintln(KB);
+	  if (kblength==0) {
    	  	return;
    	  }
   	  forwardCommand();
-      kblength = strlen(KB);
+	  kblength = strlen(KB);
   	  KB[kblength++] = '\n';
   	  KB[kblength] = 0;
 	  cmdOriginFromRecordedSequence = true;
-    } else {
+	} else {
 	  while (readByteAvailable() && (inByte != '\n')) {
-	     inByte = readByte();
-	     if ((inByte=='\r') || (inByte=='\n')) {
-	       if (kblength>0) {
-		       forwardCommand();
-		       kblength = strlen(KB);
-		       //convert \r to \n
-		       inByte = '\n';
-		       KB[kblength++] = inByte;
-		       KB[kblength] = 0;
-		       if ((kblength==2) && (KB[0]=='T')) {
-		       	// don't print the T (update clock command);
-		       	sprint("\r");
-		       } else {
-	  		       sprintln("");
+		 inByte = readByte();
+		 if ((inByte=='\r') || (inByte=='\n')) {
+		   if (kblength>0) {
+			   forwardCommand();
+			   kblength = strlen(KB);
+			   //convert \r to \n
+			   inByte = '\n';
+			   KB[kblength++] = inByte;
+			   KB[kblength] = 0;
+			   if ((kblength==2) && (KB[0]=='T')) {
+			   	// don't print the T (update clock command);
+			   	sprint("\r");
+			   } else {
+	  			   sprintln("");
 	  		   }
 
-		    }
-	     } else if (inByte == 127) {
-	       //handle backspace
-	       if (kblength > 0) {
-		     KB[--kblength] = 0;
-		     inByte = KB[kblength-1];
-	         sprint("\b\b\b   \r");
-	         sprint(KB);
-	       } else {
-	         inByte = 0;
-	       }
-	     } else if (inByte == ' ') {
-	       // disregard spaces
-	       inByte = KB[kblength-1];
-	     } else {
-	       KB[kblength++] = inByte;
-	       KB[kblength] = 0;
-	       sprint(inByte);
-	     }
+			}
+		 } else if (inByte == 127) {
+		   //handle backspace
+		   if (kblength > 0) {
+			 KB[--kblength] = 0;
+			 inByte = KB[kblength-1];
+			 sprint("\b\b\b   \r");
+			 sprint(KB);
+		   } else {
+			 inByte = 0;
+		   }
+		 } else if (inByte == ' ') {
+		   // disregard spaces
+		   inByte = KB[kblength-1];
+		 } else {
+		   KB[kblength++] = inByte;
+		   KB[kblength] = 0;
+		   sprint(inByte);
+		 }
 	  }
 	}
 
@@ -736,7 +736,7 @@ void handleKeyboardInput() {
   int CMDlength = strlen(CMD);
   if ((CMDlength == 0) || (CMD[CMDlength-1] != '\n')) {
   	CMD=KB;
-    return;
+	return;
   }
   char cmd = *(CMD++);
   
@@ -747,278 +747,278 @@ void handleKeyboardInput() {
 
   int s,p;
   switch (cmd) {
-    case 'e': /* Enable output */
-      enablePrint = true;
-      break;
-    case 'E': /* Disable output */
-      enablePrint = false;
-      break;
-    case 'd': /* Debug */
-      debug = !debug;
-      enablePrint = true;
-      sprint("debug="); sprintln(debug ? "on" : "off");
-      break;
-    case 'p': // Print measurements (potentiometer, servo, etc.)
-      printMeasures = !printMeasures;
-      enablePrint = true;
-//      sprint("printMeasures="); sprintln(printMeasures ? "on" : "off");
-      break;
-    case 'L': // Print loop events (move from RIGHT to left)
-      showLoopEvents = !showLoopEvents;
-      enablePrint = true;
-//      sprint("showLoopEvents="); sprintln(showLoopEvents ? "on" : "off");
-      break;
-    case '0': /* temporary move servo to center */
-      smoothMove(servoCenter);
-      break;
-    case '1': // START 
-      mode = START; sprintln("START");
-      break;
-    case '2': // STOP
-      mode = STOP; sprintln("STOP");
-      break;
-    case '9': // HALT: STOP and dont move anymore;
-      mode = HALT; sprintln("HALT");
-      smoothMove(servoCenter);
-      break;
-    case 'm': // MAINTAIN
-      mode = MAINTAIN; sprintln("MAINTAIN");
-      break;
-    case 't': // TEST 
-      syncLoopTime = atoi(CMD); KB[0] = 0; CMD=KB;
-      syncInitTime = millis();
-      syncInitTimeOffset = 0;
-      syncRopeAngle = 0.2;
+	case 'e': /* Enable output */
+	  enablePrint = true;
+	  break;
+	case 'E': /* Disable output */
+	  enablePrint = false;
+	  break;
+	case 'd': /* Debug */
+	  debug = !debug;
+	  enablePrint = true;
+	  sprint("debug="); sprintln(debug ? "on" : "off");
+	  break;
+	case 'p': // Print measurements (potentiometer, servo, etc.)
+	  printMeasures = !printMeasures;
+	  enablePrint = true;
+//	  sprint("printMeasures="); sprintln(printMeasures ? "on" : "off");
+	  break;
+	case 'L': // Print loop events (move from RIGHT to left)
+	  showLoopEvents = !showLoopEvents;
+	  enablePrint = true;
+//	  sprint("showLoopEvents="); sprintln(showLoopEvents ? "on" : "off");
+	  break;
+	case '0': /* temporary move servo to center */
+	  smoothMove(servoCenter);
+	  break;
+	case '1': // START 
+	  mode = START; sprintln("START");
+	  break;
+	case '2': // STOP
+	  mode = STOP; sprintln("STOP");
+	  break;
+	case '9': // HALT: STOP and dont move anymore;
+	  mode = HALT; sprintln("HALT");
+	  smoothMove(servoCenter);
+	  break;
+	case 'm': // MAINTAIN
+	  mode = MAINTAIN; sprintln("MAINTAIN");
+	  break;
+	case 't': // TEST 
+	  syncLoopTime = atoi(CMD); KB[0] = 0; CMD=KB;
+	  syncInitTime = millis();
+	  syncInitTimeOffset = 0;
+	  syncRopeAngle = 0.2;
 
-      mode = TEST; sprintln("TEST");
-      break;
-    case ']': /* Increase TEST Phase */
-      testPhase = (int((testPhase + 0.05)*100) % 100) /100.0;
-      sprint("tPhase="); sprintln(testPhase);
+	  mode = TEST; sprintln("TEST");
+	  break;
+	case ']': /* Increase TEST Phase */
+	  testPhase = (int((testPhase + 0.05)*100) % 100) /100.0;
+	  sprint("tPhase="); sprintln(testPhase);
 
-      break;
-    case '[': /* Decrease TEST phase */
-      testPhase = (int((testPhase - 0.05)*100) % 100) /100.0;
-      sprint("tPhase="); sprintln(testPhase);
-      break;
-    case '>': /* Increase TEST amplitude */
-      testAmp = min(testAmp + 1,100);
-      sprint("tAmp="); sprintln(testAmp);
-      break;
-    case '<': /* Decrease TEST amplitude */
-      testAmp = max(testAmp -1,0);
-      sprint("tAmp="); sprintln(testAmp);
-      break;
-    case 's': // SYNC
-      syncLoopTime = atoi(CMD); KB[0] = 0; CMD=KB;
+	  break;
+	case '[': /* Decrease TEST phase */
+	  testPhase = (int((testPhase - 0.05)*100) % 100) /100.0;
+	  sprint("tPhase="); sprintln(testPhase);
+	  break;
+	case '>': /* Increase TEST amplitude */
+	  testAmp = min(testAmp + 1,100);
+	  sprint("tAmp="); sprintln(testAmp);
+	  break;
+	case '<': /* Decrease TEST amplitude */
+	  testAmp = max(testAmp -1,0);
+	  sprint("tAmp="); sprintln(testAmp);
+	  break;
+	case 's': // SYNC
+	  syncLoopTime = atoi(CMD); KB[0] = 0; CMD=KB;
 
-      syncInitTime = millis();
-      syncInitTimeOffset = 0;
-      syncRopeAngle = 0.3;
-      //servoAmp = 20;
-      mode = SYNCED_RUN; sprint("SYNC");sprintln(syncLoopTime);
-      break;
-    case 'T': /* Set the clock for SYNC */
-      syncInitTime = millis();
-      break;
-    case 'u': // Print phase compared to sync clock
-      s = atoi(CMD); KB[0] = 0; CMD=KB;
-//      sprint ("clock: "); sprint(millis()); sprint ("; sIT: "); sprint(syncInitTime); sprint("; sITO"); sprint(syncInitTimeOffset); sprint("; sLT:");sprintln(syncLoopTime);
-//      sprint ("clock-sync: "); sprintln(millis()-syncInitTime);
-      sprint("sync: ");
-      sprint(int((millis()-(syncInitTime+syncInitTimeOffset) - s) % syncLoopTime));
-      break;
-    case 'U': // Update slaves on current Sync Clock
-      updateSlaveClock = true;
-      break;
-    case '{': // Offset the SYNC clock forward (1/32 of a loop)
-      syncInitTimeOffset -= syncLoopTime/32;
-      mode = SYNCED_RUN; 
-      break;
-    case '}': // Offset the SYNC clock backwards (1/32 of a loop)
-      syncInitTimeOffset += syncLoopTime/32;
-      mode = SYNCED_RUN; 
-      break;
-    case 'h': // Offset the Sync clock by half loop
-      syncInitTimeOffset -= syncLoopTime/2;
-      mode = SYNCED_RUN;
-      break;
-    case 'r': // Randomize the SYNC clock 
-      syncInitTimeOffset = random(0,defaultLoopTime);
-      //servoAmp = 20;
-      mode = SYNCED_RUN; 
-      break;
-    case 'S': /* SYNC to an already set clock (don't update the clock) */
-      // s = atoi(CMD); KB[0]=0; CMD=KB;
-      //	if (s!=0) syncLoopTime = s;
-      mode = SYNCED_RUN; 
-      syncInitTimeOffset = 0;
-      break;
+	  syncInitTime = millis();
+	  syncInitTimeOffset = 0;
+	  syncRopeAngle = 0.3;
+	  //servoAmp = 20;
+	  mode = SYNCED_RUN; sprint("SYNC");sprintln(syncLoopTime);
+	  break;
+	case 'T': /* Set the clock for SYNC */
+	  syncInitTime = millis();
+	  break;
+	case 'u': // Print phase compared to sync clock
+	  s = atoi(CMD); KB[0] = 0; CMD=KB;
+//	  sprint ("clock: "); sprint(millis()); sprint ("; sIT: "); sprint(syncInitTime); sprint("; sITO"); sprint(syncInitTimeOffset); sprint("; sLT:");sprintln(syncLoopTime);
+//	  sprint ("clock-sync: "); sprintln(millis()-syncInitTime);
+	  sprint("sync: ");
+	  sprint(int((millis()-(syncInitTime+syncInitTimeOffset) - s) % syncLoopTime));
+	  break;
+	case 'U': // Update slaves on current Sync Clock
+	  updateSlaveClock = true;
+	  break;
+	case '{': // Offset the SYNC clock forward (1/32 of a loop)
+	  syncInitTimeOffset -= syncLoopTime/32;
+	  mode = SYNCED_RUN; 
+	  break;
+	case '}': // Offset the SYNC clock backwards (1/32 of a loop)
+	  syncInitTimeOffset += syncLoopTime/32;
+	  mode = SYNCED_RUN; 
+	  break;
+	case 'h': // Offset the Sync clock by half loop
+	  syncInitTimeOffset -= syncLoopTime/2;
+	  mode = SYNCED_RUN;
+	  break;
+	case 'r': // Randomize the SYNC clock 
+	  syncInitTimeOffset = random(0,defaultLoopTime);
+	  //servoAmp = 20;
+	  mode = SYNCED_RUN; 
+	  break;
+	case 'S': /* SYNC to an already set clock (don't update the clock) */
+	  // s = atoi(CMD); KB[0]=0; CMD=KB;
+	  //	if (s!=0) syncLoopTime = s;
+	  mode = SYNCED_RUN; 
+	  syncInitTimeOffset = 0;
+	  break;
 /*
-    case 'w': / Create a wave 
-     nextSerial.write("{");
-      mode = SYNCED_RUN; 
-      break;
-    case 'W': / Create a backward wave
-     nextSerial.write("}");
-      mode = SYNCED_RUN; 
-      break;
+	case 'w': / Create a wave 
+	 nextSerial.write("{");
+	  mode = SYNCED_RUN; 
+	  break;
+	case 'W': / Create a backward wave
+	 nextSerial.write("}");
+	  mode = SYNCED_RUN; 
+	  break;
 */
-    case 'M': // Set magic number
-      sprint("Old ");
-      sprint("Magic=");
-      sprintln(SYNC_MAGIC_NUMBER);
-      s = atoi(CMD); KB[0]=0; CMD=KB;
-      SYNC_MAGIC_NUMBER = s;
-      sprint("Magic=");
-      sprintln(SYNC_MAGIC_NUMBER);
-      break;
-      
-    case '=': // Move servo to specific location
-      s = atoi(CMD); KB[0]=0; CMD=KB;
-      if (s!=0) smoothMove(s);
-      sprint("servo="); sprintln(myservoread());    
-      // myservo.write(n);
-      break;
-    case '+': // Move servo one step forwards
-      s = myservoread(); 
-      sprint("Old "); sprint("servo=");sprintln(s);
-      myservowrite(s+1);
-      sprint("servo="); sprintln(myservoread());    
-      break;
-    case '-': // Move servo one step backwards
-      s = myservoread();
-      sprint("Old "); sprint("servo=");sprintln(s);
-      myservowrite(s-1);
-      sprint("servo="); sprintln(myservoread());    
-      break;
-    case '_': // Detach or reattach servo
-      if (myservoattached()) {
-        myservodetach();
-      } else {
-         myservoattach(servoPin);
-      }
-      sprint("servo="); sprintln(myservoattached() ? "attached" : "detached");
-      break;
+	case 'M': // Set magic number
+	  sprint("Old ");
+	  sprint("Magic=");
+	  sprintln(SYNC_MAGIC_NUMBER);
+	  s = atoi(CMD); KB[0]=0; CMD=KB;
+	  SYNC_MAGIC_NUMBER = s;
+	  sprint("Magic=");
+	  sprintln(SYNC_MAGIC_NUMBER);
+	  break;
+	  
+	case '=': // Move servo to specific location
+	  s = atoi(CMD); KB[0]=0; CMD=KB;
+	  if (s!=0) smoothMove(s);
+	  sprint("servo="); sprintln(myservoread());	
+	  // myservo.write(n);
+	  break;
+	case '+': // Move servo one step forwards
+	  s = myservoread(); 
+	  sprint("Old "); sprint("servo=");sprintln(s);
+	  myservowrite(s+1);
+	  sprint("servo="); sprintln(myservoread());	
+	  break;
+	case '-': // Move servo one step backwards
+	  s = myservoread();
+	  sprint("Old "); sprint("servo=");sprintln(s);
+	  myservowrite(s-1);
+	  sprint("servo="); sprintln(myservoread());	
+	  break;
+	case '_': // Detach or reattach servo
+	  if (myservoattached()) {
+		myservodetach();
+	  } else {
+		 myservoattach(servoPin);
+	  }
+	  sprint("servo="); sprintln(myservoattached() ? "attached" : "detached");
+	  break;
    case '~': /* Change Servo type (Timer1 vs Servo library) */
-     myservodetach();
-     SERVO_VIA_TIMER1 = !SERVO_VIA_TIMER1;
-     myservoattach(servoPin);
-     sprintln(SERVO_VIA_TIMER1 ? "Using Timer1" : "Using Servo lib");
-     break; 
-    case 'b': /* Beep */
-      tone(7, NOTE_A5, 1000);
-      break;
-    case 'B': // Are you a master?
-      Serial.print("I am a ");
-      Serial.println(isMaster ? "master" : "slave"); 
-      if (isMaster) tone(7, NOTE_A5, 1000);
-      break;
-    case 'c': // Calibrate
-      calibrate();
-      break;
-    case 'C': // Save calibration
-      writeCalibration();
-      break;
-    case 'l': /* Calibrate loop time */
-      calibrateLoopTime();
-      break;
-    case '&': // Print current calibration
-      printCurrentCalibration();
-    case 'a': // play audio
-      playSong(audioSongNumber, audioVolume);
-      break;
-    case 'A': // Audio config for example A2,25 (song 2 volume 25)
-      if (CMD[0]=='\n'){
-      	enableAudio = !enableAudio;
-      }
-      s = atoi(CMD);
-      if (s>0) {
-      	audioSongNumber = s;
-      } 
-      p = find(CMD, ',');
-      if (p!=-1) {
-         s = atoi(CMD+p+1);
-         audioVolume = s;
-      }
-      KB[0] = 0; CMD=KB;
-      sprint("Audio "); sprint(enableAudio ? "on" : "off"); sprint(" song="); sprint(audioSongNumber); sprint(" vol="); sprintln(audioVolume);
-      break;
-    case 'P': // Play
-      if (!isPlaying) {
-        startPlaySequence();
-      } else {
-        stopPlaySequence();
-      }
-      break;
-    case 'R': // Record
-      if (cmdOriginFromRecordedSequence) {
-      	if (isPlaying) {
-      		if (isAutoPlay) {
-      			startPlaySequence();
-      		} else {
-      			stopPlaySequence();
-      		}
-      	} else {sprintln("this is weird");}
-      } else {
-        if (isPlaying) stopPlaySequence();
-        isRecording = !isRecording;
-        sprint("Recording "); sprintln(isRecording ? "on" : "off");
-        ewrite(EEPROM_MAGIC, EEPROM_COMMANDS_LOC - 2);
-        recordingLoc = EEPROM_COMMANDS_LOC;
-        recordInitTime = millis();
-      }
-      break;
-    case 'Y': // Autoplay and loop on restart
-      isAutoPlay = !isAutoPlay;
-      sprint("auto play is ");
-      sprintln(isAutoPlay ? "on" : "off");
-      ewrite((int)isAutoPlay, EEPROM_COMMANDS_LOC - 4);
-      break;
-    case '*': // Show Clock
-      showClock = !showClock;
-      break;
-    case '@': // eprom access
-      s = atoi(CMD);
-      p = find(CMD, '=');
-      if (p==-1) {
-      	sprint("EPROM[");sprint(s);sprint("] = ");sprint((char) ereadbyte(s)); sprint(" <"); sprint(ereadbyte(s)); sprintln(">");
-      } else {
-        ewritebyte(atoi(CMD+p+1),s);
-      	sprint("Set EPROM[");sprint(s); sprint("] to ");sprint((char) ereadbyte(s)); sprint(" <"); sprint(ereadbyte(s)); sprintln(">");
-      }
-      KB[0] = 0; CMD=KB;
-      break;
-    
-    default:
-      break;
+	 myservodetach();
+	 SERVO_VIA_TIMER1 = !SERVO_VIA_TIMER1;
+	 myservoattach(servoPin);
+	 sprintln(SERVO_VIA_TIMER1 ? "Using Timer1" : "Using Servo lib");
+	 break; 
+	case 'b': /* Beep */
+	  tone(7, NOTE_A5, 1000);
+	  break;
+	case 'B': // Are you a master?
+	  Serial.print("I am a ");
+	  Serial.println(isMaster ? "master" : "slave"); 
+	  if (isMaster) tone(7, NOTE_A5, 1000);
+	  break;
+	case 'c': // Calibrate
+	  calibrate();
+	  break;
+	case 'C': // Save calibration
+	  writeCalibration();
+	  break;
+	case 'l': /* Calibrate loop time */
+	  calibrateLoopTime();
+	  break;
+	case '&': // Print current calibration
+	  printCurrentCalibration();
+	case 'a': // play audio
+	  playSong(audioSongNumber, audioVolume);
+	  break;
+	case 'A': // Audio config for example A2,25 (song 2 volume 25)
+	  if (CMD[0]=='\n'){
+	  	enableAudio = !enableAudio;
+	  }
+	  s = atoi(CMD);
+	  if (s>0) {
+	  	audioSongNumber = s;
+	  } 
+	  p = find(CMD, ',');
+	  if (p!=-1) {
+		 s = atoi(CMD+p+1);
+		 audioVolume = s;
+	  }
+	  KB[0] = 0; CMD=KB;
+	  sprint("Audio "); sprint(enableAudio ? "on" : "off"); sprint(" song="); sprint(audioSongNumber); sprint(" vol="); sprintln(audioVolume);
+	  break;
+	case 'P': // Play
+	  if (!isPlaying) {
+		startPlaySequence();
+	  } else {
+		stopPlaySequence();
+	  }
+	  break;
+	case 'R': // Record
+	  if (cmdOriginFromRecordedSequence) {
+	  	if (isPlaying) {
+	  		if (isAutoPlay) {
+	  			startPlaySequence();
+	  		} else {
+	  			stopPlaySequence();
+	  		}
+	  	} else {sprintln("this is weird");}
+	  } else {
+		if (isPlaying) stopPlaySequence();
+		isRecording = !isRecording;
+		sprint("Recording "); sprintln(isRecording ? "on" : "off");
+		ewrite(EEPROM_MAGIC, EEPROM_COMMANDS_LOC - 2);
+		recordingLoc = EEPROM_COMMANDS_LOC;
+		recordInitTime = millis();
+	  }
+	  break;
+	case 'Y': // Autoplay and loop on restart
+	  isAutoPlay = !isAutoPlay;
+	  sprint("auto play is ");
+	  sprintln(isAutoPlay ? "on" : "off");
+	  ewrite((int)isAutoPlay, EEPROM_COMMANDS_LOC - 4);
+	  break;
+	case '*': // Show Clock
+	  showClock = !showClock;
+	  break;
+	case '@': // eprom access
+	  s = atoi(CMD);
+	  p = find(CMD, '=');
+	  if (p==-1) {
+	  	sprint("EPROM[");sprint(s);sprint("] = ");sprint((char) ereadbyte(s)); sprint(" <"); sprint(ereadbyte(s)); sprintln(">");
+	  } else {
+		ewritebyte(atoi(CMD+p+1),s);
+	  	sprint("Set EPROM[");sprint(s); sprint("] to ");sprint((char) ereadbyte(s)); sprint(" <"); sprint(ereadbyte(s)); sprintln(">");
+	  }
+	  KB[0] = 0; CMD=KB;
+	  break;
+	
+	default:
+	  break;
   }
 }
 
 
 void startPlaySequence() {
-    if (eread(EEPROM_COMMANDS_LOC-2) != EEPROM_MAGIC) {
-    	sprint("No recording saved");
-    }
-    // Print commands:
-    unsigned int commandTime = eread(EEPROM_COMMANDS_LOC);
+	if (eread(EEPROM_COMMANDS_LOC-2) != EEPROM_MAGIC) {
+		sprint("No recording saved");
+	}
+	// Print commands:
+	unsigned int commandTime = eread(EEPROM_COMMANDS_LOC);
   	sprintln("Playing Sequence:");
   	while (commandTime != MAX_UINT) {
   		 sprint(commandTime);
   		 sprint("s: ");
   		 eprintstr();
   		 sprintln("");
-  	     commandTime = eread();
-    }
-    
-    nextCommandTime = eread(EEPROM_COMMANDS_LOC);
-    nextCommandLoc = eIndex;
-    if (nextCommandTime == MAX_UINT) {
-    	sprintln("No "); sprintln("Recorded Commands");
-    } else {
-      	isPlaying = true;
+  		 commandTime = eread();
+	}
+	
+	nextCommandTime = eread(EEPROM_COMMANDS_LOC);
+	nextCommandLoc = eIndex;
+	if (nextCommandTime == MAX_UINT) {
+		sprintln("No "); sprintln("Recorded Commands");
+	} else {
+	  	isPlaying = true;
 	  	playInitTime = millis();
-    }
+	}
 }
 
 void stopPlaySequence() {
@@ -1041,7 +1041,7 @@ void updateAmpAndTimeForStopping() {
 //  servoAmp = servoAmp*servoAmp/40;
   if (servoAmp < 25) { servoAmp = servoAmp/2; } // was servoAmp/2
 
-  if (servoAmp < 10) { servoAmp = 0; }        // was <10
+  if (servoAmp < 10) { servoAmp = 0; }		// was <10
   
   sprint("- Update ServoAmp: maxRight("); sprint(ropeMaxRightAngle); sprint(")-maxLeft("); sprint(ropeMaxLeftAngle);
   sprint(")="); sprint(ropeMaxRightAngle-ropeMaxLeftAngle);
@@ -1056,13 +1056,13 @@ void updateAmpAndTimeForMaintaining() {
   float desiredAngle = 0.4;
   float ropeAngle = ropeMaxRightAngle-ropeMaxLeftAngle;
   if ( ropeAngle > desiredAngle*1.2) {
-    servoAmp = 0;
+	servoAmp = 0;
   } else if (ropeAngle > desiredAngle*1.1) {
-    servoAmp = (angleToServo(desiredAngle/2)-servoCenter)*2 * 0.8;
+	servoAmp = (angleToServo(desiredAngle/2)-servoCenter)*2 * 0.8;
   }  else {
-    servoAmp = (angleToServo(desiredAngle/2)-servoCenter)*2 * 0.8 + (1 - ropeAngle/desiredAngle)*maxServoAmp;
+	servoAmp = (angleToServo(desiredAngle/2)-servoCenter)*2 * 0.8 + (1 - ropeAngle/desiredAngle)*maxServoAmp;
   }
-    sprint("ServoAmp: ");sprint(servoAmp); sprint(" baseline: "); sprintln((angleToServo(desiredAngle/2)-servoCenter)*2 * 0.8);
+	sprint("ServoAmp: ");sprint(servoAmp); sprint(" baseline: "); sprintln((angleToServo(desiredAngle/2)-servoCenter)*2 * 0.8);
 }
 
 void updateAmpAndTimeForRunning() {
@@ -1082,12 +1082,12 @@ void updateAmpAndTimeForStopping() {
 //
 //  initTime = millis()-loopTime-loopTime*(side==LEFT ? 0.5+testPhase : testPhase) + SYNC_MAGIC_NUMBER;
 //  if (initTime == 0) { 
-     initTime = millis()-loopTime*(side==LEFT ? 0.25 : 0.75) + SYNC_MAGIC_NUMBER;
-//     sprintln("initTime set");
+	 initTime = millis()-loopTime*(side==LEFT ? 0.25 : 0.75) + SYNC_MAGIC_NUMBER;
+//	 sprintln("initTime set");
 // }
 /*  if ((millis()-initTime)> loopTime*5) {
-     mode = HALT;
-     sprintln("HALT");
+	 mode = HALT;
+	 sprintln("HALT");
   }*/
   
   sprint("- Stopping: maxRight("); sprint(ropeMaxRightAngle); sprint(")-maxLeft("); sprint(ropeMaxLeftAngle);
@@ -1097,7 +1097,7 @@ void updateAmpAndTimeForStopping() {
   
   if (lastRopeAmp > ropeAmp) {
   	servoAmp = max(0,ropeAmp-(lastRopeAmp-ropeAmp));
-    sprint (" | c="); sprint(servoAmp);
+	sprint (" | c="); sprint(servoAmp);
   } else {
   	servoAmp = ropeAmp;
   }
@@ -1106,11 +1106,11 @@ void updateAmpAndTimeForStopping() {
   servoAmp = servoAmp * 1.5;
   
   if (servoAmp>=40) { 
-     servoAmp = maxServoAmp;
+	 servoAmp = maxServoAmp;
   } else if (servoAmp>=35) {
   	 servoAmp = MAP(servoAmp, 35, 40, 25, maxServoAmp);
    } else if (servoAmp>=10) {
-     servoAmp = MAP(servoAmp,10,35,10,25);
+	 servoAmp = MAP(servoAmp,10,35,10,25);
   } else if (servoAmp>=3) {
   	servoAmp = MAP(servoAmp, 3, 10, 0, 10); 
   } else {
@@ -1121,7 +1121,7 @@ void updateAmpAndTimeForStopping() {
 //  servoAmp = servoAmp*servoAmp/40;
   if (servoAmp < 25) { servoAmp = servoAmp; } // was 25,servoAmp/2
 
-  if (servoAmp < 10) { servoAmp = max(0,servoAmp-2); }        // was <10,0
+  if (servoAmp < 10) { servoAmp = max(0,servoAmp-2); }		// was <10,0
   */
 
   servoAmp = servoAmp*testAmp/20;
@@ -1129,75 +1129,90 @@ void updateAmpAndTimeForStopping() {
   servoAmp = max(min(maxServoAmp,servoAmp),0);
   sprint(" ==> New servoAmp: "); sprint(servoAmp); sprintln(" -");  
 //  if (ropeMaxRightAngle-ropeMaxLeftAngle < 0.4) {
-//    servoAmp = 10;
+//	servoAmp = 10;
 //  } else {
-//    servoAmp = 0;
+//	servoAmp = 0;
 //  }
 }
+#define PREDICT(x, y) (x + (x-y))
+#define PREDICT2(x, y) (x + (x-y)/2)
 
 void updateAmpAndTimeForTesting() {
   double ropeAmp;
   static double lastRopeAmp = 0;
   float offset, phaseOffset;
   static float lastPhaseOffset = 0;
+  bool tooStrong = false;
   
+  double FASTER=0.6; double SLOWER=0.9;
   // update loopTime
   loopTime = syncLoopTime;
 
   // speed up or slow down (only do this when getting to right side - just to reduce amount of updates).
   if (side==RIGHT) {
 	ropeAmp = ropeMaxRightAngle-ropeMaxLeftAngle;
-    phaseOffset = ((millis()-(syncInitTime+syncInitTimeOffset))%syncLoopTime) / float (syncLoopTime);
-    if (phaseOffset > 0.5) phaseOffset = phaseOffset-1;
+	tooStrong = PREDICT(ropeAmp, lastRopeAmp) > syncRopeAngle;
+	sprint(tooStrong ? "*" : ".");
+	
+	phaseOffset = ((millis()-(syncInitTime+syncInitTimeOffset))%syncLoopTime) / float (syncLoopTime);
+	if (phaseOffset > 0.5) phaseOffset = phaseOffset-1;
 
-    // predict next phase offset based on lastphase offset.
-	offset = phaseOffset - (lastPhaseOffset-phaseOffset)/2;
-    // TODO What if phaseOffset is irregular???
+	// predict next phase offset based on lastphase offset.
+	offset = PREDICT2(phaseOffset, lastPhaseOffset);
+	// TODO What if phaseOffset is irregular???
 	
 	// Handle cyclic movement of offset. 
 	if (offset > 0.5) offset = offset -1;
 	if (offset < -0.5) offset = offset + 1;
 
 	if (abs(offset) > 0.25) {
-		syncPhase = (phaseOffset > 0) ? 0.6 : 0.9;
-    	servoAmp = maxServoAmp; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
+		syncPhase = (phaseOffset > 0) ? FASTER : SLOWER;
+		servoAmp = maxServoAmp; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
 	} else if (abs(offset) > 0.15) {
-    	syncPhase = (phaseOffset > 0) ? 0.6 : 0.9;
-    	servoAmp = maxServoAmp/2; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
-    } else if (abs(offset) > 0.10) {
-    	syncPhase = (phaseOffset > 0) ? 0.6 : 0.9;
-    	servoAmp = maxServoAmp/4; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
-    } else if (abs(offset) > 0.5) {
-    	syncPhase = (phaseOffset > 0) ? 0.6 : 0.9;
-    	servoAmp = 11;
-    } else if (abs(offset) > 0.02) {
-        // Linear calculation, offset:0==>phase:0.25; offset:0.05==>0.5; offset:-0.05==> 0; trim for phase to be between 0 to 0.5;
-        syncPhase = max(min(0.25 + phaseOffset/0.05*0.25, 0.5), 0);
-        servoAmp = servoAmp - ((ropeAmp-(lastRopeAmp-ropeAmp))-syncRopeAngle)*100;
-        servoAmp = max(3,min(10, servoAmp));
-        
-    	//syncPhase = (phaseOffset > 0) ? 0.6 : 0.9;
-        //servoAmp = ((ropeAmp-(lastRopeAmp-ropeAmp))>syncRopeAngle) ? 3 : 10;
-    } else {
-    	// todo: still do minor fixes.
-    	syncPhase = 0.25;
-    	servoAmp = servoAmp + ((ropeAmp-(lastRopeAmp-ropeAmp)) > syncRopeAngle) ? -1 : +1;
-    	servoAmp = max(min(5,servoAmp),3);
-    }
-    
-    lastRopeAmp = ropeAmp;
+		syncPhase = (phaseOffset > 0) ? FASTER : SLOWER;
+		servoAmp = maxServoAmp/2; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
+	} else if (abs(offset) > 0.10) {
+		syncPhase = (phaseOffset > 0) ? FASTER : SLOWER;
+		servoAmp = maxServoAmp/3; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
+	} else if (abs(offset) > 0.05) {
+		syncPhase = (phaseOffset > 0) ? FASTER : SLOWER;
+		servoAmp = 15;
+	} else if (abs(offset) > 0.02) {
+		// Linear calculation, offset:0==>phase:0.25; offset:0.05==>0.5; offset:-0.05==> 0; trim for phase to be between 0 to 0.5;
+		syncPhase = max(min(0.25 + phaseOffset/0.05*0.25, 0.5), 0);
+
+		if (tooStrong) {
+			syncPhase = max(min(0.75 + phaseOffset/0.05*0.2, 1), 0);
+		} else {
+			syncPhase = max(min(0.25 + phaseOffset/0.05*0.2, 1), 0);
+		}
+
+		servoAmp = servoAmp - (PREDICT(ropeAmp,lastRopeAmp)-syncRopeAngle)*100;
+		servoAmp = max(3,min(10, servoAmp));
+		
+		//syncPhase = (phaseOffset > 0) ? 0.6 : 0.9;
+		//servoAmp = ((ropeAmp-(lastRopeAmp-ropeAmp))>syncRopeAngle) ? 3 : 10;
+	} else {
+		// todo: still do minor fixes.
+		syncPhase = tooStrong ? 0.75 : 0.25;
+
+		servoAmp = servoAmp + ((ropeAmp-(lastRopeAmp-ropeAmp)) > syncRopeAngle) ? -1 : +1;
+		servoAmp = max(min(3,servoAmp),0);
+	}
+	
+	lastRopeAmp = ropeAmp;
 	lastPhaseOffset = phaseOffset;
 
-//    syncPhase = (desiredPhase*0.5 + syncPhase*0.5);
-    initTime = millis()-loopTime*(side==LEFT ? syncPhase+0.5 : syncPhase) + SYNC_MAGIC_NUMBER;
-    
-    sprint("Syncing: ropeAmp("); sprint(ropeAmp);
-    sprint(") Phase(");sprint(int(phaseOffset*syncLoopTime)); sprint("ms / "); sprint(100*phaseOffset); sprint ("%");
-    sprint(")/Offset(");sprint(int(offset*syncLoopTime));sprint("ms / "); sprint(100*offset); sprint("%");
-    sprint(")  ==>  ServoAmp="); sprint(servoAmp);
-    sprint("; syncPhase="); sprintln(syncPhase);
-//    sprint("(wanted"); sprint(desiredPhase);
-//    sprintln(")");
+//	syncPhase = (desiredPhase*0.5 + syncPhase*0.5);
+	initTime = millis()-loopTime*(side==LEFT ? syncPhase+0.5 : syncPhase) + SYNC_MAGIC_NUMBER;
+	
+	sprint("Syncing: ropeAmp("); sprint(ropeAmp);
+	sprint(") Phase(");sprint(int(phaseOffset*syncLoopTime)); sprint("ms / "); sprint(100*phaseOffset); sprint ("%");
+	sprint(")/Offset(");sprint(int(offset*syncLoopTime));sprint("ms / "); sprint(100*offset); sprint("%");
+	sprint(")  ==>  ServoAmp="); sprint(servoAmp);
+	sprint("; syncPhase="); sprintln(syncPhase);
+//	sprint("(wanted"); sprint(desiredPhase);
+//	sprintln(")");
   }
 }
 
@@ -1209,59 +1224,59 @@ void updateAmpAndTimeForSyncedRunning() {
   // update servoAmp
   float offsetRopeAngle = ropeMaxRightAngle-ropeMaxLeftAngle - syncRopeAngle;
   if (offsetRopeAngle < 0) {
-    servoAmp = min(servoAmp + 1, maxServoAmp);
+	servoAmp = min(servoAmp + 1, maxServoAmp);
   } else {
-    servoAmp = max(servoAmp - 1, 3);
+	servoAmp = max(servoAmp - 1, 3);
   }
 
 /*
   if (abs(offsetRopeAngle)>0.02) {
-    servoAmp = max(min( servoAmp - offsetRopeAngle * 100 ,maxServoAmp),3);
+	servoAmp = max(min( servoAmp - offsetRopeAngle * 100 ,maxServoAmp),3);
   }
 */
   // speed up or slow down (only do this when getting to right side - just to reduce amount of updates).
   if (side==RIGHT) {
-    double offset = ((millis()-(syncInitTime+syncInitTimeOffset))%syncLoopTime) / double(syncLoopTime);
-    if (offset > 0.5) offset = offset-1;
-    
-    double desiredPhase = 0.25;
-    if (abs(offset) <0.15) {
-      if (servoAmp>maxServoAmp-10)  {
-        servoAmp = 20;
-      }
-      if (abs(offset) < 0.02) {
-        desiredPhase = 0.25;
-      } else {
-      //      // Linear calculation, offset:0==>phase:0.25; offset:0.05==>0.5; offset:-0.05==> 0; trim for phase to be between 0 to 0.5;
-        desiredPhase = max(min(0.25 + offset/0.05*0.25, 0.5), 0);
-      }
-    } else if (offset>0) {
-      desiredPhase = 0.6;
-      servoAmp = maxServoAmp;
-    } else if (offset<0) {
-      desiredPhase = 0.9;
-      servoAmp = maxServoAmp;
-    }
-//    syncPhase = (desiredPhase*0.5 + syncPhase*0.5);
-    syncPhase = desiredPhase;
-    initTime = millis()-loopTime*(side==LEFT ? syncPhase+0.5 : syncPhase);
-    
-    sprint("Syncing: Offset("); sprint(offset);sprint(" ==> "); sprint(int(offset*syncLoopTime));sprint("ms), ropeAmp("); sprint(ropeMaxRightAngle-ropeMaxLeftAngle);
-    sprint(") ==> loopTime="); sprint(syncLoopTime);
-    sprint("; ServoAmp="); sprint(servoAmp);
-    sprint("; phase="); sprint(syncPhase);
-    sprint("(wanted"); sprint(desiredPhase);
-    sprintln(")");
+	double offset = ((millis()-(syncInitTime+syncInitTimeOffset))%syncLoopTime) / double(syncLoopTime);
+	if (offset > 0.5) offset = offset-1;
+	
+	double desiredPhase = 0.25;
+	if (abs(offset) <0.15) {
+	  if (servoAmp>maxServoAmp-10)  {
+		servoAmp = 20;
+	  }
+	  if (abs(offset) < 0.02) {
+		desiredPhase = 0.25;
+	  } else {
+	  //	  // Linear calculation, offset:0==>phase:0.25; offset:0.05==>0.5; offset:-0.05==> 0; trim for phase to be between 0 to 0.5;
+		desiredPhase = max(min(0.25 + offset/0.05*0.25, 0.5), 0);
+	  }
+	} else if (offset>0) {
+	  desiredPhase = 0.6;
+	  servoAmp = maxServoAmp;
+	} else if (offset<0) {
+	  desiredPhase = 0.9;
+	  servoAmp = maxServoAmp;
+	}
+//	syncPhase = (desiredPhase*0.5 + syncPhase*0.5);
+	syncPhase = desiredPhase;
+	initTime = millis()-loopTime*(side==LEFT ? syncPhase+0.5 : syncPhase);
+	
+	sprint("Syncing: Offset("); sprint(offset);sprint(" ==> "); sprint(int(offset*syncLoopTime));sprint("ms), ropeAmp("); sprint(ropeMaxRightAngle-ropeMaxLeftAngle);
+	sprint(") ==> loopTime="); sprint(syncLoopTime);
+	sprint("; ServoAmp="); sprint(servoAmp);
+	sprint("; phase="); sprint(syncPhase);
+	sprint("(wanted"); sprint(desiredPhase);
+	sprintln(")");
   }
 }
 
 
 void updateAmpAndTime() {
-    if (mode == RUNNING)        { updateAmpAndTimeForRunning();          }
-    if (mode == MAINTAINING)    { updateAmpAndTimeForMaintaining();      }
-    if (mode == TESTING)        { updateAmpAndTimeForTesting();          }
-    if (mode == STOPPING)       { updateAmpAndTimeForStopping();         }
-    if (mode == SYNCED_RUNNING) { updateAmpAndTimeForSyncedRunning();    }
+	if (mode == RUNNING)		{ updateAmpAndTimeForRunning();		  }
+	if (mode == MAINTAINING)	{ updateAmpAndTimeForMaintaining();	  }
+	if (mode == TESTING)		{ updateAmpAndTimeForTesting();		  }
+	if (mode == STOPPING)	   { updateAmpAndTimeForStopping();		 }
+	if (mode == SYNCED_RUNNING) { updateAmpAndTimeForSyncedRunning();	}
 }
 
 
@@ -1312,11 +1327,11 @@ void setup() {
   if (listenOnPrev) {
 	  // wait 1.5 seconds to see if you are a slave
 	  while ((millis() < initTime + 1500) && isMaster) {
-	     if (prevSerial.available()) {isMaster = false; } 
+		 if (prevSerial.available()) {isMaster = false; } 
 	  }
 	  Serial.println(isMaster ? "I am master" : "I am slave"); 
   } else {
-      Serial.println("I am probably master");
+	  Serial.println("I am probably master");
   }
   
   if ( eread(EEPROM_COMMANDS_LOC-2) == EEPROM_MAGIC) {
@@ -1362,9 +1377,9 @@ void loop(){
   static unsigned long lastClock = 0;
   static int lastClockIter = 0;
   if (showClock) {
-    if (millis() > lastClock + 3000) {
-    	lastClockIter = 0;
-    }
+	if (millis() > lastClock + 3000) {
+		lastClockIter = 0;
+	}
   	if (millis() > lastClock + 100) {
   		lastClock= millis();
   		sprint(double(lastClockIter++)/10); sprint("  \r");
@@ -1385,16 +1400,16 @@ void loop(){
 
   // Update clock of slaves
   if (updateSlaveClock || (isMaster && ((mode==SYNCED_RUNNING) || (mode==TESTING)))) {
-    if ((time-syncInitTime)%syncLoopTime  < (lastIterationTime-syncInitTime) % syncLoopTime) {
-      // this means we just got to the init time frame;
+	if ((time-syncInitTime)%syncLoopTime  < (lastIterationTime-syncInitTime) % syncLoopTime) {
+	  // this means we just got to the init time frame;
 	  if (updateSlaveClock) {
-	      updateSlaveClock = false;
-    	  sprint("Sync moved:");
-      	  sprintln((millis()-syncInitTime) % syncLoopTime);
-      }
-      syncInitTime = millis();
-      nextSerial.println("T"); // update the clock...     
-    }
+		  updateSlaveClock = false;
+		  sprint("Sync moved:");
+	  	  sprintln((millis()-syncInitTime) % syncLoopTime);
+	  }
+	  syncInitTime = millis();
+	  nextSerial.println("T"); // update the clock...	 
+	}
   }
 
 
@@ -1419,77 +1434,77 @@ void loop(){
   */
 
   if (printMeasures) {
-    sprint(" potRead: "); sprint(potRead);
-    sprint(" ServoPos: "); sprint(currentServoPos);
-    sprint(" potAngle: "); sprint(potAngle);
-    sprint(" servoAngle: "); sprint(servoAngle);
-    sprint(" ropeAngle: "); sprint(ropeAngle);
-    sprintln("");
+	sprint(" potRead: "); sprint(potRead);
+	sprint(" ServoPos: "); sprint(currentServoPos);
+	sprint(" potAngle: "); sprint(potAngle);
+	sprint(" servoAngle: "); sprint(servoAngle);
+	sprint(" ropeAngle: "); sprint(ropeAngle);
+	sprintln("");
   }
   
   switch (mode) {
-    case SYNCED_RUN:
-      mode = SYNCED_RUNNING;
-      break;
-    case TEST:
-      initTime = 0;
-      mode = TESTING;
-      updateAmpAndTime();
-      sprint("testPhase: "); sprintln(testPhase);
-      break;
-    case START:
-      mode = RUNNING;
-      updateAmpAndTime();
-      break;
-    case STOP:
-      mode = STOPPING;
-      updateAmpAndTime();
-      break;
-    case MAINTAIN:
-      mode = MAINTAINING;
-      updateAmpAndTime();
-      break;
-    default:
-      break;
+	case SYNCED_RUN:
+	  mode = SYNCED_RUNNING;
+	  break;
+	case TEST:
+	  initTime = 0;
+	  mode = TESTING;
+	  updateAmpAndTime();
+	  sprint("testPhase: "); sprintln(testPhase);
+	  break;
+	case START:
+	  mode = RUNNING;
+	  updateAmpAndTime();
+	  break;
+	case STOP:
+	  mode = STOPPING;
+	  updateAmpAndTime();
+	  break;
+	case MAINTAIN:
+	  mode = MAINTAINING;
+	  updateAmpAndTime();
+	  break;
+	default:
+	  break;
   }
 
   if (itIsTime(audioTime+audioDelay) &&
-      (ropeMaxRightAngle>0.05) && (ropeMaxLeftAngle<-0.05)) {
+	  (ropeMaxRightAngle>0.05) && (ropeMaxLeftAngle<-0.05)) {
 	  playSong(audioSongNumber,audioVolume);
   }
 
   if ((ropeAngle<0) && (side==RIGHT) && (time-rightTime>loopTime/4)) {
-      // This section is if we are now moving to the left side;
-    side = LEFT;
-    lastLoopTime = time-leftTime;
-    leftTime = time;
-    if (showLoopEvents) {
-    	sprint("# Loop: Time(");sprint(lastLoopTime);sprint(")"); sprint(side==LEFT ? " [L] :" : " [R]:");
-    	sprint("maxRight(");sprint(ropeMaxRightAngle); sprint(")-maxLeft("); sprint(ropeMaxLeftAngle);
-    	sprint(")=");sprint(ropeMaxRightAngle-ropeMaxLeftAngle); sprintln(" #");
-    }
-    tone(7, NOTE_G6, 100);
+	  // This section is if we are now moving to the left side;
+	side = LEFT;
+	lastLoopTime = time-leftTime;
+	leftTime = time;
+	if (showLoopEvents) {
+		sprint("# Loop: Time(");sprint(lastLoopTime);sprint(")"); sprint(side==LEFT ? " [L] :" : " [R]:");
+		sprint("maxRight(");sprint(ropeMaxRightAngle); sprint(")-maxLeft("); sprint(ropeMaxLeftAngle);
+		sprint(")=");sprint(ropeMaxRightAngle-ropeMaxLeftAngle); sprintln(" #");
+	}
+	tone(7, NOTE_G6, 100);
 
-    if (mode != RUNNING) updateAmpAndTime();
+	if (mode != RUNNING) updateAmpAndTime();
 
-    ropeMaxLeftAngle = 0;
-      
+	ropeMaxLeftAngle = 0;
+	  
   } else if ((ropeAngle>0) && (side==LEFT)&& (time-leftTime>loopTime/4)) {
-    // This section is if we are now moving to the right side;
-    side = RIGHT;
-    lastLoopTime = time-rightTime;
-    rightTime = time;
-    playAudioIn(loopTime/4,syncLoopTime/4);
-    if (showLoopEvents) {
-    	sprint("# Loop: Time(");sprint(lastLoopTime);sprint(")"); sprint(side==LEFT ? " [L] :" : " [R]:");
-    	sprint("maxRight(");sprint(ropeMaxRightAngle); sprint(")-maxLeft("); sprint(ropeMaxLeftAngle);
-    	sprint(")=");sprint(ropeMaxRightAngle-ropeMaxLeftAngle); sprintln(" #");
-    }
-    tone(7, NOTE_G5, 100);
-    
-    if (mode != RUNNING) updateAmpAndTime();
-    
-    ropeMaxRightAngle = 0;
+	// This section is if we are now moving to the right side;
+	side = RIGHT;
+	lastLoopTime = time-rightTime;
+	rightTime = time;
+	playAudioIn(loopTime/4,syncLoopTime/4);
+	if (showLoopEvents) {
+		sprint("# Loop: Time(");sprint(lastLoopTime);sprint(")"); sprint(side==LEFT ? " [L] :" : " [R]:");
+		sprint("maxRight(");sprint(ropeMaxRightAngle); sprint(")-maxLeft("); sprint(ropeMaxLeftAngle);
+		sprint(")=");sprint(ropeMaxRightAngle-ropeMaxLeftAngle); sprintln(" #");
+	}
+	tone(7, NOTE_G5, 100);
+	
+	if (mode != RUNNING) updateAmpAndTime();
+	
+	ropeMaxRightAngle = 0;
   }
   
 /*
@@ -1502,12 +1517,12 @@ void loop(){
 */
   // Set oscilator movement if needed;
   if ((mode==STOPPING) || (mode==RUNNING) || (mode==MAINTAINING) || (mode==TESTING) || (mode==SYNCED_RUNNING)) {
-    double desiredServoPos = getOcsilatorPos();
-    smoothWrite(desiredServoPos);
-    //myservowrite(desiredServoPos);
-    //myservo.writeMicroseconds(sin(((time-initTime)%loopTime)*2*PI/loopTime - PI)*100/2+1500);
+	double desiredServoPos = getOcsilatorPos();
+	smoothWrite(desiredServoPos);
+	//myservowrite(desiredServoPos);
+	//myservo.writeMicroseconds(sin(((time-initTime)%loopTime)*2*PI/loopTime - PI)*100/2+1500);
 /*
-    debugLog("desiredServoPos: "); debugLog(String(desiredServoPos)); debugLog("  ");
+	debugLog("desiredServoPos: "); debugLog(String(desiredServoPos)); debugLog("  ");
 */
   }
 
