@@ -186,10 +186,15 @@ unsigned int eread(int index=-1) {
   return EEPROM.read(eIndex++)*256+EEPROM.read(eIndex++);
 }
 
-char ereadchar(int index=-1) {
+uint8_t ereadbyte(int index=-1) {
 	if (index != -1) eIndex = index;
 	
 	return EEPROM.read(eIndex++);
+}
+void ewritebyte(uint8_t data, int index=-1) {
+	if (index != -1) eIndex = index;
+	
+	EEPROM.write(eIndex++,data);
 }
 
 //Todo test this function;
@@ -962,6 +967,18 @@ void handleKeyboardInput() {
     case '*': // Show Clock
       showClock = !showClock;
       break;
+    case '@': // eprom access
+      s = atoi(CMD);
+      p = find(CMD, '=');
+      if (p==-1) {
+      	sprint("EPROM[");sprint(s);sprint("] = ");sprint((char) ereadbyte(s)); sprint(" <"); sprint(ereadbyte(s)); sprintln(">");
+      } else {
+        ewritebyte(atoi(CMD+p+1),s);
+      	sprint("Set EPROM[");sprint(s); sprint("] to ");sprint((char) ereadbyte(s)); sprint(" <"); sprint(ereadbyte(s)); sprintln(">");
+      }
+      KB[0] = 0; CMD=KB;
+      break;
+    
     default:
       break;
   }
