@@ -786,6 +786,7 @@ void handleKeyboardInput() {
       break;
     case 'u': // Print phase compared to sync clock
       s = atoi(CMD); KB[0] = 0; CMD=KB;
+      sprint ("syncInitTime: "); sprint(syncInitTime); sprint("; syncLoopTime:");sprintln(syncLoopTime);
       sprint("phase compared to sync clock is ");
       sprint(int((millis()-(syncInitTime+syncInitTimeOffset)) % syncLoopTime) - s);
       sprintln("ms");
