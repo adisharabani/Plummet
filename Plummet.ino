@@ -624,6 +624,7 @@ char * forwardCommand() {
 	      s = atoi(KB+1); 
 	      if (s==0) {
 	      	itoa(defaultLoopTime+10, KB+1, 10);
+	      	sprint(KB+1);
 	      	s = strlen(KB);
 	      	KB[s++] = '\n';
 	      	KB[s] = 0;
@@ -633,6 +634,7 @@ char * forwardCommand() {
 	      s = atoi(KB+1); 
 	      if (s==0) {
 	      	itoa(defaultLoopTime+10, KB+1, 10);
+	      	sprint(KB+1);
 	      	s = strlen(KB);
 	      	KB[s++] = '\n';
 	      	KB[s] = 0;
@@ -683,13 +685,15 @@ void handleKeyboardInput() {
 	  while (readByteAvailable() && (inByte != '\n')) {
 	     inByte = readByte();
 	     if ((inByte=='\r') || (inByte=='\n')) {
-	       sprintln("");
-	       forwardCommand();
-	       kblength = strlen(KB);
-	       //convert \r to \n
-	       inByte = '\n';
-	       KB[kblength++] = inByte;
-	       KB[kblength] = 0;
+	       if (kblength>0) {
+		       sprintln("");
+		       forwardCommand();
+		       kblength = strlen(KB);
+		       //convert \r to \n
+		       inByte = '\n';
+		       KB[kblength++] = inByte;
+		       KB[kblength] = 0;
+		    }
 	     } else if (inByte == 127) {
 	       //handle backspace
 	       if (kblength > 0) {
