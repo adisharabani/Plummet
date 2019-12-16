@@ -686,13 +686,14 @@ void handleKeyboardInput() {
 	     inByte = readByte();
 	     if ((inByte=='\r') || (inByte=='\n')) {
 	       if (kblength>0) {
-		       sprintln("");
 		       forwardCommand();
 		       kblength = strlen(KB);
 		       //convert \r to \n
 		       inByte = '\n';
 		       KB[kblength++] = inByte;
 		       KB[kblength] = 0;
+  		       sprintln("");
+
 		    }
 	     } else if (inByte == 127) {
 	       //handle backspace
@@ -1195,10 +1196,14 @@ void setup() {
   tone(7, NOTE_G5, 100);
   
   // Read all prevSerial data
-  sprintln("Waiting for prev data to be cleared out...");
-  while (prevSerial.available()) {
-  	while (prevSerial.available()) {prevSerial.read(); delay(100);}
-  	delay(300);
+  if (prevSerial.available()) {
+  	  sprintln("prevdata?");
+	  while (prevSerial.available()) {prevSerial.read(); };
+	  delay(300);
+	  if (prevSerial.available()) {
+	  	sprintln("Noisy! Cancelling");
+	  	while (true) delay(10000);
+	  }
   }
   sprintln("Done.");
   
