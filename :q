@@ -1221,8 +1221,8 @@ void playAudioIn(int phase, int syncedPhase) {
 			
 		}
 	}
-	//sprint("*** audio in ");
-	//sprintln(audioTime - time);
+	sprint("*** audio in ");
+	sprintln(audioTime - time);
 }
 
 void loop(){
