@@ -1124,9 +1124,11 @@ void updateAmpAndTimeForTesting() {
 
 //int q = 0;
 void updateAmpAndTimeForSyncedRunning() {  
-
+  double ropeAmp;
+  static double lastOffset=0;
+  
   // update loopTime
-  //loopTime = syncLoopTime;
+  loopTime = syncLoopTime;
 
   // update servoAmp
   float offsetRopeAngle = ropeMaxRightAngle-ropeMaxLeftAngle - syncRopeAngle;
@@ -1145,9 +1147,15 @@ void updateAmpAndTimeForSyncedRunning() {
   if (side==RIGHT) {
     double offset = ((millis()-(syncInitTime+syncInitTimeOffset))%syncLoopTime) / double(syncLoopTime);
     if (offset > 0.5) offset = offset-1;
+    double tmp = offset;
+    offset = offset - (lastOffset-offset)/2;
+    lastOffset = tmp;
     
+    if ((abs(offset) < 0.05) & (offsetRopeAngle>0)) {
+         servoAmp = min(10,servoAmp);
+    }
     double desiredPhase = 0.25;
-    if (abs(offset) <0.15) {
+    if (abs(offset) < 0.15) {
       if (servoAmp>maxServoAmp-10)  {
         servoAmp = 20;
       }
