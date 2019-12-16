@@ -1191,9 +1191,12 @@ void setup() {
   tone(7, NOTE_G5, 100);
   
   // Read all prevSerial data
-  sprintln("Read prev Data");
-  while (prevSerial.available()) {Serial.write(prevSerial.read());}
-  sprintln("Done.");
+  while (prevSerial.available()) {
+    sprintln("Read prev Data:");
+  	while (prevSerial.available()) {Serial.write(prevSerial.read());}
+  	sprintln("Done.");
+  	delay(50);
+  }
   
   mode=HALT;
   initTime = millis();
