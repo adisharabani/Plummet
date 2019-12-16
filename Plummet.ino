@@ -625,6 +625,7 @@ char * forwardCommand() {
 	 int s;
 	 switch (k) {
 	 // Do not forward the following commands
+	   case 't':
 	   case 's': /* will be send via the s command with the right synclooptime */
 	      s = atoi(KB+1); 
 	      if (s==0) {
@@ -1131,7 +1132,8 @@ void updateAmpAndTimeForStopping() {
 void updateAmpAndTimeForTesting() {
   double ropeAmp;
   static double lastRopeAmp = 0;
-  float offset, phaseOffset, lastPhaseOffset = 0;
+  float offset, phaseOffset
+  static lastPhaseOffset = 0;
   
   // update loopTime
   loopTime = syncLoopTime;
@@ -1149,9 +1151,6 @@ void updateAmpAndTimeForTesting() {
 	// Handle cyclic movement of offset. 
 	if (offset > 0.5) offset = offset -1;
 	if (offset < -0.5) offset = offset + 1;
-
-	// change offset to be between -0.5 and 0.5 (one is late and one is early)
-    if (offset > 0.5) offset = offset-1;
 
 	if (abs(offset) > 0.25) {
 		syncPhase = (phaseOffset > 0) ? 0.6 : 0.9;
