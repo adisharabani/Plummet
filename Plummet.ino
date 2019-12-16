@@ -1132,7 +1132,7 @@ void updateAmpAndTimeForStopping() {
 void updateAmpAndTimeForTesting() {
   double ropeAmp;
   static double lastRopeAmp = 0;
-  float offset, phaseOffset
+  float offset, phaseOffset;
   static lastPhaseOffset = 0;
   
   // update loopTime
