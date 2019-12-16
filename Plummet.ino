@@ -110,6 +110,7 @@ boolean updateSlaveClock = false;
 //SoftwareSerial nextSerial(rxPinNext, txPinNext);
 SoftwareSerial nextSerial(rxPinPrev, txPinNext);
 #define prevSerial nextSerial
+bool listenOnPrev = true;
 
 #define audioSerial Serial
 
@@ -552,7 +553,7 @@ byte readByte() {
       b = Serial.read();
       //sprint(b);
       return b;
-    } else if (prevSerial.available()){
+    } else if (listenOnPrev && prevSerial.available()){
       isMaster = false;
       char b = prevSerial.read();
 //      if (b=='~') { Serial.write("Error:"); delay(100); while (prevSerial.available()) Serial.print("~"+String(int(prevSerial.read()))); Serial.println("");}
@@ -564,7 +565,7 @@ sprint("?");
 }
 
 bool readByteAvailable() {
-  return (Serial.available() || prevSerial.available());
+  return (Serial.available() || (listenOnPrev && prevSerial.available()));
 }
 
 
@@ -1220,8 +1221,8 @@ void setup() {
 	  while (prevSerial.available()) {prevSerial.read(); };
 	  delay(300);
 	  if (prevSerial.available()) {
-	  	sprintln("Noisy! Cancelling");
-	  	while (true) delay(10000);
+	  	sprintln("Noisy! Cancelling listen mode");
+	  	listenOnPrev = false;
 	  }
   }
   sprintln("Done.");
@@ -1291,7 +1292,7 @@ void loop(){
   	}
   }
   if (time > keepalive) { nextSerial.print(" "); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
-  if (prevSerial.available()) {if (isMaster) Serial.println("I am now a slave"); isMaster = false;} // inform 
+  if (listenOnPrev && prevSerial.available()) {if (isMaster) Serial.println("I am now a slave"); isMaster = false;} // inform 
   // if (isMaster) { tone(7, NOTE_F5,100); }   // If master make noise
   //if (millis()-lastIterationTime<50) {
   //	delay(50-(millis()-lastIterationTime));
