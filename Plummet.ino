@@ -628,7 +628,7 @@ char * forwardCommand() {
 	   case 's': /* will be send via the s command with the right synclooptime */
 	      s = atoi(KB+1); 
 	      if (s==0) {
-	      	itoa(defaultLoopTime+10, KB+1, 10);
+	      	itoa(defaultLoopTime+30, KB+1, 10);
 	      	sprint(KB+1);
 	      	s = strlen(KB);
 	      	KB[s++] = '\n';
