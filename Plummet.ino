@@ -19,9 +19,9 @@
 
 #define PLUMMET_VERSION "0.22"
 
-// #include <SoftwareSerial.h>
-#include <NeoSWSerial.h>
-#define SoftwareSerial NeoSWSerial
+#include <SoftwareSerial.h>
+// #include <NeoSWSerial.h>
+// #define SoftwareSerial NeoSWSerial
 #include <TimerOne.h>
 #include <Servo.h>
 #include <EEPROM.h>
@@ -71,6 +71,7 @@ unsigned long recordInitTime;
 bool isRecording =false;
 bool isPlaying = false;
 bool isAutoPlay = false;
+bool showClock = false;
 int recordingLoc;
 
 //servo
@@ -624,7 +625,7 @@ char * forwardCommand() {
 	      nextSerial.println(KB);
 	   case 'u': /* will be send via the u command with the right synclooptime */
 	      s = atoi(KB+1); 
-	      if (s==0) itoa((millis()-syncInitTime) % syncLoopTime, KB+1, 10);
+	      if (s==0) itoa((millis()-(syncInitTime+syncInitTimeOffset)) % syncLoopTime, KB+1, 10);
 	      nextSerial.println(KB);
 	   case 'U':
 	   case 'e':
@@ -786,8 +787,9 @@ void handleKeyboardInput() {
       break;
     case 'u': // Print phase compared to sync clock
       s = atoi(CMD); KB[0] = 0; CMD=KB;
-      sprint ("clock: "); sprint(millis()); sprint ("; syncInitTime: "); sprint(syncInitTime); sprint("; syncLoopTime:");sprintln(syncLoopTime);
-      sprint("phase compared to sync clock is ");
+      sprint ("clock: "); sprint(millis()); sprint ("; sIT: "); sprint(syncInitTime); sprint("; sITO"); sprint(syncInitTimeOffset); sprint("; sLT:");sprintln(syncLoopTime);
+      sprint ("clock-sync: "); sprintln(millis()-syncInitTime);
+      sprint("compare: ");
       sprint(int((millis()-(syncInitTime+syncInitTimeOffset)) % syncLoopTime) - s);
       sprintln("ms");
       break;
@@ -939,6 +941,10 @@ void handleKeyboardInput() {
       sprint("auto play is ");
       sprintln(isAutoPlay ? "on" : "off");
       ewrite((int)isAutoPlay, EEPROM_COMMANDS_LOC - 4);
+      break;
+    case '*': // Show Clock
+      showClock = !showClock;
+      break;
     default:
       break;
   }
@@ -1228,6 +1234,13 @@ void playAudioIn(int phase, int syncedPhase) {
 }
 
 void loop(){
+  static unsigned long lastClock = 0;
+  if (showClock) {
+  	if (millis() > lastClock + 1000) {
+  		lastClock= millis();
+  		sprint(double(lastClock/100)/10); sprint("  \r");
+  	}
+  }
   if (time > keepalive) { nextSerial.print(" "); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
   if (prevSerial.available()) {if (isMaster) Serial.println("I am now a slave"); isMaster = false;} // inform 
   // if (isMaster) { tone(7, NOTE_F5,100); }   // If master make noise
