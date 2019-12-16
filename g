@@ -24,7 +24,7 @@
 #define SoftwareSerial NeoSWSerial
 
 #include <TimerOne.h>
-//LIBSERVO #include <Servo.h>
+#include <Servo.h>
 #include <EEPROM.h>
 
 #define rxPinPrev 2 // soft serial
@@ -251,7 +251,7 @@ void playSong(int8_t songNumber=1, int8_t volume=30) {
 ///////////////////////////
 /// SERVO
 ///////////////////////////
-//LIBSERVO: Servo myservo;  // create servo object to control a servo
+Servo myservo;  // create servo object to control a servo
 double lastServoWriteValue = 95;
 #define SERVO_PWM_RATE 3040
 boolean servoAttached = false;
@@ -277,7 +277,7 @@ void myservowrite(double pos) {
     int duty = int(double(map(int(pos), 0,180,544.0,2400.0))/SERVO_PWM_RATE*1024);
     Timer1.pwm(servoPin, duty);
   } else {
-    //LIBServo: myservo.write(int(pos));
+    myservo.write(int(pos));
   }
 }
 
@@ -285,7 +285,7 @@ double myservoread() {
   if (SERVO_VIA_TIMER1) {
     return lastServoWriteValue;
   } else {
-    //LIBServo: return myservo.read();
+    return myservo.read();
   }
 }
 
@@ -299,7 +299,7 @@ void myservoattach(int pin) {
     }
     servoAttached = true;
   } else {
-    //LIBServo: myservo.attach(pin);
+    myservo.attach(pin);
   }
 }
 
@@ -307,7 +307,7 @@ boolean myservoattached() {
   if (SERVO_VIA_TIMER1) {
     return servoAttached;
   } else {
-    //LIBServo: return myservo.attached();
+    return myservo.attached();
   }
 }
 void myservodetach() {
@@ -316,7 +316,7 @@ void myservodetach() {
     Timer1.disablePwm(servoPin);
     servoAttached = false;
   } else {
-    //LIBServo: myservo.detach();
+    myservo.detach();
   }
 }
 
