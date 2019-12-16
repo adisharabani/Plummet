@@ -240,6 +240,7 @@ void sendAudioCommand(int8_t command, int8_t datah, int8_t datal) {
   {
     audioSerial.write(Send_Audio_buf[i]) ;
   }
+  audioSerial.write('\r');
 }
 
 void playSong(int8_t songNumber=1, int8_t volume=30) {
@@ -701,7 +702,12 @@ void handleKeyboardInput() {
 		       inByte = '\n';
 		       KB[kblength++] = inByte;
 		       KB[kblength] = 0;
-  		       sprintln("");
+		       if ((kblength==2) && (KB[0]=='T')) {
+		       	// don't print the T (update clock command);
+		       	sprint("\r");
+		       } else {
+	  		       sprintln("");
+	  		   }
 
 		    }
 	     } else if (inByte == 127) {
@@ -1155,12 +1161,15 @@ void updateAmpAndTimeForTesting() {
 	if (abs(offset) > 0.25) {
 		syncPhase = (phaseOffset > 0) ? 0.6 : 0.9;
     	servoAmp = maxServoAmp; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
-	} else if (abs(offset) > 0.2) {
+	} else if (abs(offset) > 0.15) {
     	syncPhase = (phaseOffset > 0) ? 0.6 : 0.9;
     	servoAmp = maxServoAmp/2; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
-    } else if (abs(offset) > 0.15) {
+    } else if (abs(offset) > 0.10) {
     	syncPhase = (phaseOffset > 0) ? 0.6 : 0.9;
     	servoAmp = maxServoAmp/4; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
+    } else if (abs(offset) > 0.5) {
+    	syncPhase = (phaseOffset > 0) ? 0.6 : 0.9;
+    	servoAmp = 11;
     } else if (abs(offset) > 0.02) {
         // Linear calculation, offset:0==>phase:0.25; offset:0.05==>0.5; offset:-0.05==> 0; trim for phase to be between 0 to 0.5;
         syncPhase = max(min(0.25 + phaseOffset/0.05*0.25, 0.5), 0);
