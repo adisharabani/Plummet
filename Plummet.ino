@@ -1133,7 +1133,7 @@ void updateAmpAndTimeForTesting() {
   double ropeAmp;
   static double lastRopeAmp = 0;
   float offset, phaseOffset;
-  static lastPhaseOffset = 0;
+  static float lastPhaseOffset = 0;
   
   // update loopTime
   loopTime = syncLoopTime;
