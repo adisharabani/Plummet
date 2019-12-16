@@ -1167,8 +1167,8 @@ void updateAmpAndTimeForTesting() {
         servoAmp = servoAmp - ((ropeAmp-(lastRopeAmp-ropeAmp))-syncRopeAngle)*100;
         servoAmp = max(3,min(10, servoAmp));
         
-    	syncPhase = (phaseOffset > 0) ? 0.6 : 0.9;
-        servoAmp = 3;
+    	//syncPhase = (phaseOffset > 0) ? 0.6 : 0.9;
+        //servoAmp = ((ropeAmp-(lastRopeAmp-ropeAmp))>syncRopeAngle) ? 3 : 10;
     } else {
     	// todo: still do minor fixes.
     	syncPhase = 0.25;
@@ -1180,7 +1180,7 @@ void updateAmpAndTimeForTesting() {
 	lastPhaseOffset = phaseOffset;
 
 //    syncPhase = (desiredPhase*0.5 + syncPhase*0.5);
-    initTime = millis()-loopTime*(side==LEFT ? syncPhase+0.5 : syncPhase);
+    initTime = millis()-loopTime*(side==LEFT ? syncPhase+0.5 : syncPhase) + SYNC_MAGIC_NUMBER;
     
     sprint("Syncing: ropeAmp("); sprint(ropeAmp);
     sprint(") Phase(");sprint(int(phaseOffset*syncLoopTime)); sprint("ms / "); sprint(100*phaseOffset); sprint ("%");
