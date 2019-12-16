@@ -1193,8 +1193,8 @@ void setup() {
   // Read all prevSerial data
   sprintln("Waiting for prev data to be cleared out...");
   while (prevSerial.available()) {
-  	while (prevSerial.available()) {Serial.write(prevSerial.read());}
-  	delay(50);
+  	while (prevSerial.available()) {prevSerial.read(); delay(100);}
+  	delay(300);
   }
   sprintln("Done.");
   
