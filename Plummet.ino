@@ -227,7 +227,6 @@ void sendAudioCommand(int8_t command, int8_t datah, int8_t datal) {
 
   static int8_t Send_Audio_buf[8] = {0x7e, 0xff, 0x06, 0, 0, 0, 0, 0xef} ;
 
-  if (!enableAudio) return;
   debugLog("audio");
   Send_Audio_buf[0] = 0x7e; //starting byte
   Send_Audio_buf[1] = 0xff; //version
@@ -244,6 +243,7 @@ void sendAudioCommand(int8_t command, int8_t datah, int8_t datal) {
 }
 
 void playSong(int8_t songNumber=1, int8_t volume=30) {
+    if (!enableAudio) return;
 	sendAudioCommand(0x22, volume, songNumber);
 }
 
@@ -778,6 +778,11 @@ void handleKeyboardInput() {
       mode = MAINTAIN; sprintln("MAINTAIN");
       break;
     case 't': // TEST 
+      syncLoopTime = atoi(CMD); KB[0] = 0; CMD=KB;
+      syncInitTime = millis();
+      syncInitTimeOffset = 0;
+      syncRopeAngle = 0.2;
+
       mode = TEST; sprintln("TEST");
       break;
     case ']': /* Increase TEST Phase */
@@ -802,7 +807,7 @@ void handleKeyboardInput() {
 
       syncInitTime = millis();
       syncInitTimeOffset = 0;
-      syncRopeAngle = 0.25;
+      syncRopeAngle = 0.3;
       //servoAmp = 20;
       mode = SYNCED_RUN; sprint("SYNC");sprintln(syncLoopTime);
       break;
@@ -1018,7 +1023,7 @@ void stopPlaySequence() {
 /// Modes
 ///////////////////////////
 
-
+/*
 void updateAmpAndTimeForStopping() {
   loopTime = defaultLoopTime;
   initTime = millis()-loopTime*(side==LEFT ? 0.25 : 0.75) + SYNC_MAGIC_NUMBER;
@@ -1034,7 +1039,7 @@ void updateAmpAndTimeForStopping() {
   sprint("- Update ServoAmp: maxRight("); sprint(ropeMaxRightAngle); sprint(")-maxLeft("); sprint(ropeMaxLeftAngle);
   sprint(")="); sprint(ropeMaxRightAngle-ropeMaxLeftAngle);
   sprint(" ==> New servoAmp: "); sprint(servoAmp); sprintln(" -");  
-}
+}*/
 
 void updateAmpAndTimeForMaintaining() {
   loopTime = defaultLoopTime;
@@ -1061,7 +1066,8 @@ void updateAmpAndTimeForRunning() {
 
 #define MAP(v,fromL,fromH,toL,toH) ((v-fromL)/(fromH-fromL)*(toH-toL) + toL)
 
-void updateAmpAndTimeForTesting() {
+//void updateAmpAndTimeForTesting() {
+void updateAmpAndTimeForStopping() {
   double ropeAmp;
   static double lastRopeAmp=0;
   loopTime = defaultLoopTime;
@@ -1122,8 +1128,7 @@ void updateAmpAndTimeForTesting() {
 //  }
 }
 
-//int q = 0;
-void updateAmpAndTimeForSyncedRunning() {  
+void updateAmpAndTimeForTesting() {
   double ropeAmp;
   static double lastRopeAmp = 0;
   float offset, phaseOffset, lastPhaseOffset = 0;
@@ -1182,6 +1187,61 @@ void updateAmpAndTimeForSyncedRunning() {
 //    sprintln(")");
   }
 }
+
+void updateAmpAndTimeForSyncedRunning() {  
+
+  // update loopTime
+  //loopTime = syncLoopTime;
+
+  // update servoAmp
+  float offsetRopeAngle = ropeMaxRightAngle-ropeMaxLeftAngle - syncRopeAngle;
+  if (offsetRopeAngle < 0) {
+    servoAmp = min(servoAmp + 1, maxServoAmp);
+  } else {
+    servoAmp = max(servoAmp - 1, 3);
+  }
+
+/*
+  if (abs(offsetRopeAngle)>0.02) {
+    servoAmp = max(min( servoAmp - offsetRopeAngle * 100 ,maxServoAmp),3);
+  }
+*/
+  // speed up or slow down (only do this when getting to right side - just to reduce amount of updates).
+  if (side==RIGHT) {
+    double offset = ((millis()-(syncInitTime+syncInitTimeOffset))%syncLoopTime) / double(syncLoopTime);
+    if (offset > 0.5) offset = offset-1;
+    
+    double desiredPhase = 0.25;
+    if (abs(offset) <0.15) {
+      if (servoAmp>maxServoAmp-10)  {
+        servoAmp = 20;
+      }
+      if (abs(offset) < 0.02) {
+        desiredPhase = 0.25;
+      } else {
+      //      // Linear calculation, offset:0==>phase:0.25; offset:0.05==>0.5; offset:-0.05==> 0; trim for phase to be between 0 to 0.5;
+        desiredPhase = max(min(0.25 + offset/0.05*0.25, 0.5), 0);
+      }
+    } else if (offset>0) {
+      desiredPhase = 0.6;
+      servoAmp = maxServoAmp;
+    } else if (offset<0) {
+      desiredPhase = 0.9;
+      servoAmp = maxServoAmp;
+    }
+//    syncPhase = (desiredPhase*0.5 + syncPhase*0.5);
+    syncPhase = desiredPhase;
+    initTime = millis()-loopTime*(side==LEFT ? syncPhase+0.5 : syncPhase);
+    
+    sprint("Syncing: Offset("); sprint(offset);sprint(" ==> "); sprint(int(offset*syncLoopTime));sprint("ms), ropeAmp("); sprint(ropeMaxRightAngle-ropeMaxLeftAngle);
+    sprint(") ==> loopTime="); sprint(syncLoopTime);
+    sprint("; ServoAmp="); sprint(servoAmp);
+    sprint("; phase="); sprint(syncPhase);
+    sprint("(wanted"); sprint(desiredPhase);
+    sprintln(")");
+  }
+}
+
 
 void updateAmpAndTime() {
     if (mode == RUNNING)        { updateAmpAndTimeForRunning();          }
@@ -1262,26 +1322,24 @@ left_right_e direction = RIGHT;
 unsigned long audioTime=0;
 void playAudioIn(int phase, int syncedPhase) {
 	audioTime = time + phase;
-	if (mode == SYNCED_RUNNING) {
-		// Snap to Sync
-		int offsetToSync = (audioTime - (syncInitTime+syncInitTimeOffset)) % syncLoopTime - syncedPhase;
-		//sprint("offSetToSync: ");
-		//sprintln(offsetToSync);
-		if (abs(offsetToSync) <= audioSnapToSync) {
-			audioTime = audioTime - offsetToSync;
-		} else {
-			int offsetToGrid = ((audioTime - (syncInitTime+syncInitTimeOffset)) % syncLoopTime) % audioSnapToGrid;
-			//sprint("offsetToGrid: ");
-			//sprintln(offsetToGrid);
+	// Snap to Sync
+	int offsetToSync = (audioTime - (syncInitTime+syncInitTimeOffset)) % syncLoopTime - syncedPhase;
+	//sprint("offSetToSync: ");
+	//sprintln(offsetToSync);
+	if (abs(offsetToSync) <= audioSnapToSync) {
+		audioTime = audioTime - offsetToSync;
+	} else {
+		int offsetToGrid = ((audioTime - (syncInitTime+syncInitTimeOffset)) % syncLoopTime) % audioSnapToGrid;
+		//sprint("offsetToGrid: ");
+		//sprintln(offsetToGrid);
 
-			// new audioTime is either audioTime-offsetToGrid or audioTime-offsetToGrid+snapToGrid;
-			if (offsetToGrid < audioSnapToGrid/2) {
-				audioTime = audioTime - offsetToGrid;
-			} else {
-				audioTime = audioTime - offsetToGrid + audioSnapToGrid;
-			}
-			
+		// new audioTime is either audioTime-offsetToGrid or audioTime-offsetToGrid+snapToGrid;
+		if (offsetToGrid < audioSnapToGrid/2) {
+			audioTime = audioTime - offsetToGrid;
+		} else {
+			audioTime = audioTime - offsetToGrid + audioSnapToGrid;
 		}
+		
 	}
 	//sprint("*** audio in ");
 	//sprintln(audioTime - time);
@@ -1313,7 +1371,7 @@ void loop(){
   handleKeyboardInput();
 
   // Update clock of slaves
-  if (updateSlaveClock || (isMaster && (mode==SYNCED_RUNNING))) {
+  if (updateSlaveClock || (isMaster && ((mode==SYNCED_RUNNING) || (mode==TESTING)))) {
     if ((time-syncInitTime)%syncLoopTime  < (lastIterationTime-syncInitTime) % syncLoopTime) {
       // this means we just got to the init time frame;
 	  if (updateSlaveClock) {
