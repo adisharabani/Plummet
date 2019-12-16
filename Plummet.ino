@@ -1143,9 +1143,13 @@ void updateAmpAndTimeForSyncedRunning() {
 
     if (offset > 0.5) offset = offset-1;
 
-    if (abs(offset) > 0.15) {
-    	desiredPhase = (offset > 0) ? 0.6 : 0.9;
+	if (abs(offset) > 0.25) {
+		desiredPhase = (offset > 0) ? 0.6 : 0.9;
     	servoAmp = maxServoAmp; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
+	}
+    else if (abs(offset) > 0.15) {
+    	desiredPhase = (offset > 0) ? 0.6 : 0.9;
+    	servoAmp = maxServoAmp/2; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
     } else if (abs(offset) > 0.02) {
         // Linear calculation, offset:0==>phase:0.25; offset:0.05==>0.5; offset:-0.05==> 0; trim for phase to be between 0 to 0.5;
         desiredPhase = max(min(0.25 + offset/0.05*0.25, 0.5), 0);
