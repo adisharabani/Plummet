@@ -876,13 +876,12 @@ void handleKeyboardInput() {
       }
       sprint("Servo "); sprintln(myservoattached() ? "attached" : "detached");
       break;
-/*   case '~': 
-	 // Change Servo type (Timer1 vs Servo library)
+   case '~': /* Change Servo type (Timer1 vs Servo library) */
      myservodetach();
      SERVO_VIA_TIMER1 = !SERVO_VIA_TIMER1;
      myservoattach(servoPin);
      sprintln(SERVO_VIA_TIMER1 ? "Using Timer1" : "Using Servo lib");
-     break; */
+     break; 
     case 'b': /* Beep */
       tone(7, NOTE_A5, 1000);
       break;
