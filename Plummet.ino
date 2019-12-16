@@ -802,7 +802,7 @@ void handleKeyboardInput() {
 
       syncInitTime = millis();
       syncInitTimeOffset = 0;
-      syncRopeAngle = 0.2;
+      syncRopeAngle = 0.3;
       servoAmp = 20;
       mode = SYNCED_RUN; sprint("SYNC");sprintln(syncLoopTime);
       break;
