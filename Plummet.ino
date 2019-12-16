@@ -19,9 +19,9 @@
 
 #define PLUMMET_VERSION "0.22"
 
-// #include <SoftwareSerial.h>
-#include <NeoSWSerial.h>
-#define SoftwareSerial NeoSWSerial
+#include <SoftwareSerial.h>
+// #include <NeoSWSerial.h>
+// #define SoftwareSerial NeoSWSerial
 #include <TimerOne.h>
 #include <Servo.h>
 #include <EEPROM.h>
@@ -626,6 +626,7 @@ char * forwardCommand() {
 	      s = atoi(KB+1); 
 	      if (s==0) itoa((millis()-syncInitTime) % syncLoopTime, KB+1, 10);
 	      nextSerial.println(KB);
+	   case 'U':
 	   case 'e':
 	   case 'E':
 	   case 'p':
@@ -786,7 +787,7 @@ void handleKeyboardInput() {
     case 'u': // Print phase compared to sync clock
       s = atoi(CMD); KB[0] = 0; CMD=KB;
       sprint("phase compared to sync clock is ");
-      sprint((millis()-syncInitTime) % syncLoopTime - s);
+      sprint(int((millis()-(syncInitTime+syncInitTimeOffset)) % syncLoopTime) - s);
       sprintln("ms");
       break;
     case 'U': // Update slaves on current Sync Clock
@@ -1239,6 +1240,19 @@ void loop(){
 
   handleKeyboardInput();
 
+  // Update clock of slaves
+  if (updateSlaveClock) {
+    if ((time-syncInitTime)%syncLoopTime  < (lastIterationTime-syncInitTime) % syncLoopTime) {
+      // this means we just got to the init time frame;
+      updateSlaveClock = false;
+      sprint("updateslaveclock. Sync moved");
+      sprintln((millis()-syncInitTime) % syncLoopTime);
+      syncInitTime = millis();
+      nextSerial.println("T"); // update the clock...     
+    }
+  }
+
+
   int potRead = potentiometerRead();
   double currentServoPos = myservoread();
   float potAngle = getPotAngle();
@@ -1355,15 +1369,6 @@ void loop(){
 /*
    debugLog("\n\r");
 */
-
-  // Update clock of slaves
-  if (updateSlaveClock && isMaster && (mode == SYNCED_RUNNING)) {
-    if ((time-syncInitTime)%syncLoopTime  < (lastIterationTime-syncInitTime) % syncLoopTime) {
-      // this means we just got to the init time frame;
-      updateSlaveClock = false;
-      nextSerial.println("T"); // update the clock...     
-    }
-  }
 
    lastIterationTime = time;
 
