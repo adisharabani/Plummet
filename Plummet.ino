@@ -802,8 +802,8 @@ void handleKeyboardInput() {
 
       syncInitTime = millis();
       syncInitTimeOffset = 0;
-      syncRopeAngle = 0.3;
-      servoAmp = 20;
+      syncRopeAngle = 0.25;
+      //servoAmp = 20;
       mode = SYNCED_RUN; sprint("SYNC");sprintln(syncLoopTime);
       break;
     case 'T': /* Set the clock for SYNC */
@@ -1173,8 +1173,8 @@ void updateAmpAndTimeForSyncedRunning() {
     initTime = millis()-loopTime*(side==LEFT ? syncPhase+0.5 : syncPhase);
     
     sprint("Syncing: ropeAmp("); sprint(ropeAmp);
-    sprint(") Phase(");sprint(phaseOffset); sprint("ms / "); sprint(phaseOffset/syncLoopTime); sprint ("%%");
-    sprint(")/Offset(");sprint(int(offset*syncLoopTime));sprint("ms / "); sprint(offset); sprint("%%");
+    sprint(") Phase(");sprint(int(phaseOffset*syncLoopTime)); sprint("ms / "); sprint(100*phaseOffset); sprint ("%");
+    sprint(")/Offset(");sprint(int(offset*syncLoopTime));sprint("ms / "); sprint(100*offset); sprint("%");
     sprint(")  ==>  ServoAmp="); sprint(servoAmp);
     sprint("; syncPhase="); sprintln(syncPhase);
 //    sprint("(wanted"); sprint(desiredPhase);
