@@ -619,7 +619,6 @@ char * forwardCommand() {
 	 int s;
 	 switch (k) {
 	 // Do not forward the following commands
-	   case ':':
 	   case 's': /* will be send via the s command with the right synclooptime */
 	      s = atoi(KB+1); 
 	      if (s==0) {
@@ -634,7 +633,7 @@ char * forwardCommand() {
 	   case 'u': /* will be send via the u command with the right synclooptime */
 	      s = atoi(KB+1); 
 	      if (s==0) {
-	      	itoa(defaultLoopTime+10, KB+1, 10);
+	      	itoa(int((millis()-(syncInitTime+syncInitTimeOffset)) % syncLoopTime), KB+1, 10);
 	      	sprint(KB+1);
 	      	s = strlen(KB);
 	      	KB[s++] = '\n';
@@ -642,6 +641,7 @@ char * forwardCommand() {
 	      }
 	      nextSerial.println(KB);
 	      break;
+	   case ':':
 	   case 'U':
 	   case 'e':
 	   case 'E':
