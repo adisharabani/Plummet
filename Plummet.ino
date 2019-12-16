@@ -1145,7 +1145,7 @@ void updateAmpAndTimeForTesting() {
     if (phaseOffset > 0.5) phaseOffset = phaseOffset-1;
 
     // predict next phase offset based on lastphase offset.
-	offset = phaseOffset - (lastPhaseOffset-phaseOffset);
+	offset = phaseOffset - (lastPhaseOffset-phaseOffset)/2;
     // TODO What if phaseOffset is irregular???
 	
 	// Handle cyclic movement of offset. 
@@ -1154,16 +1154,21 @@ void updateAmpAndTimeForTesting() {
 
 	if (abs(offset) > 0.25) {
 		syncPhase = (phaseOffset > 0) ? 0.6 : 0.9;
-    	servoAmp = 20; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
-	}
-    else if (abs(offset) > 0.15) {
+    	servoAmp = maxServoAmp; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
+	} else if (abs(offset) > 0.2) {
     	syncPhase = (phaseOffset > 0) ? 0.6 : 0.9;
-    	servoAmp = 15; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
+    	servoAmp = maxServoAmp/2; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
+    } else if (abs(offset) > 0.15) {
+    	syncPhase = (phaseOffset > 0) ? 0.6 : 0.9;
+    	servoAmp = maxServoAmp/4; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
     } else if (abs(offset) > 0.02) {
         // Linear calculation, offset:0==>phase:0.25; offset:0.05==>0.5; offset:-0.05==> 0; trim for phase to be between 0 to 0.5;
         syncPhase = max(min(0.25 + phaseOffset/0.05*0.25, 0.5), 0);
         servoAmp = servoAmp - ((ropeAmp-(lastRopeAmp-ropeAmp))-syncRopeAngle)*100;
         servoAmp = max(3,min(10, servoAmp));
+        
+    	syncPhase = (phaseOffset > 0) ? 0.6 : 0.9;
+        servoAmp = 3;
     } else {
     	// todo: still do minor fixes.
     	syncPhase = 0.25;
