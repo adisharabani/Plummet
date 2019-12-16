@@ -19,9 +19,10 @@
 
 #define PLUMMET_VERSION "0.22"
 
-#include <SoftwareSerial.h>
-// #include <NeoSWSerial.h>
-// #define SoftwareSerial NeoSWSerial
+// #include <SoftwareSerial.h>
+#include <NeoSWSerial.h>
+#define SoftwareSerial NeoSWSerial
+
 #include <TimerOne.h>
 #include <Servo.h>
 #include <EEPROM.h>
@@ -1176,7 +1177,7 @@ void setup() {
   nextSerial.begin(9600);
   prevSerial.begin(9600);
 
-  nextSerial.println(" "); // let the following arduino know you are here and set on HALT mode;
+  nextSerial.println(" "); // let the following arduino know you are here;
 
   //prevSerial.attachInterrupt(t);
   delay(200);
@@ -1189,7 +1190,11 @@ void setup() {
   smoothMove(servoCenter);
   tone(7, NOTE_G5, 100);
   
-
+  // Read all prevSerial data
+  sprintln("Read prev Data");
+  while (prevSerial.available()) {Serial.write(prevSerial.read());}
+  sprintln("Done.");
+  
   mode=HALT;
   initTime = millis();
   randomSeed((initTime + int(potentiometerRead()*100)) % 30000);
