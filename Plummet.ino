@@ -808,7 +808,7 @@ void handleKeyboardInput() {
       sprint ("clock: "); sprint(millis()); sprint ("; sIT: "); sprint(syncInitTime); sprint("; sITO"); sprint(syncInitTimeOffset); sprint("; sLT:");sprintln(syncLoopTime);
       sprint ("clock-sync: "); sprintln(millis()-syncInitTime);
       sprint("compare: ");
-      sprint(int((millis()-(syncInitTime+syncInitTimeOffset)) % syncLoopTime) - s);
+      sprint(int((millis()-(syncInitTime+syncInitTimeOffset) - s) % syncLoopTime));
       sprintln("ms");
       break;
     case 'U': // Update slaves on current Sync Clock
@@ -1263,10 +1263,14 @@ void playAudioIn(int phase, int syncedPhase) {
 
 void loop(){
   static unsigned long lastClock = 0;
+  static int lastClockIter = 0;
   if (showClock) {
-  	if (millis() > lastClock + 1000) {
+    if (millis() > lastClock + 3000) {
+    	lastClockIter = 0;
+    }
+  	if (millis() > lastClock + 100) {
   		lastClock= millis();
-  		sprint(double(lastClock/100)/10); sprint("  \r");
+  		sprint(double(lastClockIter++)/10); sprint("  \r");
   	}
   }
   if (time > keepalive) { nextSerial.print(" "); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
