@@ -630,6 +630,7 @@ char * forwardCommand() {
 	      	KB[s] = 0;
 	      }
 	      nextSerial.println(KB);
+	      break;
 	   case 'u': /* will be send via the u command with the right synclooptime */
 	      s = atoi(KB+1); 
 	      if (s==0) {
@@ -640,6 +641,7 @@ char * forwardCommand() {
 	      	KB[s] = 0;
 	      }
 	      nextSerial.println(KB);
+	      break;
 	   case 'U':
 	   case 'e':
 	   case 'E':
