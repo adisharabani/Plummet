@@ -754,12 +754,12 @@ void handleKeyboardInput() {
     case 'p': // Print measurements (potentiometer, servo, etc.)
       printMeasures = !printMeasures;
       enablePrint = true;
-      sprint("printMeasures="); sprintln(printMeasures ? "on" : "off");
+//      sprint("printMeasures="); sprintln(printMeasures ? "on" : "off");
       break;
     case 'L': // Print loop events (move from RIGHT to left)
       showLoopEvents = !showLoopEvents;
       enablePrint = true;
-      sprint("showLoopEvents="); sprintln(showLoopEvents ? "on" : "off");
+//      sprint("showLoopEvents="); sprintln(showLoopEvents ? "on" : "off");
       break;
     case '0': /* temporary move servo to center */
       smoothMove(servoCenter);
@@ -811,11 +811,10 @@ void handleKeyboardInput() {
       break;
     case 'u': // Print phase compared to sync clock
       s = atoi(CMD); KB[0] = 0; CMD=KB;
-      sprint ("clock: "); sprint(millis()); sprint ("; sIT: "); sprint(syncInitTime); sprint("; sITO"); sprint(syncInitTimeOffset); sprint("; sLT:");sprintln(syncLoopTime);
-      sprint ("clock-sync: "); sprintln(millis()-syncInitTime);
-      sprint("compare: ");
+//      sprint ("clock: "); sprint(millis()); sprint ("; sIT: "); sprint(syncInitTime); sprint("; sITO"); sprint(syncInitTimeOffset); sprint("; sLT:");sprintln(syncLoopTime);
+//      sprint ("clock-sync: "); sprintln(millis()-syncInitTime);
+      sprint("sync: ");
       sprint(int((millis()-(syncInitTime+syncInitTimeOffset) - s) % syncLoopTime));
-      sprintln("ms");
       break;
     case 'U': // Update slaves on current Sync Clock
       updateSlaveClock = true;
@@ -833,14 +832,13 @@ void handleKeyboardInput() {
       mode = SYNCED_RUN;
       break;
     case 'r': // Randomize the SYNC clock 
-      syncInitTime = millis() - random(0,defaultLoopTime);
-      syncInitTimeOffset = 0;
-      servoAmp = 20;
+      syncInitTimeOffset = random(0,defaultLoopTime);
+      //servoAmp = 20;
       mode = SYNCED_RUN; 
       break;
     case 'S': /* SYNC to an already set clock (don't update the clock) */
-      s = atoi(CMD); KB[0]=0; CMD=KB;
-      if (s!=0) syncLoopTime = s;
+      // s = atoi(CMD); KB[0]=0; CMD=KB;
+      //	if (s!=0) syncLoopTime = s;
       mode = SYNCED_RUN; 
       syncInitTimeOffset = 0;
       break;
@@ -856,11 +854,11 @@ void handleKeyboardInput() {
 */
     case 'M': // Set magic number
       sprint("Old ");
-      sprint("Magic Number=");
+      sprint("Magic=");
       sprintln(SYNC_MAGIC_NUMBER);
       s = atoi(CMD); KB[0]=0; CMD=KB;
       SYNC_MAGIC_NUMBER = s;
-      sprint("Magic Number=");
+      sprint("Magic=");
       sprintln(SYNC_MAGIC_NUMBER);
       break;
       
@@ -888,7 +886,7 @@ void handleKeyboardInput() {
       } else {
          myservoattach(servoPin);
       }
-      sprint("Servo "); sprintln(myservoattached() ? "attached" : "detached");
+      sprint("servo="); sprintln(myservoattached() ? "attached" : "detached");
       break;
    case '~': /* Change Servo type (Timer1 vs Servo library) */
      myservodetach();
@@ -1079,7 +1077,7 @@ void updateAmpAndTimeForTesting() {
      sprintln("HALT");
   }*/
   
-  sprint("- Update ServoAmp: maxRight("); sprint(ropeMaxRightAngle); sprint(")-maxLeft("); sprint(ropeMaxLeftAngle);
+  sprint("- Stopping: maxRight("); sprint(ropeMaxRightAngle); sprint(")-maxLeft("); sprint(ropeMaxLeftAngle);
   sprint(")="); sprint(ropeMaxRightAngle-ropeMaxLeftAngle);
   ropeAmp = (angleToServo(ropeMaxRightAngle)-angleToServo(ropeMaxLeftAngle));
   sprint (" | a="); sprint(ropeAmp);
@@ -1314,7 +1312,7 @@ void loop(){
       // this means we just got to the init time frame;
 	  if (updateSlaveClock) {
 	      updateSlaveClock = false;
-    	  sprint("updateslaveclock. Sync moved");
+    	  sprint("Sync moved:");
       	  sprintln((millis()-syncInitTime) % syncLoopTime);
       }
       syncInitTime = millis();
