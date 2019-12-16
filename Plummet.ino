@@ -896,7 +896,7 @@ void handleKeyboardInput() {
       playSong(audioSongNumber, audioVolume);
       break;
     case 'A': // Audio config for example A2,25 (song 2 volume 25)
-      if (CMD[0]==0){
+      if (CMD[0]=='\n'){
       	enableAudio = !enableAudio;
       }
       s = atoi(CMD);
