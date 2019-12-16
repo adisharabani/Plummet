@@ -80,7 +80,7 @@ int loopTime = defaultLoopTime;
 int lastLoopTime;
 
 double maxSpeed = 2;  // pot will move at this speed (compared to average cycle speed based on servoAmp);
-double maxServoAmp = 80;
+double maxServoAmp = 60;
 double servoAmp = maxServoAmp;
 double servoCenter = 100; // 88; //100 // 95;
 
