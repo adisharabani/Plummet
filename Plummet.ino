@@ -1154,21 +1154,21 @@ void updateAmpAndTimeForTesting() {
 
 	if (abs(offset) > 0.25) {
 		syncPhase = (phaseOffset > 0) ? 0.6 : 0.9;
-    	servoAmp = maxServoAmp; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
+    	servoAmp = 20; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
 	}
     else if (abs(offset) > 0.15) {
     	syncPhase = (phaseOffset > 0) ? 0.6 : 0.9;
-    	servoAmp = maxServoAmp/2; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
+    	servoAmp = 15; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
     } else if (abs(offset) > 0.02) {
         // Linear calculation, offset:0==>phase:0.25; offset:0.05==>0.5; offset:-0.05==> 0; trim for phase to be between 0 to 0.5;
         syncPhase = max(min(0.25 + phaseOffset/0.05*0.25, 0.5), 0);
         servoAmp = servoAmp - ((ropeAmp-(lastRopeAmp-ropeAmp))-syncRopeAngle)*100;
-        servoAmp = max(3,min(20, servoAmp));
+        servoAmp = max(3,min(10, servoAmp));
     } else {
     	// todo: still do minor fixes.
     	syncPhase = 0.25;
     	servoAmp = servoAmp + ((ropeAmp-(lastRopeAmp-ropeAmp)) > syncRopeAngle) ? -1 : +1;
-    	servoAmp = max(min(10,servoAmp),3);
+    	servoAmp = max(min(5,servoAmp),3);
     }
     
     lastRopeAmp = ropeAmp;
