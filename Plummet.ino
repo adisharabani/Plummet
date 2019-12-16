@@ -1304,7 +1304,7 @@ void loop(){
   handleKeyboardInput();
 
   // Update clock of slaves
-  if (updateSlaveClock || mode==SYNCED_RUNNING) {
+  if (updateSlaveClock || (isMaster && (mode==SYNCED_RUNNING))) {
     if ((time-syncInitTime)%syncLoopTime  < (lastIterationTime-syncInitTime) % syncLoopTime) {
       // this means we just got to the init time frame;
 	  if (updateSlaveClock) {
