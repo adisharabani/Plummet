@@ -37,7 +37,7 @@
 #define potPin 1 // analog
 
 
-int SYNC_MAGIC_NUMBER=-70;
+int SYNC_MAGIC_NUMBER=-250;
 
 int defaultLoopTime = 3167; //Palo Alto: 3080; // 3160; // 3420;
 // int defaultLoopTime = 3080; // Palo Alto
@@ -53,7 +53,7 @@ boolean SERVO_VIA_TIMER1 = true;
 boolean printMeasures = false; 
 boolean enablePrint = true;
 boolean debug = false;
-boolean enableAudio = true;
+boolean enableAudio = false;
 int8_t audioSongNumber = 1;
 int8_t audioVolume = 30;
 unsigned int audioDelay = 0; // in milliseconds
@@ -80,7 +80,7 @@ int loopTime = defaultLoopTime;
 int lastLoopTime;
 
 double maxSpeed = 2;  // pot will move at this speed (compared to average cycle speed based on servoAmp);
-double maxServoAmp = 60;
+double maxServoAmp = 80;
 double servoAmp = maxServoAmp;
 double servoCenter = 100; // 88; //100 // 95;
 
