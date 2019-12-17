@@ -444,7 +444,7 @@ void calibrate() {
 
 void calibrateLoopTime() { 
   sprintln("");
-  sprint("Old LoopTime "); sprintln(loopTime);
+  sprint("Old LoopTime "); sprintln(defaultLsoopTime);
   smoothMove(servoCenter-maxServoAmp);
   initTime = millis();
   sprintln("Speed up");
@@ -499,7 +499,7 @@ void writeCalibration() {
   ewrite(potCenter);
   ewrite(pot50);
   ewrite(pot150);
-  ewrite(loopTime);
+  ewrite(defaultLoopTime);
   ewrite((unsigned int)0);
   ewrite((unsigned int)0);
   ewrite((unsigned int)0);
