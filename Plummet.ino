@@ -1158,48 +1158,45 @@ void updateAmpAndTimeForTesting() {
 	if (phaseOffset > 0.5) phaseOffset = phaseOffset-1;
 
 	// predict next phase offset based on lastphase offset.
-	offset = PREDICT2(phaseOffset, lastPhaseOffset);
+	offset = PREDICT(phaseOffset, lastPhaseOffset);
 	// TODO What if phaseOffset is irregular???
 	
 	// Handle cyclic movement of offset. 
 	if (offset > 0.5) offset = offset -1;
 	if (offset < -0.5) offset = offset + 1;
 
-	if (abs(offset) > 0.25) {
-		syncPhase = (phaseOffset > 0) ? FASTER : SLOWER;
+	syncPhase = (offset > 0) ? FASTER : SLOWER;
+	if (abs(offset) > 0.3) {
 		servoAmp = maxServoAmp; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
 	} else if (abs(offset) > 0.15) {
-		syncPhase = (phaseOffset > 0) ? FASTER : SLOWER;
 		servoAmp = maxServoAmp/2; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
 	} else if (abs(offset) > 0.10) {
-		syncPhase = (phaseOffset > 0) ? FASTER : SLOWER;
 		servoAmp = maxServoAmp/3; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
 	} else if (abs(offset) > 0.05) {
-		syncPhase = (phaseOffset > 0) ? FASTER : SLOWER;
-		servoAmp = 15;
+		servoAmp = abs(PREDICT(ropeAmp,lastRopeAmp)-syncRopeAngle)*100 / 2;
+		servoAmp = max(3,min(10, servoAmp));
 	} else if (abs(offset) > 0.02) {
 		// Linear calculation, offset:0==>phase:0.25; offset:0.05==>0.5; offset:-0.05==> 0; trim for phase to be between 0 to 0.5;
 		syncPhase = max(min(0.25 + phaseOffset/0.05*0.25, 0.5), 0);
 
-		if (tooStrong) {
+/* 		if (tooStrong) {
 			syncPhase = max(min(0.75 + phaseOffset/0.05*0.2, 1), 0);
 			syncPhase = 0.75;
 		} else {
 			syncPhase = max(min(0.25 + phaseOffset/0.05*0.2, 1), 0);
 			syncPhase = 0.25;
-		}
-
-		servoAmp = abs(PREDICT(ropeAmp,lastRopeAmp)-syncRopeAngle)*100;
-		servoAmp = max(3,min(10, servoAmp));
+		} */
+		servoAmp = abs(PREDICT(ropeAmp,lastRopeAmp)-syncRopeAngle)*100 / 2;
+		servoAmp = max(3,min(6, servoAmp));
 		
 		//syncPhase = (phaseOffset > 0) ? 0.6 : 0.9;
 		//servoAmp = ((ropeAmp-(lastRopeAmp-ropeAmp))>syncRopeAngle) ? 3 : 10;
 	} else {
 		// todo: still do minor fixes.
-		syncPhase = tooStrong ? 0.75 : 0.25;
-
+		//syncPhase = tooStrong ? 0.75 : 0.25;
+		syncPhase = 0.5;
 		servoAmp = abs(PREDICT(ropeAmp,lastRopeAmp)-syncRopeAngle)*100;
-		servoAmp = max(0,min(3,servoAmp));
+		servoAmp = max(0,min(6,servoAmp));
 	}
 	
 	lastRopeAmp = ropeAmp;
