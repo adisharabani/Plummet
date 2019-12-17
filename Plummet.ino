@@ -514,7 +514,7 @@ void printCurrentCalibration() {
   sprint(" potCenter="); sprint(potCenter);
   sprint(" pot50="); sprint(pot50);
   sprint(" pot150="); sprint(pot150);
-  sprint(" loopTime="); sprint(loopTime);
+  sprint(" loopTime="); sprint(defaultLoopTime);
   sprintln(""); 
 }
 
@@ -525,7 +525,7 @@ void readCalibration() {
 	potCenter = eread();
 	pot50 = eread();
 	pot150 = eread();
-	loopTime = eread(); defaultLoopTime = loopTime;
+	defaultLoopTime = eread(); loopTime = defaultLoopTime;
   } else {
 	sprintln("No EEPROM");
 	//servoCenter = eread(1);
