@@ -814,7 +814,7 @@ void handleKeyboardInput() {
 
 	  syncInitTime = millis();
 	  syncInitTimeOffset = 0;
-	  syncRopeAngle = 0.3;
+	  syncRopeAngle = 0.2;
 	  //servoAmp = 20;
 	  mode = SYNCED_RUN; sprint("SYNC");sprintln(syncLoopTime);
 	  break;
@@ -1228,11 +1228,13 @@ void updateAmpAndTimeForSyncedRunning() {
 
   // update servoAmp
   float offsetRopeAngle = ropeMaxRightAngle-ropeMaxLeftAngle - syncRopeAngle;
-  if (offsetRopeAngle < 0) {
+/*  if (offsetRopeAngle < 0) {
 	servoAmp = min(servoAmp + 1, maxServoAmp);
   } else {
 	servoAmp = max(servoAmp - 1, 3);
   }
+*/
+	servoAmp = max(min(servoAmp + min(10,offsetRopeAngle*100) ,maxServoAmp),3);
 
 /*
   if (abs(offsetRopeAngle)>0.02) {
@@ -1264,7 +1266,7 @@ void updateAmpAndTimeForSyncedRunning() {
 	}
 //	syncPhase = (desiredPhase*0.5 + syncPhase*0.5);
 	syncPhase = desiredPhase;
-	initTime = millis()-loopTime*(side==LEFT ? syncPhase+0.5 : syncPhase);
+	initTime = millis()-loopTime*(side==LEFT ? syncPhase+0.5 : syncPhase) + SYNC_MAGIC_NUMBER;
 	
 	sprint("Syncing: Offset("); sprint(offset);sprint(" ==> "); sprint(int(offset*syncLoopTime));sprint("ms), ropeAmp("); sprint(ropeMaxRightAngle-ropeMaxLeftAngle);
 	sprint(") ==> loopTime="); sprint(syncLoopTime);
