@@ -1144,7 +1144,7 @@ void updateAmpAndTimeForTesting() {
   static float lastPhaseOffset = 0;
   bool tooStrong = false;
   
-  double FASTER=0.6; double SLOWER=0.9;
+  double FASTER=0.65; double SLOWER=0.85;
   // update loopTime
   loopTime = syncLoopTime;
 
@@ -1171,13 +1171,11 @@ void updateAmpAndTimeForTesting() {
 	} else if (abs(offset) > 0.15) {
 		servoAmp = maxServoAmp/2; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
 	} else if (abs(offset) > 0.10) {
-		servoAmp = maxServoAmp/3; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
-	} else if (abs(offset) > 0.05) {
 		servoAmp = abs(PREDICT(ropeAmp,lastRopeAmp)-syncRopeAngle)*100 / 2;
 		servoAmp = max(3,min(10, servoAmp));
-	} else if (abs(offset) > 0.02) {
+	} else if (abs(offset) > 0.04) {
 		// Linear calculation, offset:0==>phase:0.25; offset:0.05==>0.5; offset:-0.05==> 0; trim for phase to be between 0 to 0.5;
-		syncPhase = max(min(0.25 + phaseOffset/0.05*0.25, 0.5), 0);
+		//syncPhase = max(min(0.25 + phaseOffset/0.05*0.25, 0.5), 0);
 
 /* 		if (tooStrong) {
 			syncPhase = max(min(0.75 + phaseOffset/0.05*0.2, 1), 0);
@@ -1186,16 +1184,16 @@ void updateAmpAndTimeForTesting() {
 			syncPhase = max(min(0.25 + phaseOffset/0.05*0.2, 1), 0);
 			syncPhase = 0.25;
 		} */
-		servoAmp = abs(PREDICT(ropeAmp,lastRopeAmp)-syncRopeAngle)*100 / 2;
-		servoAmp = max(3,min(6, servoAmp));
+		servoAmp = abs(PREDICT(ropeAmp,lastRopeAmp)-syncRopeAngle)*100 / 2 ;
+		servoAmp = max(0,min(8, servoAmp));
 		
 		//syncPhase = (phaseOffset > 0) ? 0.6 : 0.9;
 		//servoAmp = ((ropeAmp-(lastRopeAmp-ropeAmp))>syncRopeAngle) ? 3 : 10;
 	} else {
 		// todo: still do minor fixes.
 		//syncPhase = tooStrong ? 0.75 : 0.25;
-		syncPhase = 0.5;
-		servoAmp = abs(PREDICT(ropeAmp,lastRopeAmp)-syncRopeAngle)*100;
+		syncPhase = 0.25;
+		servoAmp = 6-(PREDICT(ropeAmp,lastRopeAmp)-syncRopeAngle)*100;
 		servoAmp = max(0,min(6,servoAmp));
 	}
 	
