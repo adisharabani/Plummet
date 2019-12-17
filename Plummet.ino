@@ -1146,7 +1146,7 @@ void updateAmpAndTimeForTesting() {
   static float lastPhaseOffset = 0;
   bool tooStrong = false;
   
-  double FASTER=0.65; double SLOWER=0.85;
+  double FASTER=0.6; double SLOWER=0.9;
   // update loopTime
   loopTime = syncLoopTime;
   
@@ -1170,7 +1170,7 @@ void updateAmpAndTimeForTesting() {
 	if (offset > 0.5) offset = offset -1;
 	if (offset < -0.5) offset = offset + 1;
 
-	syncPhase = (offset > 0) ? FASTER : SLOWER;
+	syncPhase = (offset < 0) ? FASTER : SLOWER;
 	servoAmp = (offset > 0) ? 20 : 14;
 	/*
 	if (abs(phaseOffset) > 0.3) {
