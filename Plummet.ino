@@ -1150,10 +1150,8 @@ void updateAmpAndTimeForTesting() {
   // update loopTime
   loopTime = syncLoopTime;
   
-  servoAmp = testAmp; syncPhase = testPhase; static unsigned long lT = millis(); if (side==RIGHT) {
-  	  	initTime = millis()-loopTime*(side==LEFT ? syncPhase+0.5 : syncPhase) + SYNC_MAGIC_NUMBER;
-		sprint("LoopTime: "); sprintln(millis()-lT); lT=millis();
-  }return;
+  // Original TEST FUNC !!!
+  //servoAmp = testAmp; syncPhase = testPhase; static unsigned long lT = millis(); if (side==RIGHT) initTime = millis()-loopTime*(side==LEFT ? syncPhase+0.5 : syncPhase) + SYNC_MAGIC_NUMBER; return;
 
   // speed up or slow down (only do this when getting to right side - just to reduce amount of updates).
   if (side==RIGHT) {
@@ -1173,7 +1171,10 @@ void updateAmpAndTimeForTesting() {
 	if (offset < -0.5) offset = offset + 1;
 
 	syncPhase = (offset > 0) ? FASTER : SLOWER;
+	servoAmp = (offset > 0) ? 20 : 14;
+	/*
 	if (abs(phaseOffset) > 0.3) {
+		
 		servoAmp = maxServoAmp; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
 	} else if (abs(offset) > 0.15) {
 		servoAmp = 20; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
@@ -1184,13 +1185,13 @@ void updateAmpAndTimeForTesting() {
 		// Linear calculation, offset:0==>phase:0.25; offset:0.05==>0.5; offset:-0.05==> 0; trim for phase to be between 0 to 0.5;
 		//syncPhase = max(min(0.25 + phaseOffset/0.05*0.25, 0.5), 0);
 
-/* 		if (tooStrong) {
-			syncPhase = max(min(0.75 + phaseOffset/0.05*0.2, 1), 0);
-			syncPhase = 0.75;
-		} else {
-			syncPhase = max(min(0.25 + phaseOffset/0.05*0.2, 1), 0);
-			syncPhase = 0.25;
-		} */
+// 		if (tooStrong) {
+//			syncPhase = max(min(0.75 + phaseOffset/0.05*0.2, 1), 0);
+//			syncPhase = 0.75;
+//		} else {
+//			syncPhase = max(min(0.25 + phaseOffset/0.05*0.2, 1), 0);
+//			syncPhase = 0.25;
+//		} 
 		servoAmp = abs(PREDICT(ropeAmp,lastRopeAmp)-syncRopeAngle)*100 / 2 ;
 		servoAmp = max(0,min(8, servoAmp));
 		
@@ -1203,7 +1204,7 @@ void updateAmpAndTimeForTesting() {
 		servoAmp = (PREDICT(ropeAmp,lastRopeAmp)-syncRopeAngle)*100;
 		servoAmp = max(0,min(6,servoAmp));
 	}
-	
+*/	
 	lastRopeAmp = ropeAmp;
 	lastPhaseOffset = phaseOffset;
 
