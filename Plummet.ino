@@ -485,7 +485,7 @@ void calibrateLoopTime() {
 		rightTime = time;
 	 }
   } while ((cycles < nCycles)); // TIMEOUT:  && (millis() < initTime + 6000 + 3000 + 4000*(cycles+2)));
-
+ 
   defaultLoopTime = (cycles == nCycles) ? (time-initLeftTime)/(cycles) : loopTime;
   loopTime = defaultLoopTime;
 
@@ -826,7 +826,7 @@ void handleKeyboardInput() {
 //	  sprint ("clock: "); sprint(millis()); sprint ("; sIT: "); sprint(syncInitTime); sprint("; sITO"); sprint(syncInitTimeOffset); sprint("; sLT:");sprintln(syncLoopTime);
 //	  sprint ("clock-sync: "); sprintln(millis()-syncInitTime);
 	  sprint("sync: ");
-	  sprint(int((millis()-(syncInitTime+syncInitTimeOffset) - s) % syncLoopTime));
+	  sprintn(int((millis()-(syncInitTime+syncInitTimeOffset) - s) % syncLoopTime));
 	  break;
 	case 'U': // Update slaves on current Sync Clock
 	  updateSlaveClock = true;
