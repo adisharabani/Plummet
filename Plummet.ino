@@ -1183,11 +1183,13 @@ void updateAmpAndTimeForTesting() {
 
 		if (tooStrong) {
 			syncPhase = max(min(0.75 + phaseOffset/0.05*0.2, 1), 0);
+			syncPhase = 0.75;
 		} else {
 			syncPhase = max(min(0.25 + phaseOffset/0.05*0.2, 1), 0);
+			syncPhase = 0.25;
 		}
 
-		servoAmp = servoAmp - (PREDICT(ropeAmp,lastRopeAmp)-syncRopeAngle)*100;
+		servoAmp = abs(PREDICT(ropeAmp,lastRopeAmp)-syncRopeAngle)*100;
 		servoAmp = max(3,min(10, servoAmp));
 		
 		//syncPhase = (phaseOffset > 0) ? 0.6 : 0.9;
@@ -1196,8 +1198,8 @@ void updateAmpAndTimeForTesting() {
 		// todo: still do minor fixes.
 		syncPhase = tooStrong ? 0.75 : 0.25;
 
-		servoAmp = servoAmp + ((ropeAmp-(lastRopeAmp-ropeAmp)) > syncRopeAngle) ? -1 : +1;
-		servoAmp = max(min(3,servoAmp),0);
+		servoAmp = abs(PREDICT(ropeAmp,lastRopeAmp)-syncRopeAngle)*100;
+		servoAmp = max(0,min(3,servoAmp));
 	}
 	
 	lastRopeAmp = ropeAmp;
