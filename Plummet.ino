@@ -1202,7 +1202,7 @@ void updateAmpAndTimeForTesting() {
 	lastPhaseOffset = phaseOffset;
 
 //	syncPhase = (desiredPhase*0.5 + syncPhase*0.5);
-	initTime = millis()-loopTime*(side==LEFT ? syncPhase+0.5 : syncPhase) + SYNC_MAGIC_NUMBER;
+	initTime = millis()-loopTime*(side==LEFT ? syncPhase+0.5 : syncPhase);
 	
 	sprint("Testing: ropeAmp("); sprint(ropeAmp);
 	sprint(") Phase(");sprint(int(phaseOffset*syncLoopTime)); sprint("ms / "); sprint(100*phaseOffset); sprint ("%");
