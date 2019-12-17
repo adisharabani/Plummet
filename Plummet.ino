@@ -1170,7 +1170,7 @@ void updateAmpAndTimeForTesting() {
 	if (offset > 0.5) offset = offset -1;
 	if (offset < -0.5) offset = offset + 1;
 
-	syncPhase = (offset < 0) ? FASTER : SLOWER;
+	syncPhase = (offset > 0) ? FASTER : SLOWER;
 	servoAmp = (offset > 0) ? 20 : 14;
 	/*
 	if (abs(phaseOffset) > 0.3) {
