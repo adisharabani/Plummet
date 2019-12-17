@@ -1143,6 +1143,7 @@ void updateAmpAndTimeForTesting() {
   float offset, phaseOffset;
   static float lastPhaseOffset = 0;
   bool tooStrong = false;
+  int desiredServoAmp;
   
   double FASTER=0.6; double SLOWER=0.9;
   // update loopTime
@@ -1167,13 +1168,13 @@ void updateAmpAndTimeForTesting() {
 
 	syncPhase = (offset > 0) ? FASTER : SLOWER;
 	if (abs(offset) > 0.3) {
-		servoAmp = maxServoAmp; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
+		servoAmp = (servoAmp+maxServoAmp)/2; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
 	} else if (abs(offset) > 0.15) {
-		servoAmp = maxServoAmp/2; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
+		servoAmp = (servoAmp+maxServoAmp/4)/2; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
 	} else if (abs(offset) > 0.10) {
-		servoAmp = maxServoAmp/3; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
+		servoAmp = (servoAmp+maxServoAmp/4)/2; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
 	} else if (abs(offset) > 0.05) {
-		servoAmp = abs(PREDICT(ropeAmp,lastRopeAmp)-syncRopeAngle)*100 / 2;
+		servoAmp = (3 * servoAmp + abs(PREDICT(ropeAmp,lastRopeAmp)-syncRopeAngle)*100 / 2 ) / 4;
 		servoAmp = max(3,min(10, servoAmp));
 	} else if (abs(offset) > 0.02) {
 		// Linear calculation, offset:0==>phase:0.25; offset:0.05==>0.5; offset:-0.05==> 0; trim for phase to be between 0 to 0.5;
@@ -1186,8 +1187,7 @@ void updateAmpAndTimeForTesting() {
 			syncPhase = max(min(0.25 + phaseOffset/0.05*0.2, 1), 0);
 			syncPhase = 0.25;
 		} */
-		servoAmp = abs(PREDICT(ropeAmp,lastRopeAmp)-syncRopeAngle)*100 / 2;
-		servoAmp = max(3,min(6, servoAmp));
+		servoAmp = (3*servoAmp + max(min(abs(PREDICT(ropeAmp,lastRopeAmp)-syncRopeAngle)*100 / 2 , 6), 3)) / 4;
 		
 		//syncPhase = (phaseOffset > 0) ? 0.6 : 0.9;
 		//servoAmp = ((ropeAmp-(lastRopeAmp-ropeAmp))>syncRopeAngle) ? 3 : 10;
@@ -1195,8 +1195,7 @@ void updateAmpAndTimeForTesting() {
 		// todo: still do minor fixes.
 		//syncPhase = tooStrong ? 0.75 : 0.25;
 		syncPhase = 0.5;
-		servoAmp = abs(PREDICT(ropeAmp,lastRopeAmp)-syncRopeAngle)*100;
-		servoAmp = max(0,min(6,servoAmp));
+		servoAmp = (3*servoAmp + max(min(abs(PREDICT(ropeAmp,lastRopeAmp)-syncRopeAngle)*100 , 6) , 0)) / 4;
 	}
 	
 	lastRopeAmp = ropeAmp;
