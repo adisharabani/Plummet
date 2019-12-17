@@ -1228,13 +1228,13 @@ void updateAmpAndTimeForSyncedRunning() {
 
   // update servoAmp
   float offsetRopeAngle = ropeMaxRightAngle-ropeMaxLeftAngle - syncRopeAngle;
-/*  if (offsetRopeAngle < 0) {
+  if (offsetRopeAngle < 0) {
 	servoAmp = min(servoAmp + 1, maxServoAmp);
   } else {
 	servoAmp = max(servoAmp - 1, 3);
   }
-*/
-	servoAmp = max(min(servoAmp + min(10,offsetRopeAngle*100) ,maxServoAmp),3);
+
+//	servoAmp = max(min(servoAmp + min(10,offsetRopeAngle*100) ,maxServoAmp),3);
 
 /*
   if (abs(offsetRopeAngle)>0.02) {
