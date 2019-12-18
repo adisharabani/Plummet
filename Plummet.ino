@@ -571,8 +571,8 @@ bool readByteAvailable() {
 
 
 
-int find(char *str, char c) {
-	for (int index = 0; str[index] != 0; index++) {
+int find(char *str, char c, int startingIndex=0) {
+	for (int index = startingIndex; str[index] != 0; index++) {
 		if (str[index] == c) return index;
 	}
 	return -1;
@@ -946,16 +946,20 @@ void handleKeyboardInput() {
 	  	enableAudio = !enableAudio;
 	  }
 	  s = atoi(CMD);
-	  if (s>0) {
-	  	audioSongNumber = s;
-	  } 
+	  if (s>0) audioSongNumber = s;
+
 	  p = find(CMD, ',');
-	  if (p!=-1) {
-		 s = atoi(CMD+p+1);
-		 audioVolume = s;
-	  }
+	  if (p!=-1) audioVolume = atoi(CMD+p+1);
+	  p = find(CMD, ',', p+1);
+	  if (p!=-1) audioSnapToGrid = atoi(CMD+p+1);
+	  p = find(CMD, ',', p+1);
+	  if (p!=-1) audioSnapToSync = atoi(CMD+p+1);
+	  p = find(CMD, ',', p+1);
+	  if (p!=-1) audioDelay = atoi(CMD+p+1);
+	  p = find(CMD, ',', p+1);
+	  
 	  KB[0] = 0; CMD=KB;
-	  sprint("Audio "); sprint(enableAudio ? "on" : "off"); sprint(" song="); sprint(audioSongNumber); sprint(" vol="); sprintln(audioVolume);
+	  sprint("Audio "); sprint(enableAudio ? "on" : "off"); sprint(" song="); sprint(audioSongNumber); sprint(" vol="); sprint(audioVolume); sprint(" stg=");sprint(audioSnapToGrid);sprint(" sts=");sprint(audioSnapToSync); sprint(" delay=");sprintln(audioDelay);
 	  break;
 	case 'P': // Play
 	  if (!isPlaying) {
