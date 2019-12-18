@@ -874,6 +874,9 @@ void handleKeyboardInput() {
 	  mode = SYNCED_RUN; 
 	  break;
 */
+	case 'i':
+		KB[0] = 0; CMD = KB;
+		break;
 	case 'M': // Set magic number
 	  sprint("Old ");
 	  sprint("Magic=");
