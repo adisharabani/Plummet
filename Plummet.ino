@@ -649,6 +649,16 @@ char * forwardCommand() {
 		  }
 		  nextSerial.println(KB);
 		  break;
+	   case 'i':
+	      s = atoi(KB+1);
+	      itoa(s+1,KB+1,10);
+	      sprint("I am #");
+	      sprintln(s);
+	      s = strlen(KB);
+	      KB[s++] = '\n';
+	      KB[s] = 0;
+		  nextSerial.println(KB);
+	      break;	      
 	   case ':':
 	   case 'U':
 	   case 'e':
@@ -826,7 +836,7 @@ void handleKeyboardInput() {
 //	  sprint ("clock: "); sprint(millis()); sprint ("; sIT: "); sprint(syncInitTime); sprint("; sITO"); sprint(syncInitTimeOffset); sprint("; sLT:");sprintln(syncLoopTime);
 //	  sprint ("clock-sync: "); sprintln(millis()-syncInitTime);
 	  sprint("sync: ");
-	  sprintn(int((millis()-(syncInitTime+syncInitTimeOffset) - s) % syncLoopTime));
+	  sprintln(int((millis()-(syncInitTime+syncInitTimeOffset) - s) % syncLoopTime));
 	  break;
 	case 'U': // Update slaves on current Sync Clock
 	  updateSlaveClock = true;
