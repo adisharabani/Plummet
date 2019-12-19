@@ -1488,11 +1488,11 @@ void loop(){
 	case SYNCED_RUN:
 	  mode = SYNCED_RUNNING;
 	  break;
-	case TEST:
+/* 	case TEST:
 	  initTime = 0;
 	  updateAmpAndTime();
 	  mode = TESTING;
-	  break;
+	  break; */
 	case START:
 	  mode = RUNNING;
 	  updateAmpAndTime();
