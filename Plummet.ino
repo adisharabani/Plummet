@@ -1218,63 +1218,39 @@ void updateAmpAndTimeForAnalyzing() {
 }
 
 void updateAmpAndTimeForTesting() {
-  double ropeAmp;
-  static double lastRopeAmp = 0;
-  float offset, phaseOffset, lastPhaseOffset = 0;
-  
-  // update loopTime
-  loopTime = syncLoopTime;
-
-  // speed up or slow down (only do this when getting to right side - just to reduce amount of updates).
-  if (side==RIGHT) {
-	ropeAmp = ropeMaxRightAngle-ropeMaxLeftAngle;
-    phaseOffset = ((millis()-(syncInitTime+syncInitTimeOffset))%syncLoopTime) / float (syncLoopTime);
-    if (phaseOffset > 0.5) phaseOffset = phaseOffset-1;
-
-    // predict next phase offset based on lastphase offset.
-	offset = phaseOffset - (lastPhaseOffset-phaseOffset);
-    // TODO What if phaseOffset is irregular???
+	static double desiredRopeAmp = 0.3;
+	int offset = 0;
+	double ropeAmp = 0;
+	static double origRopeAmp;
+	static int waitLoops=0;
+	static int tPhase;
 	
-	// Handle cyclic movement of offset. 
-	if (offset > 0.5) offset = offset -1;
-	if (offset < -0.5) offset = offset + 1;
 
-	// change offset to be between -0.5 and 0.5 (one is late and one is early)
-    if (offset > 0.5) offset = offset-1;
+	ropeAmp = (ropeMaxRightAngle-ropeMaxLeftAngle);
+	offset = (millis()-initTime-int(loopTime*(side==LEFT ? tPhase+0.5 : tPhase))) % loopTime;
+	if (offset > loopTime/2) offset = offset - loopTime;
+	if (side==RIGHT) {
+		if (mode==ANALYZE) { 
+			loopTime = defaultLoopTime;
+			if (offset < 0) {
+				tPhase = min(max(desiredRopeAmp-ropeAmp,-0.25),0.25);
+				servoAmp = min(max(offset/250.0,0),1) * maxServoAmp;
+			} else {
+				tPhase = min(max(0.5 + ropeAmp - desiredRopeAmp,0.25),0.75);
+				servoAmp = min(max(offset/150.0,0),1) * maxServoAmp;
+			}
+		    initTime = millis()-loopTime*(side==LEFT ? tPhase+0.5 : tPhase);
 
-	if (abs(offset) > 0.25) {
-		syncPhase = (phaseOffset > 0) ? 0.6 : 0.9;
-    	servoAmp = maxServoAmp; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
+		    mode = ANALYZING;
+		    sprint("%% Offset="); sprint(offset); sprint(" ropeAmp="); sprintln(ropeAmp); sprint("   ==>   servoAmp=");sprint(servoAmp); sprint(" phase=");sprintln(tPhase);
+		    waitLoops=2;
+		} else {
+			if (--waitLoops == 0) { mode=ANALYZE; };
+			sprint ("["); sprint(lastLoopTime); sprint("]: offset="); sprint(offset); sprint("ms %%  ropeAmp="); sprint(ropeAmp); sprint((ropeAmp>desiredRopeAmp) ? "(+" : "(");sprint(ropeAmp-desiredRopeAmp); sprintln(")");
+			servoAmp = 0;
+		}
 	}
-    else if (abs(offset) > 0.15) {
-    	syncPhase = (phaseOffset > 0) ? 0.6 : 0.9;
-    	servoAmp = maxServoAmp/2; // todo: if amp is too high and on direction of speeding up reduce servoAmp;
-    } else if (abs(offset) > 0.02) {
-        // Linear calculation, offset:0==>phase:0.25; offset:0.05==>0.5; offset:-0.05==> 0; trim for phase to be between 0 to 0.5;
-        syncPhase = max(min(0.25 + phaseOffset/0.05*0.25, 0.5), 0);
-        servoAmp = servoAmp - ((ropeAmp-(lastRopeAmp-ropeAmp))-syncRopeAngle)*100;
-        servoAmp = max(3,min(20, servoAmp));
-    } else {
-    	// todo: still do minor fixes.
-    	syncPhase = 0.25;
-    	servoAmp = servoAmp + ((ropeAmp-(lastRopeAmp-ropeAmp)) > syncRopeAngle) ? -1 : +1;
-    	servoAmp = max(min(10,servoAmp),3);
-    }
-    
-    lastRopeAmp = ropeAmp;
-	lastPhaseOffset = phaseOffset;
-
-//    syncPhase = (desiredPhase*0.5 + syncPhase*0.5);
-    initTime = millis()-loopTime*(side==LEFT ? syncPhase+0.5 : syncPhase);
-    
-    sprint("Syncing: ropeAmp("); sprint(ropeAmp);
-    sprint(") Phase(");sprint(int(phaseOffset*syncLoopTime)); sprint("ms / "); sprint(100*phaseOffset); sprint ("%");
-    sprint(")/Offset(");sprint(int(offset*syncLoopTime));sprint("ms / "); sprint(100*offset); sprint("%");
-    sprint(")  ==>  ServoAmp="); sprint(servoAmp);
-    sprint("; syncPhase="); sprintln(syncPhase);
-//    sprint("(wanted"); sprint(desiredPhase);
-//    sprintln(")");
-  }
+	
 }
 
 void updateAmpAndTimeForSyncedRunning() {  
