@@ -1025,13 +1025,17 @@ void handleKeyboardInput() {
 	  showClock = !showClock;
 	  break;
 	case '@': // eprom access
-	  s = atoi(CMD);
-	  p = find(CMD, '=');
-	  if (p==-1) {
-	  	sprint("EPROM[");sprint(s);sprint("] = ");sprint((char) ereadbyte(s)); sprint(" <"); sprint(ereadbyte(s)); sprintln(">");
+	  if (CMD[0]=='@') {
+	  	readCalibration();
 	  } else {
-		ewritebyte(atoi(CMD+p+1),s);
-	  	sprint("Set EPROM[");sprint(s); sprint("] to ");sprint((char) ereadbyte(s)); sprint(" <"); sprint(ereadbyte(s)); sprintln(">");
+		  s = atoi(CMD);
+		  p = find(CMD, '=');
+		  if (p==-1) {
+		  	sprint("EPROM[");sprint(s);sprint("] = ");sprint((char) ereadbyte(s)); sprint(" <"); sprint(ereadbyte(s)); sprintln(">");
+		  } else {
+			ewritebyte(atoi(CMD+p+1),s);
+		  	sprint("Set EPROM[");sprint(s); sprint("] to ");sprint((char) ereadbyte(s)); sprint(" <"); sprint(ereadbyte(s)); sprintln(">");
+		  }
 	  }
 	  KB[0] = 0; CMD=KB;
 	  break;
@@ -1194,8 +1198,8 @@ void updateAmpAndTimeForAnalyzing() {
 		    mode = ANALYZING;
 		    sprint("%% ANALYZING "); sprint(oAmp); sprint(","); sprint(oPhase); sprintln(" %%");
 		} else {
-			ropeAmp = (ropeMaxRightAngle)-angleToServo(ropeMaxLeftAngle);
-			offset = (millis()-initTime) % loopTime;
+			ropeAmp = (ropeMaxRightAngle-ropeMaxLeftAngle);
+			offset = (millis()-initTime-int(loopTime*oPhase)) % loopTime;
 			if (offset > loopTime/2) offset = offset - loopTime;
 			sprint ("%% o("); sprint(oAmp); sprint(","); sprint(oPhase); sprint(") = "); sprint(offset); sprint("ms  [ropeAmp="); sprint(ropeAmp); sprintln("] %%");
 			servoAmp = 0;
