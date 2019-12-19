@@ -1242,7 +1242,7 @@ void updateAmpAndTimeForTesting() {
 		    initTime = millis()-loopTime*(side==LEFT ? tPhase+0.5 : tPhase);
 
 		    mode = ANALYZING;
-		    sprint("%% Offset="); sprint(offset); sprint(" ropeAmp="); sprintln(ropeAmp); sprint("   ==>   servoAmp=");sprint(servoAmp); sprint(" phase=");sprintln(tPhase);
+		    sprint("%% Offset="); sprint(offset); sprint(" ropeAmp="); sprint(ropeAmp); sprint("   ==>   servoAmp=");sprint(servoAmp); sprint(" phase=");sprintln(tPhase);
 		    waitLoops=2;
 		} else {
 			if (--waitLoops == 0) { mode=ANALYZE; };
