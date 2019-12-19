@@ -1230,7 +1230,7 @@ void updateAmpAndTimeForTesting() {
 	offset = (millis()-initTime-int(loopTime*(side==LEFT ? tPhase+0.5 : tPhase))) % loopTime;
 	if (offset > loopTime/2) offset = offset - loopTime;
 	if (side==RIGHT) {
-		if (mode==ANALYZE) { 
+		if (mode==TEST) { 
 			loopTime = defaultLoopTime;
 			if (offset < 0) {
 				tPhase = min(max(desiredRopeAmp-ropeAmp,-0.25),0.25);
@@ -1241,11 +1241,11 @@ void updateAmpAndTimeForTesting() {
 			}
 		    initTime = millis()-loopTime*(side==LEFT ? tPhase+0.5 : tPhase);
 
-		    mode = ANALYZING;
+		    mode = TESTING;
 		    sprint("%% Offset="); sprint(offset); sprint(" ropeAmp="); sprint(ropeAmp); sprint("   ==>   servoAmp=");sprint(servoAmp); sprint(" phase=");sprintln(tPhase);
 		    waitLoops=2;
 		} else {
-			if (--waitLoops == 0) { mode=ANALYZE; };
+			if (--waitLoops == 0) { mode=TEST; };
 			sprint ("["); sprint(lastLoopTime); sprint("]: offset="); sprint(offset); sprint("ms %%  ropeAmp="); sprint(ropeAmp); sprint((ropeAmp>desiredRopeAmp) ? "(+" : "(");sprint(ropeAmp-desiredRopeAmp); sprintln(")");
 			servoAmp = 0;
 		}
@@ -1490,9 +1490,8 @@ void loop(){
 	  break;
 	case TEST:
 	  initTime = 0;
-	  mode = TESTING;
 	  updateAmpAndTime();
-	  sprint("testPhase: "); sprintln(testPhase);
+	  mode = TESTING;
 	  break;
 	case START:
 	  mode = RUNNING;
