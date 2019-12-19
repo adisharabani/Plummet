@@ -450,12 +450,12 @@ void calibrate() {
 void calibrateLoopTime() { 
   sprintln("");
   sprint("Old LoopTime "); sprintln(defaultLoopTime);
-  smoothMove(servoCenter-maxServoAmp);
+  smoothMove(servoCenter);
   initTime = millis();
   sprintln("Speed up");
   unsigned long t = millis();
   mode = START;
-  while (millis() < t + 9000) { loop();  }
+  while (millis() < t + 6000) { loop();  }
   mode = HALT;
   loop();
 
