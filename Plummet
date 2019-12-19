@@ -215,14 +215,6 @@ fi
 
 if [ "$1" = "listDevices" ]; then
  a=$($0 listDevicesHelper $2 )
- if [[ "$a" =~ -1 ]] || [[ "$a" =~ (^:| :) ]] ; then 
-    sleep 5
-	a=$($0 listDevicesHelper $2)
- fi
- if [[ "$a" =~ -1 ]] || [[ "$a" =~ (^:| :) ]] ; then 
-    sleep 5
-	a=$($0 listDevicesHelper $2)
- fi
  echo $a | tr " " "\n" | sort | cut -d : -f 2-
 fi
 
@@ -242,7 +234,7 @@ if [ "$1" = "listDevicesHelper" ]; then
 #     sleep 3;
 #  fi
  for d in $(find /dev/ -type c -regextype "posix-extended" -iregex '/dev/('${2}'|'${ARDTTY_PATTERN}${2}'.*)' | cut -c 6- ); do
-    screenType=$((echo i; sleep 0.1) | cu -l /dev/$d 2>&1 | grep 'I am' | tr ' ' '\n' | grep '#' | tail -1 | tr -d '\r\n')
+    screenType=$((echo B; sleep 0.1) | cu -l /dev/$d 2>&1 | grep 'I am' | tr ' ' '\n' | grep '#' | tail -1 | tr -d '\r\n')
     echo ${screenType}:$d
   done  
 fi

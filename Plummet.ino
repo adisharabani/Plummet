@@ -1346,7 +1346,7 @@ void setup() {
 	  Serial.println("I am probably master");
   }
   
-  if (isMaster) nextSerial.print("B1");
+  //if (isMaster) nextSerial.print("B1");
     
   if ( eread(EEPROM_COMMANDS_LOC-2) == EEPROM_MAGIC) {
   	isAutoPlay = eread(EEPROM_COMMANDS_LOC-4);
