@@ -42,6 +42,9 @@ int SYNC_MAGIC_NUMBER=-250;
 int defaultLoopTime = 3167; //Palo Alto: 3080; // 3160; // 3420;
 // int defaultLoopTime = 3080; // Palo Alto
 
+int oAmp = 1;
+double oPhase = 0.75; // like stopping
+
 #define EPPROM
 
 // Calibrate(1): 86.00 489 711 293
@@ -139,7 +142,9 @@ enum mode_e {
   TEST,
   TESTING,
   SYNCED_RUN,
-  SYNCED_RUNNING
+  SYNCED_RUNNING,
+  ANALYZE,
+  ANALYZING
 };
 mode_e mode;
 
@@ -799,6 +804,15 @@ void handleKeyboardInput() {
 	case 'm': // MAINTAIN
 	  mode = MAINTAIN; sprintln("MAINTAIN");
 	  break;
+	case 'o': // ANALYZE Amp,Phase
+	  if (CMD[0]!='\n'){
+		  oAmp = atoi(CMD);
+		  p = find(CMD, ',');
+		  if (p!=-1) oPhase = atof(CMD+p+1);
+	  }
+	  mode = ANALYZE;
+	  KB[0] = 0; CMD=KB;
+	  break;
 	case 't': // TEST 
 	  syncLoopTime = atoi(CMD); KB[0] = 0; CMD=KB;
 	  syncInitTime = millis();
@@ -1169,6 +1183,25 @@ void updateAmpAndTimeForStopping() {
 #define PREDICT(x, y) (x + (x-y))
 #define PREDICT2(x, y) (x + (x-y)/2)
 
+void updateAmpAndTimeForAnalyzing() {
+	int offset;
+	double ropeAmp;
+	if (side==RIGHT) {
+		if (mode==ANALYZE) { 
+			loopTime = defaultLoopTime;
+			servoAmp = oAmp;
+		    initTime = millis()-loopTime*(side==LEFT ? oPhase+0.5 : oPhase);
+		    mode = ANALYZING;
+		    sprint("%% ANALYZING "); sprint(oAmp); sprint(","); sprint(oPhase); sprintln(" %%");
+		} else {
+			ropeAmp = (ropeMaxRightAngle)-angleToServo(ropeMaxLeftAngle);
+			offset = (millis()-initTime) % loopTime;
+			if (offset > loopTime/2) offset = offset - loopTime;
+			sprint ("%% o("); sprint(oAmp); sprint(","); sprint(oPhase); sprint(") = "); sprint(offset); sprint("ms  [ropeAmp="); sprint(ropeAmp); sprintln("] %%");
+			servoAmp = 0;
+		}
+	}
+}
 
 void updateAmpAndTimeForTesting() {
   double ropeAmp;
@@ -1293,6 +1326,7 @@ void updateAmpAndTime() {
 	if (mode == TESTING)		{ updateAmpAndTimeForTesting();		  }
 	if (mode == STOPPING)	   { updateAmpAndTimeForStopping();		 }
 	if (mode == SYNCED_RUNNING) { updateAmpAndTimeForSyncedRunning();	}
+	if ((mode == ANALYZE) || (mode == ANALYZING))		{ updateAmpAndTimeForAnalyzing();		  }
 }
 
 
@@ -1534,7 +1568,7 @@ void loop(){
   debugLog("ropeAngle: "); debugLog(String(ropeAngle)); debugLog("  ");
 */
   // Set oscilator movement if needed;
-  if ((mode==STOPPING) || (mode==RUNNING) || (mode==MAINTAINING) || (mode==TESTING) || (mode==SYNCED_RUNNING)) {
+  if ((mode==STOPPING) || (mode==RUNNING) || (mode==MAINTAINING) || (mode==TESTING) || (mode==SYNCED_RUNNING) || (mode==ANALYZING)) {
 	double desiredServoPos = getOcsilatorPos();
 	smoothWrite(desiredServoPos);
 	//myservowrite(desiredServoPos);
