@@ -639,7 +639,7 @@ char * forwardCommand() {
 	   case 's': /* will be send via the s command with the right synclooptime */
 		  s = atoi(KB+1); 
 		  if (s==0) {
-		  	itoa(defaultLoopTime+30, KB+1, 10);
+		  	itoa(defaultLoopTime+20, KB+1, 10);
 		  	sprint(KB+1);
 		  	s = strlen(KB);
 		  	KB[s++] = '\n';
@@ -815,11 +815,12 @@ void handleKeyboardInput() {
 	  break;
 	case 't': // TEST 
 	  syncLoopTime = atoi(CMD); KB[0] = 0; CMD=KB;
+	  if (syncLoopTime==0) syncLoopTime = defaultLoopTime;
 	  syncInitTime = millis();
 	  syncInitTimeOffset = 0;
-	  syncRopeAngle = 0.2;
+	  syncRopeAngle = 0.27;
 
-	  mode = TEST; sprintln("TEST");
+	  mode = TEST; sprint("TEST");sprintln(syncLoopTime);
 	  break;
 	case ']': /* Increase TEST Phase */
 	  testPhase = (int((testPhase + 0.05)*100) % 100) /100.0;
@@ -1218,34 +1219,35 @@ void updateAmpAndTimeForAnalyzing() {
 }
 
 void updateAmpAndTimeForTesting() {
-	static double desiredRopeAmp = 0.3;
-	int offset = 0;
-	double ropeAmp = 0;
-	static double origRopeAmp;
 	static int waitLoops=0;
-	static int tPhase;
-	sprint("t");
-
-	ropeAmp = (ropeMaxRightAngle-ropeMaxLeftAngle);
-	offset = (millis()-initTime-int(loopTime*(side==LEFT ? tPhase+0.5 : tPhase))) % loopTime;
-	if (offset > loopTime/2) offset = offset - loopTime;
+	static double tPhase;
+	double ropeAngle = (ropeMaxRightAngle-ropeMaxLeftAngle);
+	int offset = (millis()-(syncInitTime+syncInitTimeOffset)) % syncLoopTime;
+	if (offset > syncLoopTime/2) offset = offset - syncLoopTime;
+	double ropeAngleOffset = ropeAngle-syncRopeAngle;
+	double eps = 0;
 	if (side==RIGHT) {
 		waitLoops --;
 		if (waitLoops < 0) { 
+			sprint("["); sprint(lastLoopTime); sprint("]: offset="); sprint(offset); sprint("ms ropeAngle="); sprint(ropeAngle);
+                	ropeAngleOffset = ropeAngleOffset-0.015; //predict decrease in rope Angle
+			offset = offset + (loopTime-syncLoopTime)*3; //predict increase in offset
 			loopTime = defaultLoopTime;
 			if (offset < 0) {
-				tPhase = min(max(desiredRopeAmp-ropeAmp,-0.25),0.25);
-				servoAmp = min(max(offset/250.0,0),1) * maxServoAmp;
+				tPhase = min(max(eps-ropeAngleOffset*3,-0.25),0.25);
+				servoAmp = min(max(-offset/250.0+abs(ropeAngleOffset)*8,0),1) * maxServoAmp;
 			} else {
-				tPhase = min(max(0.5 + ropeAmp - desiredRopeAmp,0.25),0.75);
-				servoAmp = min(max(offset/150.0,0),1) * maxServoAmp;
+				tPhase = min(max(0.5 - eps + ropeAngleOffset*3,0.25),0.75);
+				servoAmp = min(max(offset/250.0+abs(ropeAngleOffset)*8,0),1) * maxServoAmp;
 			}
-		    initTime = millis()-loopTime*(side==LEFT ? tPhase+0.5 : tPhase);
 
-		    sprint("%% Offset="); sprint(offset); sprint(" ropeAmp="); sprint(ropeAmp); sprint("   ==>   servoAmp=");sprint(servoAmp); sprint(" phase=");sprintln(tPhase);
-		    waitLoops=2;
+ 			sprint("   ==>   servoAmp=");sprint(servoAmp); sprint(" phase=");sprintln(tPhase);
+
+			if (tPhase < 0) tPhase = tPhase + 1;
+			initTime = millis()-loopTime*(side==LEFT ? tPhase+0.5 : tPhase);
+			waitLoops=2;
 		} else {
-			sprint ("["); sprint(lastLoopTime); sprint("]: offset="); sprint(offset); sprint("ms %%  ropeAmp="); sprint(ropeAmp); sprint((ropeAmp>desiredRopeAmp) ? "(+" : "(");sprint(ropeAmp-desiredRopeAmp); sprintln(")");
+			sprint ("["); sprint(waitLoops); sprint ("] ["); sprint(lastLoopTime); sprint("]: offset="); sprint(offset); sprint("ms %%  ropeAngle="); sprint(ropeAngle); sprint((ropeAngleOffset > 0) ? "(+" : "(");sprint(ropeAngleOffset); sprintln(")");
 			servoAmp = 0;
 		}
 	}
