@@ -1190,18 +1190,21 @@ void updateAmpAndTimeForStopping() {
 void updateAmpAndTimeForAnalyzing() {
 	int offset;
 	double ropeAmp;
+	static double origRopeAmp;
 	if (side==RIGHT) {
 		if (mode==ANALYZE) { 
 			loopTime = defaultLoopTime;
 			servoAmp = oAmp;
-		    initTime = millis()-loopTime*(side==LEFT ? oPhase+0.5 : oPhase);
+		    initTime = millis()-loopTime*(side==LEFT ? oPhase+0.5 : oPhase) + SYNC_MAGIC_NUMBER;
 		    mode = ANALYZING;
 		    sprint("%% ANALYZING "); sprint(oAmp); sprint(","); sprint(oPhase); sprintln(" %%");
+			origRopeAmp = (ropeMaxRightAngle-ropeMaxLeftAngle);
 		} else {
 			ropeAmp = (ropeMaxRightAngle-ropeMaxLeftAngle);
-			offset = (millis()-initTime-int(loopTime*oPhase)) % loopTime;
+			offset = (millis()-initTime-int(loopTime*oPhase) + SYNC_MAGIC_NUMBER) % loopTime;
 			if (offset > loopTime/2) offset = offset - loopTime;
-			sprint ("%% o("); sprint(oAmp); sprint(","); sprint(oPhase); sprint(") = "); sprint(offset); sprint("ms  [ropeAmp="); sprint(ropeAmp); sprintln("] %%");
+			
+			sprint ("%% "); sprint(origRopeAmp); sprint(": o("); sprint(oAmp); sprint(","); sprint(oPhase); sprint(","); sprint(SYNC_MAGIC_NUMBER); sprint(") = "); sprint(offset); sprint("ms  [ropeAmp="); sprint(ropeAmp); sprintln("] %%");
 			servoAmp = 0;
 		}
 	}
