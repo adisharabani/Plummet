@@ -11,6 +11,7 @@ if [ $# -eq 0 ]; then
    cmd=$(whiptail --title "Plummet 2.0" --cancel-button "Quit" --menu "Choose an option:" 25 78 16 \
          "Attach" "View and control connected Arduinos." \
          "Upload" "Upload app to the connected Arduinos." \
+         "Reorder" "Automatically reorder devices by connection order" \
          "Upload Loop" "Continuesly upload to Arduinos." \
          "List Connections" "Show wiring instructions." \
          "List Devices" "Show all connected Arduinos." \
@@ -27,8 +28,8 @@ if [ $# -eq 0 ]; then
      attach)
         $0 $cmd 
      ;;
-     upload | uploadLoop | compile | setup | update )
-     	nDevices=$( $0 listDevicesNoOrder | wc -l )
+     upload | uploadLoop | compile | setup | update | reorder)
+     	nDevices=$( $0 listDevices | wc -l )
      	cmdSuffix=" (${nDevices} arduino${nDevices:+s} connected)"
         
         $0 $cmd $([ "$cmd" = "compile" ] && echo -verbose ) 2>&1 | tee /tmp/output | awk -W interactive 'BEGIN {i=1;status=""} {if ($0 != "") status=$0; printf "XXX\n%d\n%s\nXXX\n",i,status; i=i+1}' |whiptail --title "$cmd${cmdSuffix}" --gauge "$cmd" 6 60 0
@@ -83,11 +84,18 @@ fi
 if [ "$1" = "upload" ]; then
  $0 kill
  echo "Uploading Plummet to ${2:-all connected devices}"
- for ard in $($0 listDevicesNoOrder $2); do
+ for ard in $($0 listDevices $2); do
    echo "uploading to $ard"
    ${ARDLIB}/hardware/tools/avr/bin/avrdude -C${ARDLIB}/hardware/tools/avr/etc/avrdude.conf -patmega328p -carduino -P/dev/${ard} -b115200 -Uflash:w:build/Plummet.ino.hex:i -F &
  done
  wait
+ sleep 1
+ echo "Starting Arduinos"
+ for ard in $($0 listDevices $2); do
+   (echo -n; sleep 0.1) | cu -l /dev/$ard &
+ done
+ wait
+ sleep 3
 fi
 
 if [ "$1" = "upload_loop" ]; then
@@ -122,7 +130,7 @@ if [ "$1" = "listCommands" ]; then
 fi
 
 if [ "$1" = "attach_old" ]; then
- ard=$($0 listDevicesNoOrder $2| tail -1)
+ ard=$($0 listDevices $2| tail -1)
  if [ "$ard" == "" ]; then
    echo "No device matched attached. Following are the devices connected:"
    $0 listDevices
@@ -212,13 +220,16 @@ while [ $(screen -ls | grep '(' | wc -l) -gt 0 ]; do screen -S $(screen -ls | gr
 fi
 
 
-if [ "$1" = "listDevices" ]; then
- a=$($0 listDevicesHelper $2 )
- echo $a | tr " " "\n" | sort | cut -d : -f 2-
+if [ "$1" = "reorder" ]; then
+ echo "Reordering Devices (this may take a few sec)"
+ for ard in $($0 listDevicesHelper | tr " " "\n" | sort | cut -d : -f 2-); do
+   touch /dev/$ard
+ done
+ echo done
 fi
 
-if [ "$1" = "listDevicesNoOrder" ]; then
-	find /dev/ -type c -regextype "posix-extended" -iregex '/dev/('${2}'|'${ARDTTY_PATTERN}${2}'.*)' | cut -c 6- 
+if [ "$1" = "listDevices" ]; then
+	ls -trc $(find /dev/ -type c -regextype "posix-extended" -iregex '/dev/('${2}'|'${ARDTTY_PATTERN}${2}'.*)') | cut -c 6- 
 fi
 
 if [ "$1" = "listDevicesHelper" ]; then

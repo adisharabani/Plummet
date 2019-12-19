@@ -607,7 +607,11 @@ char * forwardCommand() {
 		 	nextSerial.println(KB);
 		 	delay(50);
 		 	nextSerial.println(CMD);
-		 } else {
+		 } else if (KB[1]=='m') {
+                        if (!isMaster) {
+                           KB[0] = 0; CMD=KB; //ignore command if you are not master
+                        }
+                 } else {
 			 int id = atoi(KB+1);
 			 if (id>0){
 			   // id ==> id-1
