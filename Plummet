@@ -28,7 +28,7 @@ if [ $# -eq 0 ]; then
         $0 $cmd 
      ;;
      upload | uploadLoop | compile | setup | update )
-     	nDevices=$( $0 listDevices | wc -l )
+     	nDevices=$( $0 listDevicesNoOrder | wc -l )
      	cmdSuffix=" (${nDevices} arduino${nDevices:+s} connected)"
         
         $0 $cmd $([ "$cmd" = "compile" ] && echo -verbose ) 2>&1 | tee /tmp/output | awk -W interactive 'BEGIN {i=1;status=""} {if ($0 != "") status=$0; printf "XXX\n%d\n%s\nXXX\n",i,status; i=i+1}' |whiptail --title "$cmd${cmdSuffix}" --gauge "$cmd" 6 60 0
@@ -83,11 +83,12 @@ fi
 if [ "$1" = "upload" ]; then
  $0 kill
  echo "Uploading Plummet to ${2:-all connected devices}"
- for ard in $($0 listDevices $2); do
+ for ard in $($0 listDevicesNoOrder $2); do
    echo "uploading to $ard"
    ${ARDLIB}/hardware/tools/avr/bin/avrdude -C${ARDLIB}/hardware/tools/avr/etc/avrdude.conf -patmega328p -carduino -P/dev/${ard} -b115200 -Uflash:w:build/Plummet.ino.hex:i -F &
  done
  wait
+ $0 listDevicesHelper 
 fi
 
 if [ "$1" = "upload_loop" ]; then
@@ -122,7 +123,7 @@ if [ "$1" = "listCommands" ]; then
 fi
 
 if [ "$1" = "attach_old" ]; then
- ard=$($0 listDevices $2| tail -1)
+ ard=$($0 listDevicesNoOrder $2| tail -1)
  if [ "$ard" == "" ]; then
    echo "No device matched attached. Following are the devices connected:"
    $0 listDevices
@@ -211,13 +212,44 @@ if [ "$1" = "kill" ]; then
 while [ $(screen -ls | grep '(' | wc -l) -gt 0 ]; do screen -S $(screen -ls | grep '(' | head -1 | cut -d. -f 1) -X kill; screen -wipe; sleep 0.1; done
 fi
 
+
 if [ "$1" = "listDevices" ]; then
- find /dev/ -type c -regextype "posix-extended" -iregex '/dev/('${2}'|'${ARDTTY_PATTERN}${2}'.*)' | cut -c 6- 
+ a=$($0 listDevicesHelper $2 )
+ if [[ "$a" =~ -1 ]] || [[ "$a" =~ (^:| :) ]] ; then 
+    sleep 5
+	a=$($0 listDevicesHelper $2)
+ fi
+ if [[ "$a" =~ -1 ]] || [[ "$a" =~ (^:| :) ]] ; then 
+    sleep 5
+	a=$($0 listDevicesHelper $2)
+ fi
+ echo $a | tr " " "\n" | sort | cut -d : -f 2-
+fi
+
+if [ "$1" = "listDevicesNoOrder" ]; then
+	find /dev/ -type c -regextype "posix-extended" -iregex '/dev/('${2}'|'${ARDTTY_PATTERN}${2}'.*)' | cut -c 6- 
+fi
+
+if [ "$1" = "listDevicesHelper" ]; then
+ $0 kill > /dev/null
+#  for d in $(find /dev/ -type c -regextype "posix-extended" -iregex '/dev/('${2}'|'${ARDTTY_PATTERN}${2}'.*)' | cut -c 6- ); do
+#     screenType=$((echo B; sleep 0.1) | cu -l /dev/$d 2>&1 | grep 'I am' | tr ' ' '\n' | grep -E '(slave|master)' | tr -d '\r\n') 
+#     if [ "$screenType" = "master" ]; then
+#       masterScreen=$d
+#     fi
+#   done
+#  if [ "$masterScreen" = "" ]; then
+#     sleep 3;
+#  fi
+ for d in $(find /dev/ -type c -regextype "posix-extended" -iregex '/dev/('${2}'|'${ARDTTY_PATTERN}${2}'.*)' | cut -c 6- ); do
+    screenType=$((echo i; sleep 0.1) | cu -l /dev/$d 2>&1 | grep 'I am' | tr ' ' '\n' | grep '#' | tail -1 | tr -d '\r\n')
+    echo ${screenType}:$d
+  done  
 fi
 
 if [ "$1" = "getMaster" ]; then
   # send the B command
-  for i in $(screen -Q windows | tr " " : | sed -e 's/::/\n/g'); do
+  for i in $(screen -Q windows | tr -d -- "-*&%:" | tr " " : | sed -e 's/::/\n/g'); do
     if [[ ${i#*:} =~ $ARDTTY_PATTERN ]]; then
         screen -X at ${i%:*} stuff "B\n";
     fi
@@ -225,7 +257,7 @@ if [ "$1" = "getMaster" ]; then
   # wait a sec
   sleep 0.5;
   # read who is master and who is slave
-  for i in $(screen -Q windows | tr " " : | sed -e 's/::/\n/g'); do
+  for i in $(screen -Q windows | tr -d -- "-*&%:" | tr " " : | sed -e 's/::/\n/g'); do
     if [[ ${i#*:} =~ $ARDTTY_PATTERN ]]; then
         screenType=$(screen -X at ${i%:*} hardcopy -h /tmp/.hardcopy; cat /tmp/.hardcopy |grep -a "I am" | tr " " "\n" | grep -E '(slave|master)' | tail -1);
         
@@ -237,6 +269,21 @@ if [ "$1" = "getMaster" ]; then
     fi
   done
   echo $masterScreen
+fi	
+
+if [ "$1" = "getIDs" ]; then
+  masterScreen=$($0 getMaster)
+  screen -X at ${masterScreen} stuff "i\n";
+  # wait a sec
+  sleep 0.5;
+  # read who is master and who is slave
+  for i in $(screen -Q windows | tr -d -- "-*&%:" | tr " " : | sed -e 's/::/\n/g'); do
+    if [[ ${i#*:} =~ $ARDTTY_PATTERN ]]; then
+        screenType=$(screen -X at ${i%:*} hardcopy -h /tmp/.hardcopy; cat /tmp/.hardcopy |grep -a "I am" | tr " " "\n" | grep -E "#" | tail -1); 
+        echo "${screenType}:${i}"
+        rm /tmp/.hardcopy
+    fi
+  done
 fi	
 
 if [ "$1" = "control" ]; then

@@ -36,7 +36,7 @@
 
 #define potPin 1 // analog
 
-
+int8_t myID = -1;
 int SYNC_MAGIC_NUMBER=-250;
 
 int defaultLoopTime = 3167; //Palo Alto: 3080; // 3160; // 3420;
@@ -649,16 +649,17 @@ char * forwardCommand() {
 		  }
 		  nextSerial.println(KB);
 		  break;
-	   case 'i':
+	   case 'B':
 	      s = atoi(KB+1);
-	      itoa(s+1,KB+1,10);
-	      sprint("I am #");
-	      sprintln(s);
-	      s = strlen(KB);
-	      KB[s++] = '\n';
-	      KB[s] = 0;
-		  nextSerial.println(KB);
-	      break;	      
+	   	  if (isMaster || s>0) {
+	   	     myID = s;
+	   	     itoa(s+1, KB+1, 10);
+	   	     s = strlen(KB);
+	   	     KB[s++] = '\n';
+	   	     KB[s] = 0;
+	   	  }
+	   	  nextSerial.println(KB);
+	      break;
 	   case ':':
 	   case 'U':
 	   case 'e':
@@ -874,9 +875,6 @@ void handleKeyboardInput() {
 	  mode = SYNCED_RUN; 
 	  break;
 */
-	case 'i':
-		KB[0] = 0; CMD = KB;
-		break;
 	case 'M': // Set magic number
 	  sprint("Old ");
 	  sprint("Magic=");
@@ -923,9 +921,22 @@ void handleKeyboardInput() {
 	  tone(7, NOTE_A5, 1000);
 	  break;
 	case 'B': // Are you a master?
-	  Serial.print("I am a ");
-	  Serial.println(isMaster ? "master" : "slave"); 
+	  Serial.print("I am ");
+	  Serial.print(isMaster ? "master" : "slave"); 
+	  Serial.print(" #");
+	  Serial.println(myID);
+      KB[0] = 0; CMD = KB;
+
 	  if (isMaster) tone(7, NOTE_A5, 1000);
+	  break;
+	case 'i':
+	  Serial.print("I am ");
+	  Serial.print("#");
+	  Serial.println(myID);
+	  if (isMaster && (myID==-1)) {
+	  	myID = 0;
+	  	nextSerial.print("B1");
+	  }
 	  break;
 	case 'c': // Calibrate
 	  calibrate();
@@ -1335,6 +1346,8 @@ void setup() {
 	  Serial.println("I am probably master");
   }
   
+  if (isMaster) nextSerial.print("B1");
+    
   if ( eread(EEPROM_COMMANDS_LOC-2) == EEPROM_MAGIC) {
   	isAutoPlay = eread(EEPROM_COMMANDS_LOC-4);
   }
