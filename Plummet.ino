@@ -964,7 +964,7 @@ void handleKeyboardInput() {
 	  break;
 	case 'l': /* Calibrate loop time */
 	  if (CMD[0] == '=') {
-	  	  defaultLoopTime = atoi(CMD);
+	  	  defaultLoopTime = atoi(CMD+1);
 	  	  loopTime = defaultLoopTime;
 	  	  sprint("loopTime=");sprintln(loopTime);
 	  } else {

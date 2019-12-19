@@ -54,7 +54,7 @@ if [ "$1" = "test" ] ; then
  exit 2
 fi
 if [ "$1" = "help" ] ; then
- echo "Use args attach, upload, upload_loop, listConnections, listDevices, listCommands, update, compile, install, cua"
+ echo "Use args attach, upload, uploadLoop, listConnections, listDevices, listCommands, update, compile, install, cua"
 fi
 
 if [ "$1" = "cua" ] ; then
@@ -98,7 +98,7 @@ if [ "$1" = "upload" ]; then
  sleep 3
 fi
 
-if [ "$1" = "upload_loop" ]; then
+if [ "$1" = "uploadLoop" ]; then
  $0 upload $2
  echo "Continuesly uploading to any arduino that will be attached (Press Ctrl+C to stop)"
  inotifywait -m /dev -e create -e moved_to |
