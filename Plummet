@@ -295,7 +295,7 @@ fi
 
 if [ "$1" = "control" ]; then
 
-  readarray -t -d "|" options <<< $( cat Plummet.ino | grep "case '" | grep // | sed s/\ *case\ \'//g | sed s_\':\ //_:_g | sed -e "s:\":\\\":g" | tr -d "\t" |  awk -F ':' '{print t $1 "|" $2 } {t="|"}' )
+  readarray -t -d "|" options <<< $( cat Plummet.ino | grep "case '" | grep // | sed s/\ *case\ \'//g | sed s_\':\ //_:_g | sed -e "s:\":\\\":g" | tr -d "\t" |  awk -F ':' '{print t $1 "|" $2 } {t="|"}' | sed 's:| :|:g' )
   options+=(":" "Special (try me out)")
   cmd=""
   while : ; do
