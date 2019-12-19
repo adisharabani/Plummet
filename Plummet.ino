@@ -963,7 +963,14 @@ void handleKeyboardInput() {
 	  writeCalibration();
 	  break;
 	case 'l': /* Calibrate loop time */
-	  calibrateLoopTime();
+	  if (CMD[0] == '=') {
+	  	  defaultLoopTime = atoi(CMD);
+	  	  loopTime = defaultLoopTime;
+	  	  sprint("loopTime=");sprintln(loopTime);
+	  } else {
+		  calibrateLoopTime();
+	  }
+	  KB[0] = 0; CMD = KB;
 	  break;
 	case '&': // Print current calibration
 	  printCurrentCalibration();
@@ -1204,7 +1211,7 @@ void updateAmpAndTimeForAnalyzing() {
 			offset = (millis()-initTime-int(loopTime*oPhase) + SYNC_MAGIC_NUMBER) % loopTime;
 			if (offset > loopTime/2) offset = offset - loopTime;
 			
-			sprint ("%% "); sprint(origRopeAmp); sprint(": o("); sprint(oAmp); sprint(","); sprint(oPhase); sprint(","); sprint(SYNC_MAGIC_NUMBER); sprint(") = "); sprint(offset); sprint("ms  [ropeAmp="); sprint(ropeAmp); sprintln("] %%");
+			sprint ("["); sprint(lastLoopTime); sprint("]: o("); sprint(oAmp); sprint(","); sprint(oPhase); sprint(","); sprint(SYNC_MAGIC_NUMBER); sprint(") = "); sprint(offset); sprint("ms  [ropeAmp="); sprint(origRopeAmp); if (ropeAmp>origRopeAmp) sprint('+');sprint(ropeAmp-origRopeAmp); sprintln("] %%");
 			servoAmp = 0;
 		}
 	}
