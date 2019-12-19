@@ -95,7 +95,7 @@ if [ "$1" = "upload" ]; then
    (echo -n; sleep 0.1) | cu -l /dev/$ard &
  done
  wait
- sleep 3
+ sleep 4
 fi
 
 if [ "$1" = "uploadLoop" ]; then

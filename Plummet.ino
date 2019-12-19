@@ -1204,14 +1204,14 @@ void updateAmpAndTimeForAnalyzing() {
 			servoAmp = oAmp;
 		    initTime = millis()-loopTime*(side==LEFT ? oPhase+0.5 : oPhase) + SYNC_MAGIC_NUMBER;
 		    mode = ANALYZING;
-		    sprint("%% ANALYZING "); sprint(oAmp); sprint(","); sprint(oPhase); sprintln(" %%");
 			origRopeAmp = (ropeMaxRightAngle-ropeMaxLeftAngle);
+		    sprint("%% ANALYZING "); sprint(oAmp); sprint(","); sprint(oPhase); sprint(" %%  ropeAmp="); sprintln(origRopeAmp);
 		} else {
 			ropeAmp = (ropeMaxRightAngle-ropeMaxLeftAngle);
 			offset = (millis()-initTime-int(loopTime*oPhase) + SYNC_MAGIC_NUMBER) % loopTime;
 			if (offset > loopTime/2) offset = offset - loopTime;
 			
-			sprint ("["); sprint(lastLoopTime); sprint("]: o("); sprint(oAmp); sprint(","); sprint(oPhase); sprint(","); sprint(SYNC_MAGIC_NUMBER); sprint(") = "); sprint(offset); sprint("ms  [ropeAmp="); sprint(origRopeAmp); if (ropeAmp>origRopeAmp) sprint('+');sprint(ropeAmp-origRopeAmp); sprintln("] %%");
+			sprint ("["); sprint(lastLoopTime); sprint("]: o("); sprint(oAmp); sprint(","); sprint(oPhase); sprint(","); sprint(SYNC_MAGIC_NUMBER); sprint(") = "); sprint(offset); sprint("ms %%  ropeAmp="); sprint(ropeAmp); sprint((ropeAmp>origRopeAmp) ? "(+" : ")");sprint(ropeAmp-origRopeAmp); sprintln(")");
 			servoAmp = 0;
 		}
 	}
