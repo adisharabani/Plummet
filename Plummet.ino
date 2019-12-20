@@ -102,9 +102,9 @@ unsigned long lastIterationTime  = millis();
 float ropeMaxLeftAngle;
 float ropeMaxRightAngle;
 
-unsigned long syncInitTime;
-int syncInitTimeOffset;
-int syncLoopTime=0;
+unsigned long syncInitTime = 0;
+int syncInitTimeOffset = 0;
+int syncLoopTime=3501;
 float syncRopeAngle;
 double syncPhase;
 boolean updateSlaveClock = false;
@@ -636,10 +636,11 @@ char * forwardCommand() {
 	 switch (k) {
 	 // Do not forward the following commands
 	   case 't':
-	   case 's': /* will be send via the s command with the right synclooptime */
+	   	  break;
+	   case 's': // add defaultLoop if not set
 		  s = atoi(KB+1); 
 		  if (s==0) {
-		  	itoa(defaultLoopTime+20, KB+1, 10);
+		  	itoa(defaultLoopTime, KB+1, 10);
 		  	sprint(KB+1);
 		  	s = strlen(KB);
 		  	KB[s++] = '\n';
@@ -647,8 +648,8 @@ char * forwardCommand() {
 		  }
 		  nextSerial.println(KB);
 		  break;
-	   case 'u': /* will be send via the u command with the right synclooptime */
-		  s = atoi(KB+1); 
+	   case 'u': // Current device phase so that everyone will show the clock compared to this.
+	      s = atoi(KB+1); 
 		  if (s==0) {
 		  	itoa(int((millis()-(syncInitTime+syncInitTimeOffset)) % syncLoopTime), KB+1, 10);
 		  	sprint(KB+1);
@@ -724,7 +725,7 @@ void handleKeyboardInput() {
 			   KB[kblength] = 0;
 			   if ((kblength==2) && (KB[0]=='T')) {
 			   	// don't print the T (update clock command);
-			   	sprint("\r");
+			   	sprint("\r \r");
 			   } else {
 	  			   sprintln("");
 	  		   }
@@ -814,38 +815,20 @@ void handleKeyboardInput() {
 	  KB[0] = 0; CMD=KB;
 	  break;
 	case 't': // TEST 
-	  syncLoopTime = atoi(CMD); KB[0] = 0; CMD=KB;
-	  if (syncLoopTime==0) syncLoopTime = defaultLoopTime;
-	  syncInitTime = millis();
-	  syncInitTimeOffset = 0;
-	  syncRopeAngle = 0.27;
+	  if (CMD[0]!='\n'){
+		  testAmp = atoi(CMD);
+		  p = find(CMD, ',');
+		  if (p!=-1) testPhase = atof(CMD+p+1);
+	  }
+	  KB[0] = 0; CMD=KB;
 
-	  mode = TEST; sprint("TEST");sprintln(syncLoopTime);
-	  break;
-	case ']': /* Increase TEST Phase */
-	  testPhase = (int((testPhase + 0.05)*100) % 100) /100.0;
-	  sprint("tPhase="); sprintln(testPhase);
-
-	  break;
-	case '[': /* Decrease TEST phase */
-	  testPhase = (int((testPhase - 0.05)*100) % 100) /100.0;
-	  sprint("tPhase="); sprintln(testPhase);
-	  break;
-	case '>': /* Increase TEST amplitude */
-	  testAmp = min(testAmp + 1,100);
-	  sprint("tAmp="); sprintln(testAmp);
-	  break;
-	case '<': /* Decrease TEST amplitude */
-	  testAmp = max(testAmp -1,0);
-	  sprint("tAmp="); sprintln(testAmp);
+	  mode = TEST; sprint("TEST");
 	  break;
 	case 's': // SYNC
 	  syncLoopTime = atoi(CMD); KB[0] = 0; CMD=KB;
-
 	  syncInitTime = millis();
 	  syncInitTimeOffset = 0;
-	  syncRopeAngle = 0.3;
-	  //servoAmp = 20;
+	  syncRopeAngle = 0.27;
 	  mode = SYNCED_RUN; sprint("SYNC");sprintln(syncLoopTime);
 	  break;
 	case 'T': /* Set the clock for SYNC */
@@ -853,8 +836,6 @@ void handleKeyboardInput() {
 	  break;
 	case 'u': // Print phase compared to sync clock
 	  s = atoi(CMD); KB[0] = 0; CMD=KB;
-//	  sprint ("clock: "); sprint(millis()); sprint ("; sIT: "); sprint(syncInitTime); sprint("; sITO"); sprint(syncInitTimeOffset); sprint("; sLT:");sprintln(syncLoopTime);
-//	  sprint ("clock-sync: "); sprintln(millis()-syncInitTime);
 	  sprint("sync: ");
 	  sprintln(int((millis()-(syncInitTime+syncInitTimeOffset) - s) % syncLoopTime));
 	  break;
@@ -863,26 +844,29 @@ void handleKeyboardInput() {
 	  break;
 	case '{': // Offset the SYNC clock forward (1/32 of a loop)
 	  syncInitTimeOffset -= syncLoopTime/32;
+	  sprint ("Offset:");sprintln(syncInitTimeOffset);
 	  mode = SYNCED_RUN; 
 	  break;
 	case '}': // Offset the SYNC clock backwards (1/32 of a loop)
 	  syncInitTimeOffset += syncLoopTime/32;
+	  sprint ("Offset:");sprintln(syncInitTimeOffset);
 	  mode = SYNCED_RUN; 
 	  break;
 	case 'h': // Offset the Sync clock by half loop
 	  syncInitTimeOffset -= syncLoopTime/2;
+	  sprint ("Offset:");sprintln(syncInitTimeOffset);
 	  mode = SYNCED_RUN;
 	  break;
 	case 'r': // Randomize the SYNC clock 
 	  syncInitTimeOffset = random(0,defaultLoopTime);
+	  sprint ("Offset:");sprintln(syncInitTimeOffset);
 	  //servoAmp = 20;
 	  mode = SYNCED_RUN; 
 	  break;
 	case 'S': /* SYNC to an already set clock (don't update the clock) */
-	  // s = atoi(CMD); KB[0]=0; CMD=KB;
+	  syncInitTimeOffset = atoi(CMD); KB[0]=0; CMD=KB;
 	  //	if (s!=0) syncLoopTime = s;
 	  mode = SYNCED_RUN; 
-	  syncInitTimeOffset = 0;
 	  break;
 /*
 	case 'w': / Create a wave 
@@ -1131,14 +1115,11 @@ void updateAmpAndTimeForRunning() {
 
 #define MAP(v,fromL,fromH,toL,toH) ((v-fromL)/(fromH-fromL)*(toH-toL) + toL)
 
-//void updateAmpAndTimeForTesting() {
 void updateAmpAndTimeForStopping() {
   double ropeAmp;
   static double lastRopeAmp=0;
   loopTime = defaultLoopTime;
-//  servoAmp = testAmp;
 //
-//  initTime = millis()-loopTime-loopTime*(side==LEFT ? 0.5+testPhase : testPhase) + SYNC_MAGIC_NUMBER;
 //  if (initTime == 0) { 
 	 initTime = millis()-loopTime*(side==LEFT ? 0.25 : 0.75) + SYNC_MAGIC_NUMBER;
 //	 sprintln("initTime set");
@@ -1218,34 +1199,43 @@ void updateAmpAndTimeForAnalyzing() {
 	}
 }
 
-void updateAmpAndTimeForTesting() {
+void updateAmpAndTimeForSyncedRunning() {  
+	static const uint8_t LOOP_INTERVAL = 3;
+	static double ML_ROPE_ANGLE_DECREASE = 0.005;
+	static double ML_ROPE_OFFSET_TO_PHASE = 3;
+	static double ML_LOOP_OFFSET_TO_AMP = maxServoAmp/250.0;
+	static double ML_ROPE_OFFSET_TO_AMP = maxServoAmp*8;
+
 	static int waitLoops=0;
 	static double tPhase;
+
 	double ropeAngle = (ropeMaxRightAngle-ropeMaxLeftAngle);
+	double ropeAngleOffset = ropeAngle-syncRopeAngle;
+
 	int offset = (millis()-(syncInitTime+syncInitTimeOffset)) % syncLoopTime;
 	if (offset > syncLoopTime/2) offset = offset - syncLoopTime;
-	double ropeAngleOffset = ropeAngle-syncRopeAngle;
-	double eps = 0;
+
+
 	if (side==RIGHT) {
 		waitLoops --;
 		if (waitLoops < 0) { 
 			sprint("["); sprint(lastLoopTime); sprint("]: offset="); sprint(offset); sprint("ms ropeAngle="); sprint(ropeAngle);
-                	ropeAngleOffset = ropeAngleOffset-0.015; //predict decrease in rope Angle
-			offset = offset + (loopTime-syncLoopTime)*3; //predict increase in offset
+            ropeAngleOffset = ropeAngleOffset - ML_ROPE_ANGLE_DECREASE*LOOP_INTERVAL; //predict decrease in rope Angle
+			offset = offset + (loopTime-syncLoopTime) * LOOP_INTERVAL; //predict increase in offset
 			loopTime = defaultLoopTime;
 			if (offset < 0) {
-				tPhase = min(max(eps-ropeAngleOffset*3,-0.25),0.25);
-				servoAmp = min(max(-offset/250.0+abs(ropeAngleOffset)*8,0),1) * maxServoAmp;
+				tPhase = min(max(-ropeAngleOffset*ML_ROPE_OFFSET_TO_PHASE,-0.25),0.25);
+				servoAmp = min(max(-offset*ML_LOOP_OFFSET_TO_AMP + abs(ropeAngleOffset)*ML_ROPE_OFFSET_TO_AMP,0),maxServoAmp);
 			} else {
-				tPhase = min(max(0.5 - eps + ropeAngleOffset*3,0.25),0.75);
-				servoAmp = min(max(offset/250.0+abs(ropeAngleOffset)*8,0),1) * maxServoAmp;
+				tPhase = min(max(0.5 + ropeAngleOffset*ML_ROPE_OFFSET_TO_PHASE,0.25),0.75);
+				servoAmp = min(max( offset*ML_LOOP_OFFSET_TO_AMP + abs(ropeAngleOffset)*ML_ROPE_OFFSET_TO_AMP,0),maxServoAmp);
 			}
 
  			sprint("   ==>   servoAmp=");sprint(servoAmp); sprint(" phase=");sprintln(tPhase);
 
 			if (tPhase < 0) tPhase = tPhase + 1;
-			initTime = millis()-loopTime*(side==LEFT ? tPhase+0.5 : tPhase);
-			waitLoops=2;
+			initTime = millis() - loopTime*(side==LEFT ? tPhase+0.5 : tPhase);
+			waitLoops=LOOP_INTERVAL-1;
 		} else {
 			sprint ("["); sprint(waitLoops); sprint ("] ["); sprint(lastLoopTime); sprint("]: offset="); sprint(offset); sprint("ms %%  ropeAngle="); sprint(ropeAngle); sprint((ropeAngleOffset > 0) ? "(+" : "(");sprint(ropeAngleOffset); sprintln(")");
 			servoAmp = 0;
@@ -1254,60 +1244,11 @@ void updateAmpAndTimeForTesting() {
 	
 }
 
-void updateAmpAndTimeForSyncedRunning() {  
-
-  // update loopTime
-  //loopTime = syncLoopTime;
-
-  // update servoAmp
-  float offsetRopeAngle = ropeMaxRightAngle-ropeMaxLeftAngle - syncRopeAngle;
-  if (offsetRopeAngle < 0) {
-	servoAmp = min(servoAmp + 1, maxServoAmp);
-  } else {
-	servoAmp = max(servoAmp - 1, 3);
-  }
-
-//	servoAmp = max(min(servoAmp + min(10,offsetRopeAngle*100) ,maxServoAmp),3);
-
-/*
-  if (abs(offsetRopeAngle)>0.02) {
-	servoAmp = max(min( servoAmp - offsetRopeAngle * 100 ,maxServoAmp),3);
-  }
-*/
-  // speed up or slow down (only do this when getting to right side - just to reduce amount of updates).
-  if (side==RIGHT) {
-	double offset = ((millis()-(syncInitTime+syncInitTimeOffset))%syncLoopTime) / double(syncLoopTime);
-	if (offset > 0.5) offset = offset-1;
-	
-	double desiredPhase = 0.25;
-	if (abs(offset) <0.15) {
-	  if (servoAmp>maxServoAmp-10)  {
-		servoAmp = 20;
-	  }
-	  if (abs(offset) < 0.02) {
-		desiredPhase = 0.25;
-	  } else {
-	  //	  // Linear calculation, offset:0==>phase:0.25; offset:0.05==>0.5; offset:-0.05==> 0; trim for phase to be between 0 to 0.5;
-		desiredPhase = max(min(0.25 + offset/0.05*0.25, 0.5), 0);
-	  }
-	} else if (offset>0) {
-	  desiredPhase = 0.6;
-	  servoAmp = maxServoAmp;
-	} else if (offset<0) {
-	  desiredPhase = 0.9;
-	  servoAmp = maxServoAmp;
-	}
-//	syncPhase = (desiredPhase*0.5 + syncPhase*0.5);
-	syncPhase = desiredPhase;
-	initTime = millis()-loopTime*(side==LEFT ? syncPhase+0.5 : syncPhase);
-	
-	sprint("Syncing: Offset("); sprint(offset);sprint(" ==> "); sprint(int(offset*syncLoopTime));sprint("ms), ropeAmp("); sprint(ropeMaxRightAngle-ropeMaxLeftAngle);
-	sprint(") ==> loopTime="); sprint(syncLoopTime);
-	sprint("; ServoAmp="); sprint(servoAmp);
-	sprint("; phase="); sprint(syncPhase);
-	sprint("(wanted"); sprint(desiredPhase);
-	sprintln(")");
-  }
+void updateAmpAndTimeForTesting() {  
+    sprint("testAmp:");sprint(testAmp);sprint(" testPhase:"); sprint(testPhase); sprint(" magic:"); sprintln(SYNC_MAGIC_NUMBER);
+	loopTime = defaultLoopTime;
+	servoAmp = testAmp;
+	initTime = millis()-loopTime-loopTime*(side==LEFT ? 0.5+testPhase : testPhase) + SYNC_MAGIC_NUMBER;
 }
 
 
@@ -1416,7 +1357,7 @@ void playAudioIn(int phase, int syncedPhase) {
 	//sprintln(audioTime - time);
 }
 
-void loop(){
+void showClockIfNeeded() {
   static unsigned long lastClock = 0;
   static int lastClockIter = 0;
   if (showClock) {
@@ -1427,7 +1368,10 @@ void loop(){
   		lastClock= millis();
   		sprint(double(lastClockIter++)/10); sprint("  \r");
   	}
-  }
+  }	
+}
+void loop(){
+  showClockIfNeeded();
   if (time > keepalive) { nextSerial.print(" "); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
   if (listenOnPrev && prevSerial.available()) {if (isMaster) Serial.println("I am now a slave"); isMaster = false;} // inform 
   // if (isMaster) { tone(7, NOTE_F5,100); }   // If master make noise
@@ -1442,7 +1386,7 @@ void loop(){
   handleKeyboardInput();
 
   // Update clock of slaves
-  if (updateSlaveClock || (isMaster && ((mode==SYNCED_RUNNING) || (mode==TESTING)))) {
+  if (updateSlaveClock || (isMaster && ((mode==SYNCED_RUNNING) || (mode==TESTING) || (mode==SYNCED_RUN)))) {
 	if ((time-syncInitTime)%syncLoopTime  < (lastIterationTime-syncInitTime) % syncLoopTime) {
 	  // this means we just got to the init time frame;
 	  if (updateSlaveClock) {
