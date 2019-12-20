@@ -1324,7 +1324,7 @@ void setup() {
   sendAudioCommand(0X22, 0X1E01);
   
   myservoattach(servoPin);
-  smoothMove(servoCenter);
+  myservowrite(servoCenter);
   tone(7, NOTE_G5, 100);
   
   // Read all prevSerial data
