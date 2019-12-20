@@ -1269,7 +1269,8 @@ void updateAmpAndTimeForSyncedRunning() {
 			// dont decrease amp if long way from the right offset (and rope is not too (+0.05) big;
 			if ((-offset > loopTime*0.1) && (ropeAngleOffset>0) && (ropeAngleOffset < 0.1)) {
 				tPhase = -ML_EPS; // eps to make sure we are not accidentally increasing rope amp.
-				repeat = int(float(-offset)/loopTime * 10) - 1; // repeat once for every 0.1 of a looptime
+				//repeat = int(float(-offset)/loopTime * 10) - 1; // repeat once for every 0.1 of a looptime
+				
 			}
 			servoAmp = min(max(-offset*ML_LOOP_OFFSET_TO_AMP + abs(ropeAngleOffset)*ML_ROPE_OFFSET_TO_AMP,0),maxServoAmp);
 		} else {
@@ -1277,7 +1278,7 @@ void updateAmpAndTimeForSyncedRunning() {
 			// dont decrease amp if long way from the right offset (and rope is not too (+0.1) big;
 			if ((offset > loopTime*0.1) && (ropeAngleOffset>0) && (ropeAngleOffset < 0.1)) {
 				tPhase = 0.5+ML_EPS; // eps to make sure we are not accidentally increasing rope amp. 
-				repeat = int(float(offset)/loopTime * 10) - 1; // repeat once for every 0.1 of a looptime
+				//repeat = int(float(offset)/loopTime * 10) - 1; // repeat once for every 0.1 of a looptime
 			}
 			servoAmp = min(max( offset*ML_LOOP_OFFSET_TO_AMP + abs(ropeAngleOffset)*ML_ROPE_OFFSET_TO_AMP,0),maxServoAmp);
 		}
