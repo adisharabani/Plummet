@@ -1244,6 +1244,7 @@ void updateAmpAndTimeForSyncedRunning() {
 		}
 		if (waitLoops > 0) {
 			sprint("wait ["); sprint(waitLoops--); sprintln("]");
+			servoAmp = 0;
 			return;
 		}
 		
@@ -1277,7 +1278,7 @@ void updateAmpAndTimeForSyncedRunning() {
 		// If current amp is small just go for the real sync 
 		if (ropeAngle < 0.3 * syncRopeAngle) {
 			servoAmp = maxServoAmp;
-			initTime = syncInitTime + syncInitTimeOffset - 0.25*loopTime;
+			initTime = syncInitTime + syncInitTimeOffset - 0.25*syncLoopTime;
 			tPhase = -99;
 			repeat = 1;
 		}
