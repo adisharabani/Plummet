@@ -1235,7 +1235,10 @@ void updateAmpAndTimeForSyncedRunning() {
 
 	if (side==RIGHT) {
 		waitLoops --;
+		sprint(waitLoops ? "\033[0;37m" : "\033[0;31m");
 		sprint ("["); sprint(waitLoops); sprint ("] ["); sprint(lastLoopTime); sprint("]: offset="); sprint(offset); sprint("ms ropeAngle="); 	sprint(ropeAngle); sprint((ropeAngleOffset > 0) ? "(+" : "(");sprint(ropeAngleOffset); sprint(")");
+		sprint("\033[0;m");
+		
 		// if autoPilot
 		if (waitLoops > 0) {
 			if (!repeat) servoAmp = 0;
