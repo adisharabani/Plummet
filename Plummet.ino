@@ -1108,6 +1108,20 @@ void updateAmpAndTimeForStopping() {
   sprint(" ==> New servoAmp: "); sprint(servoAmp); sprintln(" -");  
 }*/
 
+double axisToAngle(double x, double y) {
+  if (x == 0 && 0 < y) {
+    return PI / 2;
+  } else if (x == 0 && y < 0) {
+    return PI * 3 / 2;
+  } else if (x < 0) { //x != 0
+    return atan(y / x) + PI;
+  } else if (y < 0) {
+    return atan(y / x) + 2 * PI;
+  } else {
+    return atan(y / x);
+  }
+}
+
 void updateAmpAndTimeForMaintaining() {
   loopTime = defaultLoopTime;
 //  initTime = millis()-loopTime*(side==LEFT ? 0.75 : 0.25) + SYNC_MAGIC_NUMBER;
@@ -1263,24 +1277,27 @@ void updateAmpAndTimeForSyncedRunning() {
         ropeAngleOffset = ropeAngleOffset - ML_ROPE_ANGLE_DECREASE*LOOP_INTERVAL; //predict decrease in rope Angle
 		offset = offset + (loopTime-syncLoopTime) * LOOP_INTERVAL; //predict increase in offset
 		
+		double offsetAxis = offset / 250;
+		double ropeOffsetAxis = ropeAngleOffset / 0.5;
+		sprint(". %%%");sprint(int(min(1,sqrt(offsetAxis*offsetAxis + ropeOffsetAxis*ropeOffsetAxis))*maxServoAmp)); sprint(","); sprint(axisToAngle(offsetAxis, ropeOffsetAxis));
 		// Decide on actions
 		if (offset < 0) {
-			tPhase = min(max(-ropeAngleOffset*ML_ROPE_OFFSET_TO_PHASE,-0.25),0.25);
 			// dont decrease amp if long way from the right offset (and rope is not too (+0.05) big;
-			if ((-offset > loopTime*0.1) && (ropeAngleOffset>0) && (ropeAngleOffset < 0.1)) {
+/* 			if ((-offset > loopTime*0.1) && (ropeAngleOffset>0) && (ropeAngleOffset < 0.1)) {
 				tPhase = -ML_EPS; // eps to make sure we are not accidentally increasing rope amp.
 				//repeat = int(float(-offset)/loopTime * 10) - 1; // repeat once for every 0.1 of a looptime
 				
-			}
+			} */
 			servoAmp = min(max(-offset*ML_LOOP_OFFSET_TO_AMP + abs(ropeAngleOffset)*ML_ROPE_OFFSET_TO_AMP,0),maxServoAmp);
+			tPhase = min(max(-ropeAngleOffset*ML_ROPE_OFFSET_TO_PHASE,-0.25),0.25);
 		} else {
-			tPhase = min(max(0.5 + ropeAngleOffset*ML_ROPE_OFFSET_TO_PHASE,0.25),0.75);
 			// dont decrease amp if long way from the right offset (and rope is not too (+0.1) big;
-			if ((offset > loopTime*0.1) && (ropeAngleOffset>0) && (ropeAngleOffset < 0.1)) {
+/* 			if ((offset > loopTime*0.1) && (ropeAngleOffset>0) && (ropeAngleOffset < 0.1)) {
 				tPhase = 0.5+ML_EPS; // eps to make sure we are not accidentally increasing rope amp. 
 				//repeat = int(float(offset)/loopTime * 10) - 1; // repeat once for every 0.1 of a looptime
-			}
+			} */
 			servoAmp = min(max( offset*ML_LOOP_OFFSET_TO_AMP + abs(ropeAngleOffset)*ML_ROPE_OFFSET_TO_AMP,0),maxServoAmp);
+			tPhase = min(max(0.5 + ropeAngleOffset*ML_ROPE_OFFSET_TO_PHASE,0.25),0.75);
 		}
 
 		// better to use positive tphase...
