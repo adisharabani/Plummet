@@ -424,17 +424,17 @@ void calibrate() {
   
   sprint("Old ");sprint("PotCenter: "); sprintln(potCenter);
   potCenter = waitForSteadiness(1,6000);  
-  sprint("PotCenter:  "); sprintln(potCenter);
+  sprint("PotCenter: "); sprintln(potCenter);
 
   smoothMove(servoCenter-50,4000); 
   sprint("Old ");sprint("Pot50: ");sprintln(pot50);
   pot50 = waitForSteadiness(10,6000);  
-  sprint("Pot50:  ");sprintln(pot50);
+  sprint("Pot50: ");sprintln(pot50);
 
   smoothMove(servoCenter+50,8000); 
   sprint("Old ");sprint("Pot150: "); sprintln(pot150);
   pot150 = waitForSteadiness(10,6000); 
-  sprint("Pot150:  ");sprintln(pot150);
+  sprint("Pot150: ");sprintln(pot150);
   
   calibrateLoopTime();
 
@@ -781,8 +781,19 @@ void handleKeyboardInput() {
 	  sprint("debug="); sprintln(debug ? "on" : "off");
 	  break;
 	case 'p': // Print measurements (potentiometer, servo, etc.)
-	  printMeasures = !printMeasures;
-	  enablePrint = true;
+	  if (CMD[0]=='\n') {
+		  printMeasures = !printMeasures;
+		  enablePrint = true;
+	  } else {
+	  	if (CMD[0]=='=') {
+	  		sprint("Old ");
+	  		sprint("PotCenter: "); sprintln(potCenter);
+	  		potCenter = atoi(CMD+1);
+	  		sprint("PotCenter: "); sprintln(potCenter);
+	  			  		
+	  		KB[0]=0;CMD=KB;
+	  	} 
+	  }
 //	  sprint("printMeasures="); sprintln(printMeasures ? "on" : "off");
 	  break;
 	case 'L': // Print loop events (move from RIGHT to left)
