@@ -60,7 +60,9 @@ boolean enablePrint = true;
 boolean debug = false;
 boolean enableAudio = false;
 int8_t audioSongNumber = 1;
-int8_t audioVolume = 30;
+int8_t maxAudioVolume = 30;
+int8_t audioVolume = maxAudioVolume;
+bool audioVolumeAdaptive = false;
 unsigned int audioDelay = 0; // in milliseconds
 unsigned int audioSnapToGrid = 10; // in milliseconds
 unsigned int audioSnapToSync = 50;
@@ -974,9 +976,9 @@ void handleKeyboardInput() {
 	case '&': // Print current calibration
 	  printCurrentCalibration();
 	case 'a': // play audio
-	  playSong(audioSongNumber, audioVolume);
+	  playSong(audioSongNumber, maxAudioVolume);
 	  break;
-	case 'A': // Audio config for example A2,25 (song 2 volume 25)
+	case 'A': // Audio config #,Vol,STG,STS,delay,adaptive?
 	  if (CMD[0]=='\n'){
 	  	enableAudio = !enableAudio;
 	  }
@@ -984,17 +986,17 @@ void handleKeyboardInput() {
 	  if (s>0) audioSongNumber = s;
 
 	  p = find(CMD, ',');
-	  if (p!=-1) audioVolume = atoi(CMD+p+1);
-	  p = find(CMD, ',', p+1);
+	  if (p!=-1) maxAudioVolume = atoi(CMD+p+1);
+	  if (p!=-1) p = find(CMD, ',', p+1);
 	  if (p!=-1) audioSnapToGrid = atoi(CMD+p+1);
-	  p = find(CMD, ',', p+1);
+	  if (p!=-1) p = find(CMD, ',', p+1);
 	  if (p!=-1) audioSnapToSync = atoi(CMD+p+1);
-	  p = find(CMD, ',', p+1);
+	  if (p!=-1) p = find(CMD, ',', p+1);
 	  if (p!=-1) audioDelay = atoi(CMD+p+1);
-	  p = find(CMD, ',', p+1);
-	  
+	  if (p!=-1) p = find(CMD, ',', p+1);
+	  if (p!=-1) audioVolumeAdaptive = CMD[p+1]!='0';
 	  KB[0] = 0; CMD=KB;
-	  sprint("Audio "); sprint(enableAudio ? "on" : "off"); sprint(" song="); sprint(audioSongNumber); sprint(" vol="); sprint(audioVolume); sprint(" stg=");sprint(audioSnapToGrid);sprint(" sts=");sprint(audioSnapToSync); sprint(" delay=");sprintln(audioDelay);
+	  sprint("Audio "); sprint(enableAudio ? "on" : "off"); sprint(" song="); sprint(audioSongNumber); sprint(" vol="); sprint(maxAudioVolume); sprint(" stg=");sprint(audioSnapToGrid);sprint(" sts=");sprint(audioSnapToSync); sprint(" delay=");sprint(audioDelay); sprint(" adaptive="); sprintln(audioVolumeAdaptive);
 	  break;
 	case 'P': // Play
 	  if (!isPlaying) {
@@ -1265,7 +1267,7 @@ void updateAmpAndTimeForSyncedRunning() {
 			// dont decrease amp if long way from the right offset (and rope is not too (+0.05) big;
 			if ((-offset > loopTime*0.1) && (ropeAngleOffset>0) && (ropeAngleOffset < 0.1)) {
 				tPhase = -ML_EPS; // eps to make sure we are not accidentally increasing rope amp.
-				repeat = int(-offset/loopTime * 10) - 1; // repeat once for every 0.1 of a looptime
+				repeat = int(float(-offset)/loopTime * 10) - 1; // repeat once for every 0.1 of a looptime
 			}
 			servoAmp = min(max(-offset*ML_LOOP_OFFSET_TO_AMP + abs(ropeAngleOffset)*ML_ROPE_OFFSET_TO_AMP,0),maxServoAmp);
 		} else {
@@ -1273,7 +1275,7 @@ void updateAmpAndTimeForSyncedRunning() {
 			// dont decrease amp if long way from the right offset (and rope is not too (+0.1) big;
 			if ((offset > loopTime*0.1) && (ropeAngleOffset>0) && (ropeAngleOffset < 0.1)) {
 				tPhase = 0.5+ML_EPS; // eps to make sure we are not accidentally increasing rope amp. 
-				repeat = int(offset/loopTime * 10) - 1; // repeat once for every 0.1 of a looptime
+				repeat = int(float(offset)/loopTime * 10) - 1; // repeat once for every 0.1 of a looptime
 			}
 			servoAmp = min(max( offset*ML_LOOP_OFFSET_TO_AMP + abs(ropeAngleOffset)*ML_ROPE_OFFSET_TO_AMP,0),maxServoAmp);
 		}
@@ -1383,6 +1385,9 @@ left_right_e direction = RIGHT;
 
 unsigned long audioTime=0;
 void playAudioIn(int phase, int syncedPhase) {
+	double ropeAngle = (ropeMaxRightAngle-ropeMaxLeftAngle);
+	audioVolume = (audioVolumeAdaptive ? min(max(ropeAngle/syncRopeAngle,0),1) : 1.0) * maxAudioVolume;
+
 	audioTime = time + phase;
 	// Snap to Sync
 	int offsetToSync = (audioTime - (syncInitTime+syncInitTimeOffset)) % syncLoopTime - syncedPhase;
@@ -1455,6 +1460,7 @@ void loop(){
   float potAngle = getPotAngle();
   float servoAngle = getServoAngle();
   float ropeAngle = potAngle+servoAngle;
+  
 
   ropeMaxRightAngle = max(ropeAngle,ropeMaxRightAngle);
   ropeMaxLeftAngle = min(ropeAngle,ropeMaxLeftAngle);
