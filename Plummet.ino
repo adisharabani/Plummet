@@ -641,8 +641,9 @@ char * forwardCommand() {
 	 // Do not forward the following commands
 	   case 't':
 	   	  break;
-	   case 's': // add defaultLoop if not set
-		  s = atoi(KB+1); 
+	   case 's':
+ 		  // add defaultLoop if not set
+ 		  s = atoi(KB+1); 
 		  if (s==0) {
 		  	itoa(defaultLoopTime, KB+1, 10);
 		  	sprint(KB+1);
@@ -652,7 +653,8 @@ char * forwardCommand() {
 		  }
 		  nextSerial.println(KB);
 		  break;
-	   case 'u': // Current device phase so that everyone will show the clock compared to this.
+	   case 'u':
+	       // Current device phase so that everyone will show the clock compared to this.
 	      s = atoi(KB+1); 
 		  if (s==0) {
 		  	itoa(int((millis()-(syncInitTime+syncInitTimeOffset)) % syncLoopTime), KB+1, 10);
