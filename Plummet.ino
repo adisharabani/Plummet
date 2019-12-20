@@ -1277,9 +1277,9 @@ void updateAmpAndTimeForSyncedRunning() {
         ropeAngleOffset = ropeAngleOffset - ML_ROPE_ANGLE_DECREASE*LOOP_INTERVAL; //predict decrease in rope Angle
 		offset = offset + (loopTime-syncLoopTime) * LOOP_INTERVAL; //predict increase in offset
 		
-		double offsetAxis = offset / 250;
-		double ropeOffsetAxis = ropeAngleOffset / 0.5;
-		sprint(". %%%");sprint(int(min(1,sqrt(offsetAxis*offsetAxis + ropeOffsetAxis*ropeOffsetAxis))*maxServoAmp)); sprint(","); sprint(axisToAngle(offsetAxis, ropeOffsetAxis));
+		double offsetAxis = -offset / 250;
+		double ropeOffsetAxis = -ropeAngleOffset / 0.05;
+		sprint(". %%%");sprint(int(min(1,sqrt(offsetAxis*offsetAxis + ropeOffsetAxis*ropeOffsetAxis))*maxServoAmp)); sprint(","); sprint(axisToAngle(offsetAxis, ropeOffsetAxis)/2/PI);
 		// Decide on actions
 		if (offset < 0) {
 			// dont decrease amp if long way from the right offset (and rope is not too (+0.05) big;
@@ -1312,6 +1312,10 @@ void updateAmpAndTimeForSyncedRunning() {
 			tPhase = -99;
 			repeat = 1;
 		} */
+
+		// HERE
+		tPhase = axisToAngle(offsetAxis,ropeOffsetAxis)/2/PI;
+		servoAmp = int(min(1,sqrt(offsetAxis*offsetAxis + ropeOffsetAxis*ropeOffsetAxis))*maxServoAmp);
 		sprint("   ==>   servoAmp=");sprint(servoAmp); sprint(" phase=");sprintln(tPhase);
 	}	
 }
