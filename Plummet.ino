@@ -1222,7 +1222,7 @@ void updateAmpAndTimeForSyncedRunning() {
 	static double ML_EPS = 0.02;
 
 	static int waitLoops=0;
-	static bool repeat = false;
+	static int repeat = 0;
 	
 	double tPhase;
 	double ropeAngle = (ropeMaxRightAngle-ropeMaxLeftAngle);
@@ -1234,15 +1234,16 @@ void updateAmpAndTimeForSyncedRunning() {
 	loopTime = defaultLoopTime;
 
 	if (side==RIGHT) {
-		waitLoops --;
-		sprint(waitLoops ? "\033[0;37m" : "\033[0;31m");
-		sprint ("["); sprint(waitLoops); sprint ("] ["); sprint(lastLoopTime); sprint("]: offset="); sprint(offset); sprint("ms ropeAngle="); 	sprint(ropeAngle); sprint((ropeAngleOffset > 0) ? "(+" : "(");sprint(ropeAngleOffset); sprint(")");
-		sprint("\033[0;m");
+		sprint(waitLoops ? "\x1b[0;37m" : "\x1b[0;31m");
+		sprint ("["); sprint(lastLoopTime); sprint("]: offset="); sprint(offset); sprint("ms ropeAngle="); 	sprint(ropeAngle); sprint((ropeAngleOffset > 0) ? "(+" : "(");sprint(ropeAngleOffset); sprint(")");
+		sprint("\x1b[0m");
 		
-		// if autoPilot
+		if (repeat > 0) {
+			sprint("repeat ["); sprint(repeat--); sprintln("]");
+			return;			
+		}
 		if (waitLoops > 0) {
-			if (!repeat) servoAmp = 0;
-			sprintln();
+			sprint("wait ["); sprint(waitLoops--); sprintln("]");
 			return;
 		}
 		
@@ -1270,7 +1271,7 @@ void updateAmpAndTimeForSyncedRunning() {
 		// better to use positive tphase...
 		if (tPhase < 0) tPhase = tPhase + 1;
 		initTime = millis() - loopTime*(side==LEFT ? tPhase+0.5 : tPhase);
-		waitLoops=LOOP_INTERVAL;
+		waitLoops=LOOP_INTERVAL-1;
 		repeat = false;
 
 		// If current amp is small just go for the real sync 
@@ -1278,8 +1279,7 @@ void updateAmpAndTimeForSyncedRunning() {
 			servoAmp = maxServoAmp;
 			initTime = syncInitTime + syncInitTimeOffset - 0.25*loopTime;
 			tPhase = -99;
-			waitLoops = 2;
-			repeat = true;
+			repeat = 1;
 		}
 		sprint("   ==>   servoAmp=");sprint(servoAmp); sprint(" phase=");sprintln(tPhase);
 	}	
