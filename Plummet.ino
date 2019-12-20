@@ -683,6 +683,7 @@ char * forwardCommand() {
 	   case 'P':
 	   case 'R':
 	   case 'Y':
+	   case '@':
 	   case ' ':
 	   case '\n':
 		 break;
@@ -1225,9 +1226,17 @@ void updateAmpAndTimeForSyncedRunning() {
 			loopTime = defaultLoopTime;
 			if (offset < 0) {
 				tPhase = min(max(-ropeAngleOffset*ML_ROPE_OFFSET_TO_PHASE,-0.25),0.25);
+				// dont decrease amp if on the way to the right offset (and rope is not too (+0.1) big;
+				if ((-offset > loopTime*0.1) && (ropeAngleOffset>0) && (ropeAngleOffset < 0.1)) {
+					tPhase = 0;
+				}
 				servoAmp = min(max(-offset*ML_LOOP_OFFSET_TO_AMP + abs(ropeAngleOffset)*ML_ROPE_OFFSET_TO_AMP,0),maxServoAmp);
 			} else {
 				tPhase = min(max(0.5 + ropeAngleOffset*ML_ROPE_OFFSET_TO_PHASE,0.25),0.75);
+				// dont decrease amp if on the way to the right offset (and rope is not too (+0.1) big;
+				if ((offset > loopTime*0.1) && (ropeAngleOffset>0) && (ropeAngleOffset < 0.1)) {
+					tPhase = 0.5;
+				}
 				servoAmp = min(max( offset*ML_LOOP_OFFSET_TO_AMP + abs(ropeAngleOffset)*ML_ROPE_OFFSET_TO_AMP,0),maxServoAmp);
 			}
 
