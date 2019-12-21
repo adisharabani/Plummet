@@ -1,0 +1,437 @@
+se=3.58
+[0;37m[3186]: offset=427ms ropeAngle=0.52(+0.25)[0mrepeat [1]
+[0;37m[2938]: offset=240ms ropeAngle=0.43(+0.16)[0mwait [2]
+[0;37m[2886]: offset=4ms ropeAngle=0.46(+0.19)[0mwait [1]
+[0;31m[3189]: offset=65ms ropeAngle=0.45(+0.18)[0m
+Aimed(-1.48,-0.69) @(1.64,3.58) Actual(-0.26,-1.03) @(1.27,2.87)  ==>  Delta(1.22,-0.34) @(0.78 Dteta:-0.70)
+   ==>   servoAmp=78.00 phase=4.44
+[0;37m[3219]: offset=158ms ropeAngle=0.64(+0.37)[0mwait [2]
+[0;37m[2871]: offset=-96ms ropeAngle=0.45(+0.18)[0mwait [1]
+[0;31m[3115]: offset=-106ms ropeAngle=0.31(+0.04)[0m
+Aimed(-0.26,-0.94) @(0.98,4.44) Actual(0.42,-0.23) @(0.99,3.95)  ==>  Delta(0.68,0.71) @(1.01 Dteta:-0.50)
+   ==>   servoAmp=35.00 phase=5.95
+[0;37m[3038]: offset=-229ms ropeAngle=0.36(+0.09)[0mwait [2]
+[0;37m[3332]: offset=-23ms ropeAngle=0.24(-0.03)[0mwait [1]
+[0;31m[3187]: offset=39ms ropeAngle=0.23(-0.04)[0m
+Aimed(0.42,-0.15) @(0.45,5.95) Actual(-0.16,0.24) @(0.70,5.70)  ==>  Delta(-0.58,0.38) @(1.55 Dteta:-0.25)
+   ==>   servoAmp=28.00 phase=2.02
+[0;37m[3375]: offset=290ms ropeAngle=0.32(+0.05)[0mwait [2]
+[0;37m[2846]: offset=5ms ropeAngle=0.28(+0.01)[0mwait [1]
+[0;31m[3175]: offset=50ms ropeAngle=0.28(+0.01)[0m
+Aimed(-0.16,0.32) @(0.36,2.02) Actual(-0.20,-0.04) @(0.36,1.45)  ==>  Delta(-0.04,-0.36) @(1.01 Dteta:-0.58)
+   ==>   servoAmp=16.00 phase=2.91
+[0;37m[3221]: offset=147ms ropeAngle=0.23(-0.04)[0mwait [2]
+[0;37m[3005]: offset=26ms ropeAngle=0.27(-0.00)[0mwait [1]
+[0;31m[3125]: offset=25ms ropeAngle=0.28(+0.01)[0m
+Aimed(-0.20,0.05) @(0.21,2.91) Actual(-0.10,-0.04) @(0.13,2.45)  ==>  Delta(0.10,-0.08) @(0.63 Dteta:-0.46)
+   ==>   servoAmp=8.00 phase=2.69
+[0;37m[3143]: offset=43ms ropeAngle=0.22(-0.05)[0mwait [2]
+[0;37m[3110]: offset=28ms ropeAngle=0.27(-0.00)[0mwait [1]
+[0;31m[3139]: offset=41ms ropeAngle=0.26(-0.01)[0m
+Aimed(-0.10,0.05) @(0.11,2.69) Actual(-0.16,0.06) @(0.07,6.07)  ==>  Delta(-0.06,0.01) @(0.59 Dteta:3.38)
+   ==>   servoAmp=17.00 phase=2.42
+[0;37m[3259]: offset=175ms ropeAngle=0.24(-0.03)[0mwait [2]
+[0;37m[2968]: offset=18ms ropeAngle=0.29(+0.02)[0mwait [1]
+[0;31m[3126]: offset=19ms ropeAngle=0.28(+0.01)[0m
+Aimed(-0.16,0.15) @(0.22,2.42) Actual(-0.08,-0.04) @(0.20,2.02)  ==>  Delta(0.09,-0.18) @(0.92 Dteta:-0.39)
+   ==>   servoAmp=7.00 phase=2.58
+[0;37m[3158]: offset=52ms ropeAngle=0.22(-0.05)[0mwait [2]
+[0;37m[3107]: offset=34ms ropeAngle=0.26(-0.01)[0mwait [1]
+[0;31m[3124]: offset=33ms ropeAngle=0.25(-0.02)[0m
+Aimed(-0.08,0.05) @(0.09,2.58) Actual(-0.13,0.12) @(0.09,5.37)  ==>  Delta(-0.06,0.07) @(1.02 Dteta:2.79)
+   ==>   servoAmp=19.00 phase=2.15
+[0;37m[3259]: offset=167ms ropeAngle=0.26(-0.01)[0mwait [2]
+[0;37m[2977]: offset=19ms ropeAngle=0.29(+0.02)[0mwait [1]
+[0;31m[3126]: offset=20ms ropeAngle=0.28(+0.01)[0m
+Aimed(-0.13,0.20) @(0.24,2.15) Actual(-0.08,-0.05) @(0.26,1.77)  ==>  Delta(0.05,-0.26) @(1.09 Dteta:-0.38)
+   ==>   servoAmp=6.00 phase=2.80
+[0;37m[3155]: offset=45ms ropeAngle=0.23(-0.04)[0mwait [2]
+[0;37m[3117]: offset=37ms ropeAngle=0.26(-0.01)[0mwait [1]
+[0;31m[3115]: offset=27ms ropeAngle=0.26(-0.01)[0m
+Aimed(-0.08,0.03) @(0.08,2.80) Actual(-0.11,0.08) @(0.06,5.20)  ==>  Delta(-0.03,0.05) @(0.70 Dteta:2.40)
+   ==>   servoAmp=15.00 phase=2.15
+[0;37m[3228]: offset=129ms ropeAngle=0.23(-0.04)[0mwait [2]
+[0;37m[3021]: offset=23ms ropeAngle=0.28(+0.01)[0mwait [1]
+[0;31m[3131]: offset=29ms ropeAngle=0.27(+0.00)[0m
+Aimed(-0.11,0.16) @(0.20,2.15) Actual(-0.12,-0.02) @(0.18,1.53)  ==>  Delta(-0.01,-0.18) @(0.92 Dteta:-0.63)
+   ==>   servoAmp=10.00 phase=2.62
+[0;37m[3198]: offset=101ms ropeAngle=0.22(-0.05)[0mwait [2]
+[0;37m[3069]: offset=45ms ropeAngle=0.27(+0.00)[0mwait [1]
+[0;31m[3114]: offset=34ms ropeAngle=0.27(-0.00)[0m
+Aimed(-0.12,0.07) @(0.13,2.62) Actual(-0.14,0.02) @(0.05,1.15)  ==>  Delta(-0.02,-0.04) @(0.36 Dteta:-1.47)
+   ==>   servoAmp=13.00 phase=2.48
+[0;37m[3229]: offset=137ms ropeAngle=0.21(-0.06)[0mwait [2]
+[0;37m[3012]: offset=24ms ropeAngle=0.28(+0.01)[0mwait [1]
+[0;31m[3099]: offset=-2ms ropeAngle=0.28(+0.01)[0m
+Aimed(-0.14,0.11) @(0.17,2.48) Actual(0.01,-0.04) @(0.20,2.36)  ==>  Delta(0.14,-0.14) @(1.17 Dteta:-0.11)
+   ==>   servoAmp=3.00 phase=1.41
+[0;37m[3122]: offset=-141ms ropeAngle=0.24(-0.03)[0mwait [2]
+[0;37m[3189]: offset=-77ms ropeAngle=0.25(-0.02)[0mwait [1]
+[0;31m[3109]: offset=-93ms ropeAngle=0.26(-0.01)[0m
+Aimed(0.01,0.05) @(0.05,1.41) Actual(0.37,0.08) @(0.37,3.23)  ==>  Delta(0.36,0.03) @(7.53 Dteta:1.83)
+   ==>   servoAmp=32.00 phase=0.42
+[0;37m[2942]: offset=-319ms ropeAngle=0.29(+0.02)[0mwait [2]
+[0;37m[3481]: offset=36ms ropeAngle=0.25(-0.02)[0mwait [1]
+[0;31m[3126]: offset=37ms ropeAngle=0.24(-0.03)[0m
+Aimed(0.37,0.16) @(0.41,0.42) Actual(-0.15,0.16) @(0.52,0.01)  ==>  Delta(-0.52,-0.01) @(1.28 Dteta:-0.41)
+   ==>   servoAmp=22.00 phase=2.12
+[0;37m[3360]: offset=271ms ropeAngle=0.28(+0.01)[0mwait [2]
+[0;37m[2901]: offset=47ms ropeAngle=0.28(+0.01)[0mwait [1]
+[0;31m[3135]: offset=57ms ropeAngle=0.28(+0.01)[0m
+Aimed(-0.15,0.24) @(0.28,2.12) Actual(-0.23,-0.07) @(0.33,1.32)  ==>  Delta(-0.08,-0.32) @(1.15 Dteta:-0.80)
+   ==>   servoAmp=18.00 phase=3.10
+[0;37m[3230]: offset=162ms ropeAngle=0.23(-0.04)[0mwait [2]
+[0;37m[2977]: offset=15ms ropeAngle=0.27(+0.00)[0mwait [1]
+[0;31m[3128]: offset=17ms ropeAngle=0.28(+0.01)[0m
+Aimed(-0.23,0.01) @(0.23,3.10) Actual(-0.07,-0.04) @(0.17,2.87)  ==>  Delta(0.16,-0.04) @(0.73 Dteta:-0.23)
+   ==>   servoAmp=6.00 phase=2.53
+[0;37m[3098]: offset=-10ms ropeAngle=0.22(-0.05)[0mwait [2]
+[0;37m[3155]: offset=15ms ropeAngle=0.26(-0.01)[0mwait [1]
+[0;31m[3120]: offset=11ms ropeAngle=0.26(-0.01)[0m
+Aimed(-0.07,0.05) @(0.08,2.53) Actual(-0.04,0.06) @(0.03,3.66)  ==>  Delta(0.02,0.01) @(0.33 Dteta:1.14)
+   ==>   servoAmp=12.00 phase=1.87
+[0;37m[3107]: offset=-8ms ropeAngle=0.22(-0.05)[0mwait [2]
+[0;37m[3176]: offset=42ms ropeAngle=0.27(-0.00)[0mwait [1]
+[0;31m[3109]: offset=26ms ropeAngle=0.26(-0.01)[0m
+Aimed(-0.04,0.15) @(0.15,1.87) Actual(-0.10,0.06) @(0.10,0.95)  ==>  Delta(-0.06,-0.08) @(0.68 Dteta:-0.92)
+   ==>   servoAmp=14.00 phase=2.19
+[0;37m[3192]: offset=92ms ropeAngle=0.23(-0.04)[0mwait [2]
+[0;37m[3060]: offset=22ms ropeAngle=0.28(+0.01)[0mwait [1]
+[0;31m[3132]: offset=29ms ropeAngle=0.27(-0.00)[0m
+Aimed(-0.10,0.15) @(0.18,2.19) Actual(-0.12,0.02) @(0.12,1.47)  ==>  Delta(-0.01,-0.12) @(0.69 Dteta:-0.72)
+   ==>   servoAmp=12.00 phase=2.40
+[0;37m[3227]: offset=130ms ropeAngle=0.21(-0.06)[0mwait [2]
+[0;37m[3043]: offset=49ms ropeAngle=0.28(+0.01)[0mwait [1]
+[0;31m[3125]: offset=43ms ropeAngle=0.27(+0.00)[0m
+Aimed(-0.12,0.11) @(0.16,2.40) Actual(-0.17,-0.02) @(0.13,1.14)  ==>  Delta(-0.06,-0.12) @(0.85 Dteta:-1.26)
+   ==>   servoAmp=14.00 phase=2.77
+[0;37m[3211]: offset=129ms ropeAngle=0.22(-0.05)[0mwait [2]
+[0;37m[3008]: offset=12ms ropeAngle=0.27(+0.00)[0mwait [1]
+[0;31m[3125]: offset=5ms ropeAngle=0.27(+0.00)[0m
+Aimed(-0.17,0.07) @(0.18,2.77) Actual(-0.02,-0.02) @(0.17,2.64)  ==>  Delta(0.15,-0.08) @(0.94 Dteta:-0.13)
+   ==>   servoAmp=5.00 phase=1.86
+[0;37m[3064]: offset=-56ms ropeAngle=0.21(-0.06)[0mwait [2]
+[0;37m[3207]: offset=26ms ropeAngle=0.26(-0.01)[0mwait [1]
+[0;31m[3136]: offset=37ms ropeAngle=0.26(-0.01)[0m
+Aimed(-0.02,0.07) @(0.07,1.86) Actual(-0.15,0.08) @(0.13,6.18)  ==>  Delta(-0.13,0.01) @(1.83 Dteta:4.32)
+   ==>   servoAmp=17.00 phase=2.30
+[0;37m[3260]: offset=172ms ropeAngle=0.24(-0.03)[0mwait [2]
+[0;37m[2971]: offset=17ms ropeAngle=0.28(+0.01)[0mwait [1]
+[0;31m[3118]: offset=10ms ropeAngle=0.28(+0.01)[0m
+Aimed(-0.15,0.16) @(0.22,2.30) Actual(-0.04,-0.04) @(0.23,2.07)  ==>  Delta(0.11,-0.20) @(1.03 Dteta:-0.24)
+   ==>   servoAmp=4.00 phase=2.27
+[0;37m[3104]: offset=-11ms ropeAngle=0.22(-0.05)[0mwait [2]
+[0;37m[3180]: offset=44ms ropeAngle=0.25(-0.02)[0mwait [1]
+[0;31m[3103]: offset=22ms ropeAngle=0.25(-0.02)[0m
+Aimed(-0.04,0.05) @(0.06,2.27) Actual(-0.09,0.10) @(0.07,5.45)  ==>  Delta(-0.05,0.05) @(1.14 Dteta:3.18)
+   ==>   servoAmp=16.00 phase=2.02
+[0;37m[3185]: offset=82ms ropeAngle=0.24(-0.03)[0mwait [2]
+[0;37m[3083]: offset=35ms ropeAngle=0.27(-0.00)[0mwait [1]
+[0;31m[3137]: offset=46ms ropeAngle=0.26(-0.01)[0m
+Aimed(-0.09,0.18) @(0.20,2.02) Actual(-0.18,0.04) @(0.17,0.98)  ==>  Delta(-0.10,-0.14) @(0.84 Dteta:-1.04)
+   ==>   servoAmp=17.00 phase=2.54
+[0;37m[3263]: offset=184ms ropeAngle=0.24(-0.03)[0mwait [2]
+[0;37m[2975]: offset=34ms ropeAngle=0.28(+0.01)[0mwait [1]
+[0;31m[3124]: offset=33ms ropeAngle=0.27(+0.00)[0m
+Aimed(-0.18,0.13) @(0.22,2.54) Actual(-0.13,-0.02) @(0.15,1.92)  ==>  Delta(0.05,-0.14) @(0.68 Dteta:-0.62)
+   ==>   servoAmp=11.00 phase=2.67
+[0;37m[3215]: offset=123ms ropeAngle=0.22(-0.05)[0mwait [2]
+[0;37m[3026]: offset=19ms ropeAngle=0.27(-0.00)[0mwait [1]
+[0;31m[3131]: offset=20ms ropeAngle=0.28(+0.01)[0m
+Aimed(-0.13,0.07) @(0.15,2.67) Actual(-0.08,-0.04) @(0.12,2.04)  ==>  Delta(0.05,-0.10) @(0.78 Dteta:-0.63)
+   ==>   servoAmp=7.00 phase=2.60
+[0;37m[3169]: offset=64ms ropeAngle=0.21(-0.06)[0mwait [2]
+[0;37m[3079]: offset=17ms ropeAngle=0.25(-0.02)[0mwait [1]
+[0;31m[3118]: offset=9ms ropeAngle=0.25(-0.02)[0m
+Aimed(-0.08,0.05) @(0.09,2.60) Actual(-0.04,0.12) @(0.08,4.16)  ==>  Delta(0.04,0.07) @(0.91 Dteta:1.56)
+   ==>   servoAmp=16.00 phase=1.75
+[0;37m[3154]: offset=37ms ropeAngle=0.25(-0.02)[0mwait [2]
+[0;37m[3103]: offset=14ms ropeAngle=0.27(-0.00)[0mwait [1]
+[0;31m[3166]: offset=55ms ropeAngle=0.25(-0.02)[0m
+Aimed(-0.04,0.20) @(0.21,1.75) Actual(-0.22,0.10) @(0.21,0.51)  ==>  Delta(-0.18,-0.10) @(1.02 Dteta:-1.24)
+   ==>   servoAmp=22.00 phase=2.45
+[0;37m[3283]: offset=213ms ropeAngle=0.26(-0.01)[0mwait [2]
+[0;37m[2925]: offset=12ms ropeAngle=0.28(+0.01)[0mwait [1]
+[0;31m[3143]: offset=29ms ropeAngle=0.28(+0.01)[0m
+Aimed(-0.22,0.18) @(0.29,2.45) Actual(-0.12,-0.04) @(0.24,2.01)  ==>  Delta(0.10,-0.22) @(0.85 Dteta:-0.43)
+   ==>   servoAmp=10.00 phase=2.75
+[0;37m[3193]: offset=97ms ropeAngle=0.22(-0.05)[0mwait [2]
+[0;37m[3062]: offset=35ms ropeAngle=0.27(+0.00)[0mwait [1]
+[0;31m[3108]: offset=17ms ropeAngle=0.26(-0.01)[0m
+Aimed(-0.12,0.05) @(0.13,2.75) Actual(-0.07,0.04) @(0.05,3.03)  ==>  Delta(0.05,-0.01) @(0.39 Dteta:0.28)
+   ==>   servoAmp=11.00 phase=2.07
+[0;37m[3159]: offset=51ms ropeAngle=0.22(-0.05)[0mwait [2]
+[0;37m[3094]: offset=19ms ropeAngle=0.28(+0.01)[0mwait [1]
+[0;31m[3134]: offset=28ms ropeAngle=0.27(-0.00)[0m
+Aimed(-0.07,0.13) @(0.14,2.07) Actual(-0.11,0.00) @(0.13,1.23)  ==>  Delta(-0.04,-0.12) @(0.91 Dteta:-0.84)
+   ==>   servoAmp=11.00 phase=2.48
+[0;37m[3224]: offset=121ms ropeAngle=0.21(-0.06)[0mwait [2]
+[0;37m[3025]: offset=21ms ropeAngle=0.27(-0.00)[0mwait [1]
+[0;31m[3115]: offset=10ms ropeAngle=0.26(-0.01)[0m
+Aimed(-0.11,0.09) @(0.14,2.48) Actual(-0.04,0.04) @(0.08,2.59)  ==>  Delta(0.07,-0.04) @(0.60 Dteta:0.11)
+   ==>   servoAmp=10.00 phase=1.88
+[0;37m[3073]: offset=-42ms ropeAngle=0.22(-0.05)[0mwait [2]
+[0;37m[3210]: offset=43ms ropeAngle=0.27(+0.00)[0mwait [1]
+[0;31m[3131]: offset=49ms ropeAngle=0.26(-0.01)[0m
+Aimed(-0.04,0.13) @(0.13,1.88) Actual(-0.20,0.06) @(0.17,0.39)  ==>  Delta(-0.16,-0.06) @(1.28 Dteta:-1.49)
+   ==>   servoAmp=19.00 phase=2.50
+[0;37m[3255]: offset=179ms ropeAngle=0.24(-0.03)[0mwait [2]
+[0;37m[2960]: offset=13ms ropeAngle=0.28(+0.01)[0mwait [1]
+[0;31m[3130]: offset=17ms ropeAngle=0.28(+0.01)[0m
+Aimed(-0.20,0.15) @(0.24,2.50) Actual(-0.07,-0.05) @(0.24,2.14)  ==>  Delta(0.13,-0.20) @(0.97 Dteta:-0.36)
+   ==>   servoAmp=5.00 phase=2.75
+[0;37m[3142]: offset=33ms ropeAngle=0.23(-0.04)[0mwait [2]
+[0;37m[3108]: offset=15ms ropeAngle=0.26(-0.01)[0mwait [1]
+[0;31m[3128]: offset=18ms ropeAngle=0.26(-0.01)[0m
+Aimed(-0.07,0.03) @(0.07,2.75) Actual(-0.07,0.04) @(0.01,4.99)  ==>  Delta(-0.00,0.01) @(0.20 Dteta:2.25)
+   ==>   servoAmp=11.00 phase=2.09
+[0;37m[3161]: offset=54ms ropeAngle=0.21(-0.06)[0mwait [2]
+[0;37m[3108]: offset=36ms ropeAngle=0.27(+0.00)[0mwait [1]
+[0;31m[3129]: offset=40ms ropeAngle=0.27(-0.00)[0m
+Aimed(-0.07,0.13) @(0.14,2.09) Actual(-0.16,0.02) @(0.14,0.86)  ==>  Delta(-0.09,-0.10) @(0.93 Dteta:-1.23)
+   ==>   servoAmp=15.00 phase=2.56
+[0;37m[3243]: offset=158ms ropeAngle=0.22(-0.05)[0mwait [2]
+[0;37m[2982]: offset=15ms ropeAngle=0.28(+0.01)[0mwait [1]
+[0;31m[3094]: offset=-16ms ropeAngle=0.28(+0.01)[0m
+Aimed(-0.16,0.11) @(0.19,2.56) Actual(0.06,-0.04) @(0.27,2.58)  ==>  Delta(0.22,-0.14) @(1.38 Dteta:0.02)
+   ==>   servoAmp=6.00 phase=0.64
+[0;37m[3061]: offset=-202ms ropeAngle=0.27(+0.00)[0mwait [2]
+[0;37m[3263]: offset=-64ms ropeAngle=0.26(-0.01)[0mwait [1]
+[0;31m[3127]: offset=-62ms ropeAngle=0.25(-0.02)[0m
+Aimed(0.06,0.05) @(0.08,0.64) Actual(0.25,0.12) @(0.20,3.52)  ==>  Delta(0.18,0.07) @(2.47 Dteta:2.87)
+   ==>   servoAmp=25.00 phase=0.69
+[0;37m[2938]: offset=-322ms ropeAngle=0.29(+0.02)[0mwait [2]
+[0;37m[3454]: offset=0ms ropeAngle=0.25(-0.02)[0mwait [1]
+[0;31m[3120]: offset=-7ms ropeAngle=0.24(-0.03)[0m
+Aimed(0.25,0.20) @(0.32,0.69) Actual(0.03,0.16) @(0.22,0.20)  ==>  Delta(-0.22,-0.04) @(0.70 Dteta:-0.49)
+   ==>   servoAmp=19.00 phase=1.46
+[0;37m[3142]: offset=-125ms ropeAngle=0.27(+0.00)[0mwait [2]
+[0;37m[3161]: offset=-89ms ropeAngle=0.28(+0.01)[0mwait [1]
+[0;31m[3126]: offset=-88ms ropeAngle=0.28(+0.01)[0m
+Aimed(0.03,0.24) @(0.24,1.46) Actual(0.35,-0.04) @(0.43,2.43)  ==>  Delta(0.32,-0.28) @(1.75 Dteta:0.98)
+   ==>   servoAmp=28.00 phase=0.14
+[0;37m[2947]: offset=-314ms ropeAngle=0.36(+0.09)[0mwait [2]
+[0;37m[3475]: offset=34ms ropeAngle=0.23(-0.04)[0mwait [1]
+[0;31m[3128]: offset=37ms ropeAngle=0.23(-0.04)[0m
+Aimed(0.35,0.05) @(0.36,0.14) Actual(-0.15,0.20) @(0.52,5.99)  ==>  Delta(-0.50,0.15) @(1.47 Dteta:5.86)
+   ==>   servoAmp=25.00 phase=2.06
+[0;37m[3328]: offset=240ms ropeAngle=0.29(+0.02)[0mwait [2]
+[0;37m[2940]: offset=55ms ropeAngle=0.29(+0.02)[0mwait [1]
+[0;31m[3112]: offset=37ms ropeAngle=0.28(+0.01)[0m
+Aimed(-0.15,0.28) @(0.32,2.06) Actual(-0.15,-0.04) @(0.32,1.57)  ==>  Delta(0.00,-0.32) @(1.00 Dteta:-0.48)
+   ==>   servoAmp=12.00 phase=2.83
+[0;37m[3228]: offset=140ms ropeAngle=0.22(-0.05)[0mwait [2]
+[0;37m[3011]: offset=26ms ropeAngle=0.27(-0.00)[0mwait [1]
+[0;31m[3123]: offset=24ms ropeAngle=0.27(-0.00)[0m
+Aimed(-0.15,0.05) @(0.16,2.83) Actual(-0.10,0.00) @(0.07,2.43)  ==>  Delta(0.05,-0.04) @(0.44 Dteta:-0.39)
+   ==>   servoAmp=10.00 phase=2.41
+[0;37m[3187]: offset=86ms ropeAngle=0.21(-0.06)[0mwait [2]
+[0;37m[3084]: offset=45ms ropeAngle=0.27(-0.00)[0mwait [1]
+[0;31m[3134]: offset=54ms ropeAngle=0.27(-0.00)[0m
+Aimed(-0.10,0.09) @(0.13,2.41) Actual(-0.22,0.02) @(0.14,0.49)  ==>  Delta(-0.12,-0.06) @(1.05 Dteta:-1.92)
+   ==>   servoAmp=19.00 phase=2.68
+[0;37m[3241]: offset=169ms ropeAngle=0.23(-0.04)[0mwait [2]
+[0;37m[2970]: offset=13ms ropeAngle=0.29(+0.02)[0mwait [1]
+[0;31m[3128]: offset=15ms ropeAngle=0.28(+0.01)[0m
+Aimed(-0.22,0.11) @(0.24,2.68) Actual(-0.06,-0.04) @(0.21,2.40)  ==>  Delta(0.16,-0.14) @(0.88 Dteta:-0.28)
+   ==>   servoAmp=6.00 phase=2.47
+[0;37m[3087]: offset=-23ms ropeAngle=0.22(-0.05)[0mwait [2]
+[0;37m[3180]: offset=27ms ropeAngle=0.27(-0.00)[0mwait [1]
+[0;31m[3094]: offset=-4ms ropeAngle=0.26(-0.01)[0m
+Aimed(-0.06,0.05) @(0.08,2.47) Actual(0.02,0.04) @(0.08,3.07)  ==>  Delta(0.08,-0.01) @(0.99 Dteta:0.60)
+   ==>   servoAmp=10.00 phase=1.44
+[0;37m[3099]: offset=-163ms ropeAngle=0.20(-0.07)[0mwait [2]
+[0;37m[3231]: offset=-57ms ropeAngle=0.27(-0.00)[0mwait [1]
+[0;31m[3116]: offset=-66ms ropeAngle=0.25(-0.02)[0m
+Aimed(0.02,0.13) @(0.13,1.44) Actual(0.26,0.10) @(0.25,3.04)  ==>  Delta(0.25,-0.03) @(1.97 Dteta:1.60)
+   ==>   servoAmp=25.00 phase=0.61
+[0;37m[2936]: offset=-331ms ropeAngle=0.28(+0.01)[0mwait [2]
+[0;37m[3436]: offset=-20ms ropeAngle=0.26(-0.01)[0mwait [1]
+[0;31m[3109]: offset=-36ms ropeAngle=0.24(-0.03)[0m
+Aimed(0.26,0.18) @(0.32,0.61) Actual(0.14,0.14) @(0.13,0.35)  ==>  Delta(-0.12,-0.04) @(0.40 Dteta:-0.25)
+   ==>   servoAmp=21.00 phase=1.00
+[0;37m[3091]: offset=-173ms ropeAngle=0.26(-0.01)[0mwait [2]
+[0;37m[3282]: offset=-16ms ropeAngle=0.26(-0.01)[0mwait [1]
+[0;31m[3132]: offset=-13ms ropeAngle=0.26(-0.01)[0m
+Aimed(0.14,0.22) @(0.27,1.00) Actual(0.05,0.08) @(0.17,0.99)  ==>  Delta(-0.09,-0.14) @(0.64 Dteta:-0.00)
+   ==>   servoAmp=13.00 phase=1.26
+[0;37m[3099]: offset=-165ms ropeAngle=0.23(-0.04)[0mwait [2]
+[0;37m[3226]: offset=-65ms ropeAngle=0.27(-0.00)[0mwait [1]
+[0;31m[3111]: offset=-79ms ropeAngle=0.26(-0.01)[0m
+Aimed(0.05,0.16) @(0.17,1.26) Actual(0.32,0.08) @(0.28,2.84)  ==>  Delta(0.26,-0.08) @(1.60 Dteta:1.57)
+   ==>   servoAmp=28.00 phase=0.48
+[0;37m[2972]: offset=-290ms ropeAngle=0.29(+0.02)[0mwait [2]
+[0;37m[3413]: offset=-2ms ropeAngle=0.25(-0.02)[0mwait [1]
+[0;31m[3163]: offset=36ms ropeAngle=0.25(-0.02)[0m
+Aimed(0.32,0.16) @(0.36,0.48) Actual(-0.14,0.12) @(0.46,0.10)  ==>  Delta(-0.46,-0.04) @(1.30 Dteta:-0.38)
+   ==>   servoAmp=19.00 phase=2.19
+[0;37m[3297]: offset=207ms ropeAngle=0.25(-0.02)[0mwait [2]
+[0;37m[2941]: offset=23ms ropeAngle=0.28(+0.01)[0mwait [1]
+[0;31m[3114]: offset=12ms ropeAngle=0.28(+0.01)[0m
+Aimed(-0.14,0.20) @(0.25,2.19) Actual(-0.05,-0.05) @(0.28,1.93)  ==>  Delta(0.10,-0.26) @(1.11 Dteta:-0.26)
+   ==>   servoAmp=4.00 phase=2.61
+[0;37m[3140]: offset=27ms ropeAngle=0.23(-0.04)[0mwait [2]
+[0;37m[3173]: offset=75ms ropeAngle=0.26(-0.01)[0mwait [1]
+[0;31m[3112]: offset=61ms ropeAngle=0.26(-0.01)[0m
+Aimed(-0.05,0.03) @(0.06,2.61) Actual(-0.24,0.08) @(0.20,6.02)  ==>  Delta(-0.20,0.05) @(3.64 Dteta:3.41)
+   ==>   servoAmp=23.00 phase=2.55
+[0;37m[3263]: offset=198ms ropeAngle=0.26(-0.01)[0mwait [2]
+[0;37m[2937]: offset=5ms ropeAngle=0.29(+0.02)[0mwait [1]
+[0;31m[3101]: offset=-19ms ropeAngle=0.29(+0.02)[0m
+Aimed(-0.24,0.16) @(0.29,2.55) Actual(0.08,-0.09) @(0.41,2.46)  ==>  Delta(0.32,-0.26) @(1.40 Dteta:-0.09)
+   ==>   servoAmp=6.00 phase=6.15
+[0;37m[3119]: offset=-145ms ropeAngle=0.29(+0.02)[0mwait [2]
+[0;37m[3154]: offset=-117ms ropeAngle=0.26(-0.01)[0mwait [1]
+[0;31m[3139]: offset=-103ms ropeAngle=0.25(-0.02)[0m
+Aimed(0.08,-0.01) @(0.08,6.15) Actual(0.41,0.12) @(0.36,3.51)  ==>  Delta(0.34,0.13) @(4.70 Dteta:-2.64)
+   ==>   servoAmp=36.00 phase=0.46
+[0;37m[2944]: offset=-320ms ropeAngle=0.32(+0.05)[0mwait [2]
+[0;37m[3517]: offset=71ms ropeAngle=0.26(-0.01)[0mwait [1]
+[0;31m[3115]: offset=61ms ropeAngle=0.25(-0.02)[0m
+Aimed(0.41,0.20) @(0.46,0.46) Actual(-0.24,0.12) @(0.66,0.13)  ==>  Delta(-0.66,-0.08) @(1.44 Dteta:-0.33)
+   ==>   servoAmp=25.00 phase=2.45
+[0;37m[3308]: offset=239ms ropeAngle=0.28(+0.01)[0mwait [2]
+[0;37m[2916]: offset=30ms ropeAngle=0.30(+0.03)[0mwait [1]
+[0;31m[3145]: offset=50ms ropeAngle=0.29(+0.02)[0m
+Aimed(-0.24,0.20) @(0.32,2.45) Actual(-0.20,-0.09) @(0.30,1.72)  ==>  Delta(0.04,-0.30) @(0.95 Dteta:-0.73)
+   ==>   servoAmp=16.00 phase=3.19
+[0;37m[3220]: offset=145ms ropeAngle=0.24(-0.03)[0mwait [2]
+[0;37m[2994]: offset=9ms ropeAngle=0.28(+0.01)[0mwait [1]
+[0;31m[3124]: offset=8ms ropeAngle=0.28(+0.01)[0m
+Aimed(-0.20,-0.01) @(0.20,3.19) Actual(-0.03,-0.05) @(0.17,2.88)  ==>  Delta(0.17,-0.04) @(0.87 Dteta:-0.31)
+   ==>   servoAmp=3.00 phase=2.41
+[0;37m[3138]: offset=20ms ropeAngle=0.25(-0.02)[0mwait [2]
+[0;37m[3134]: offset=29ms ropeAngle=0.26(-0.01)[0mwait [1]
+[0;31m[3122]: offset=25ms ropeAngle=0.25(-0.02)[0m
+Aimed(-0.03,0.03) @(0.04,2.41) Actual(-0.10,0.10) @(0.10,5.47)  ==>  Delta(-0.07,0.07) @(2.31 Dteta:3.05)
+   ==>   servoAmp=16.00 phase=2.07
+[0;37m[3169]: offset=69ms ropeAngle=0.24(-0.03)[0mwait [2]
+[0;37m[3064]: offset=7ms ropeAngle=0.28(+0.01)[0mwait [1]
+[0;31m[3131]: offset=13ms ropeAngle=0.27(+0.00)[0m
+Aimed(-0.10,0.18) @(0.21,2.07) Actual(-0.05,-0.02) @(0.21,1.81)  ==>  Delta(0.05,-0.20) @(0.98 Dteta:-0.26)
+   ==>   servoAmp=6.00 phase=2.23
+[0;37m[3106]: offset=-6ms ropeAngle=0.22(-0.05)[0mwait [2]
+[0;37m[3186]: offset=54ms ropeAngle=0.25(-0.02)[0mwait [1]
+[0;31m[3127]: offset=51ms ropeAngle=0.25(-0.02)[0m
+Aimed(-0.05,0.07) @(0.09,2.23) Actual(-0.20,0.12) @(0.16,5.95)  ==>  Delta(-0.15,0.05) @(1.89 Dteta:3.72)
+   ==>   servoAmp=23.00 phase=2.36
+[0;37m[3284]: offset=211ms ropeAngle=0.27(+0.00)[0mwait [2]
+[0;37m[2947]: offset=32ms ropeAngle=0.29(+0.02)[0mwait [1]
+[0;31m[3124]: offset=29ms ropeAngle=0.29(+0.02)[0m
+Aimed(-0.20,0.20) @(0.29,2.36) Actual(-0.12,-0.11) @(0.33,1.84)  ==>  Delta(0.09,-0.32) @(1.14 Dteta:-0.52)
+   ==>   servoAmp=9.00 phase=3.39
+[0;37m[3197]: offset=100ms ropeAngle=0.25(-0.02)[0mwait [2]
+[0;37m[3041]: offset=15ms ropeAngle=0.27(-0.00)[0mwait [1]
+[0;31m[3111]: offset=4ms ropeAngle=0.27(-0.00)[0m
+Aimed(-0.12,-0.03) @(0.12,3.39) Actual(-0.02,0.02) @(0.11,3.63)  ==>  Delta(0.10,0.05) @(0.94 Dteta:0.23)
+   ==>   servoAmp=8.00 phase=1.72
+[0;37m[3097]: offset=-27ms ropeAngle=0.21(-0.06)[0mwait [2]
+[0;37m[3205]: offset=53ms ropeAngle=0.27(-0.00)[0mwait [1]
+[0;31m[3123]: offset=50ms ropeAngle=0.26(-0.01)[0m
+Aimed(-0.02,0.11) @(0.11,1.72) Actual(-0.20,0.06) @(0.19,0.24)  ==>  Delta(-0.18,-0.04) @(1.76 Dteta:-1.48)
+   ==>   servoAmp=19.00 phase=2.51
+[0;37m[3261]: offset=185ms ropeAngle=0.24(-0.03)[0mwait [2]
+[0;37m[2965]: offset=25ms ropeAngle=0.29(+0.02)[0mwait [1]
+[0;31m[3126]: offset=26ms ropeAngle=0.28(+0.01)[0m
+Aimed(-0.20,0.15) @(0.25,2.51) Actual(-0.10,-0.05) @(0.22,2.02)  ==>  Delta(0.10,-0.20) @(0.90 Dteta:-0.50)
+   ==>   servoAmp=8.00 phase=2.87
+[0;37m[3185]: offset=86ms ropeAngle=0.24(-0.03)[0mwait [2]
+[0;37m[3069]: offset=30ms ropeAngle=0.27(-0.00)[0mwait [1]
+[0;31m[3105]: offset=10ms ropeAngle=0.27(-0.00)[0m
+Aimed(-0.10,0.03) @(0.11,2.87) Actual(-0.04,0.02) @(0.06,3.05)  ==>  Delta(0.06,-0.01) @(0.60 Dteta:0.18)
+   ==>   servoAmp=9.00 phase=1.93
+[0;37m[3133]: offset=18ms ropeAngle=0.21(-0.06)[0mwait [2]
+[0;37m[3143]: offset=35ms ropeAngle=0.28(+0.01)[0mwait [1]
+[0;31m[3126]: offset=36ms ropeAngle=0.27(-0.00)[0m
+Aimed(-0.04,0.11) @(0.11,1.93) Actual(-0.14,0.00) @(0.15,0.78)  ==>  Delta(-0.10,-0.10) @(1.29 Dteta:-1.15)
+   ==>   servoAmp=13.00 phase=2.60
+[0;37m[3228]: offset=139ms ropeAngle=0.21(-0.06)[0mwait [2]
+[0;37m[2999]: offset=12ms ropeAngle=0.27(+0.00)[0mwait [1]
+[0;31m[3105]: offset=-8ms ropeAngle=0.27(-0.00)[0m
+Aimed(-0.14,0.09) @(0.17,2.60) Actual(0.03,0.02) @(0.19,2.79)  ==>  Delta(0.18,-0.06) @(1.11 Dteta:0.19)
+   ==>   servoAmp=8.00 phase=1.28
+[0;37m[3140]: offset=-121ms ropeAngle=0.21(-0.06)[0mwait [2]
+[0;37m[3179]: offset=-67ms ropeAngle=0.27(-0.00)[0mwait [1]
+[0;31m[3126]: offset=-66ms ropeAngle=0.25(-0.02)[0m
+Aimed(0.03,0.11) @(0.11,1.28) Actual(0.26,0.10) @(0.23,3.12)  ==>  Delta(0.23,-0.01) @(2.09 Dteta:1.84)
+   ==>   servoAmp=25.00 phase=0.61
+[0;37m[2946]: offset=-315ms ropeAngle=0.28(+0.01)[0mwait [2]
+[0;37m[3425]: offset=-15ms ropeAngle=0.25(-0.02)[0mwait [1]
+[0;31m[3141]: offset=4ms ropeAngle=0.24(-0.03)[0m
+Aimed(0.26,0.18) @(0.32,0.61) Actual(-0.02,0.14) @(0.28,0.16)  ==>  Delta(-0.28,-0.04) @(0.88 Dteta:-0.45)
+   ==>   servoAmp=17.00 phase=1.64
+[0;37m[3159]: offset=35ms ropeAngle=0.26(-0.01)[0mwait [2]
+[0;37m[3131]: offset=41ms ropeAngle=0.28(+0.01)[0mwait [1]
+[0;31m[3090]: offset=5ms ropeAngle=0.27(-0.00)[0m
+Aimed(-0.02,0.22) @(0.22,1.64) Actual(-0.02,0.02) @(0.20,1.55)  ==>  Delta(-0.00,-0.20) @(0.90 Dteta:-0.09)
+   ==>   servoAmp=8.00 phase=1.76
+[0;37m[3139]: offset=19ms ropeAngle=0.20(-0.07)[0mwait [2]
+[0;37m[3240]: offset=135ms ropeAngle=0.30(+0.03)[0mwait [1]
+[0;31m[3099]: offset=108ms ropeAngle=0.31(+0.04)[0m
+Aimed(-0.02,0.11) @(0.11,1.76) Actual(-0.43,-0.21) @(0.52,0.66)  ==>  Delta(-0.41,-0.32) @(4.81 Dteta:-1.10)
+   ==>   servoAmp=36.00 phase=3.43
+[0;37m[3207]: offset=190ms ropeAngle=0.27(+0.00)[0mwait [2]
+[0;37m[2823]: offset=-112ms ropeAngle=0.29(+0.02)[0mwait [1]
+[0;31m[3129]: offset=-108ms ropeAngle=0.27(-0.00)[0m
+Aimed(-0.43,-0.13) @(0.45,3.43) Actual(0.43,0.00) @(0.87,3.29)  ==>  Delta(0.86,0.13) @(1.94 Dteta:-0.14)
+   ==>   servoAmp=35.00 phase=0.20
+[0;37m[2961]: offset=-304ms ropeAngle=0.35(+0.08)[0mwait [2]
+[0;37m[3538]: offset=109ms ropeAngle=0.25(-0.02)[0mwait [1]
+[0;31m[3116]: offset=95ms ropeAngle=0.24(-0.03)[0m
+Aimed(0.43,0.09) @(0.44,0.20) Actual(-0.38,0.18) @(0.82,6.17)  ==>  Delta(-0.81,0.09) @(1.85 Dteta:5.97)
+   ==>   servoAmp=36.00 phase=2.54
+[0;37m[3299]: offset=269ms ropeAngle=0.32(+0.05)[0mwait [2]
+[0;37m[2885]: offset=29ms ropeAngle=0.31(+0.04)[0mwait [1]
+[0;31m[3136]: offset=40ms ropeAngle=0.30(+0.03)[0m
+Aimed(-0.38,0.26) @(0.46,2.54) Actual(-0.16,-0.17) @(0.49,2.04)  ==>  Delta(0.22,-0.43) @(1.05 Dteta:-0.50)
+   ==>   servoAmp=14.00 phase=3.65
+[0;37m[3188]: offset=103ms ropeAngle=0.28(+0.01)[0mwait [2]
+[0;37m[3007]: offset=-15ms ropeAngle=0.29(+0.02)[0mwait [1]
+[0;31m[3129]: offset=-11ms ropeAngle=0.28(+0.01)[0m
+Aimed(-0.16,-0.09) @(0.18,3.65) Actual(0.04,-0.04) @(0.21,3.39)  ==>  Delta(0.20,0.05) @(1.15 Dteta:-0.25)
+   ==>   servoAmp=5.00 phase=0.83
+[0;37m[3072]: offset=-192ms ropeAngle=0.25(-0.02)[0mwait [2]
+[0;37m[3220]: offset=-102ms ropeAngle=0.26(-0.01)[0mwait [1]
+[0;31m[3124]: offset=-103ms ropeAngle=0.25(-0.02)[0m
+Aimed(0.04,0.05) @(0.07,0.83) Actual(0.41,0.10) @(0.37,3.28)  ==>  Delta(0.37,0.05) @(5.72 Dteta:2.46)
+   ==>   servoAmp=36.00 phase=0.42
+[0;37m[2911]: offset=-355ms ropeAngle=0.32(+0.05)[0mwait [2]
+[0;37m[3544]: offset=64ms ropeAngle=0.25(-0.02)[0mwait [1]
+[0;31m[3127]: offset=65ms ropeAngle=0.24(-0.03)[0m
+Aimed(0.41,0.18) @(0.45,0.42) Actual(-0.26,0.14) @(0.67,0.07)  ==>  Delta(-0.67,-0.04) @(1.49 Dteta:-0.35)
+   ==>   servoAmp=27.00 phase=2.43
+[0;37m[3304]: offset=244ms ropeAngle=0.29(+0.02)[0mwait [2]
+[0;37m[2906]: offset=25ms ropeAngle=0.30(+0.03)[0mwait [1]
+[0;31m[3139]: offset=39ms ropeAngle=0.29(+0.02)[0m
+Aimed(-0.26,0.22) @(0.34,2.43) Actual(-0.16,-0.09) @(0.33,1.89)  ==>  Delta(0.10,-0.32) @(0.97 Dteta:-0.54)
+   ==>   servoAmp=12.00 phase=3.21
+[0;37m[3206]: offset=119ms ropeAngle=0.24(-0.03)[0mwait [2]
+[0;37m[3019]: offset=13ms ropeAngle=0.28(+0.01)[0mwait [1]
+[0;31m[3123]: offset=11ms ropeAngle=0.28(+0.01)[0m
+Aimed(-0.16,-0.01) @(0.16,3.21) Actual(-0.04,-0.04) @(0.11,2.92)  ==>  Delta(0.11,-0.03) @(0.73 Dteta:-0.29)
+   ==>   servoAmp=5.00 phase=2.31
+[0;37m[3143]: offset=29ms ropeAngle=0.22(-0.05)[0mwait [2]
+[0;37m[3131]: offset=35ms ropeAngle=0.26(-0.01)[0mwait [1]
+[0;31m[3127]: offset=37ms ropeAngle=0.26(-0.01)[0m
+Aimed(-0.04,0.05) @(0.07,2.31) Actual(-0.15,0.06) @(0.10,6.15)  ==>  Delta(-0.10,0.01) @(1.61 Dteta:3.84)
+   ==>   servoAmp=16.00 phase=2.37
+[0;37m[3260]: offset=172ms ropeAngle=0.23(-0.04)[0mwait [2]
+[0;37m[2965]: offset=11ms ropeAngle=0.28(+0.01)[0mwait [1]
+[0;31m[3124]: offset=9ms ropeAngle=0.28(+0.01)[0m
+Aimed(-0.15,0.15) @(0.21,2.37) Actual(-0.04,-0.04) @(0.21,2.13)  ==>  Delta(0.11,-0.18) @(1.02 Dteta:-0.24)
+   ==>   servoAmp=4.00 phase=2.22
+[0;37m[3106]: offset=-10ms ropeAngle=0.22(-0.05)[0mwait [2]
+[0;37m[3193]: offset=57ms ropeAngle=0.26(-0.01)[0mwait [1]
+[0;31m[3126]: offset=58ms ropeAngle=0.26(-0.01)[0m
+Aimed(-0.04,0.05) @(0.06,2.22) Actual(-0.23,0.08) @(0.20,6.11)  ==>  Delta(-0.20,0.03) @(3.32 Dteta:3.90)
+   ==>   servoAmp=22.00 phase=2.52
+[0;37m[3256]: offset=189ms ropeAngle=0.25(-0.02)[0mwait [2]
+[0;37m[2933]: offset=-3ms ropeAngle=0.29(+0.02)[0mwait [1]
+[0;31m[3141]: offset=13ms ropeAngle=0.29(+0.02)[0m
+Aimed(-0.23,0.16) @(0.28,2.52) Actual(-0.05,-0.09) @(0.31,2.18)  ==>  Delta(0.18,-0.26) @(1.11 Dteta:-0.35)
+   ==>   servoAmp=4.00 phase=3.34
+~[0;37m[3197]: offset=85ms ropeAngle=0.24(-0.03)[0mwait [2]
+.Connected.
+Connected.
+
+Disconnected.

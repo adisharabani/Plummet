@@ -268,13 +268,19 @@ boolean servoAttached = false;
 static int originalTCCR1A = 0;
 
 double smoothWrite(double desiredPosition) {
+  static double lastWrite = 0;
+  static unsigned long lastWriteTime = 0;
   //myservowrite(desiredPosition); return desiredPosition;
-  double maxServoMove = double(time-lastIterationTime)/defaultLoopTime * max(servoAmp,5) * 2 * maxSpeed; // Max 3 times average speed under current servo.
-  double servoPosition_new = max(min(desiredPosition, lastServoWriteValue+maxServoMove), lastServoWriteValue-maxServoMove);
+  double maxServoMove = double(millis()-lastWriteTime) * maxServoAmp*2.0 / defaultLoopTime * maxSpeed; // Max 3 times average speed under current servo.
+  double servoPosition_new = max(min(desiredPosition, lastWrite+maxServoMove), lastWrite-maxServoMove);
 //  if (servoPosition_new != desiredPosition) {
 	//sprintln("^^^ desiredPosition="+String(desiredPosition)+" lastServoWriteValue="+String(lastServoWriteValue)+" MaxMove="+String(maxServoMove) + "  newpos="+String(servoPosition_new));
 //  }
   myservowrite(servoPosition_new);
+  
+  lastWrite = servoPosition_new;
+  lastWriteTime = millis();
+  
   return servoPosition_new;
 }
 
@@ -1238,13 +1244,17 @@ void updateAmpAndTimeForSyncedRunning() {
 	static double ML_LOOP_OFFSET_TO_AMP = maxServoAmp/250.0;
 	static double ML_ROPE_OFFSET_TO_AMP = maxServoAmp*8;
 	static double ML_EPS = 0.01;
+	static double ML_MAX_ROPE_SHIFT_IN_CYCLE = 0.18;
+	static double ML_MAX_OFFSET_SHIFT_IN_CYCLE = 250.0;
 
 	static int waitLoops=0;
 	static int repeat = 0;
-	
 	static double tPhase;
+
 	double ropeAngle = (ropeMaxRightAngle-ropeMaxLeftAngle);
 	double ropeAngleOffset = ropeAngle-syncRopeAngle;
+
+	static double lastOffsetAxis,lastRopeOffsetAxis;
 
 	int offset = (millis()-(syncInitTime+syncInitTimeOffset)) % syncLoopTime;
 	if (offset > syncLoopTime/2) offset = offset - syncLoopTime;
@@ -1258,65 +1268,52 @@ void updateAmpAndTimeForSyncedRunning() {
 		
 		if (repeat > 0) {
 			sprint("repeat ["); sprint(repeat--); sprintln("]");
-			if (tPhase != 99) {
-				initTime = millis() - loopTime*(side==LEFT ? tPhase+0.5 : tPhase);		
-			} else {
-				//speed up on the sync right phase
-				initTime = syncInitTime + syncInitTimeOffset - 0.25*loopTime;
-			}
 			return;			
 		}
-		repeat = 0;
 		if (waitLoops > 0) {
 			sprint("wait ["); sprint(waitLoops--); sprintln("]");
 			servoAmp = 0;
 			return;
 		}
 		
-		//predict		
-        ropeAngleOffset = ropeAngleOffset - ML_ROPE_ANGLE_DECREASE*LOOP_INTERVAL; //predict decrease in rope Angle
-		offset = offset + (loopTime-syncLoopTime) * LOOP_INTERVAL; //predict increase in offset
-		
-		double offsetAxis = -offset / 250;
-		double ropeOffsetAxis = -ropeAngleOffset / 0.05;
-		sprint(". %%%");sprint(int(min(1,sqrt(offsetAxis*offsetAxis + ropeOffsetAxis*ropeOffsetAxis))*maxServoAmp)); sprint(","); sprint(axisToAngle(offsetAxis, ropeOffsetAxis)/2/PI);
-		// Decide on actions
-		if (offset < 0) {
-			// dont decrease amp if long way from the right offset (and rope is not too (+0.05) big;
-/* 			if ((-offset > loopTime*0.1) && (ropeAngleOffset>0) && (ropeAngleOffset < 0.1)) {
-				tPhase = -ML_EPS; // eps to make sure we are not accidentally increasing rope amp.
-				//repeat = int(float(-offset)/loopTime * 10) - 1; // repeat once for every 0.1 of a looptime
-				
-			} */
-			servoAmp = min(max(-offset*ML_LOOP_OFFSET_TO_AMP + abs(ropeAngleOffset)*ML_ROPE_OFFSET_TO_AMP,0),maxServoAmp);
-			tPhase = min(max(-ropeAngleOffset*ML_ROPE_OFFSET_TO_PHASE,-0.25),0.25);
-		} else {
-			// dont decrease amp if long way from the right offset (and rope is not too (+0.1) big;
-/* 			if ((offset > loopTime*0.1) && (ropeAngleOffset>0) && (ropeAngleOffset < 0.1)) {
-				tPhase = 0.5+ML_EPS; // eps to make sure we are not accidentally increasing rope amp. 
-				//repeat = int(float(offset)/loopTime * 10) - 1; // repeat once for every 0.1 of a looptime
-			} */
-			servoAmp = min(max( offset*ML_LOOP_OFFSET_TO_AMP + abs(ropeAngleOffset)*ML_ROPE_OFFSET_TO_AMP,0),maxServoAmp);
-			tPhase = min(max(0.5 + ropeAngleOffset*ML_ROPE_OFFSET_TO_PHASE,0.25),0.75);
+		double offsetAxis = offset / ML_MAX_OFFSET_SHIFT_IN_CYCLE;
+		double ropeOffsetAxis = ropeAngleOffset / ML_MAX_ROPE_SHIFT_IN_CYCLE;
+
+		if (true) { // show analysis
+			double tetaLastTarget = axisToAngle(-lastOffsetAxis,-lastRopeOffsetAxis);
+			double rLastTarget = sqrt(pow(lastOffsetAxis,2) + pow(lastRopeOffsetAxis,2));
+	
+	        double tetaLastActual = axisToAngle(offsetAxis - lastOffsetAxis, ropeOffsetAxis-lastRopeOffsetAxis);
+			double rLastActual = sqrt(pow(offsetAxis-lastOffsetAxis,2) + pow(ropeOffsetAxis - lastRopeOffsetAxis,2));
+			sprintln("");
+			sprint("Aimed("); sprint(-lastOffsetAxis); sprint(","); sprint(-lastRopeOffsetAxis);
+			sprint(") @(");    sprint(rLastTarget);            sprint(","); sprint(tetaLastTarget);
+			sprint(") Actual(");  sprint(-offsetAxis);     sprint(","); sprint(-ropeOffsetAxis);
+			sprint(") @(");    sprint(rLastActual);            sprint(","); sprint(tetaLastActual);
+			sprint(")  ==>  Delta("); sprint(-offsetAxis+lastOffsetAxis);sprint(","); sprint(-ropeOffsetAxis+lastRopeOffsetAxis);
+			sprint(") @("); sprint(rLastActual/rLastTarget); sprint(" Dteta:"); sprint(tetaLastActual-tetaLastTarget); 
+			sprintln(")");
 		}
 
-		// better to use positive tphase...
-		if (tPhase < 0) tPhase = tPhase + 1;
-		initTime = millis() - loopTime*(side==LEFT ? tPhase+0.5 : tPhase);
-		waitLoops=LOOP_INTERVAL-1;
-
-		// If current amp is small just go for the real sync 
-/* 		if (ropeAngle < 0.3 * syncRopeAngle) {
-			servoAmp = maxServoAmp;
-			initTime = syncInitTime + syncInitTimeOffset - 0.25*loopTime;
-			tPhase = -99;
-			repeat = 1;
-		} */
+		//predict
+        ropeOffsetAxis = ropeOffsetAxis - ML_ROPE_ANGLE_DECREASE*LOOP_INTERVAL/ML_MAX_ROPE_SHIFT_IN_CYCLE; //predict decrease in rope Angle
+		offsetAxis = offsetAxis + (loopTime-syncLoopTime) * LOOP_INTERVAL / ML_MAX_OFFSET_SHIFT_IN_CYCLE; //predict increase in offset
+		
+		tPhase = axisToAngle(-offsetAxis,-ropeOffsetAxis);
+		double tRadial = sqrt(offsetAxis*offsetAxis + ropeOffsetAxis*ropeOffsetAxis);
 
 		// HERE
-		tPhase = axisToAngle(offsetAxis,ropeOffsetAxis)/2/PI;
-		servoAmp = int(min(1,sqrt(offsetAxis*offsetAxis + ropeOffsetAxis*ropeOffsetAxis))*maxServoAmp);
+		servoAmp = int(min(1,tRadial)*maxServoAmp);
+		repeat = min((int)tRadial,2);
+		
+		loopTime = defaultLoopTime + sin(tPhase)*ML_MAX_OFFSET_SHIFT_IN_CYCLE;
+		initTime = millis() - loopTime*(side==LEFT ? tPhase/PI/2+0.5 : tPhase/PI/2);
+		waitLoops=LOOP_INTERVAL-1;
+
 		sprint("   ==>   servoAmp=");sprint(servoAmp); sprint(" phase=");sprintln(tPhase);
+
+		lastOffsetAxis = offsetAxis;
+		lastRopeOffsetAxis = ropeOffsetAxis;
 	}	
 }
 
@@ -1362,7 +1359,6 @@ void setup() {
   sendAudioCommand(0X22, 0X1E01);
   
   myservoattach(servoPin);
-  myservowrite(servoCenter);
   tone(7, NOTE_G5, 100);
   
   // Read all prevSerial data
