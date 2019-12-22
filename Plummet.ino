@@ -86,7 +86,7 @@ int recordingLoc;
 int loopTime = defaultLoopTime;
 int lastLoopTime;
 
-double maxSpeed = 2;  // pot will move at this speed (compared to average cycle speed based on servoAmp);
+double maxSpeed = 1.6;  // PI/2 - pot will move at max this speed (compared to average cycle speed based on servoAmp);
 double maxServoAmp = 80;
 double servoAmp = maxServoAmp;
 double servoCenter = 100; // 88; //100 // 95;
@@ -263,7 +263,7 @@ void playSong(int8_t songNumber=1, int8_t volume=30) {
 ///////////////////////////
 //LIBSERVO: Servo myservo;  // create servo object to control a servo
 double lastServoWriteValue = 95;
-#define SERVO_PWM_RATE 3040
+#define SERVO_PWM_RATE 6040
 boolean servoAttached = false;
 static int originalTCCR1A = 0;
 
@@ -272,6 +272,7 @@ double smoothWrite(double desiredPosition) {
   static unsigned long lastWriteTime = 0;
   //myservowrite(desiredPosition); return desiredPosition;
   double maxServoMove = double(millis()-lastWriteTime) * maxServoAmp*2.0 / defaultLoopTime * maxSpeed; // Max 3 times average speed under current servo.
+  maxServoMove = min(maxServoMove,1);
   double servoPosition_new = max(min(desiredPosition, lastWrite+maxServoMove), lastWrite-maxServoMove);
 //  if (servoPosition_new != desiredPosition) {
 	//sprintln("^^^ desiredPosition="+String(desiredPosition)+" lastServoWriteValue="+String(lastServoWriteValue)+" MaxMove="+String(maxServoMove) + "  newpos="+String(servoPosition_new));
@@ -336,7 +337,7 @@ void myservodetach() {
   }
 }
 
-void smoothMove(double desiredPosition, int totalTime = 2000) {
+void smoothMove(double desiredPosition, int totalTime = 1000) {
   double sl = myservoread();
   int iterations = totalTime/20;
   for (int i=0; i<=iterations; i++) {
@@ -438,12 +439,12 @@ void calibrate() {
 
   smoothMove(servoCenter-50,4000); 
   sprint("Old ");sprint("Pot50: ");sprintln(pot50);
-  pot50 = waitForSteadiness(10,6000);  
+  pot50 = waitForSteadiness(4,6000);  
   sprint("Pot50: ");sprintln(pot50);
 
   smoothMove(servoCenter+50,8000); 
   sprint("Old ");sprint("Pot150: "); sprintln(pot150);
-  pot150 = waitForSteadiness(10,6000); 
+  pot150 = waitForSteadiness(4,6000); 
   sprint("Pot150: ");sprintln(pot150);
   
   calibrateLoopTime();
@@ -849,11 +850,16 @@ void handleKeyboardInput() {
 	  mode = TEST; sprint("TEST");
 	  break;
 	case 's': // SYNC
-	  syncLoopTime = atoi(CMD); KB[0] = 0; CMD=KB;
+	  syncLoopTime = atoi(CMD); 
 	  syncInitTime = millis();
 	  syncInitTimeOffset = 0;
-	  syncRopeAngle = 0.27;
-	  mode = SYNCED_RUN; sprint("SYNC");sprintln(syncLoopTime);
+	  p = find(CMD, ',');
+	  if (p!=-1) {
+	  	syncRopeAngle = atof(CMD+p+1);
+	  }
+	  if (syncRopeAngle == 0) syncRopeAngle = 0.27;
+	  KB[0] = 0; CMD=KB;
+	  mode = SYNCED_RUN; sprint("SYNC");sprint(syncLoopTime); sprint(","); sprintln(syncRopeAngle);
 	  break;
 	case 'T': /* Set the clock for SYNC */
 	  syncInitTime = millis();
@@ -1239,28 +1245,25 @@ void updateAmpAndTimeForAnalyzing() {
 
 void updateAmpAndTimeForSyncedRunning() {  
 	static const uint8_t LOOP_INTERVAL = 3;
-	static double ML_ROPE_ANGLE_DECREASE = 0.005;
-	static double ML_ROPE_OFFSET_TO_PHASE = 3;
-	static double ML_LOOP_OFFSET_TO_AMP = maxServoAmp/250.0;
-	static double ML_ROPE_OFFSET_TO_AMP = maxServoAmp*8;
-	static double ML_EPS = 0.01;
+	static double ML_ROPE_ANGLE_DECREASE = 0.005; // per cycle
 	static double ML_MAX_ROPE_SHIFT_IN_CYCLE = 0.18;
 	static double ML_MAX_OFFSET_SHIFT_IN_CYCLE = 250.0;
 
 	static int waitLoops=0;
 	static int repeat = 0;
+	
+	static double lastOffsetAxis,lastRopeOffsetAxis;
+
 	static double tPhase;
 
 	double ropeAngle = (ropeMaxRightAngle-ropeMaxLeftAngle);
 	double ropeAngleOffset = ropeAngle-syncRopeAngle;
-
-	static double lastOffsetAxis,lastRopeOffsetAxis;
-
+	
 	int offset = (millis()-(syncInitTime+syncInitTimeOffset)) % syncLoopTime;
 	if (offset > syncLoopTime/2) offset = offset - syncLoopTime;
 
 	loopTime = defaultLoopTime;
-
+	
 	if (side==RIGHT) {
 		sprint(waitLoops ? "\x1b[0;37m" : "\x1b[0;31m");
 		sprint ("["); sprint(lastLoopTime); sprint("]: offset="); sprint(offset); sprint("ms ropeAngle="); 	sprint(ropeAngle); sprint((ropeAngleOffset > 0) ? "(+" : "(");sprint(ropeAngleOffset); sprint(")");
@@ -1280,10 +1283,10 @@ void updateAmpAndTimeForSyncedRunning() {
 		double ropeOffsetAxis = ropeAngleOffset / ML_MAX_ROPE_SHIFT_IN_CYCLE;
 
 		if (true) { // show analysis
-			double tetaLastTarget = axisToAngle(-lastOffsetAxis,-lastRopeOffsetAxis);
+			double tetaLastTarget = axisToAngle(-lastOffsetAxis,-lastRopeOffsetAxis)/2/PI;
 			double rLastTarget = sqrt(pow(lastOffsetAxis,2) + pow(lastRopeOffsetAxis,2));
 	
-	        double tetaLastActual = axisToAngle(offsetAxis - lastOffsetAxis, ropeOffsetAxis-lastRopeOffsetAxis);
+	        double tetaLastActual = axisToAngle(offsetAxis - lastOffsetAxis, ropeOffsetAxis-lastRopeOffsetAxis)/2/PI;
 			double rLastActual = sqrt(pow(offsetAxis-lastOffsetAxis,2) + pow(ropeOffsetAxis - lastRopeOffsetAxis,2));
 			sprintln("");
 			sprint("Aimed("); sprint(-lastOffsetAxis); sprint(","); sprint(-lastRopeOffsetAxis);
@@ -1291,23 +1294,24 @@ void updateAmpAndTimeForSyncedRunning() {
 			sprint(") Actual(");  sprint(-offsetAxis);     sprint(","); sprint(-ropeOffsetAxis);
 			sprint(") @(");    sprint(rLastActual);            sprint(","); sprint(tetaLastActual);
 			sprint(")  ==>  Delta("); sprint(-offsetAxis+lastOffsetAxis);sprint(","); sprint(-ropeOffsetAxis+lastRopeOffsetAxis);
-			sprint(") @("); sprint(rLastActual/rLastTarget); sprint(" Dteta:"); sprint(tetaLastActual-tetaLastTarget); 
+			sprint(") @("); sprint(rLastActual/rLastTarget); sprint(","); sprint(tetaLastActual-tetaLastTarget); 
 			sprintln(")");
 		}
 
 		//predict
-        ropeOffsetAxis = ropeOffsetAxis - ML_ROPE_ANGLE_DECREASE*LOOP_INTERVAL/ML_MAX_ROPE_SHIFT_IN_CYCLE; //predict decrease in rope Angle
-		offsetAxis = offsetAxis + (loopTime-syncLoopTime) * LOOP_INTERVAL / ML_MAX_OFFSET_SHIFT_IN_CYCLE; //predict increase in offset
+        ropeOffsetAxis = ropeOffsetAxis - ML_ROPE_ANGLE_DECREASE * LOOP_INTERVAL / ML_MAX_ROPE_SHIFT_IN_CYCLE ; //predict decrease in rope Angle in percentage
+		offsetAxis = offsetAxis + (loopTime-syncLoopTime) * LOOP_INTERVAL / ML_MAX_OFFSET_SHIFT_IN_CYCLE; //predict increase in offset in offsetAxis grid (hence devide by ML_MAX..)
 		
-		tPhase = axisToAngle(-offsetAxis,-ropeOffsetAxis);
+		tPhase = axisToAngle(-offsetAxis,-ropeOffsetAxis)/2/PI;
 		double tRadial = sqrt(offsetAxis*offsetAxis + ropeOffsetAxis*ropeOffsetAxis);
 
 		// HERE
 		servoAmp = int(min(1,tRadial)*maxServoAmp);
 		repeat = min((int)tRadial,2);
+		repeat = 0;
 		
-		loopTime = defaultLoopTime + sin(tPhase)*ML_MAX_OFFSET_SHIFT_IN_CYCLE;
-		initTime = millis() - loopTime*(side==LEFT ? tPhase/PI/2+0.5 : tPhase/PI/2);
+		//loopTime = defaultLoopTime + sin(tPhase*2*PI)*ML_MAX_OFFSET_SHIFT_IN_CYCLE;
+		initTime = millis() - loopTime*(side==LEFT ? tPhase+0.5 : tPhase);
 		waitLoops=LOOP_INTERVAL-1;
 
 		sprint("   ==>   servoAmp=");sprint(servoAmp); sprint(" phase=");sprintln(tPhase);
