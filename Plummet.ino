@@ -1245,21 +1245,19 @@ void updateAmpAndTimeForAnalyzing() {
 
 void updateAmpAndTimeForSyncedRunning() {  
 	static const uint8_t LOOP_INTERVAL = 3;
-	static double ML_ROPE_ANGLE_DECREASE = 0.005; // per cycle
+	static double ML_ROPE_ANGLE_DECREASE = 0.005; // per cycle.  TODO: change to 0.185% of ropeAngle
 	static double ML_MAX_ROPE_SHIFT_IN_CYCLE = 0.18;
 	static double ML_MAX_OFFSET_SHIFT_IN_CYCLE = 250.0;
 
 	static int waitLoops=0;
-	static int repeat = 0;
-	
+	static int repeat = 0;	
 	static double lastOffsetAxis,lastRopeOffsetAxis;
 
-	static double tPhase;
-
+	double tPhase;
 	double ropeAngle = (ropeMaxRightAngle-ropeMaxLeftAngle);
-	double ropeAngleOffset = ropeAngle-syncRopeAngle;
-	
+	double ropeAngleOffset = ropeAngle-syncRopeAngle;	
 	int offset = (millis()-(syncInitTime+syncInitTimeOffset)) % syncLoopTime;
+
 	if (offset > syncLoopTime/2) offset = offset - syncLoopTime;
 
 	loopTime = defaultLoopTime;
@@ -1269,15 +1267,8 @@ void updateAmpAndTimeForSyncedRunning() {
 		sprint ("["); sprint(lastLoopTime); sprint("]: offset="); sprint(offset); sprint("ms ropeAngle="); 	sprint(ropeAngle); sprint((ropeAngleOffset > 0) ? "(+" : "(");sprint(ropeAngleOffset); sprint(")");
 		sprint("\x1b[0m");
 		
-		if (repeat > 0) {
-			sprint("repeat ["); sprint(repeat--); sprintln("]");
-			return;			
-		}
-		if (waitLoops > 0) {
-			sprint("wait ["); sprint(waitLoops--); sprintln("]");
-			servoAmp = 0;
-			return;
-		}
+		if (repeat > 0)    { sprint("repeat [");  sprint(repeat--); sprintln("]"); return; }
+		if (waitLoops > 0) { sprint("wait ["); sprint(waitLoops--); sprintln("]"); servoAmp = 0; return; }
 		
 		double offsetAxis = offset / ML_MAX_OFFSET_SHIFT_IN_CYCLE;
 		double ropeOffsetAxis = ropeAngleOffset / ML_MAX_ROPE_SHIFT_IN_CYCLE;
@@ -1322,10 +1313,40 @@ void updateAmpAndTimeForSyncedRunning() {
 }
 
 void updateAmpAndTimeForTesting() {  
-    sprint("testAmp:");sprint(testAmp);sprint(" testPhase:"); sprint(testPhase); sprint(" magic:"); sprintln(SYNC_MAGIC_NUMBER);
+// Original testing:
+//    sprint("testAmp:");sprint(testAmp);sprint(" testPhase:"); sprint(testPhase); sprint(" magic:"); sprintln(SYNC_MAGIC_NUMBER);
+//	loopTime = defaultLoopTime;
+//	servoAmp = testAmp;
+//	initTime = millis()-loopTime-loopTime*(side==LEFT ? 0.5+testPhase : testPhase) + SYNC_MAGIC_NUMBER;
+	static const uint8_t LOOP_INTERVAL = 2;
+	static double ML_MAX_ROPE_SHIFT_IN_CYCLE = 0.18;
+
+	static int waitLoops=0;
+	static int repeat = 0;
+	
+	double ropeAngle = (ropeMaxRightAngle-ropeMaxLeftAngle);
+
 	loopTime = defaultLoopTime;
-	servoAmp = testAmp;
-	initTime = millis()-loopTime-loopTime*(side==LEFT ? 0.5+testPhase : testPhase) + SYNC_MAGIC_NUMBER;
+	
+	if (side==RIGHT) {
+		sprint ("["); sprint(lastLoopTime); sprint("]: ropeAngle="); 	sprint(ropeAngle);		
+		if (repeat > 0)    { sprint("repeat [");  sprint(repeat--); sprintln("]"); return; }
+		if (waitLoops > 0) { sprint("wait ["); sprint(waitLoops--); sprintln("]"); servoAmp = 0; return; }
+		
+		double ropeOffsetAxis = ropeAngle / ML_MAX_ROPE_SHIFT_IN_CYCLE * 0.9;
+		
+		// HERE
+		servoAmp = int(min(1,ropeOffsetAxis)*maxServoAmp);
+		repeat = min((int)ropeOffsetAxis,2);
+		repeat = 0;
+		
+		//loopTime = defaultLoopTime + sin(tPhase*2*PI)*ML_MAX_OFFSET_SHIFT_IN_CYCLE;
+		initTime = millis() - loopTime*(side==LEFT ? 0.5 + 0.75 : 0.75);
+		waitLoops=LOOP_INTERVAL-1;
+
+		sprint("   ==>   servoAmp=");sprint(servoAmp); sprint(" phase=0.75");
+
+	}	
 }
 
 
