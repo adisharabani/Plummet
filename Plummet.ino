@@ -1417,7 +1417,7 @@ void setup() {
   nextSerial.begin(9600);
   prevSerial.begin(9600);
 
-  nextSerial.println("  "); // let the following arduino know you are here;
+  nextSerial.println("      "); // let the following arduino know you are here;
 
   //prevSerial.attachInterrupt(t);
   delay(200);
@@ -1526,7 +1526,7 @@ void sprintLoopEvents() {
 
 void loop(){
   showClockIfNeeded();
-  if (time > keepalive) { nextSerial.print("  "); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
+  if (time > keepalive) { nextSerial.print("   "); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
   if (isMaster && prevSerial.available() && (prevSerial.read()==' ') && prevSerial.available() && (prevSerial.read()==' ')) { Serial.println("I am now a slave"); isMaster = false; listenOnPrev = !isMaster;} // inform 
 
   time = millis();
