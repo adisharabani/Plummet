@@ -19,7 +19,6 @@
 //  Make sync faster - predict future movements
 //  Update stop based on new sync
 
-// TODO: Ifdev LIBSERVO
 // TODO: Better master detection
 // TODO: ML for circular phase options.
 // TODO: move if potCenter is not at the right place.
@@ -619,7 +618,6 @@ byte readByte() {
 	  //sprint(b);
 	  return b;
 	} else if (listenOnPrev && prevSerial.available()){
-	  isMaster = false;
 	  char b = prevSerial.read();
 //	  if (b=='~') { Serial.write("Error:"); delay(100); while (prevSerial.available()) Serial.print("~"+String(int(prevSerial.read()))); Serial.println("");}
 	  //sprint(b);
@@ -746,6 +744,7 @@ char * forwardCommand() {
 	   case 'Y':
 	   case '@':
 	   case ' ':
+	   case '^':
 	   case '\n':
 		 break;
 	   default:
@@ -967,7 +966,6 @@ void handleKeyboardInput() {
 	  sprint("Magic=");
 	  sprintln(SYNC_MAGIC_NUMBER);
 	  break;
-	  
 	case '=': // Move servo to specific location
 	  s = atoi(CMD); KB[0]=0; CMD=KB;
 	  if (s!=0) smoothMove(s);
@@ -1012,6 +1010,12 @@ void handleKeyboardInput() {
 
 	  if (isMaster) tone(7, NOTE_A5, 1000);
 	  break;
+	case '^': // change master/slave
+	  isMaster = !isMaster;
+	  listenOnPrev = !isMaster;
+	  Serial.print("I am ");
+	  Serial.print(isMaster ? "master" : "slave");
+	  break; 
 	case 'i':
 	  Serial.print("I am ");
 	  Serial.print("#");
@@ -1412,7 +1416,7 @@ void setup() {
   nextSerial.begin(9600);
   prevSerial.begin(9600);
 
-  nextSerial.println(" "); // let the following arduino know you are here;
+  nextSerial.println("  "); // let the following arduino know you are here;
 
   //prevSerial.attachInterrupt(t);
   delay(200);
@@ -1426,7 +1430,7 @@ void setup() {
   tone(7, NOTE_G5, 100);
   
   // Read all prevSerial data
-  if (prevSerial.available()) {
+/*   if (prevSerial.available()) {
   	  sprintln("prevdata?");
 	  while (prevSerial.available()) {prevSerial.read(); };
 	  delay(300);
@@ -1434,9 +1438,10 @@ void setup() {
 	  	sprintln("Noisy! Cancelling listen mode");
 	  	listenOnPrev = false;
 	  }
-  }
+  } 
 
   sprintln("Done.");
+  */
   
   initTime = millis();
   randomSeed((initTime + int(potentiometerRead()*100)) % 30000);
@@ -1444,15 +1449,19 @@ void setup() {
   setMode(HALT);
   smoothMove(servoCenter);
 
-  if (listenOnPrev) {
+
+//  if (listenOnPrev) {
 	  // wait 1.5 seconds to see if you are a slave
 	  while ((millis() < initTime + 1500) && isMaster) {
-		 if (prevSerial.available()) {isMaster = false; } 
+		  if (prevSerial.available() && (prevSerial.read()==' ') && prevSerial.available() && (prevSerial.read()==' ')) { 
+		      isMaster = false;
+	  	  }
 	  }
-	  Serial.println(isMaster ? "I am master" : "I am slave"); 
-  } else {
-	  Serial.println("I am probably master");
-  }
+  	  Serial.println(isMaster ? "I am master" : "I am slave"); 
+
+//  } else {
+//	  Serial.println("I am probably master");
+//  }
       
   if ( eread(EEPROM_COMMANDS_LOC-2) == EEPROM_MAGIC) {
   	isAutoPlay = eread(EEPROM_COMMANDS_LOC-4);
@@ -1515,8 +1524,8 @@ void sprintLoopEvents() {
 
 void loop(){
   showClockIfNeeded();
-  if (time > keepalive) { nextSerial.print(" "); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
-  if (listenOnPrev && prevSerial.available()) {if (isMaster) Serial.println("I am now a slave"); isMaster = false;} // inform 
+  if (time > keepalive) { nextSerial.print("  "); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
+  if (isMaster && listenOnPrev && prevSerial.available() && (prevSerial.read()==' ') && prevSerial.available() && (prevSerial.read()==' ')) { Serial.println("I am now a slave"); isMaster = false;} // inform 
 
   time = millis();
   
