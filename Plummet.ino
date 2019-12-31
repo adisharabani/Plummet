@@ -1355,14 +1355,14 @@ void updateAmpAndTime(bool runNow=false) {
 			tPhase = 0.75;
 			tRadial = ropeAngle/ML_MAX_ROPE_SHIFT_IN_CYCLE;
 			waitLoops=2;
-			M=-250;
+			M=SYNC_MAGIC_NUMBER;
 		} else if (mode==STOPPING) { //STOPPING
 			tPhase = 0.75;
 			tRadial = ropeAngle/ML_MAX_ROPE_SHIFT_IN_CYCLE;
  			if (ropeAngle<=0.04) {
 				tRadial = ropeAngle*2;
 			} 
-			M=-250;
+			M=SYNC_MAGIC_NUMBER;
 			waitLoops=2;
 		}else if (mode == RUNNING) {
 			tPhase = 0.25;
@@ -1526,7 +1526,7 @@ void sprintLoopEvents() {
 
 void loop(){
   showClockIfNeeded();
-  if (time > keepalive) { nextSerial.print("   "); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
+  if (time > keepalive) { nextSerial.print("      "); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
   if (isMaster && prevSerial.available() && (prevSerial.read()==' ') && prevSerial.available() && (prevSerial.read()==' ')) { Serial.println("I am now a slave"); isMaster = false; listenOnPrev = !isMaster;} // inform 
 
   time = millis();
