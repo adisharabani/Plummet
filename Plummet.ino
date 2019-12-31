@@ -761,11 +761,15 @@ void handleKeyboardInput() {
 	int kblength = strlen(KB);
 	char inByte = KB[kblength-1];
 	if (commandAvailable() && (inByte != '\n')) {
-	  ereadstr(nextCommandLoc, KB+kblength,KBSIZE-kblength);
+	  ereadstr(nextCommandLoc, KB, KBSIZE);
 	  kblength = strlen(KB);
 	  nextCommandTime = eread();
 	  nextCommandLoc = eIndex;
-	  sprintln(KB);
+	  sprint("command: "); sprint(KB);
+	  if (nextCommandTime != MAX_UINT) {
+		  sprint(" (in "); sprint(nextCommandTime-(millis()-playInitTime)/1000); sprint("s:");eprintstr();sprint(")");
+	  }
+	  sprintln("");
 	  if (kblength==0) {
    	  	return;
    	  }
