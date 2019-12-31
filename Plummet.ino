@@ -19,6 +19,15 @@
 //  Make sync faster - predict future movements
 //  Update stop based on new sync
 
+// TODO: Ifdev LIBSERVO
+// TODO: Better master detection
+// TODO: ML  for circular phase options.
+// TODO: move if potCenter is not at the right place.
+// TODO: autoupdate potCenter
+// TODO: better speed up in calibrate loop time
+// TODO: Stop calibration
+// TODO: update different versions
+
 #define PLUMMET_VERSION "0.22"
 
 // #include <SoftwareSerial.h>
@@ -37,6 +46,7 @@
 #define servoPin 10 // digital
 
 #define potPin 1 // analog
+
 
 int8_t myID = -1;
 int SYNC_MAGIC_NUMBER=-250;
@@ -892,7 +902,9 @@ void handleKeyboardInput() {
 	case 'u': // Print phase compared to sync clock
 	  s = atoi(CMD); KB[0] = 0; CMD=KB;
 	  sprint("sync: ");
-	  sprintln(int((millis()-(syncInitTime+syncInitTimeOffset) - s) % syncLoopTime));
+	  s = int((millis()-(syncInitTime+syncInitTimeOffset) - s) % syncLoopTime);
+	  if (s>syncLoopTime/2) s=s-syncLoopTime;
+	  sprintln(s);
 	  break;
 	case 'U': // Update slaves on current Sync Clock
 	  updateSlaveClock = true;
