@@ -1320,7 +1320,7 @@ void updateAmpAndTime(bool runNow=false) {
 
 		// HERE
 		servoAmp = int(min(1,tRadial)*maxServoAmp);
-		requestedNLoops = min(max((int)(tRadial-1.01,1),2) ;
+		requestedNLoops = min(max((int)(tRadial-1.01),1),2) ;
 		//requestedNLoops = 1 ;
 		
 		//loopTime = defaultLoopTime + sin(tPhase*2*PI)*ML_MAX_OFFSET_SHIFT_IN_CYCLE;
