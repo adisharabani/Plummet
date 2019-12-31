@@ -1305,7 +1305,7 @@ void updateAmpAndTime(bool runNow=false) {
 		tPhase = axisToAngle(-offsetAxis,-ropeOffsetAxis)/2/PI;
 		double tRadial = sqrt(offsetAxis*offsetAxis + ropeOffsetAxis*ropeOffsetAxis);
 		if ((tRadial > 2) && (abs(offsetAxis) > 2)) {
-			tPhase = axisToAngle(-offsetAxis, -0.2)/2/PI;
+			tPhase = axisToAngle(-offsetAxis, -0.3)/2/PI;
 		}
 		waitLoops=LOOP_INTERVAL-2;
 		loopTime = defaultLoopTime;
