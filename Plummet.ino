@@ -31,7 +31,7 @@
 
 
 #define PLUMMET_VERSION "0.22"
-#define USE_SERVOLIB2
+#define USE_SERVOLIB_NOT
 
 // #include <SoftwareSerial.h>
 #include <NeoSWSerial.h>
