@@ -21,21 +21,28 @@
 
 // TODO: Ifdev LIBSERVO
 // TODO: Better master detection
-// TODO: ML  for circular phase options.
+// TODO: ML for circular phase options.
 // TODO: move if potCenter is not at the right place.
 // TODO: autoupdate potCenter
 // TODO: better speed up in calibrate loop time
+// TODO: Sync clock even if not master
 // TODO: Stop calibration
-// TODO: update different versions
+// TODO: Git pull different versions
+
 
 #define PLUMMET_VERSION "0.22"
+#define USE_SERVOLIB2
 
 // #include <SoftwareSerial.h>
 #include <NeoSWSerial.h>
 #define SoftwareSerial NeoSWSerial
 
 #include <TimerOne.h>
-//LIBSERVO #include <Servo.h>
+
+#ifdef USE_SERVOLIB
+#include <Servo.h>
+#endif
+
 #include <EEPROM.h>
 
 #define rxPinPrev 2 // soft serial
@@ -60,8 +67,11 @@ int defaultLoopTime = 3167; //Palo Alto: 3080; // 3160; // 3420;
 // Calibrate(1): 86.00 489 711 293
 // Calibrate(2): 98.00 457 665 261
 // Calibrate(3): 101.00 525 351 697
-
+#ifdef USE_SERVOLIB
+boolean SERVO_VIA_TIMER1 = false;
+#else
 boolean SERVO_VIA_TIMER1 = true;
+#endif
 
 boolean printMeasures = false; 
 boolean enablePrint = true;
@@ -281,7 +291,9 @@ void playSong(int8_t songNumber=1, int8_t volume=30) {
 ///////////////////////////
 /// SERVO
 ///////////////////////////
-//LIBSERVO: Servo myservo;  // create servo object to control a servo
+#ifdef USE_SERVOLIB
+Servo myservo;  // create servo object to control a servo
+#endif
 double lastServoWriteValue = 95;
 #define SERVO_PWM_RATE 6040
 boolean servoAttached = false;
@@ -314,7 +326,9 @@ void myservowrite(double pos) {
 	int duty = int(double(map(int(pos), 0,180,544.0,2400.0))/SERVO_PWM_RATE*1024);
 	Timer1.pwm(servoPin, duty);
   } else {
-	//LIBServo: myservo.write(int(pos));
+#ifdef USE_SERVOLIB
+	myservo.write(int(pos));
+#endif
   }
 }
 
@@ -322,7 +336,10 @@ double myservoread() {
   if (SERVO_VIA_TIMER1) {
 	return lastServoWriteValue;
   } else {
-	//LIBServo: return myservo.read();
+#ifdef USE_SERVOLIB
+	return myservo.read();
+#endif
+
   }
 }
 
@@ -337,7 +354,9 @@ void myservoattach(int pin) {
 	}
 	servoAttached = true;
   } else {
-	//LIBServo: myservo.attach(pin);
+#ifdef USE_SERVOLIB
+	myservo.attach(pin);
+#endif
   }
 }
 
@@ -345,7 +364,9 @@ boolean myservoattached() {
   if (SERVO_VIA_TIMER1) {
 	return servoAttached;
   } else {
-	//LIBServo: return myservo.attached();
+#ifdef USE_SERVOLIB
+	return myservo.attached();
+#endif
   }
 }
 void myservodetach() {
@@ -355,7 +376,9 @@ void myservodetach() {
 	Timer1.stop();
 	servoAttached = false;
   } else {
-	//LIBServo: myservo.detach();
+#ifdef USE_SERVOLIB
+	myservo.detach();
+#endif
   }
 }
 
@@ -491,7 +514,7 @@ void calibrateLoopTime() {
   sprintln("Speed up");
   unsigned long t = millis();
   setMode(RUNNING);
-  while (millis() < t + 6000) { loop();  }
+  while (millis() < t + 15000) { loop();  }
   setMode(HALT);
   loop();
 
