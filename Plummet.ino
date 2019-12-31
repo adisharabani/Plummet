@@ -20,6 +20,7 @@
 //  Update stop based on new sync
 
 // TODO: Better master detection
+// TODO: remove listenOnPrev and change to !isMaster
 // TODO: ML for circular phase options.
 // TODO: move if potCenter is not at the right place.
 // TODO: autoupdate potCenter
@@ -1458,6 +1459,7 @@ void setup() {
 	  	  }
 	  }
   	  Serial.println(isMaster ? "I am master" : "I am slave"); 
+  	  listenOnPrev = !isMaster;
 
 //  } else {
 //	  Serial.println("I am probably master");
@@ -1525,7 +1527,7 @@ void sprintLoopEvents() {
 void loop(){
   showClockIfNeeded();
   if (time > keepalive) { nextSerial.print("  "); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
-  if (isMaster && listenOnPrev && prevSerial.available() && (prevSerial.read()==' ') && prevSerial.available() && (prevSerial.read()==' ')) { Serial.println("I am now a slave"); isMaster = false;} // inform 
+  if (isMaster && prevSerial.available() && (prevSerial.read()==' ') && prevSerial.available() && (prevSerial.read()==' ')) { Serial.println("I am now a slave"); isMaster = false; listenOnPrev = !isMaster;} // inform 
 
   time = millis();
   
