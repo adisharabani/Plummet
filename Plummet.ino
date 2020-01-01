@@ -21,6 +21,8 @@
 
 // TODO: Better master detection
 // TODO: remove listenOnPrev and change to !isMaster
+// TODO: print clock changes if bigger than certain size
+// TODO: allow [ or ] to change syncAmp;
 // TODO: ML for circular phase options.
 // TODO: move if potCenter is not at the right place.
 // TODO: autoupdate potCenter
@@ -789,12 +791,12 @@ void handleKeyboardInput() {
 			   inByte = '\n';
 			   KB[kblength++] = inByte;
 			   KB[kblength] = 0;
-			   if ((kblength==2) && (KB[0]=='T')) {
+			   /*if ((kblength==2) && (KB[0]=='T')) {
 			   	// don't print the T (update clock command);
 			   	sprint("\r \r");
 			   } else {
 	  			   sprintln("");
-	  		   }
+	  		   }*/ sprintln("");
 
 			}
 		 } else if (inByte == 127) {
@@ -810,6 +812,15 @@ void handleKeyboardInput() {
 		 } else if (inByte == ' ') {
 		   // disregard spaces
 		   inByte = KB[kblength-1];
+		 } else if (inByte == 'T') {
+		   // Handle clock sync
+		   int s = (millis()-syncInitTime) % syncLoopTime;
+		   if (s>syncLoopTime/2) s = s-syncLoopTime;
+		   syncInitTime = millis();
+		   nextSerial.write("T");
+		   if (abs(s) >= 20) {
+		   	 sprint("shift: "); sprintln(s);
+		   }
 		 } else {
 		   KB[kblength++] = inByte;
 		   KB[kblength] = 0;
@@ -923,8 +934,13 @@ void handleKeyboardInput() {
 	  KB[0] = 0; CMD=KB;
 	  setMode(SYNCED_RUNNING); sprint("SYNC");sprint(syncLoopTime); sprint(","); sprintln(syncRopeAngle);
 	  break;
-	case 'T': /* Set the clock for SYNC */
-	  syncInitTime = millis();
+//	case 'T': /* Set the clock for SYNC */
+//	  s = (millis()-syncInitTime) % syncLoopTime;
+//	  if (s>syncLoopTime/2) s = s-syncLoopTime;
+//	  syncInitTime = millis();
+//	  if (abs(s) >= 20) {
+//	  	sprint("shift: "); sprintln(s);
+//	  }
 	  break;
 	case 'u': // Print phase compared to sync clock
 	  s = atoi(CMD); KB[0] = 0; CMD=KB;
@@ -1538,7 +1554,7 @@ void loop(){
   handleKeyboardInput();
 
   // Update clock of slaves
-  if (updateSlaveClock || (isMaster && (mode==SYNCED_RUNNING))) {
+  if (updateSlaveClock || isMaster) {
 	if ((time-syncInitTime)%syncLoopTime  < (lastIterationTime-syncInitTime) % syncLoopTime) {
 	  // this means we just got to the init time frame;
 	  if (updateSlaveClock) {
