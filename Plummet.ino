@@ -21,7 +21,6 @@
 
 // TODO: Better master detection
 // TODO: remove listenOnPrev and change to !isMaster
-// TODO: print clock changes if bigger than certain size
 // TODO: allow [ or ] to change syncAmp;
 // TODO: ML for circular phase options.
 // TODO: move if potCenter is not at the right place.
@@ -826,7 +825,7 @@ void handleKeyboardInput() {
 		   syncInitTime = millis();
 		   nextSerial.write("T");
 		   if ((abs(s) >= 20) && showShift) {
-		   	 sprint("["); sprint(syncInitTime); sprint (" / "); sprint(syncLoopTime); sprint("] shift: "); sprint(s); sprint("\r");
+		   	 sprint("["); sprint(syncInitTime); sprint (" / "); sprint(syncLoopTime); sprint("] shift: "); sprint(s); sprint("     \r");
 		   }
 		 } else {
 		   KB[kblength++] = inByte;
@@ -957,14 +956,16 @@ void handleKeyboardInput() {
 	  KB[0] = 0; CMD=KB;
 	  setMode(SYNCED_RUNNING); sprint("SYNC");sprint(syncLoopTime); sprint(","); sprintln(syncRopeAngle);
 	  break;
-//	case 'T': /* Set the clock for SYNC */
-//	  s = (millis()-syncInitTime) % syncLoopTime;
-//	  if (s>syncLoopTime/2) s = s-syncLoopTime;
-//	  syncInitTime = millis();
-//	  if (abs(s) >= 20) {
-//	  	sprint("shift: "); sprintln(s);
-//	  }
-//	  break;
+	case '[':
+	  syncRopeAngle = min(max(syncRopeAngle-0.01,0),0.4);
+	  sprint("SyncRopeAngle: ");
+	  sprintln(syncRopeAngle);
+	  break;
+	case ']':
+	  syncRopeAngle = min(max(syncRopeAngle+0.01,0),0.4);
+	  sprint("SyncRopeAngle: ");
+	  sprintln(syncRopeAngle);
+	  break;
     case '%': // disable clock update
       showShift = !showShift;
       sprintln(showShift);
