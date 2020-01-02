@@ -1,0 +1,2547 @@
+:0:M
+Old Magic=-250
+Magic=0
+:0:%
+0
+:0:s,0/   :0:s,0   :0:s,   :0:s   :0:m
+[0;31m[3546]: offset=-1014ms ropeAngle=0.03(-0.22)[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+ML phase(0.00-0.30 +0.02) amp(2-40 +2)
+[0;37m[3545]: offset=-970ms ropeAngle=0.03(-0.22)[0mwait [1]
+[0;31m[2176]: offset=1205ms ropeAngle=0.07(-0.18)[0min motion [0]
+[0;31m[2465]: offset=168ms ropeAngle=0.06(-0.19)[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[2270]: offset=-1063ms ropeAngle=0.12(-0.13)[0min motion [0]
+[0;37m[4251]: offset=-313ms ropeAngle=0.15(-0.10)[0mwait [1]
+[0;31m[3538]: offset=-276ms ropeAngle=0.04(-0.21)[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[2442]: offset=-1335ms ropeAngle=0.08(-0.17)[0min motion [0]
+[0;37m[4775]: offset=-61ms ropeAngle=0.09(-0.16)[0mwait [1]
+[0;31m[3494]: offset=-68ms ropeAngle=0.06(-0.19)[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[2529]: offset=-1041ms ropeAngle=0.08(-0.17)[0min motion [0]
+[0;37m[2466]: offset=1425ms ropeAngle=0.05(-0.20)[0mwait [1]
+[0;31m[2191]: offset=115ms ropeAngle=0.06(-0.19)[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[2888]: offset=-498ms ropeAngle=0.10(-0.15)[0min motion [0]
+[0;37m[4247]: offset=247ms ropeAngle=0.11(-0.14)[0mwait [1]
+[0;31m[3535]: offset=281ms ropeAngle=0.11(-0.14)[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3092]: offset=-128ms ropeAngle=0.11(-0.14)[0min motion [0]
+[0;37m[4064]: offset=435ms ropeAngle=0.12(-0.13)[0mwait [1]
+[0;31m[3547]: offset=481ms ropeAngle=0.14(-0.11)[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3173]: offset=153ms ropeAngle=0.14(-0.11)[0min motion [0]
+[0;37m[3985]: offset=637ms ropeAngle=0.15(-0.10)[0mwait [1]
+[0;31m[3546]: offset=682ms ropeAngle=0.16(-0.09)[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3210]: offset=391ms ropeAngle=0.15(-0.10)[0min motion [0]
+[0;37m[3924]: offset=811ms ropeAngle=0.17(-0.08)[0mwait [1]
+[0;31m[3547]: offset=857ms ropeAngle=0.19(-0.06)[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3317]: offset=672ms ropeAngle=0.17(-0.08)[0min motion [0]
+[0;37m[3852]: offset=1023ms ropeAngle=0.19(-0.06)[0mwait [1]
+[0;31m[3546]: offset=1067ms ropeAngle=0.22(-0.03)[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3316]: offset=881ms ropeAngle=0.19(-0.06)[0min motion [0]
+[0;37m[3781]: offset=1161ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3554]: offset=1213ms ropeAngle=0.24(-0.01)[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3447]: offset=1159ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3682]: offset=1340ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3560]: offset=1399ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3576]: offset=1474ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3569]: offset=1541ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=2.00 phase=0.00 nLoop=1 LT=3501
+[0;37m[3589]: offset=1629ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3558]: offset=1686ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.00, 2) = (145ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3374]: offset=1556ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3725]: offset=-1721ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3561]: offset=-1662ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3582]: offset=-1582ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3556]: offset=-1527ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=4.00 phase=0.00 nLoop=1 LT=3501
+[0;37m[3592]: offset=-1436ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3561]: offset=-1376ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.00, 4) = (151ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3372]: offset=-1505ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3762]: offset=-1244ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3558]: offset=-1187ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3555]: offset=-1133ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=6.00 phase=0.00 nLoop=1 LT=3501
+[0;37m[3577]: offset=-1057ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3564]: offset=-994ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.00, 6) = (139ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3406]: offset=-1089ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3691]: offset=-899ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3563]: offset=-837ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3585]: offset=-753ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3562]: offset=-697ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=8.00 phase=0.00 nLoop=1 LT=3501
+[0;37m[3620]: offset=-578ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3495]: offset=-584ms ropeAngle=0.23(-0.02)[0m
+[0;34mMachineLearning 0.25: f(0.00, 8) = (113ms, 0.23) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3427]: offset=-658ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3708]: offset=-451ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3561]: offset=-391ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3581]: offset=-311ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=10.00 phase=0.00 nLoop=1 LT=3501
+[0;37m[3626]: offset=-186ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3498]: offset=-189ms ropeAngle=0.23(-0.02)[0m
+[0;34mMachineLearning 0.25: f(0.00, 10) = (122ms, 0.23) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3444]: offset=-246ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3692]: offset=-56ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3554]: offset=-3ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3585]: offset=80ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=12.00 phase=0.00 nLoop=1 LT=3501
+[0;37m[3616]: offset=195ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3550]: offset=244ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.00, 12) = (164ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3377]: offset=119ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3718]: offset=336ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3557]: offset=392ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3587]: offset=478ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3565]: offset=542ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=14.00 phase=0.00 nLoop=1 LT=3501
+[0;37m[3572]: offset=613ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3556]: offset=667ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.00, 14) = (126ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3408]: offset=573ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3725]: offset=797ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3555]: offset=851ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3581]: offset=931ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=16.00 phase=0.00 nLoop=1 LT=3501
+[0;37m[3627]: offset=1057ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3552]: offset=1107ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.00, 16) = (177ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3365]: offset=971ms ropeAngle=0.19(-0.06)[0min motion [0]
+[0;37m[3729]: offset=1199ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3560]: offset=1258ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3577]: offset=1333ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=18.00 phase=0.00 nLoop=1 LT=3501
+[0;37m[3636]: offset=1468ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3558]: offset=1524ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.00, 18) = (192ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3344]: offset=1366ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3746]: offset=1611ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3560]: offset=1669ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3580]: offset=1745ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=20.00 phase=0.00 nLoop=1 LT=3501
+[0;37m[3653]: offset=-1604ms ropeAngle=0.28(+0.03)[0mwait [1]
+[0;31m[3554]: offset=-1551ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.00, 20) = (205ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3344]: offset=-1709ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3738]: offset=-1472ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3558]: offset=-1415ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3582]: offset=-1334ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=22.00 phase=0.00 nLoop=1 LT=3501
+[0;37m[3639]: offset=-1196ms ropeAngle=0.28(+0.03)[0mwait [1]
+[0;31m[3555]: offset=-1142ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.00, 22) = (192ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3371]: offset=-1272ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3726]: offset=-1048ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3561]: offset=-988ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3576]: offset=-913ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3566]: offset=-848ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=24.00 phase=0.00 nLoop=1 LT=3501
+[0;37m[3646]: offset=-703ms ropeAngle=0.28(+0.03)[0mwait [1]
+[0;31m[3555]: offset=-652ms ropeAngle=0.23(-0.02)[0m
+[0;34mMachineLearning 0.25: f(0.00, 24) = (199ms, 0.23) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3344]: offset=-809ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3745]: offset=-566ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3563]: offset=-504ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3575]: offset=-430ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=26.00 phase=0.00 nLoop=1 LT=3501
+[0;37m[3651]: offset=-280ms ropeAngle=0.29(+0.04)[0mwait [1]
+[0;31m[3554]: offset=-228ms ropeAngle=0.23(-0.02)[0m
+[0;34mMachineLearning 0.25: f(0.00, 26) = (203ms, 0.23) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3374]: offset=-355ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3720]: offset=-136ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3563]: offset=-76ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3584]: offset=2ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3560]: offset=61ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=28.00 phase=0.00 nLoop=1 LT=3501
+[0;37m[3645]: offset=199ms ropeAngle=0.28(+0.03)[0mwait [1]
+[0;31m[3554]: offset=252ms ropeAngle=0.23(-0.02)[0m
+[0;34mMachineLearning 0.25: f(0.00, 28) = (197ms, 0.23) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3364]: offset=107ms ropeAngle=0.19(-0.06)[0min motion [0]
+[0;37m[3736]: offset=342ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3557]: offset=392ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3580]: offset=468ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=30.00 phase=0.00 nLoop=1 LT=3501
+[0;37m[3658]: offset=624ms ropeAngle=0.28(+0.03)[0mwait [1]
+[0;31m[3556]: offset=678ms ropeAngle=0.23(-0.02)[0m
+[0;34mMachineLearning 0.25: f(0.00, 30) = (212ms, 0.23) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3363]: offset=540ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3729]: offset=768ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3560]: offset=827ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=32.00 phase=0.00 nLoop=1 LT=3501
+[0;37m[3688]: offset=1014ms ropeAngle=0.29(+0.04)[0mwait [1]
+[0;31m[3552]: offset=1065ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.00, 32) = (238ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3371]: offset=935ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3729]: offset=1163ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3558]: offset=1216ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3584]: offset=1298ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3564]: offset=1361ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=34.00 phase=0.00 nLoop=1 LT=3501
+[0;37m[3646]: offset=1506ms ropeAngle=0.29(+0.04)[0mwait [1]
+[0;31m[3552]: offset=1557ms ropeAngle=0.23(-0.02)[0m
+[0;34mMachineLearning 0.25: f(0.00, 34) = (196ms, 0.23) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3373]: offset=1429ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3735]: offset=1663ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3561]: offset=1723ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3574]: offset=-1705ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=36.00 phase=0.00 nLoop=1 LT=3501
+[0;37m[3660]: offset=-1547ms ropeAngle=0.29(+0.04)[0mwait [1]
+[0;31m[3555]: offset=-1493ms ropeAngle=0.23(-0.02)[0m
+[0;34mMachineLearning 0.25: f(0.00, 36) = (213ms, 0.23) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3373]: offset=-1622ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3740]: offset=-1383ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3560]: offset=-1324ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3563]: offset=-1266ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=38.00 phase=0.00 nLoop=1 LT=3501
+[0;37m[3672]: offset=-1095ms ropeAngle=0.30(+0.05)[0mwait [1]
+[0;31m[3556]: offset=-1040ms ropeAngle=0.23(-0.02)[0m
+[0;34mMachineLearning 0.25: f(0.00, 38) = (226ms, 0.23) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3375]: offset=-1166ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3734]: offset=-934ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3558]: offset=-877ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3578]: offset=-800ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=40.00 phase=0.00 nLoop=1 LT=3501
+[0;37m[3661]: offset=-640ms ropeAngle=0.30(+0.05)[0mwait [1]
+[0;31m[3553]: offset=-588ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.00, 40) = (212ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3407]: offset=-682ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3708]: offset=-476ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3566]: offset=-411ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3573]: offset=-339ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=2.00 phase=0.02 nLoop=1 LT=3501
+[0;37m[3550]: offset=-290ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3605]: offset=-186ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3559]: offset=-128ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.02, 2) = (211ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3343]: offset=-286ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3744]: offset=-44ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3567]: offset=21ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3581]: offset=101ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=4.00 phase=0.02 nLoop=1 LT=3501
+[0;37m[3538]: offset=138ms ropeAngle=0.28(+0.03)[0min motion [0]
+[0;37m[3558]: offset=195ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3559]: offset=253ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.02, 4) = (152ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3440]: offset=192ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3724]: offset=415ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3558]: offset=469ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3560]: offset=528ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3559]: offset=586ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=6.00 phase=0.02 nLoop=1 LT=3501
+[0;37m[3473]: offset=558ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3722]: offset=779ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3534]: offset=812ms ropeAngle=0.23(-0.02)[0m
+[0;34mMachineLearning 0.25: f(0.02, 6) = (226ms, 0.23) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3344]: offset=654ms ropeAngle=0.19(-0.06)[0min motion [0]
+[0;37m[3745]: offset=898ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3558]: offset=952ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3581]: offset=1032ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=8.00 phase=0.02 nLoop=1 LT=3501
+[0;37m[3474]: offset=1004ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3685]: offset=1188ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3558]: offset=1245ms ropeAngle=0.23(-0.02)[0m
+[0;34mMachineLearning 0.25: f(0.02, 8) = (214ms, 0.23) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3377]: offset=1120ms ropeAngle=0.19(-0.06)[0min motion [0]
+[0;37m[3731]: offset=1350ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3561]: offset=1410ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3576]: offset=1484ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=10.00 phase=0.02 nLoop=1 LT=3501
+[0;37m[3456]: offset=1439ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3698]: offset=1636ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3553]: offset=1688ms ropeAngle=0.23(-0.02)[0m
+[0;34mMachineLearning 0.25: f(0.02, 10) = (204ms, 0.23) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3407]: offset=1591ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3716]: offset=-1696ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3568]: offset=-1630ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3577]: offset=-1557ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=12.00 phase=0.02 nLoop=1 LT=3501
+[0;37m[3453]: offset=-1605ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3766]: offset=-1341ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3523]: offset=-1319ms ropeAngle=0.22(-0.03)[0m
+[0;34mMachineLearning 0.25: f(0.02, 12) = (239ms, 0.22) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3344]: offset=-1476ms ropeAngle=0.19(-0.06)[0min motion [0]
+[0;37m[3745]: offset=-1232ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3569]: offset=-1164ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=14.00 phase=0.02 nLoop=1 LT=3501
+[0;37m[3450]: offset=-1215ms ropeAngle=0.28(+0.03)[0min motion [0]
+[0;37m[3771]: offset=-946ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3552]: offset=-896ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.02, 14) = (270ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3344]: offset=-1053ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3811]: offset=-743ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3549]: offset=-695ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3549]: offset=-648ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=16.00 phase=0.02 nLoop=1 LT=3501
+[0;37m[3405]: offset=-744ms ropeAngle=0.28(+0.03)[0min motion [0]
+[0;37m[3831]: offset=-415ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3506]: offset=-410ms ropeAngle=0.23(-0.02)[0m
+[0;34mMachineLearning 0.25: f(0.02, 16) = (239ms, 0.23) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3373]: offset=-538ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3790]: offset=-249ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3550]: offset=-200ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3560]: offset=-141ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=18.00 phase=0.02 nLoop=1 LT=3501
+[0;37m[3395]: offset=-248ms ropeAngle=0.28(+0.03)[0min motion [0]
+[0;37m[3795]: offset=44ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3560]: offset=103ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.02, 18) = (247ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3349]: offset=-49ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3742]: offset=192ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3565]: offset=253ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3581]: offset=332ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=20.00 phase=0.02 nLoop=1 LT=3501
+[0;37m[3400]: offset=231ms ropeAngle=0.28(+0.03)[0min motion [0]
+[0;37m[3799]: offset=528ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3565]: offset=591ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.02, 20) = (261ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3407]: offset=497ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3705]: offset=701ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3565]: offset=765ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3578]: offset=842ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=22.00 phase=0.02 nLoop=1 LT=3501
+[0;37m[3382]: offset=723ms ropeAngle=0.29(+0.04)[0min motion [0]
+[0;37m[3826]: offset=1047ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3549]: offset=1095ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.02, 22) = (254ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3418]: offset=1011ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3718]: offset=1227ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3561]: offset=1287ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3577]: offset=1363ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3566]: offset=1428ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=24.00 phase=0.02 nLoop=1 LT=3501
+[0;37m[3358]: offset=1285ms ropeAngle=0.29(+0.04)[0min motion [0]
+[0;37m[3852]: offset=1636ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3558]: offset=1693ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.02, 24) = (265ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3406]: offset=1598ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3781]: offset=-1624ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3543]: offset=-1582ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3542]: offset=-1541ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=26.00 phase=0.02 nLoop=1 LT=3501
+[0;37m[3360]: offset=-1682ms ropeAngle=0.29(+0.04)[0min motion [0]
+[0;37m[3854]: offset=-1329ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3560]: offset=-1273ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.02, 26) = (271ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3407]: offset=-1367ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3719]: offset=-1149ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3560]: offset=-1091ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3589]: offset=-1003ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=28.00 phase=0.02 nLoop=1 LT=3501
+[0;37m[3325]: offset=-1182ms ropeAngle=0.30(+0.05)[0min motion [0]
+[0;37m[3902]: offset=-781ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3557]: offset=-725ms ropeAngle=0.25(-0.00)[0m
+[0;34mMachineLearning 0.25: f(0.02, 28) = (281ms, 0.25) =[0m
+&&    ==>   servoAmp=30.00 phase=0.02 nLoop=1 LT=3501
+[0;37m[3327]: offset=-899ms ropeAngle=0.29(+0.04)[0min motion [0]
+[0;37m[3946]: offset=-454ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3562]: offset=-396ms ropeAngle=0.23(-0.02)[0m
+[0;34mMachineLearning 0.25: f(0.02, 30) = (332ms, 0.23) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3343]: offset=-554ms ropeAngle=0.19(-0.06)[0min motion [0]
+[0;37m[3810]: offset=-246ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3548]: offset=-199ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=32.00 phase=0.02 nLoop=1 LT=3501
+[0;37m[3318]: offset=-382ms ropeAngle=0.30(+0.05)[0min motion [0]
+[0;37m[3950]: offset=66ms ropeAngle=0.28(+0.03)[0mwait [1]
+[0;31m[3553]: offset=118ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.02, 32) = (318ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3352]: offset=-31ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3803]: offset=268ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3542]: offset=309ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3553]: offset=361ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3557]: offset=417ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3561]: offset=477ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=34.00 phase=0.02 nLoop=1 LT=3501
+[0;37m[3298]: offset=273ms ropeAngle=0.31(+0.06)[0min motion [0]
+[0;37m[3994]: offset=766ms ropeAngle=0.28(+0.03)[0mwait [1]
+[0;31m[3549]: offset=814ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.02, 34) = (338ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3345]: offset=658ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3800]: offset=956ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3549]: offset=1004ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3550]: offset=1053ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=36.00 phase=0.02 nLoop=1 LT=3501
+[0;37m[3306]: offset=857ms ropeAngle=0.31(+0.06)[0min motion [0]
+[0;37m[3965]: offset=1321ms ropeAngle=0.29(+0.04)[0mwait [1]
+[0;31m[3559]: offset=1378ms ropeAngle=0.25(-0.00)[0m
+[0;34mMachineLearning 0.25: f(0.02, 36) = (327ms, 0.25) =[0m
+&&    ==>   servoAmp=38.00 phase=0.02 nLoop=1 LT=3501
+[0;37m[3294]: offset=1170ms ropeAngle=0.30(+0.05)[0min motion [0]
+[0;37m[4009]: offset=1678ms ropeAngle=0.29(+0.04)[0mwait [1]
+[0;31m[3554]: offset=1731ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.02, 38) = (354ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3349]: offset=1578ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3739]: offset=-1685ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3561]: offset=-1625ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3576]: offset=-1550ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3563]: offset=-1488ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=40.00 phase=0.02 nLoop=1 LT=3501
+[0;37m[3300]: offset=-1689ms ropeAngle=0.31(+0.06)[0min motion [0]
+[0;37m[4023]: offset=-1167ms ropeAngle=0.30(+0.05)[0mwait [1]
+[0;31m[3552]: offset=-1116ms ropeAngle=0.25(-0.00)[0m
+[0;34mMachineLearning 0.25: f(0.02, 40) = (372ms, 0.25) =[0m
+&&    ==>   servoAmp=2.00 phase=0.04 nLoop=1 LT=3501
+I am now a slave
+¹‚WŠèë±/Ûi   ÀÀÀ€€€€ÿÿÿÿüàøÿþààà?ÿúý[0;37m[3520]: offset=-1097ms ropeAngle=0.25(+0.00)[0min motion [0]
+[0;37m[3599]: offset=-999ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3556]: offset=-944ms ropeAngle=0.23(-0.02)[0m
+[0;34mMachineLearning 0.25: f(0.04, 2) = (172ms, 0.23) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3344]: offset=-1101ms ropeAngle=0.19(-0.06)[0min motion [0]
+[0;37m[3746]: offset=-856ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3563]: offset=-794ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3577]: offset=-718ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=4.00 phase=0.04 nLoop=1 LT=3501
+[0;37m[3529]: offset=-690ms ropeAngle=0.28(+0.03)[0min motion [0]
+[0;37m[3653]: offset=-538ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3528]: offset=-511ms ropeAngle=0.23(-0.02)[0m
+[0;34mMachineLearning 0.25: f(0.04, 4) = (207ms, 0.23) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3344]: offset=-668ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3755]: offset=-414ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3558]: offset=-357ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3578]: offset=-280ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=6.00 phase=0.04 nLoop=1 LT=3501
+[0;37m[3518]: offset=-263ms ropeAngle=0.27(+0.02)[0min motion [0]
+   ¹‚WŠèë±/ÛiÀÀÀ€€€€ÿÿÿÿüàøÿþààà?ÿú   ¹‚WŠèë±/ÛiÀÀÀ€€€€ÿÿÿÿüàøÿþààà?ÿ   ¹‚WŠèë±/ÛiÀÀÀ€€€€ÿÿÿÿüàøÿþààà?   ¹‚WŠèë±/ÛiÀÀÀ€€€€ÿÿÿÿüàøÿþààà   ¹‚WŠèë±/ÛiÀÀÀ€€€€ÿÿÿÿüàøÿþàà   ¹‚WŠèë±/ÛiÀÀÀ€€€€ÿÿÿÿüàøÿþà   ¹‚WŠèë±/ÛiÀÀÀ€€€€ÿÿÿÿüàøÿþ   ¹‚WŠèë±/ÛiÀÀÀ€€€€ÿÿÿÿüàøÿ   ¹‚WŠèë±/ÛiÀÀÀ€€€€ÿÿÿÿüàø[0;37m[3615]: offset=-149ms ropeAngle=0.26(+0.01)[0mwait [1]
+   ¹‚WŠèë±/ÛiÀÀÀ€€€€ÿÿÿÿüà   ¹‚WŠèë±/ÛiÀÀÀ€€€€ÿÿÿÿü   ¹‚WŠèë±/ÛiÀÀÀ€€€€ÿÿÿÿ   ¹‚WŠèë±/ÛiÀÀÀ€€€€ÿÿÿ   ¹‚WŠèë±/ÛiÀÀÀ€€€€ÿÿ   ¹‚WŠèë±/ÛiÀÀÀ€€€€ÿ   ¹‚WŠèë±/ÛiÀÀÀ€€€€   ¹‚WŠèë±/ÛiÀÀÀ€€€   ¹‚WŠèë±/ÛiÀÀÀ€€   ¹‚WŠèë±/ÛiÀÀÀ€   ¹‚WŠèë±/ÛiÀÀÀ   ¹‚WŠèë±/ÛiÀÀ   ¹‚WŠèë±/ÛiÀ   ¹‚WŠèë±/Ûi   ¹‚WŠèë±/Û   ¹‚WŠèë±/   ¹‚WŠèë±   ¹‚WŠèë   ¹‚WŠè   ¹‚WŠ   ¹‚W   ¹‚   ¹‚   ¹   [0;31m[3556]: offset=-94ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.04, 6) = (186ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+^[0;37m[3407]: offset=-188ms ropeAngle=0.20(-0.05)[0min motion [0]
+
+I am master[0;37m[3713]: offset=24ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3563]: offset=86ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3579]: offset=164ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3565]: offset=228ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=8.00 phase=0.04 nLoop=1 LT=3501
+[0;37m[3480]: offset=207ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3722]: offset=427ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3517]: offset=443ms ropeAngle=0.23(-0.02)[0m
+[0;34mMachineLearning 0.25: f(0.04, 8) = (216ms, 0.23) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3368]: offset=310ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3738]: offset=546ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3560]: offset=605ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3577]: offset=681ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=10.00 phase=0.04 nLoop=1 LT=3501
+[0;37m[3479]: offset=658ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3708]: offset=865ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3555]: offset=919ms ropeAngle=0.23(-0.02)[0m
+[0;34mMachineLearning 0.25: f(0.04, 10) = (239ms, 0.23) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3344]: offset=762ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3754]: offset=1015ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3558]: offset=1072ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3583]: offset=1154ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=12.00 phase=0.04 nLoop=1 LT=3501
+[0;37m[3440]: offset=1092ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3709]: offset=1300ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3555]: offset=1354ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.04, 12) = (201ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3407]: offset=1259ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3729]: offset=1487ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3568]: offset=1554ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3569]: offset=1621ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=14.00 phase=0.04 nLoop=1 LT=3501
+[0;37m[3428]: offset=1545ms ropeAngle=0.28(+0.03)[0min motion [0]
+[0;37m[3804]: offset=-1653ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3522]: offset=-1632ms ropeAngle=0.23(-0.02)[0m
+[0;34mMachineLearning 0.25: f(0.04, 14) = (251ms, 0.23) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3350]: offset=1718ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3745]: offset=-1539ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3569]: offset=-1471ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3571]: offset=-1405ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=16.00 phase=0.04 nLoop=1 LT=3501
+[0;37m[3391]: offset=-1515ms ropeAngle=0.28(+0.03)[0min motion [0]
+[0;37m[3786]: offset=-1237ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3552]: offset=-1186ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.04, 16) = (226ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3447]: offset=-1247ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3690]: offset=-1058ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3560]: offset=-1004ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3567]: offset=-938ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3576]: offset=-863ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=18.00 phase=0.04 nLoop=1 LT=3501
+[0;37m[3377]: offset=-988ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3788]: offset=-701ms ropeAngle=0.28(+0.03)[0mwait [1]
+[0;31m[3557]: offset=-645ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.04, 18) = (219ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3447]: offset=-699ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3704]: offset=-497ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3556]: offset=-442ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3558]: offset=-388ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3561]: offset=-328ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=20.00 phase=0.04 nLoop=1 LT=3501
+[0;37m[3369]: offset=-460ms ropeAngle=0.28(+0.03)[0min motion [0]
+[0;37m[3901]: offset=-60ms ropeAngle=0.28(+0.03)[0mwait [1]
+[0;31m[3516]: offset=-45ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.04, 20) = (283ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3406]: offset=-206ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3692]: offset=-15ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3568]: offset=52ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3574]: offset=125ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3572]: offset=195ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=22.00 phase=0.04 nLoop=1 LT=3501
+[0;37m[3354]: offset=47ms ropeAngle=0.28(+0.03)[0min motion [0]
+[0;37m[3828]: offset=374ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3553]: offset=426ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.04, 22) = (232ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3460]: offset=384ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3692]: offset=575ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3554]: offset=628ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3570]: offset=697ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3575]: offset=771ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=24.00 phase=0.04 nLoop=1 LT=3501
+[0;37m[3344]: offset=613ms ropeAngle=0.29(+0.04)[0min motion [0]
+[0;37m[3922]: offset=1034ms ropeAngle=0.29(+0.04)[0mwait [1]
+[0;31m[3516]: offset=1049ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.04, 24) = (279ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3407]: offset=954ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3703]: offset=1155ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3558]: offset=1212ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3574]: offset=1285ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3568]: offset=1349ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3568]: offset=1416ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=26.00 phase=0.04 nLoop=1 LT=3501
+[0;37m[3337]: offset=1252ms ropeAngle=0.29(+0.04)[0min motion [0]
+[0;37m[3876]: offset=1627ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3569]: offset=1695ms ropeAngle=0.25(-0.00)[0m
+[0;34mMachineLearning 0.25: f(0.04, 26) = (279ms, 0.25) =[0m
+&&    ==>   servoAmp=28.00 phase=0.04 nLoop=1 LT=3501
+[0;37m[3323]: offset=1517ms ropeAngle=0.29(+0.04)[0min motion [0]
+[0;37m[3902]: offset=-1584ms ropeAngle=0.28(+0.03)[0mwait [1]
+[0;31m[3553]: offset=-1535ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.04, 28) = (275ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3406]: offset=-1631ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3720]: offset=-1412ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3561]: offset=-1353ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3570]: offset=-1284ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3568]: offset=-1217ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=30.00 phase=0.04 nLoop=1 LT=3501
+[0;37m[3325]: offset=-1393ms ropeAngle=0.29(+0.04)[0min motion [0]
+[0;37m[3904]: offset=-992ms ropeAngle=0.29(+0.04)[0mwait [1]
+[0;31m[3551]: offset=-942ms ropeAngle=0.25(-0.00)[0m
+[0;34mMachineLearning 0.25: f(0.04, 30) = (277ms, 0.25) =[0m
+&&    ==>   servoAmp=32.00 phase=0.04 nLoop=1 LT=3501
+[0;37m[3320]: offset=-1126ms ropeAngle=0.30(+0.05)[0min motion [0]
+[0;37m[3938]: offset=-690ms ropeAngle=0.28(+0.03)[0mwait [1]
+[0;31m[3558]: offset=-633ms ropeAngle=0.25(-0.00)[0m
+[0;34mMachineLearning 0.25: f(0.04, 32) = (313ms, 0.25) =[0m
+&&    ==>   servoAmp=34.00 phase=0.04 nLoop=1 LT=3501
+[0;37m[3289]: offset=-845ms ropeAngle=0.29(+0.04)[0min motion [0]
+[0;37m[3962]: offset=-387ms ropeAngle=0.29(+0.04)[0mwait [1]
+[0;31m[3563]: offset=-325ms ropeAngle=0.25(-0.00)[0m
+[0;34mMachineLearning 0.25: f(0.04, 34) = (311ms, 0.25) =[0m
+&&    ==>   servoAmp=36.00 phase=0.04 nLoop=1 LT=3501
+[0;37m[3274]: offset=-552ms ropeAngle=0.29(+0.04)[0min motion [0]
+[0;37m[3971]: offset=-83ms ropeAngle=0.29(+0.04)[0mwait [1]
+[0;31m[3547]: offset=-37ms ropeAngle=0.25(-0.00)[0m
+[0;34mMachineLearning 0.25: f(0.04, 36) = (289ms, 0.25) =[0m
+&&    ==>   servoAmp=38.00 phase=0.04 nLoop=1 LT=3501
+[0;37m[3280]: offset=-336ms ropeAngle=0.30(+0.05)[0min motion [0]
+[0;37m[3994]: offset=156ms ropeAngle=0.29(+0.04)[0mwait [1]
+[0;31m[3561]: offset=216ms ropeAngle=0.25(+0.00)[0m
+[0;34mMachineLearning 0.25: f(0.04, 38) = (332ms, 0.25) =[0m
+&&    ==>   servoAmp=40.00 phase=0.04 nLoop=1 LT=3501
+[0;37m[3283]: offset=-2ms ropeAngle=0.30(+0.05)[0min motion [0]
+[0;37m[3982]: offset=476ms ropeAngle=0.29(+0.04)[0mwait [1]
+[0;31m[3562]: offset=537ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.04, 40) = (324ms, 0.26) >[0m
+[0;31m[3579]: offset=615ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3561]: offset=675ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=2.00 phase=0.06 nLoop=1 LT=3501
+[0;37m[3537]: offset=710ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3623]: offset=832ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3557]: offset=887ms ropeAngle=0.23(-0.02)[0m
+[0;34mMachineLearning 0.25: f(0.06, 2) = (214ms, 0.23) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3344]: offset=730ms ropeAngle=0.19(-0.06)[0min motion [0]
+[0;37m[3746]: offset=975ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3559]: offset=1032ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3567]: offset=1098ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=4.00 phase=0.06 nLoop=1 LT=3501
+[0;37m[3531]: offset=1128ms ropeAngle=0.28(+0.03)[0min motion [0]
+[0;37m[3664]: offset=1291ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3516]: offset=1306ms ropeAngle=0.23(-0.02)[0m
+[0;34mMachineLearning 0.25: f(0.06, 4) = (208ms, 0.23) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3381]: offset=1186ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3731]: offset=1416ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3557]: offset=1472ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3576]: offset=1547ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3568]: offset=1614ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=6.00 phase=0.06 nLoop=1 LT=3501
+[0;37m[3489]: offset=1602ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3637]: offset=1738ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3553]: offset=-1711ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.06, 6) = (176ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3408]: offset=1697ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3711]: offset=-1594ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3571]: offset=-1525ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3574]: offset=-1452ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=8.00 phase=0.06 nLoop=1 LT=3501
+[0;37m[3468]: offset=-1485ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3740]: offset=-1246ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3514]: offset=-1233ms ropeAngle=0.23(-0.02)[0m
+[0;34mMachineLearning 0.25: f(0.06, 8) = (219ms, 0.23) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3372]: offset=-1363ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3737]: offset=-1127ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3563]: offset=-1065ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3566]: offset=-1001ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3573]: offset=-929ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=10.00 phase=0.06 nLoop=1 LT=3501
+[0;37m[3456]: offset=-975ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3711]: offset=-766ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3557]: offset=-710ms ropeAngle=0.23(-0.02)[0m
+[0;34mMachineLearning 0.25: f(0.06, 10) = (221ms, 0.23) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3373]: offset=-838ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3724]: offset=-615ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3570]: offset=-546ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3577]: offset=-470ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=12.00 phase=0.06 nLoop=1 LT=3501
+[0;37m[3448]: offset=-523ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3770]: offset=-254ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3519]: offset=-236ms ropeAngle=0.23(-0.02)[0m
+[0;34mMachineLearning 0.25: f(0.06, 12) = (234ms, 0.23) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3374]: offset=-363ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3736]: offset=-128ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3560]: offset=-69ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3565]: offset=-5ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3573]: offset=67ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=14.00 phase=0.06 nLoop=1 LT=3501
+[0;37m[3409]: offset=-25ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3816]: offset=289ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3517]: offset=305ms ropeAngle=0.23(-0.02)[0m
+[0;34mMachineLearning 0.25: f(0.06, 14) = (239ms, 0.23) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3374]: offset=178ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3728]: offset=405ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3571]: offset=474ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3571]: offset=544ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3570]: offset=613ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=16.00 phase=0.06 nLoop=1 LT=3501
+[0;37m[3380]: offset=491ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3772]: offset=762ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3557]: offset=817ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.06, 16) = (206ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3408]: offset=723ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3744]: offset=966ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3559]: offset=1024ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3559]: offset=1082ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3561]: offset=1142ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=18.00 phase=0.06 nLoop=1 LT=3501
+[0;37m[3370]: offset=1011ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3797]: offset=1306ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3563]: offset=1362ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.06, 18) = (227ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3447]: offset=1308ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3754]: offset=1555ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3553]: offset=1604ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3541]: offset=1642ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3557]: offset=1698ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=20.00 phase=0.06 nLoop=1 LT=3501
+[0;37m[3350]: offset=1540ms ropeAngle=0.28(+0.03)[0min motion [0]
+[0;37m[3819]: offset=-1643ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3558]: offset=-1591ms ropeAngle=0.25(-0.00)[0m
+[0;34mMachineLearning 0.25: f(0.06, 20) = (224ms, 0.25) =[0m
+&&    ==>   servoAmp=22.00 phase=0.06 nLoop=1 LT=3501
+[0;37m[3350]: offset=-1742ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3852]: offset=-1391ms ropeAngle=0.28(+0.03)[0mwait [1]
+[0;31m[3556]: offset=-1336ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.06, 22) = (255ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3447]: offset=-1390ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3696]: offset=-1195ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3559]: offset=-1137ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3562]: offset=-1076ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3575]: offset=-1005ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3562]: offset=-944ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=24.00 phase=0.06 nLoop=1 LT=3501
+[0;37m[3312]: offset=-1133ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3958]: offset=-676ms ropeAngle=0.28(+0.03)[0mwait [1]
+[0;31m[3517]: offset=-664ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.06, 24) = (284ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3385]: offset=-780ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3779]: offset=-502ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3539]: offset=-464ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3553]: offset=-412ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3562]: offset=-354ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3557]: offset=-298ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=26.00 phase=0.06 nLoop=1 LT=3501
+[0;37m[3311]: offset=-488ms ropeAngle=0.28(+0.03)[0min motion [0]
+[0;37m[3880]: offset=-109ms ropeAngle=0.28(+0.03)[0mwait [1]
+[0;31m[3558]: offset=-52ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.06, 26) = (246ms, 0.26) >[0m
+[0;31m[3567]: offset=8ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=28.00 phase=0.06 nLoop=1 LT=3501
+[0;37m[3325]: offset=-168ms ropeAngle=0.28(+0.03)[0min motion [0]
+[0;37m[3896]: offset=227ms ropeAngle=0.28(+0.03)[0mwait [1]
+[0;31m[3552]: offset=274ms ropeAngle=0.25(-0.00)[0m
+[0;34mMachineLearning 0.25: f(0.06, 28) = (270ms, 0.25) =[0m
+&&    ==>   servoAmp=30.00 phase=0.06 nLoop=1 LT=3501
+[0;37m[3316]: offset=89ms ropeAngle=0.29(+0.04)[0min motion [0]
+[0;37m[3911]: offset=499ms ropeAngle=0.28(+0.03)[0mwait [1]
+[0;31m[3565]: offset=563ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.06, 30) = (289ms, 0.26) >[0m
+[0;31m[3578]: offset=640ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=32.00 phase=0.06 nLoop=1 LT=3501
+[0;37m[3300]: offset=438ms ropeAngle=0.29(+0.04)[0min motion [0]
+[0;37m[3920]: offset=856ms ropeAngle=0.29(+0.04)[0mwait [1]
+[0;31m[3556]: offset=911ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.06, 32) = (273ms, 0.26) >[0m
+[0;31m[3573]: offset=983ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=34.00 phase=0.06 nLoop=1 LT=3501
+[0;37m[3300]: offset=781ms ropeAngle=0.29(+0.04)[0min motion [0]
+[0;37m[3996]: offset=1273ms ropeAngle=0.28(+0.03)[0mwait [1]
+[0;31m[3548]: offset=1320ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.06, 34) = (341ms, 0.26) >[0m
+[0;31m[3541]: offset=1360ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=36.00 phase=0.06 nLoop=1 LT=3501
+[0;37m[3282]: offset=1141ms ropeAngle=0.29(+0.04)[0min motion [0]
+[0;37m[3938]: offset=1576ms ropeAngle=0.29(+0.04)[0mwait [1]
+[0;31m[3565]: offset=1640ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.06, 36) = (282ms, 0.27) >[0m
+[0;31m[3583]: offset=1722ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=38.00 phase=0.06 nLoop=1 LT=3501
+[0;37m[3281]: offset=1501ms ropeAngle=0.30(+0.05)[0min motion [0]
+[0;37m[3949]: offset=-1552ms ropeAngle=0.28(+0.03)[0mwait [1]
+[0;31m[3567]: offset=-1486ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.06, 38) = (294ms, 0.27) >[0m
+[0;31m[3581]: offset=-1409ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3562]: offset=-1351ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3565]: offset=-1287ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=40.00 phase=0.06 nLoop=1 LT=3501
+[0;37m[3266]: offset=-1522ms ropeAngle=0.29(+0.04)[0min motion [0]
+[0;37m[3968]: offset=-1056ms ropeAngle=0.28(+0.03)[0mwait [1]
+[0;31m[3567]: offset=-990ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.06, 40) = (298ms, 0.27) >[0m
+[0;31m[3575]: offset=-916ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3572]: offset=-845ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=2.00 phase=0.08 nLoop=1 LT=3501
+[0;37m[3522]: offset=-825ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3625]: offset=-702ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3556]: offset=-647ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.08, 2) = (200ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3362]: offset=-786ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3730]: offset=-558ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3559]: offset=-500ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3575]: offset=-426ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3571]: offset=-356ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=4.00 phase=0.08 nLoop=1 LT=3501
+[0;37m[3504]: offset=-353ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3611]: offset=-243ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3557]: offset=-188ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.08, 4) = (169ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3407]: offset=-282ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3729]: offset=-54ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3558]: offset=3ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3558]: offset=60ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=6.00 phase=0.08 nLoop=1 LT=3501
+[0;37m[3525]: offset=83ms ropeAngle=0.28(+0.03)[0min motion [0]
+[0;37m[3591]: offset=173ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3560]: offset=232ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.08, 6) = (173ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3447]: offset=177ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3692]: offset=368ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3566]: offset=433ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3581]: offset=513ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=8.00 phase=0.08 nLoop=1 LT=3501
+[0;37m[3491]: offset=503ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3624]: offset=626ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3562]: offset=687ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.08, 8) = (174ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3447]: offset=633ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3689]: offset=821ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3569]: offset=889ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3569]: offset=957ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3570]: offset=1026ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=10.00 phase=0.08 nLoop=1 LT=3501
+[0;37m[3459]: offset=983ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3752]: offset=1234ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3516]: offset=1242ms ropeAngle=0.23(-0.02)[0m
+[0;34mMachineLearning 0.25: f(0.08, 10) = (224ms, 0.23) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3373]: offset=1111ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3727]: offset=1334ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3573]: offset=1406ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3572]: offset=1471ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3568]: offset=1538ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=12.00 phase=0.08 nLoop=1 LT=3501
+[0;37m[3418]: offset=1450ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3793]: offset=1741ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3520]: offset=-1747ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.08, 12) = (228ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3394]: offset=1646ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3769]: offset=-1594ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3551]: offset=-1544ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3546]: offset=-1499ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=14.00 phase=0.08 nLoop=1 LT=3501
+[0;37m[3389]: offset=-1611ms ropeAngle=0.28(+0.03)[0min motion [0]
+[0;37m[3821]: offset=-1291ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3517]: offset=-1275ms ropeAngle=0.25(-0.00)[0m
+[0;34mMachineLearning 0.25: f(0.08, 14) = (224ms, 0.25) =[0m
+&&    ==>   servoAmp=16.00 phase=0.08 nLoop=1 LT=3501
+[0;37m[3367]: offset=-1412ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3763]: offset=-1150ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3560]: offset=-1095ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.08, 16) = (187ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3448]: offset=-1148ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3700]: offset=-950ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3562]: offset=-889ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3562]: offset=-828ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3575]: offset=-755ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3568]: offset=-688ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=18.00 phase=0.08 nLoop=1 LT=3501
+[0;37m[3352]: offset=-837ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3800]: offset=-539ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3564]: offset=-476ms ropeAngle=0.25(-0.00)[0m
+[0;34mMachineLearning 0.25: f(0.08, 18) = (213ms, 0.25) =[0m
+&&    ==>   servoAmp=20.00 phase=0.08 nLoop=1 LT=3501
+[0;37m[3362]: offset=-615ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3904]: offset=-213ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3519]: offset=-195ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.08, 20) = (282ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3376]: offset=-320ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3789]: offset=-32ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3552]: offset=18ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3547]: offset=63ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3566]: offset=128ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3543]: offset=170ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=22.00 phase=0.08 nLoop=1 LT=3501
+[0;37m[3328]: offset=-3ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3836]: offset=331ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3563]: offset=393ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.08, 22) = (224ms, 0.26) >[0m
+[0;31m[3572]: offset=464ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=24.00 phase=0.08 nLoop=1 LT=3501
+[0;37m[3329]: offset=291ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3861]: offset=651ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3560]: offset=709ms ropeAngle=0.25(-0.00)[0m
+[0;34mMachineLearning 0.25: f(0.08, 24) = (247ms, 0.25) =[0m
+&&    ==>   servoAmp=26.00 phase=0.08 nLoop=1 LT=3501
+[0;37m[3339]: offset=544ms ropeAngle=0.28(+0.03)[0min motion [0]
+[0;37m[3869]: offset=911ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3562]: offset=972ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.08, 26) = (267ms, 0.26) >[0m
+[0;31m[3573]: offset=1044ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=28.00 phase=0.08 nLoop=1 LT=3501
+[0;37m[3319]: offset=861ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3883]: offset=1243ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3565]: offset=1307ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.08, 28) = (264ms, 0.26) >[0m
+[0;31m[3571]: offset=1377ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3572]: offset=1448ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=30.00 phase=0.08 nLoop=1 LT=3501
+[0;37m[3292]: offset=1239ms ropeAngle=0.28(+0.03)[0min motion [0]
+[0;37m[3907]: offset=1645ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3562]: offset=1706ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.08, 30) = (258ms, 0.27) >[0m
+[0;31m[3576]: offset=-1720ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=32.00 phase=0.08 nLoop=1 LT=3501
+[0;37m[3295]: offset=1575ms ropeAngle=0.29(+0.04)[0min motion [0]
+[0;37m[3919]: offset=-1509ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3557]: offset=-1453ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.08, 32) = (268ms, 0.27) >[0m
+[0;31m[3579]: offset=-1375ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3559]: offset=-1317ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3574]: offset=-1244ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=34.00 phase=0.08 nLoop=1 LT=3501
+[0;37m[3257]: offset=-1488ms ropeAngle=0.28(+0.03)[0min motion [0]
+[0;37m[3951]: offset=-1038ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3563]: offset=-977ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.08, 34) = (268ms, 0.27) >[0m
+[0;31m[3575]: offset=-903ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3571]: offset=-833ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=36.00 phase=0.08 nLoop=1 LT=3501
+[0;37m[3254]: offset=-1083ms ropeAngle=0.28(+0.03)[0min motion [0]
+[0;37m[3965]: offset=-622ms ropeAngle=0.29(+0.04)[0mwait [1]
+[0;31m[3563]: offset=-560ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.08, 36) = (279ms, 0.27) >[0m
+[0;31m[3578]: offset=-483ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3566]: offset=-419ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3565]: offset=-355ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=38.00 phase=0.08 nLoop=1 LT=3501
+[0;37m[3242]: offset=-614ms ropeAngle=0.29(+0.04)[0min motion [0]
+[0;37m[3977]: offset=-138ms ropeAngle=0.29(+0.04)[0mwait [1]
+[0;31m[3564]: offset=-75ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.08, 38) = (280ms, 0.27) >[0m
+[0;31m[3583]: offset=7ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3565]: offset=71ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3559]: offset=128ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=40.00 phase=0.08 nLoop=1 LT=3501
+[0;37m[3252]: offset=-121ms ropeAngle=0.29(+0.04)[0min motion [0]
+[0;37m[3974]: offset=351ms ropeAngle=0.29(+0.04)[0mwait [1]
+[0;31m[3566]: offset=416ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.08, 40) = (289ms, 0.27) >[0m
+[0;31m[3587]: offset=502ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3561]: offset=562ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3559]: offset=620ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3560]: offset=679ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=2.00 phase=0.10 nLoop=1 LT=3501
+[0;37m[3507]: offset=682ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3637]: offset=818ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3558]: offset=875ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.10, 2) = (199ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3344]: offset=718ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3805]: offset=1021ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3549]: offset=1068ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3552]: offset=1119ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3558]: offset=1174ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=4.00 phase=0.10 nLoop=1 LT=3501
+[0;37m[3463]: offset=1136ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3641]: offset=1275ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3555]: offset=1329ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.10, 4) = (156ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3406]: offset=1234ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3720]: offset=1453ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3560]: offset=1512ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3569]: offset=1580ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=6.00 phase=0.10 nLoop=1 LT=3501
+[0;37m[3523]: offset=1602ms ropeAngle=0.28(+0.03)[0min motion [0]
+[0;37m[3587]: offset=1688ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3563]: offset=1750ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.10, 6) = (170ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3446]: offset=1695ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3710]: offset=-1597ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3559]: offset=-1539ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3560]: offset=-1481ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=8.00 phase=0.10 nLoop=1 LT=3501
+[0;37m[3488]: offset=-1495ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3633]: offset=-1363ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3566]: offset=-1298ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.10, 8) = (184ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3410]: offset=-1390ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3791]: offset=-1100ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3550]: offset=-1051ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3558]: offset=-997ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3550]: offset=-948ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=10.00 phase=0.10 nLoop=1 LT=3501
+[0;37m[3441]: offset=-1008ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3663]: offset=-847ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3567]: offset=-781ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.10, 10) = (168ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3447]: offset=-840ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3701]: offset=-640ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3558]: offset=-583ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3566]: offset=-518ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3576]: offset=-443ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3559]: offset=-385ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=12.00 phase=0.10 nLoop=1 LT=3501
+[0;37m[3411]: offset=-475ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3720]: offset=-257ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3556]: offset=-202ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.10, 12) = (184ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3447]: offset=-256ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3697]: offset=-60ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3567]: offset=6ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3564]: offset=69ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3567]: offset=135ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=14.00 phase=0.10 nLoop=1 LT=3501
+[0;37m[3406]: offset=37ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3730]: offset=265ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3561]: offset=325ms ropeAngle=0.25(-0.00)[0m
+[0;34mMachineLearning 0.25: f(0.10, 14) = (194ms, 0.25) =[0m
+&&    ==>   servoAmp=16.00 phase=0.10 nLoop=1 LT=3501
+[0;37m[3389]: offset=212ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3778]: offset=489ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3563]: offset=550ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.10, 16) = (227ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3447]: offset=493ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3753]: offset=745ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3550]: offset=794ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3543]: offset=833ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=18.00 phase=0.10 nLoop=1 LT=3501
+[0;37m[3348]: offset=680ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3796]: offset=975ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3565]: offset=1039ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.10, 18) = (206ms, 0.26) >[0m
+[0;31m[3573]: offset=1111ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3572]: offset=1182ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=20.00 phase=0.10 nLoop=1 LT=3501
+[0;37m[3331]: offset=1012ms ropeAngle=0.25(+0.00)[0min motion [0]
+[0;37m[3827]: offset=1338ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3566]: offset=1402ms ropeAngle=0.25(+0.00)[0m
+[0;34mMachineLearning 0.25: f(0.10, 20) = (221ms, 0.25) =[0m
+&&    ==>   servoAmp=22.00 phase=0.10 nLoop=1 LT=3501
+[0;37m[3345]: offset=1246ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3837]: offset=1582ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3568]: offset=1648ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.10, 22) = (247ms, 0.26) >[0m
+[0;31m[3569]: offset=1715ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=24.00 phase=0.10 nLoop=1 LT=3501
+[0;37m[3337]: offset=1550ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3845]: offset=-1607ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3564]: offset=-1547ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.10, 24) = (243ms, 0.26) >[0m
+[0;31m[3571]: offset=-1477ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=26.00 phase=0.10 nLoop=1 LT=3501
+[0;37m[3333]: offset=-1645ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3856]: offset=-1291ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3567]: offset=-1225ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.10, 26) = (253ms, 0.27) >[0m
+[0;31m[3572]: offset=-1154ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3576]: offset=-1079ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3556]: offset=-1024ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=28.00 phase=0.10 nLoop=1 LT=3501
+[0;37m[3295]: offset=-1230ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3885]: offset=-846ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3569]: offset=-778ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.10, 28) = (246ms, 0.27) >[0m
+[0;31m[3571]: offset=-709ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3571]: offset=-639ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=30.00 phase=0.10 nLoop=1 LT=3501
+[0;37m[3276]: offset=-864ms ropeAngle=0.28(+0.03)[0min motion [0]
+[0;37m[3913]: offset=-453ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3567]: offset=-387ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.10, 30) = (253ms, 0.27) >[0m
+[0;31m[3570]: offset=-318ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3572]: offset=-247ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3564]: offset=-184ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=32.00 phase=0.10 nLoop=1 LT=3501
+[0;37m[3269]: offset=-416ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3922]: offset=5ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3566]: offset=70ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.10, 32) = (254ms, 0.27) >[0m
+[0;31m[3582]: offset=148ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3561]: offset=208ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3562]: offset=269ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=34.00 phase=0.10 nLoop=1 LT=3501
+[0;37m[3262]: offset=29ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3938]: offset=465ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3569]: offset=533ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.10, 34) = (266ms, 0.27) >[0m
+[0;31m[3576]: offset=608ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3565]: offset=671ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3564]: offset=734ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3558]: offset=791ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=36.00 phase=0.10 nLoop=1 LT=3501
+[0;37m[3256]: offset=546ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3946]: offset=990ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3571]: offset=1060ms ropeAngle=0.28(+0.03)[0m
+[0;34mMachineLearning 0.25: f(0.10, 36) = (270ms, 0.28) >[0m
+[0;31m[3580]: offset=1139ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3559]: offset=1197ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3571]: offset=1267ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3556]: offset=1322ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=38.00 phase=0.10 nLoop=1 LT=3501
+[0;37m[3250]: offset=1071ms ropeAngle=0.28(+0.03)[0min motion [0]
+[0;37m[3958]: offset=1528ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3570]: offset=1597ms ropeAngle=0.28(+0.03)[0m
+[0;34mMachineLearning 0.25: f(0.10, 38) = (275ms, 0.28) >[0m
+[0;31m[3577]: offset=1673ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3566]: offset=1737ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3562]: offset=-1703ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3559]: offset=-1645ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3561]: offset=-1585ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=40.00 phase=0.10 nLoop=1 LT=3501
+[0;37m[3246]: offset=1660ms ropeAngle=0.28(+0.03)[0min motion [0]
+[0;37m[3967]: offset=-1375ms ropeAngle=0.28(+0.03)[0mwait [1]
+[0;31m[3567]: offset=-1310ms ropeAngle=0.28(+0.03)[0m
+[0;34mMachineLearning 0.25: f(0.10, 40) = (277ms, 0.28) >[0m
+[0;31m[3581]: offset=-1230ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3568]: offset=-1163ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3561]: offset=-1103ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3559]: offset=-1045ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3558]: offset=-988ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=2.00 phase=0.12 nLoop=1 LT=3501
+[0;37m[3528]: offset=-961ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3617]: offset=-846ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3559]: offset=-788ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.12, 2) = (201ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3344]: offset=-945ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3738]: offset=-708ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3571]: offset=-638ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3568]: offset=-571ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3573]: offset=-499ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=4.00 phase=0.12 nLoop=1 LT=3501
+[0;37m[3521]: offset=-479ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3577]: offset=-403ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3557]: offset=-347ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.12, 4) = (152ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3447]: offset=-401ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3753]: offset=-150ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3549]: offset=-103ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3561]: offset=-43ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=6.00 phase=0.12 nLoop=1 LT=3501
+[0;37m[3481]: offset=-67ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3601]: offset=33ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3555]: offset=87ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.12, 6) = (134ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3447]: offset=32ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3699]: offset=230ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3559]: offset=288ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3568]: offset=355ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3571]: offset=425ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=8.00 phase=0.12 nLoop=1 LT=3501
+[0;37m[3466]: offset=390ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3645]: offset=534ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3562]: offset=595ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.12, 8) = (170ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3439]: offset=533ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3704]: offset=736ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3563]: offset=797ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3570]: offset=866ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3563]: offset=928ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=10.00 phase=0.12 nLoop=1 LT=3501
+[0;37m[3457]: offset=884ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3667]: offset=1050ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3563]: offset=1111ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.12, 10) = (184ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3447]: offset=1056ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3709]: offset=1264ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3558]: offset=1321ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3561]: offset=1381ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3558]: offset=1435ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=12.00 phase=0.12 nLoop=1 LT=3501
+[0;37m[3407]: offset=1341ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3728]: offset=1568ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3559]: offset=1626ms ropeAngle=0.25(-0.00)[0m
+[0;34mMachineLearning 0.25: f(0.12, 12) = (191ms, 0.25) =[0m
+&&    ==>   servoAmp=14.00 phase=0.12 nLoop=1 LT=3501
+[0;37m[3442]: offset=1567ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3720]: offset=-1715ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3561]: offset=-1655ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.12, 14) = (220ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3446]: offset=-1710ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3697]: offset=-1514ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3565]: offset=-1451ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3578]: offset=-1374ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3567]: offset=-1308ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=16.00 phase=0.12 nLoop=1 LT=3501
+[0;37m[3384]: offset=-1425ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3749]: offset=-1178ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3566]: offset=-1114ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.12, 16) = (196ms, 0.26) >[0m
+[0;31m[3574]: offset=-1041ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3571]: offset=-972ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=18.00 phase=0.12 nLoop=1 LT=3501
+[0;37m[3348]: offset=-1125ms ropeAngle=0.25(+0.00)[0min motion [0]
+[0;37m[3794]: offset=-834ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3567]: offset=-768ms ropeAngle=0.25(-0.00)[0m
+[0;34mMachineLearning 0.25: f(0.12, 18) = (206ms, 0.25) =[0m
+&&    ==>   servoAmp=20.00 phase=0.12 nLoop=1 LT=3501
+[0;37m[3348]: offset=-925ms ropeAngle=0.25(+0.00)[0min motion [0]
+[0;37m[3827]: offset=-599ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3567]: offset=-533ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.12, 20) = (239ms, 0.26) >[0m
+[0;31m[3571]: offset=-463ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=22.00 phase=0.12 nLoop=1 LT=3501
+[0;37m[3330]: offset=-634ms ropeAngle=0.25(+0.00)[0min motion [0]
+[0;37m[3840]: offset=-296ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3563]: offset=-234ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.12, 22) = (230ms, 0.26) >[0m
+[0;31m[3583]: offset=-152ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=24.00 phase=0.12 nLoop=1 LT=3501
+[0;37m[3340]: offset=-313ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3825]: offset=11ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3560]: offset=67ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.12, 24) = (222ms, 0.27) >[0m
+[0;31m[3577]: offset=143ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3571]: offset=213ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3562]: offset=274ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=26.00 phase=0.12 nLoop=1 LT=3501
+[0;37m[3319]: offset=89ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3846]: offset=431ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3572]: offset=502ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.12, 26) = (234ms, 0.27) >[0m
+[0;31m[3569]: offset=567ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3568]: offset=631ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=28.00 phase=0.12 nLoop=1 LT=3501
+[0;37m[3311]: offset=440ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3870]: offset=809ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3567]: offset=874ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.12, 28) = (245ms, 0.27) >[0m
+[0;31m[3572]: offset=945ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3570]: offset=1013ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3565]: offset=1076ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3560]: offset=1135ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=30.00 phase=0.12 nLoop=1 LT=3501
+[0;37m[3294]: offset=925ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3883]: offset=1307ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3558]: offset=1364ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.12, 30) = (232ms, 0.27) >[0m
+[0;31m[3587]: offset=1450ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3567]: offset=1516ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3560]: offset=1575ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=32.00 phase=0.12 nLoop=1 LT=3501
+[0;37m[3281]: offset=1355ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3903]: offset=-1744ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3569]: offset=-1676ms ropeAngle=0.28(+0.03)[0m
+[0;34mMachineLearning 0.25: f(0.12, 32) = (250ms, 0.28) >[0m
+[0;31m[3582]: offset=-1595ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3562]: offset=-1534ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3562]: offset=-1473ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3560]: offset=-1414ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3560]: offset=-1355ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=34.00 phase=0.12 nLoop=1 LT=3501
+[0;37m[3269]: offset=-1588ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3913]: offset=-1176ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3570]: offset=-1107ms ropeAngle=0.28(+0.03)[0m
+[0;34mMachineLearning 0.25: f(0.12, 34) = (249ms, 0.28) >[0m
+[0;31m[3577]: offset=-1031ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3570]: offset=-962ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3565]: offset=-898ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3559]: offset=-840ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=36.00 phase=0.12 nLoop=1 LT=3501
+[0;37m[3258]: offset=-1086ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3934]: offset=-653ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3563]: offset=-591ms ropeAngle=0.28(+0.03)[0m
+[0;34mMachineLearning 0.25: f(0.12, 36) = (252ms, 0.28) >[0m
+[0;31m[3591]: offset=-501ms ropeAngle=0.29(+0.04)[0m
+[0;31m[3557]: offset=-446ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3566]: offset=-381ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3561]: offset=-321ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3560]: offset=-262ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3558]: offset=-205ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=38.00 phase=0.12 nLoop=1 LT=3501
+[0;37m[3243]: offset=-463ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3954]: offset=-10ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3571]: offset=60ms ropeAngle=0.28(+0.03)[0m
+[0;34mMachineLearning 0.25: f(0.12, 38) = (265ms, 0.28) >[0m
+[0;31m[3578]: offset=137ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3562]: offset=198ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3565]: offset=262ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3561]: offset=322ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3558]: offset=379ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3559]: offset=437ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=40.00 phase=0.12 nLoop=1 LT=3501
+[0;37m[3240]: offset=176ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3964]: offset=639ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3567]: offset=705ms ropeAngle=0.28(+0.03)[0m
+[0;34mMachineLearning 0.25: f(0.12, 40) = (268ms, 0.28) >[0m
+[0;31m[3580]: offset=783ms ropeAngle=0.29(+0.04)[0m
+[0;31m[3565]: offset=847ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3567]: offset=913ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3557]: offset=966ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3559]: offset=1024ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3561]: offset=1084ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=2.00 phase=0.14 nLoop=1 LT=3501
+[0;37m[3504]: offset=1086ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3643]: offset=1228ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3556]: offset=1280ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.14, 2) = (200ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3345]: offset=1124ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3739]: offset=1362ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3561]: offset=1422ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3576]: offset=1497ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3572]: offset=1568ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=4.00 phase=0.14 nLoop=1 LT=3501
+[0;37m[3533]: offset=1600ms ropeAngle=0.27(+0.02)[0min motion [0]
+[0;37m[3570]: offset=1669ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3554]: offset=1721ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.14, 4) = (154ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3448]: offset=1668ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3696]: offset=-1638ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3560]: offset=-1579ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3562]: offset=-1518ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3578]: offset=-1442ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=6.00 phase=0.14 nLoop=1 LT=3501
+:0[0;37m[3487]: offset=-1456ms ropeAngle=0.26(+0.01)[0min motion [0]
+:M
+Old Magic=0
+Magic=0
+[0;37m[3609]: offset=-1348ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3557]: offset=-1292ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.14, 6) = (150ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3447]: offset=-1346ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3760]: offset=-1087ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3548]: offset=-1040ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3530]: offset=-1011ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=8.00 phase=0.14 nLoop=1 LT=3501
+[0;37m[3470]: offset=-1042ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3644]: offset=-899ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3560]: offset=-840ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.14, 8) = (171ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3446]: offset=-896ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3761]: offset=-636ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3548]: offset=-589ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3553]: offset=-537ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3561]: offset=-477ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=10.00 phase=0.14 nLoop=1 LT=3501
+[0;37m[3413]: offset=-565ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3686]: offset=-381ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3560]: offset=-322ms ropeAngle=0.25(-0.00)[0m
+[0;34mMachineLearning 0.25: f(0.14, 10) = (156ms, 0.25) =[0m
+&&    ==>   servoAmp=12.00 phase=0.14 nLoop=1 LT=3501
+[0;37m[3460]: offset=-363ms ropeAngle=0.25(-0.00)[0min motion [0]
+[0;37m[3688]: offset=-177ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3556]: offset=-122ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.14, 12) = (201ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3461]: offset=-165ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3687]: offset=20ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3556]: offset=75ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3588]: offset=158ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3564]: offset=220ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=14.00 phase=0.14 nLoop=1 LT=3501
+[0;37m[3382]: offset=100ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3743]: offset=342ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3559]: offset=400ms ropeAngle=0.25(+0.00)[0m
+[0;34mMachineLearning 0.25: f(0.14, 14) = (181ms, 0.25) =[0m
+&&    ==>   servoAmp=16.00 phase=0.14 nLoop=1 LT=3501
+[0;37m[3425]: offset=323ms ropeAngle=0.25(+0.00)[0min motion [0]
+[0;37m[3740]: offset=562ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3559]: offset=620ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.14, 16) = (221ms, 0.26) >[0m
+[0;31m[3588]: offset=707ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=18.00 phase=0.14 nLoop=1 LT=3501
+[0;37m[3382]: offset=588ms ropeAngle=0.25(-0.00)[0min motion [0]
+[0;37m[3760]: offset=847ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3557]: offset=903ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.14, 18) = (196ms, 0.26) >[0m
+[0;31m[3583]: offset=985ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=20.00 phase=0.14 nLoop=1 LT=3501
+[0;37m[3368]: offset=852ms ropeAngle=0.25(-0.00)[0min motion [0]
+[0;37m[3788]: offset=1139ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3566]: offset=1203ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.14, 20) = (219ms, 0.27) >[0m
+[0;31m[3583]: offset=1285ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3564]: offset=1348ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=22.00 phase=0.14 nLoop=1 LT=3501
+[0;37m[3338]: offset=1184ms ropeAngle=0.25(-0.00)[0min motion [0]
+[0;37m[3811]: offset=1494ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3555]: offset=1548ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.14, 22) = (201ms, 0.27) >[0m
+[0;31m[3581]: offset=1627ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3572]: offset=1698ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=24.00 phase=0.14 nLoop=1 LT=3501
+[0;37m[3314]: offset=1510ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3839]: offset=-1653ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3588]: offset=-1566ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.14, 24) = (238ms, 0.27) >[0m
+[0;31m[3561]: offset=-1506ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3561]: offset=-1446ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=26.00 phase=0.14 nLoop=1 LT=3501
+[0;37m[3307]: offset=-1640ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3857]: offset=-1284ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3559]: offset=-1226ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.14, 26) = (220ms, 0.27) >[0m
+[0;31m[3592]: offset=-1141ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3563]: offset=-1079ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3562]: offset=-1018ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3557]: offset=-962ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3560]: offset=-903ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=28.00 phase=0.14 nLoop=1 LT=3501
+[0;37m[3285]: offset=-1119ms ropeAngle=0.25(-0.00)[0min motion [0]
+[0;37m[3877]: offset=-743ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3559]: offset=-685ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.14, 28) = (218ms, 0.27) >[0m
+[0;31m[3593]: offset=-598ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3567]: offset=-532ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3556]: offset=-477ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=30.00 phase=0.14 nLoop=1 LT=3501
+[0;37m[3283]: offset=-695ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3885]: offset=-311ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3560]: offset=-252ms ropeAngle=0.28(+0.03)[0m
+[0;34mMachineLearning 0.25: f(0.14, 30) = (225ms, 0.28) >[0m
+[0;31m[3585]: offset=-168ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3571]: offset=-99ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3561]: offset=-39ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3557]: offset=17ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3560]: offset=76ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=32.00 phase=0.14 nLoop=1 LT=3501
+[0;37m[3272]: offset=-153ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3894]: offset=240ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3610]: offset=349ms ropeAngle=0.29(+0.04)[0m
+[0;34mMachineLearning 0.25: f(0.14, 32) = (273ms, 0.29) >[0m
+[0;31m[3562]: offset=410ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3561]: offset=470ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3560]: offset=529ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3558]: offset=586ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3558]: offset=643ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=2.00 phase=0.16 nLoop=1 LT=3501
+[0;37m[3504]: offset=646ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3634]: offset=779ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3557]: offset=835ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.16, 2) = (192ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3343]: offset=677ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3745]: offset=921ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3568]: offset=988ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3573]: offset=1060ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3568]: offset=1127ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=4.00 phase=0.16 nLoop=1 LT=3501
+[0;37m[3526]: offset=1152ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3561]: offset=1212ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3554]: offset=1264ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.16, 4) = (138ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3446]: offset=1209ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3705]: offset=1413ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3563]: offset=1475ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3568]: offset=1539ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=6.00 phase=0.16 nLoop=1 LT=3501
+[0;37m[3508]: offset=1545ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3600]: offset=1643ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3556]: offset=1695ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.16, 6) = (161ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3464]: offset=1657ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3739]: offset=-1606ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3557]: offset=-1551ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3559]: offset=-1493ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3531]: offset=-1463ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=8.00 phase=0.16 nLoop=1 LT=3501
+[0;37m[3481]: offset=-1483ms ropeAngle=0.25(+0.00)[0min motion [0]
+[0;37m[3629]: offset=-1355ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3557]: offset=-1299ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.16, 8) = (164ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3447]: offset=-1353ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3759]: offset=-1096ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3556]: offset=-1041ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3529]: offset=-1013ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=10.00 phase=0.16 nLoop=1 LT=3501
+[0;37m[3451]: offset=-1063ms ropeAngle=0.25(+0.00)[0min motion [0]
+[0;37m[3666]: offset=-898ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3558]: offset=-841ms ropeAngle=0.25(+0.00)[0m
+[0;34mMachineLearning 0.25: f(0.16, 10) = (172ms, 0.25) =[0m
+&&    ==>   servoAmp=12.00 phase=0.16 nLoop=1 LT=3501
+[0;37m[3470]: offset=-872ms ropeAngle=0.24(-0.01)[0min motion [0]
+[0;37m[3680]: offset=-694ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3560]: offset=-635ms ropeAngle=0.25(+0.00)[0m
+[0;34mMachineLearning 0.25: f(0.16, 12) = (207ms, 0.25) =[0m
+&&    ==>   servoAmp=14.00 phase=0.16 nLoop=1 LT=3501
+[0;37m[3426]: offset=-710ms ropeAngle=0.25(-0.00)[0min motion [0]
+[0;37m[3734]: offset=-477ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3566]: offset=-412ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.16, 14) = (223ms, 0.26) >[0m
+[0;31m[3556]: offset=-357ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=16.00 phase=0.16 nLoop=1 LT=3501
+[0;37m[3411]: offset=-447ms ropeAngle=0.24(-0.01)[0min motion [0]
+[0;37m[3735]: offset=-214ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3560]: offset=-155ms ropeAngle=0.25(+0.00)[0m
+[0;34mMachineLearning 0.25: f(0.16, 16) = (203ms, 0.25) =[0m
+&&    ==>   servoAmp=18.00 phase=0.16 nLoop=1 LT=3501
+[0;37m[3399]: offset=-257ms ropeAngle=0.24(-0.01)[0min motion [0]
+[0;37m[3829]: offset=71ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3550]: offset=120ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.16, 18) = (275ms, 0.26) >[0m
+[0;31m[3544]: offset=163ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=20.00 phase=0.16 nLoop=1 LT=3501
+[0;37m[3342]: offset=4ms ropeAngle=0.25(-0.00)[0min motion [0]
+[0;37m[3843]: offset=346ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3563]: offset=408ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.16, 20) = (245ms, 0.27) >[0m
+[0;31m[3559]: offset=463ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3532]: offset=494ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=22.00 phase=0.16 nLoop=1 LT=3501
+[0;37m[3354]: offset=344ms ropeAngle=0.25(-0.00)[0min motion [0]
+[0;37m[3857]: offset=700ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3553]: offset=752ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.16, 22) = (261ms, 0.27) >[0m
+[0;31m[3560]: offset=811ms ropeAngle=0.27(+0.02)[0m
+&
+ServoCenter=90.00 potCenter=493 pot50=257 pot150=743 loopTime=3592
+[0;31m[3536]: offset=846ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3556]: offset=900ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3559]: offset=957ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3560]: offset=1015ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=24.00 phase=0.16 nLoop=1 LT=3501
+[0;37m[3324]: offset=838ms ropeAngle=0.25(-0.00)[0min motion [0]
+[0;37m[3892]: offset=1229ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3551]: offset=1279ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.16, 24) = (264ms, 0.27) >[0m
+[0;31m[3559]: offset=1337ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3533]: offset=1366ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3558]: offset=1423ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3558]: offset=1479ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=26.00 phase=0.16 nLoop=1 LT=3501
+[0;37m[3302]: offset=1277ms ropeAngle=0.25(-0.00)[0min motion [0]
+[0;37m[3914]: offset=1690ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3556]: offset=1744ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.16, 26) = (269ms, 0.27) >[0m
+[0;31m[3560]: offset=-1698ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3538]: offset=-1661ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3557]: offset=-1605ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3560]: offset=-1546ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=28.00 phase=0.16 nLoop=1 LT=3501
+[0;37m[3312]: offset=-1736ms ropeAngle=0.24(-0.01)[0min motion [0]
+[0;37m[3899]: offset=-1338ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3561]: offset=-1278ms ropeAngle=0.28(+0.03)[0m
+[0;34mMachineLearning 0.25: f(0.16, 28) = (269ms, 0.28) >[0m
+[0;31m[3553]: offset=-1226ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3562]: offset=-1165ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3558]: offset=-1108ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3551]: offset=-1058ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3562]: offset=-997ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=30.00 phase=0.16 nLoop=1 LT=3501
+[0;37m[3293]: offset=-1205ms ropeAngle=0.25(+0.00)[0min motion [0]
+[0;37m[3925]: offset=-781ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3550]: offset=-732ms ropeAngle=0.28(+0.03)[0m
+[0;34mMachineLearning 0.25: f(0.16, 30) = (265ms, 0.28) >[0m
+[0;31m[3564]: offset=-669ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3534]: offset=-636ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3561]: offset=-576ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3556]: offset=-524ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3562]: offset=-463ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3559]: offset=-405ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3553]: offset=-354ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=32.00 phase=0.16 nLoop=1 LT=3501
+[0;37m[3278]: offset=-577ms ropeAngle=0.25(-0.00)[0min motion [0]
+[0;37m[3896]: offset=-183ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3584]: offset=-101ms ropeAngle=0.28(+0.03)[0m
+[0;34mMachineLearning 0.25: f(0.16, 32) = (255ms, 0.28) >[0m
+[0;31m[3566]: offset=-36ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3567]: offset=29ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3557]: offset=82ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3558]: offset=136ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3560]: offset=192ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=34.00 phase=0.16 nLoop=1 LT=3501
+[0;37m[3272]: offset=-37ms ropeAngle=0.25(-0.00)[0min motion [0]
+[0;37m[3898]: offset=360ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3570]: offset=426ms ropeAngle=0.29(+0.04)[0m
+[0;34mMachineLearning 0.25: f(0.16, 34) = (237ms, 0.29) >[0m
+[0;31m[3580]: offset=504ms ropeAngle=0.29(+0.04)[0m
+[0;31m[3566]: offset=569ms ropeAngle=0.29(+0.04)[0m
+[0;31m[3565]: offset=633ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3562]: offset=694ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3556]: offset=749ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3560]: offset=808ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3562]: offset=869ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=2.00 phase=0.18 nLoop=1 LT=3501
+[0;37m[3508]: offset=876ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3567]: offset=942ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3562]: offset=1003ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.18, 2) = (134ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3446]: offset=948ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3758]: offset=1205ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3552]: offset=1256ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3559]: offset=1314ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3558]: offset=1370ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=4.00 phase=0.18 nLoop=1 LT=3501
+[0;37m[3498]: offset=1367ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3580]: offset=1445ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3558]: offset=1502ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.18, 4) = (133ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3446]: offset=1446ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3755]: offset=1699ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3550]: offset=1748ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3557]: offset=-1697ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=6.00 phase=0.18 nLoop=1 LT=3501
+[0;37m[3481]: offset=-1718ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3596]: offset=-1624ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3559]: offset=-1566ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.18, 6) = (133ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3466]: offset=-1604ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3738]: offset=-1367ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3555]: offset=-1313ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3557]: offset=-1257ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3559]: offset=-1199ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3471]: offset=-1229ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=8.00 phase=0.18 nLoop=1 LT=3501
+[0;37m[3533]: offset=-1197ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3697]: offset=-1001ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3551]: offset=-951ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.18, 8) = (278ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3345]: offset=-1107ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3809]: offset=-800ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3550]: offset=-751ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3560]: offset=-692ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3537]: offset=-656ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=10.00 phase=0.18 nLoop=1 LT=3501
+[0;37m[3455]: offset=-702ms ropeAngle=0.24(-0.01)[0min motion [0]
+[0;37m[3651]: offset=-552ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3565]: offset=-488ms ropeAngle=0.25(-0.00)[0m
+[0;34mMachineLearning 0.25: f(0.18, 10) = (168ms, 0.25) =[0m
+&&    ==>   servoAmp=12.00 phase=0.18 nLoop=1 LT=3501
+[0;37m[3487]: offset=-502ms ropeAngle=0.24(-0.01)[0min motion [0]
+[0;37m[3722]: offset=-281ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3549]: offset=-233ms ropeAngle=0.25(-0.00)[0m
+[0;34mMachineLearning 0.25: f(0.18, 12) = (255ms, 0.25) =[0m
+&&    ==>   servoAmp=14.00 phase=0.18 nLoop=1 LT=3501
+[0;37m[3384]: offset=-350ms ropeAngle=0.24(-0.01)[0min motion [0]
+[0;37m[3712]: offset=-140ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3566]: offset=-76ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.18, 14) = (159ms, 0.26) >[0m
+[0;31m[3580]: offset=3ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=16.00 phase=0.18 nLoop=1 LT=3501
+[0;37m[3389]: offset=-109ms ropeAngle=0.24(-0.01)[0min motion [0]
+[0;37m[3800]: offset=189ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3554]: offset=242ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.18, 16) = (240ms, 0.26) >[0m
+[0;31m[3559]: offset=300ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=18.00 phase=0.18 nLoop=1 LT=3501
+[0;37m[3349]: offset=148ms ropeAngle=0.24(-0.01)[0min motion [0]
+[0;37m[3817]: offset=464ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3553]: offset=513ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.18, 18) = (216ms, 0.26) >[0m
+[0;31m[3559]: offset=571ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3531]: offset=601ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=20.00 phase=0.18 nLoop=1 LT=3501
+[0;37m[3361]: offset=458ms ropeAngle=0.23(-0.02)[0min motion [0]
+[0;37m[3841]: offset=798ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3553]: offset=849ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.18, 20) = (252ms, 0.27) >[0m
+[0;31m[3556]: offset=904ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3537]: offset=940ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=22.00 phase=0.18 nLoop=1 LT=3501
+[0;37m[3368]: offset=806ms ropeAngle=0.24(-0.01)[0min motion [0]
+[0;37m[3824]: offset=1129ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3562]: offset=1187ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.18, 22) = (251ms, 0.27) >[0m
+[0;31m[3557]: offset=1243ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3536]: offset=1278ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3562]: offset=1339ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3560]: offset=1398ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3554]: offset=1451ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=24.00 phase=0.18 nLoop=1 LT=3501
+[0;37m[3334]: offset=1284ms ropeAngle=0.24(-0.01)[0min motion [0]
+[0;37m[3873]: offset=1656ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3553]: offset=1705ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.18, 24) = (257ms, 0.27) >[0m
+[0;31m[3559]: offset=-1738ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3534]: offset=-1705ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3561]: offset=-1645ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3557]: offset=-1589ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=26.00 phase=0.18 nLoop=1 LT=3501
+[0;37m[3328]: offset=1738ms ropeAngle=0.24(-0.01)[0min motion [0]
+[0;37m[3881]: offset=-1383ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3553]: offset=-1331ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.18, 26) = (259ms, 0.27) >[0m
+[0;31m[3561]: offset=-1271ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3539]: offset=-1233ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3559]: offset=-1179ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3558]: offset=-1122ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3559]: offset=-1067ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3557]: offset=-1011ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=28.00 phase=0.18 nLoop=1 LT=3501
+[0;37m[3333]: offset=-1179ms ropeAngle=0.23(-0.02)[0min motion [0]
+[0;37m[3820]: offset=-860ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3561]: offset=-800ms ropeAngle=0.28(+0.03)[0m
+[0;34mMachineLearning 0.25: f(0.18, 28) = (211ms, 0.28) >[0m
+[0;31m[3586]: offset=-715ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3574]: offset=-642ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3557]: offset=-586ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3558]: offset=-529ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3563]: offset=-470ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=30.00 phase=0.18 nLoop=1 LT=3501
+[0;37m[3316]: offset=-658ms ropeAngle=0.24(-0.01)[0min motion [0]
+[0;37m[3886]: offset=-273ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3555]: offset=-219ms ropeAngle=0.28(+0.03)[0m
+[0;34mMachineLearning 0.25: f(0.18, 30) = (254ms, 0.28) >[0m
+[0;31m[3565]: offset=-155ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3532]: offset=-124ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3562]: offset=-63ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3558]: offset=-6ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3561]: offset=53ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3557]: offset=108ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3561]: offset=168ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=32.00 phase=0.18 nLoop=1 LT=3501
+[0;37m[3312]: offset=-21ms ropeAngle=0.24(-0.01)[0min motion [0]
+[0;37m[3856]: offset=333ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3568]: offset=400ms ropeAngle=0.29(+0.04)[0m
+[0;34mMachineLearning 0.25: f(0.18, 32) = (233ms, 0.29) >[0m
+[0;31m[3565]: offset=464ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3571]: offset=534ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3565]: offset=598ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3565]: offset=662ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3554]: offset=715ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3560]: offset=774ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=34.00 phase=0.18 nLoop=1 LT=3501
+[0;37m[3287]: offset=560ms ropeAngle=0.24(-0.01)[0min motion [0]
+[0;37m[3926]: offset=984ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3556]: offset=1039ms ropeAngle=0.29(+0.04)[0m
+[0;34mMachineLearning 0.25: f(0.18, 34) = (266ms, 0.29) >[0m
+[0;31m[3559]: offset=1097ms ropeAngle=0.29(+0.04)[0m
+[0;31m[3546]: offset=1141ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3561]: offset=1201ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3560]: offset=1257ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3560]: offset=1316ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3560]: offset=1375ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3558]: offset=1432ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=2.00 phase=0.20 nLoop=1 LT=3501
+[0;37m[3517]: offset=1447ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3655]: offset=1601ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3538]: offset=1637ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.20, 2) = (207ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3373]: offset=1509ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3773]: offset=-1725ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3554]: offset=-1672ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3555]: offset=-1621ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3528]: offset=-1594ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=4.00 phase=0.20 nLoop=1 LT=3501
+[0;37m[3522]: offset=-1579ms ropeAngle=0.26(+0.01)[0min motion [0]
+[0;37m[3606]: offset=-1474ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3561]: offset=-1421ms ropeAngle=0.25(-0.00)[0m
+[0;34mMachineLearning 0.25: f(0.20, 4) = (186ms, 0.25) =[0m
+&&    ==>   servoAmp=6.00 phase=0.20 nLoop=1 LT=3501
+[0;37m[3501]: offset=-1421ms ropeAngle=0.24(-0.01)[0min motion [0]
+[0;37m[3617]: offset=-1311ms ropeAngle=0.21(-0.04)[0mwait [1]
+[0;31m[3556]: offset=-1256ms ropeAngle=0.23(-0.02)[0m
+[0;34mMachineLearning 0.25: f(0.20, 6) = (171ms, 0.23) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3409]: offset=-1352ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3785]: offset=-1069ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3547]: offset=-1023ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3557]: offset=-967ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=8.00 phase=0.20 nLoop=1 LT=3501
+[0;37m[3471]: offset=-997ms ropeAngle=0.24(-0.01)[0min motion [0]
+[0;37m[3628]: offset=-871ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3557]: offset=-815ms ropeAngle=0.25(-0.00)[0m
+[0;34mMachineLearning 0.25: f(0.20, 8) = (153ms, 0.25) =[0m
+&&    ==>   servoAmp=10.00 phase=0.20 nLoop=1 LT=3501
+[0;37m[3476]: offset=-840ms ropeAngle=0.23(-0.02)[0min motion [0]
+[0;37m[3663]: offset=-679ms ropeAngle=0.21(-0.04)[0mwait [1]
+[0;31m[3558]: offset=-622ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.20, 10) = (194ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3407]: offset=-716ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3783]: offset=-435ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3552]: offset=-387ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3559]: offset=-329ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3480]: offset=-350ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=12.00 phase=0.20 nLoop=1 LT=3501
+[0;37m[3511]: offset=-340ms ropeAngle=0.24(-0.01)[0min motion [0]
+[0;37m[3718]: offset=-124ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3548]: offset=-77ms ropeAngle=0.25(+0.00)[0m
+[0;34mMachineLearning 0.25: f(0.20, 12) = (274ms, 0.25) =[0m
+&&    ==>   servoAmp=14.00 phase=0.20 nLoop=1 LT=3501
+[0;37m[3404]: offset=-212ms ropeAngle=0.24(-0.01)[0min motion [0]
+[0;37m[3753]: offset=39ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3548]: offset=86ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.20, 14) = (202ms, 0.26) >[0m
+[0;31m[3560]: offset=145ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=16.00 phase=0.20 nLoop=1 LT=3501
+[0;37m[3378]: offset=22ms ropeAngle=0.23(-0.02)[0min motion [0]
+[0;37m[3785]: offset=306ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3550]: offset=352ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.20, 16) = (210ms, 0.27) >[0m
+[0;31m[3559]: offset=410ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3528]: offset=437ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=18.00 phase=0.20 nLoop=1 LT=3501
+[0;37m[3390]: offset=326ms ropeAngle=0.23(-0.02)[0min motion [0]
+[0;37m[3805]: offset=630ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3548]: offset=677ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.20, 18) = (240ms, 0.27) >[0m
+[0;31m[3561]: offset=737ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3482]: offset=718ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=20.00 phase=0.20 nLoop=1 LT=3501
+[0;37m[3434]: offset=651ms ropeAngle=0.24(-0.01)[0min motion [0]
+[0;37m[3803]: offset=953ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3551]: offset=1003ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.20, 20) = (285ms, 0.27) >[0m
+[0;31m[3561]: offset=1063ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3482]: offset=1041ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=22.00 phase=0.20 nLoop=1 LT=3501
+[0;37m[3459]: offset=998ms ropeAngle=0.24(-0.01)[0min motion [0]
+[0;37m[3730]: offset=1226ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3560]: offset=1285ms ropeAngle=0.28(+0.03)[0m
+[0;34mMachineLearning 0.25: f(0.20, 22) = (246ms, 0.28) >[0m
+[0;31m[3568]: offset=1349ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3576]: offset=1424ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3562]: offset=1483ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3563]: offset=1545ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3559]: offset=1603ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=24.00 phase=0.20 nLoop=1 LT=3501
+[0;37m[3358]: offset=1460ms ropeAngle=0.24(-0.01)[0min motion [0]
+[0;37m[3770]: offset=1729ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3562]: offset=-1711ms ropeAngle=0.28(+0.03)[0m
+[0;34mMachineLearning 0.25: f(0.20, 24) = (187ms, 0.28) >[0m
+[0;31m[3586]: offset=-1627ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3568]: offset=-1560ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3563]: offset=-1498ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3562]: offset=-1437ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3555]: offset=-1383ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=26.00 phase=0.20 nLoop=1 LT=3501
+[0;37m[3374]: offset=-1510ms ropeAngle=0.23(-0.02)[0min motion [0]
+[0;37m[3768]: offset=-1243ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3559]: offset=-1185ms ropeAngle=0.28(+0.03)[0m
+[0;34mMachineLearning 0.25: f(0.20, 26) = (198ms, 0.28) >[0m
+[0;31m[3570]: offset=-1116ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3569]: offset=-1048ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3565]: offset=-984ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3568]: offset=-918ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3553]: offset=-866ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=28.00 phase=0.20 nLoop=1 LT=3501
+[0;37m[3342]: offset=-1025ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3819]: offset=-707ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3563]: offset=-645ms ropeAngle=0.29(+0.04)[0m
+[0;34mMachineLearning 0.25: f(0.20, 28) = (221ms, 0.29) >[0m
+[0;31m[3560]: offset=-586ms ropeAngle=0.29(+0.04)[0m
+[0;31m[3562]: offset=-525ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3560]: offset=-466ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3562]: offset=-410ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3559]: offset=-352ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3559]: offset=-294ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=2.00 phase=0.22 nLoop=1 LT=3501
+[0;37m[3521]: offset=-274ms ropeAngle=0.25(+0.00)[0min motion [0]
+[0;37m[3635]: offset=-140ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3555]: offset=-86ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.22, 2) = (208ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3344]: offset=-271ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3739]: offset=-33ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3562]: offset=28ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3590]: offset=117ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3567]: offset=183ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3558]: offset=239ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=4.00 phase=0.22 nLoop=1 LT=3501
+[0;37m[3499]: offset=237ms ropeAngle=0.24(-0.01)[0min motion [0]
+[0;37m[3583]: offset=319ms ropeAngle=0.21(-0.04)[0mwait [1]
+[0;31m[3557]: offset=375ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.22, 4) = (136ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3448]: offset=322ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3763]: offset=583ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3550]: offset=632ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3558]: offset=689ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=6.00 phase=0.22 nLoop=1 LT=3501
+[0;37m[3464]: offset=651ms ropeAngle=0.24(-0.01)[0min motion [0]
+[0;37m[3633]: offset=783ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3563]: offset=842ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.22, 6) = (157ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3385]: offset=726ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3795]: offset=1020ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3550]: offset=1069ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3493]: offset=1060ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=8.00 phase=0.22 nLoop=1 LT=3501
+[0;37m[3535]: offset=1094ms ropeAngle=0.25(-0.00)[0min motion [0]
+[0;37m[3676]: offset=1268ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3547]: offset=1312ms ropeAngle=0.25(-0.00)[0m
+[0;34mMachineLearning 0.25: f(0.22, 8) = (255ms, 0.25) =[0m
+&&    ==>   servoAmp=10.00 phase=0.22 nLoop=1 LT=3501
+[0;37m[3457]: offset=1267ms ropeAngle=0.23(-0.02)[0min motion [0]
+[0;37m[3693]: offset=1458ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3549]: offset=1506ms ropeAngle=0.25(-0.00)[0m
+[0;34mMachineLearning 0.25: f(0.22, 10) = (196ms, 0.25) =[0m
+&&    ==>   servoAmp=12.00 phase=0.22 nLoop=1 LT=3501
+[0;37m[3431]: offset=1433ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3670]: offset=1602ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3559]: offset=1660ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.22, 12) = (157ms, 0.26) >[0m
+[0;31m[3557]: offset=1715ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=14.00 phase=0.22 nLoop=1 LT=3501
+[0;37m[3458]: offset=1672ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3684]: offset=-1646ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3558]: offset=-1589ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.22, 14) = (197ms, 0.26) >[0m
+[0;31m[3556]: offset=-1534ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=16.00 phase=0.22 nLoop=1 LT=3501
+[0;37m[3435]: offset=-1601ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3693]: offset=-1409ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3563]: offset=-1349ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.22, 16) = (188ms, 0.27) >[0m
+[0;31m[3584]: offset=-1266ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3562]: offset=-1205ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=18.00 phase=0.22 nLoop=1 LT=3501
+[0;37m[3450]: offset=-1257ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3674]: offset=-1085ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3564]: offset=-1023ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.22, 18) = (185ms, 0.27) >[0m
+[0;31m[3563]: offset=-961ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3574]: offset=-888ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=20.00 phase=0.22 nLoop=1 LT=3501
+[0;37m[3398]: offset=-991ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3786]: offset=-706ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3551]: offset=-657ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.22, 20) = (232ms, 0.27) >[0m
+[0;31m[3546]: offset=-612ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3557]: offset=-556ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3560]: offset=-497ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=22.00 phase=0.22 nLoop=1 LT=3501
+[0;37m[3414]: offset=-584ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3763]: offset=-323ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3552]: offset=-272ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.22, 22) = (226ms, 0.27) >[0m
+[0;31m[3552]: offset=-221ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3553]: offset=-169ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3558]: offset=-112ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3561]: offset=-52ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3558]: offset=5ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=24.00 phase=0.22 nLoop=1 LT=3501
+[0;37m[3416]: offset=-80ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3700]: offset=118ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3581]: offset=198ms ropeAngle=0.28(+0.03)[0m
+[0;34mMachineLearning 0.25: f(0.22, 24) = (194ms, 0.28) >[0m
+[0;31m[3572]: offset=269ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3568]: offset=336ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3560]: offset=395ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3564]: offset=458ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3552]: offset=509ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3565]: offset=572ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=26.00 phase=0.22 nLoop=1 LT=3501
+[0;37m[3381]: offset=451ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3798]: offset=745ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3562]: offset=806ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.22, 26) = (238ms, 0.27) >[0m
+[0;31m[3552]: offset=857ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3559]: offset=915ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3562]: offset=976ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3558]: offset=1033ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3550]: offset=1082ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=28.00 phase=0.22 nLoop=1 LT=3501
+[0;37m[3353]: offset=933ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3779]: offset=1210ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3565]: offset=1274ms ropeAngle=0.29(+0.04)[0m
+[0;34mMachineLearning 0.25: f(0.22, 28) = (194ms, 0.29) >[0m
+[0;31m[3559]: offset=1331ms ropeAngle=0.29(+0.04)[0m
+[0;31m[3565]: offset=1395ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3570]: offset=1463ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3566]: offset=1527ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3559]: offset=1581ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3560]: offset=1640ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=2.00 phase=0.24 nLoop=1 LT=3501
+[0;37m[3513]: offset=1651ms ropeAngle=0.25(+0.00)[0min motion [0]
+[0;37m[3566]: offset=1716ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3567]: offset=-1720ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.24, 2) = (143ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3447]: offset=1727ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3707]: offset=-1568ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3568]: offset=-1501ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3554]: offset=-1448ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3560]: offset=-1389ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=4.00 phase=0.24 nLoop=1 LT=3501
+[0;37m[3534]: offset=-1356ms ropeAngle=0.25(-0.00)[0min motion [0]
+[0;37m[3582]: offset=-1276ms ropeAngle=0.21(-0.04)[0mwait [1]
+[0;31m[3561]: offset=-1217ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.24, 4) = (174ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3407]: offset=-1312ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3737]: offset=-1077ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3562]: offset=-1016ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3557]: offset=-960ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3564]: offset=-897ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=6.00 phase=0.24 nLoop=1 LT=3501
+[0;37m[3506]: offset=-892ms ropeAngle=0.24(-0.01)[0min motion [0]
+[0;37m[3613]: offset=-780ms ropeAngle=0.21(-0.04)[0mwait [1]
+[0;31m[3559]: offset=-722ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.24, 6) = (175ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3407]: offset=-816ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3738]: offset=-579ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3561]: offset=-519ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3557]: offset=-463ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3566]: offset=-398ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=8.00 phase=0.24 nLoop=1 LT=3501
+[0;37m[3506]: offset=-396ms ropeAngle=0.23(-0.02)[0min motion [0]
+[0;37m[3615]: offset=-282ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3561]: offset=-222ms ropeAngle=0.25(-0.00)[0m
+[0;34mMachineLearning 0.25: f(0.24, 8) = (179ms, 0.25) =[0m
+&&    ==>   servoAmp=10.00 phase=0.24 nLoop=1 LT=3501
+[0;37m[3469]: offset=-254ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3677]: offset=-79ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3554]: offset=-27ms ropeAngle=0.25(-0.00)[0m
+[0;34mMachineLearning 0.25: f(0.24, 10) = (197ms, 0.25) =[0m
+&&    ==>   servoAmp=12.00 phase=0.24 nLoop=1 LT=3501
+[0;37m[3456]: offset=-161ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3720]: offset=58ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3548]: offset=105ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.24, 12) = (221ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3372]: offset=-24ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3731]: offset=205ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3558]: offset=262ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3575]: offset=336ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3570]: offset=405ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3562]: offset=466ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=14.00 phase=0.24 nLoop=1 LT=3501
+[0;37m[3444]: offset=409ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3720]: offset=627ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3554]: offset=679ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.24, 14) = (215ms, 0.26) >[0m
+[0;31m[3558]: offset=736ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3532]: offset=763ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=16.00 phase=0.24 nLoop=1 LT=3501
+[0;37m[3448]: offset=710ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3726]: offset=935ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3552]: offset=986ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.24, 16) = (223ms, 0.26) >[0m
+[0;31m[3557]: offset=1042ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3540]: offset=1081ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=18.00 phase=0.24 nLoop=1 LT=3501
+[0;37m[3436]: offset=1015ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3701]: offset=1215ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3556]: offset=1267ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.24, 18) = (190ms, 0.27) >[0m
+[0;31m[3560]: offset=1326ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3560]: offset=1384ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3560]: offset=1443ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=20.00 phase=0.24 nLoop=1 LT=3501
+[0;37m[3451]: offset=1392ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3727]: offset=1618ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3549]: offset=1665ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.24, 20) = (224ms, 0.27) >[0m
+[0;31m[3486]: offset=1649ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3571]: offset=1718ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3587]: offset=-1698ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3571]: offset=-1631ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=22.00 phase=0.24 nLoop=1 LT=3501
+[0;37m[3440]: offset=-1693ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3727]: offset=-1467ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3561]: offset=-1407ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.24, 22) = (225ms, 0.27) >[0m
+[0;31m[3561]: offset=-1347ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3534]: offset=-1314ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3558]: offset=-1257ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3560]: offset=-1204ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3559]: offset=-1146ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=24.00 phase=0.24 nLoop=1 LT=3501
+[0;37m[3448]: offset=-1199ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3729]: offset=-971ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3554]: offset=-919ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.24, 24) = (228ms, 0.27) >[0m
+[0;31m[3490]: offset=-930ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3570]: offset=-861ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3584]: offset=-778ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3574]: offset=-708ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3565]: offset=-644ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=26.00 phase=0.24 nLoop=1 LT=3501
+[0;37m[3431]: offset=-714ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3741]: offset=-477ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3553]: offset=-425ms ropeAngle=0.28(+0.03)[0m
+[0;34mMachineLearning 0.25: f(0.24, 26) = (222ms, 0.28) >[0m
+[0;31m[3562]: offset=-364ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3534]: offset=-331ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3560]: offset=-273ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3563]: offset=-211ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3555]: offset=-158ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3559]: offset=-103ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=28.00 phase=0.24 nLoop=1 LT=3501
+[0;37m[3447]: offset=-157ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3734]: offset=73ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3555]: offset=126ms ropeAngle=0.28(+0.03)[0m
+[0;34mMachineLearning 0.25: f(0.24, 28) = (233ms, 0.28) >[0m
+[0;31m[3552]: offset=177ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3564]: offset=240ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3558]: offset=297ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3553]: offset=349ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3558]: offset=403ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3558]: offset=460ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=30.00 phase=0.24 nLoop=1 LT=3501
+[0;37m[3410]: offset=369ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3764]: offset=630ms ropeAngle=0.28(+0.03)[0mwait [1]
+[0;31m[3555]: offset=684ms ropeAngle=0.30(+0.05)[0m
+[0;34mMachineLearning 0.25: f(0.24, 30) = (226ms, 0.30) >[0m
+[0;31m[3560]: offset=742ms ropeAngle=0.29(+0.04)[0m
+[0;31m[3501]: offset=742ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3564]: offset=805ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3587]: offset=891ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3559]: offset=949ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3572]: offset=1020ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3566]: offset=1084ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3559]: offset=1142ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=2.00 phase=0.26 nLoop=1 LT=3501
+[0;37m[3522]: offset=1163ms ropeAngle=0.25(-0.00)[0min motion [0]
+[0;37m[3555]: offset=1217ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3562]: offset=1277ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.26, 2) = (136ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3447]: offset=1223ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3724]: offset=1443ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3561]: offset=1503ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3558]: offset=1560ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=4.00 phase=0.26 nLoop=1 LT=3501
+[0;37m[3522]: offset=1578ms ropeAngle=0.25(+0.00)[0min motion [0]
+[0;37m[3601]: offset=1678ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3558]: offset=1735ms ropeAngle=0.25(-0.00)[0m
+[0;34mMachineLearning 0.25: f(0.26, 4) = (178ms, 0.25) =[0m
+&&    ==>   servoAmp=6.00 phase=0.26 nLoop=1 LT=3501
+[0;37m[3496]: offset=1730ms ropeAngle=0.23(-0.02)[0min motion [0]
+[0;37m[3658]: offset=-1614ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3560]: offset=-1555ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.26, 6) = (211ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3343]: offset=-1714ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3811]: offset=-1404ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3550]: offset=-1355ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3559]: offset=-1298ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=8.00 phase=0.26 nLoop=1 LT=3501
+[0;37m[3452]: offset=-1348ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3647]: offset=-1203ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3560]: offset=-1144ms ropeAngle=0.25(-0.00)[0m
+[0;34mMachineLearning 0.25: f(0.26, 8) = (156ms, 0.25) =[0m
+&&    ==>   servoAmp=10.00 phase=0.26 nLoop=1 LT=3501
+[0;37m[3496]: offset=-1150ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3672]: offset=-980ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3552]: offset=-929ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.26, 10) = (217ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3361]: offset=-1069ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3782]: offset=-788ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3561]: offset=-728ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3559]: offset=-670ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3536]: offset=-635ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=12.00 phase=0.26 nLoop=1 LT=3501
+[0;37m[3449]: offset=-687ms ropeAngle=0.23(-0.02)[0min motion [0]
+[0;37m[3719]: offset=-469ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3549]: offset=-421ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.26, 12) = (214ms, 0.26) >[0m
+[0;31m[3560]: offset=-362ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3530]: offset=-334ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=14.00 phase=0.26 nLoop=1 LT=3501
+[0;37m[3449]: offset=-386ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3717]: offset=-173ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3553]: offset=-121ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.26, 14) = (216ms, 0.26) >[0m
+[0;31m[3551]: offset=-71ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=16.00 phase=0.26 nLoop=1 LT=3501
+[0;37m[3440]: offset=-135ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3712]: offset=75ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3551]: offset=125ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.26, 16) = (200ms, 0.27) >[0m
+[0;31m[3550]: offset=174ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3560]: offset=233ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3559]: offset=291ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=18.00 phase=0.26 nLoop=1 LT=3501
+[0;37m[3428]: offset=218ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3724]: offset=441ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3552]: offset=492ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.26, 18) = (201ms, 0.27) >[0m
+[0;31m[3550]: offset=540ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3492]: offset=528ms ropeAngle=0.24(-0.01)[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3504]: offset=530ms ropeAngle=0.24(-0.01)[0min motion [0]
+[0;37m[3676]: offset=704ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3569]: offset=772ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3556]: offset=827ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3561]: offset=887ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3567]: offset=953ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3561]: offset=1013ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3568]: offset=1080ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=20.00 phase=0.26 nLoop=1 LT=3501
+[0;37m[3442]: offset=1018ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3672]: offset=1188ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3565]: offset=1252ms ropeAngle=0.28(+0.03)[0m
+[0;34mMachineLearning 0.25: f(0.26, 20) = (176ms, 0.28) >[0m
+[0;31m[3562]: offset=1313ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3557]: offset=1369ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3567]: offset=1435ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3568]: offset=1502ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=22.00 phase=0.26 nLoop=1 LT=3501
+[0;37m[3435]: offset=1435ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3664]: offset=1598ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3566]: offset=1662ms ropeAngle=0.28(+0.03)[0m
+[0;34mMachineLearning 0.25: f(0.26, 22) = (162ms, 0.28) >[0m
+[0;31m[3580]: offset=1741ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3563]: offset=-1698ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3571]: offset=-1628ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3556]: offset=-1573ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=24.00 phase=0.26 nLoop=1 LT=3501
+[0;37m[3427]: offset=-1647ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3735]: offset=-1414ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3552]: offset=-1363ms ropeAngle=0.28(+0.03)[0m
+[0;34mMachineLearning 0.25: f(0.26, 24) = (211ms, 0.28) >[0m
+[0;31m[3478]: offset=-1386ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3589]: offset=-1301ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3593]: offset=-1209ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3559]: offset=-1151ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3565]: offset=-1087ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3558]: offset=-1030ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=26.00 phase=0.26 nLoop=1 LT=3501
+[0;37m[3449]: offset=-1082ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3708]: offset=-875ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3558]: offset=-819ms ropeAngle=0.28(+0.03)[0m
+[0;34mMachineLearning 0.25: f(0.26, 26) = (212ms, 0.28) >[0m
+[0;31m[3561]: offset=-759ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3479]: offset=-781ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3584]: offset=-698ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3593]: offset=-606ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3562]: offset=-545ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3563]: offset=-484ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=28.00 phase=0.26 nLoop=1 LT=3501
+[0;37m[3449]: offset=-536ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3709]: offset=-331ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3560]: offset=-272ms ropeAngle=0.29(+0.04)[0m
+[0;34mMachineLearning 0.25: f(0.26, 28) = (215ms, 0.29) >[0m
+[0;31m[3560]: offset=-213ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3479]: offset=-235ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3586]: offset=-151ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3582]: offset=-70ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3571]: offset=0ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3564]: offset=63ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=30.00 phase=0.26 nLoop=1 LT=3501
+[0;37m[3441]: offset=2ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3724]: offset=225ms ropeAngle=0.28(+0.03)[0mwait [1]
+[0;31m[3554]: offset=275ms ropeAngle=0.29(+0.04)[0m
+[0;34mMachineLearning 0.25: f(0.26, 30) = (216ms, 0.29) >[0m
+[0;31m[3565]: offset=339ms ropeAngle=0.29(+0.04)[0m
+[0;31m[3472]: offset=310ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3609]: offset=418ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3557]: offset=474ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3577]: offset=550ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3561]: offset=610ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3565]: offset=673ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=2.00 phase=0.28 nLoop=1 LT=3501
+[0;37m[3520]: offset=692ms ropeAngle=0.25(-0.00)[0min motion [0]
+[0;37m[3628]: offset=819ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3559]: offset=877ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.28, 2) = (204ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3344]: offset=720ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3796]: offset=1015ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3560]: offset=1073ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3559]: offset=1126ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3558]: offset=1182ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=4.00 phase=0.28 nLoop=1 LT=3501
+[0;37m[3506]: offset=1187ms ropeAngle=0.24(-0.01)[0min motion [0]
+[0;37m[3630]: offset=1316ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3549]: offset=1364ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.28, 4) = (182ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3344]: offset=1207ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3769]: offset=1475ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3557]: offset=1531ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3556]: offset=1583ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3565]: offset=1646ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=6.00 phase=0.28 nLoop=1 LT=3501
+[0;37m[3513]: offset=1657ms ropeAngle=0.23(-0.02)[0min motion [0]
+[0;37m[3654]: offset=-1695ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3552]: offset=-1644ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.28, 6) = (216ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3373]: offset=1729ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3783]: offset=-1491ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3549]: offset=-1443ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3494]: offset=-1450ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3561]: offset=-1390ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3577]: offset=-1314ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3574]: offset=-1244ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=8.00 phase=0.28 nLoop=1 LT=3501
+[0;37m[3469]: offset=-1277ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3697]: offset=-1081ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3548]: offset=-1035ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.28, 8) = (211ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3373]: offset=-1163ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3785]: offset=-879ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3551]: offset=-829ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3548]: offset=-783ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=10.00 phase=0.28 nLoop=1 LT=3501
+[0;37m[3471]: offset=-813ms ropeAngle=0.23(-0.02)[0min motion [0]
+[0;37m[3677]: offset=-637ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3552]: offset=-586ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.28, 10) = (197ms, 0.26) >[0m
+[0;31m[3556]: offset=-531ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3496]: offset=-539ms ropeAngle=0.24(-0.01)[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3456]: offset=-589ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3758]: offset=-333ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3552]: offset=-283ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3543]: offset=-241ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3558]: offset=-184ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3558]: offset=-127ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=12.00 phase=0.28 nLoop=1 LT=3501
+[0;37m[3450]: offset=-179ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3668]: offset=-14ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3559]: offset=44ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.28, 12) = (174ms, 0.26) >[0m
+[0;31m[3566]: offset=109ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=14.00 phase=0.28 nLoop=1 LT=3501
+[0;37m[3459]: offset=66ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3635]: offset=200ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3569]: offset=268ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.28, 14) = (160ms, 0.27) >[0m
+[0;31m[3570]: offset=334ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3570]: offset=403ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=16.00 phase=0.28 nLoop=1 LT=3501
+[0;37m[3462]: offset=363ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3678]: offset=540ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3561]: offset=600ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.28, 16) = (198ms, 0.26) >[0m
+[0;31m[3558]: offset=657ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3559]: offset=712ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=18.00 phase=0.28 nLoop=1 LT=3501
+[0;37m[3450]: offset=660ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3677]: offset=836ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3562]: offset=897ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.28, 18) = (186ms, 0.27) >[0m
+[0;31m[3558]: offset=954ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3562]: offset=1012ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3559]: offset=1070ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=20.00 phase=0.28 nLoop=1 LT=3501
+[0;37m[3445]: offset=1014ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3699]: offset=1212ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3553]: offset=1263ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.28, 20) = (194ms, 0.27) >[0m
+[0;31m[3557]: offset=1319ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3563]: offset=1378ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3462]: offset=1339ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=22.00 phase=0.28 nLoop=1 LT=3501
+[0;37m[3542]: offset=1380ms ropeAngle=0.23(-0.02)[0min motion [0]
+[0;37m[3681]: offset=1560ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3551]: offset=1610ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.28, 22) = (271ms, 0.27) >[0m
+[0;31m[3554]: offset=1662ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3561]: offset=1722ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3560]: offset=-1720ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3560]: offset=-1664ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3479]: offset=-1689ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=24.00 phase=0.28 nLoop=1 LT=3501
+[0;37m[3544]: offset=-1646ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3668]: offset=-1479ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3552]: offset=-1429ms ropeAngle=0.28(+0.03)[0m
+[0;34mMachineLearning 0.25: f(0.28, 24) = (261ms, 0.28) >[0m
+[0;31m[3496]: offset=-1435ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3563]: offset=-1374ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3589]: offset=-1286ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3559]: offset=-1228ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3574]: offset=-1155ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3563]: offset=-1093ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=26.00 phase=0.28 nLoop=1 LT=3501
+[0;37m[3477]: offset=-1119ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3672]: offset=-948ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3553]: offset=-897ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.28, 26) = (199ms, 0.27) >[0m
+[0;31m[3553]: offset=-848ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3560]: offset=-789ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3561]: offset=-729ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3561]: offset=-669ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3550]: offset=-620ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=28.00 phase=0.28 nLoop=1 LT=3501
+[0;37m[3473]: offset=-649ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3641]: offset=-510ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3561]: offset=-450ms ropeAngle=0.29(+0.04)[0m
+[0;34mMachineLearning 0.25: f(0.28, 28) = (172ms, 0.29) >[0m
+[0;31m[3562]: offset=-389ms ropeAngle=0.29(+0.04)[0m
+[0;31m[3563]: offset=-327ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3560]: offset=-269ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3562]: offset=-208ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3561]: offset=-148ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3567]: offset=-82ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3559]: offset=-24ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3555]: offset=29ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=2.00 phase=0.30 nLoop=1 LT=3501
+[0;37m[3519]: offset=46ms ropeAngle=0.24(-0.01)[0min motion [0]
+[0;37m[3610]: offset=155ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3561]: offset=215ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.30, 2) = (187ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3372]: offset=86ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3733]: offset=318ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3562]: offset=379ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3569]: offset=447ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=4.00 phase=0.30 nLoop=1 LT=3501
+[0;37m[3538]: offset=481ms ropeAngle=0.23(-0.02)[0min motion [0]
+&
+ServoCenter=90.00 potCenter=493 pot50=257 pot150=743 loopTime=3592
+[0;37m[3571]: offset=551ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3561]: offset=611ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.30, 4) = (167ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3448]: offset=558ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3686]: offset=743ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3566]: offset=808ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3580]: offset=887ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3566]: offset=952ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=6.00 phase=0.30 nLoop=1 LT=3501
+[0;37m[3509]: offset=960ms ropeAngle=0.23(-0.02)[0min motion [0]
+[0;37m[3585]: offset=1044ms ropeAngle=0.22(-0.03)[0mwait [1]
+[0;31m[3564]: offset=1107ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.30, 6) = (155ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3439]: offset=1045ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3693]: offset=1236ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3571]: offset=1306ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3582]: offset=1387ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3557]: offset=1443ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=8.00 phase=0.30 nLoop=1 LT=3501
+[0;37m[3512]: offset=1453ms ropeAngle=0.23(-0.02)[0min motion [0]
+[0;37m[3647]: offset=1598ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3550]: offset=1647ms ropeAngle=0.24(-0.01)[0m
+[0;34mMachineLearning 0.25: f(0.30, 8) = (206ms, 0.24) <[0m
+   ==>   servoAmp=20.00 phase=0.25 nLoop=1 LT=3592
+[0;37m[3344]: offset=1489ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3757]: offset=1744ms ropeAngle=0.23(-0.02)[0mwait [1]
+[0;31m[3565]: offset=-1694ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3568]: offset=-1630ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3566]: offset=-1565ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3561]: offset=-1505ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=10.00 phase=0.30 nLoop=1 LT=3501
+[0;37m[3503]: offset=-1504ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3648]: offset=-1357ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3558]: offset=-1300ms ropeAngle=0.25(+0.00)[0m
+[0;34mMachineLearning 0.25: f(0.30, 10) = (206ms, 0.25) =[0m
+&&    ==>   servoAmp=12.00 phase=0.30 nLoop=1 LT=3501
+[0;37m[3440]: offset=-1361ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3650]: offset=-1213ms ropeAngle=0.24(-0.01)[0mwait [1]
+[0;31m[3554]: offset=-1160ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.30, 12) = (141ms, 0.26) >[0m
+[0;31m[3558]: offset=-1103ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=14.00 phase=0.30 nLoop=1 LT=3501
+[0;37m[3452]: offset=-1153ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3696]: offset=-958ms ropeAngle=0.25(-0.00)[0mwait [1]
+[0;31m[3561]: offset=-898ms ropeAngle=0.26(+0.01)[0m
+[0;34mMachineLearning 0.25: f(0.30, 14) = (206ms, 0.26) >[0m
+[0;31m[3560]: offset=-840ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=16.00 phase=0.30 nLoop=1 LT=3501
+[0;37m[3466]: offset=-875ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3663]: offset=-713ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3561]: offset=-653ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.30, 16) = (187ms, 0.27) >[0m
+[0;31m[3559]: offset=-595ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3552]: offset=-544ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=18.00 phase=0.30 nLoop=1 LT=3501
+[0;37m[3470]: offset=-575ms ropeAngle=0.22(-0.03)[0min motion [0]
+[0;37m[3648]: offset=-428ms ropeAngle=0.26(+0.01)[0mwait [1]
+[0;31m[3563]: offset=-366ms ropeAngle=0.28(+0.03)[0m
+[0;34mMachineLearning 0.25: f(0.30, 18) = (178ms, 0.28) >[0m
+[0;31m[3560]: offset=-307ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3560]: offset=-248ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3558]: offset=-191ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3560]: offset=-132ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=20.00 phase=0.30 nLoop=1 LT=3501
+[0;37m[3488]: offset=-145ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3592]: offset=-55ms ropeAngle=0.25(+0.00)[0mwait [1]
+[0;31m[3565]: offset=5ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.30, 20) = (142ms, 0.27) >[0m
+[0;31m[3574]: offset=78ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3565]: offset=142ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3564]: offset=205ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3561]: offset=264ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=22.00 phase=0.30 nLoop=1 LT=3501
+[0;37m[3456]: offset=218ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3680]: offset=396ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3559]: offset=454ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.30, 22) = (192ms, 0.27) >[0m
+[0;31m[3487]: offset=440ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3571]: offset=510ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3588]: offset=597ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3569]: offset=665ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3559]: offset=723ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=24.00 phase=0.30 nLoop=1 LT=3501
+[0;37m[3475]: offset=697ms ropeAngle=0.21(-0.04)[0min motion [0]
+[0;37m[3668]: offset=864ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3558]: offset=921ms ropeAngle=0.27(+0.02)[0m
+[0;34mMachineLearning 0.25: f(0.30, 24) = (198ms, 0.27) >[0m
+[0;31m[3553]: offset=973ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3560]: offset=1032ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3560]: offset=1091ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3559]: offset=1149ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3560]: offset=1208ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=26.00 phase=0.30 nLoop=1 LT=3501
+[0;37m[3467]: offset=1173ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3658]: offset=1329ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3560]: offset=1385ms ropeAngle=0.28(+0.03)[0m
+[0;34mMachineLearning 0.25: f(0.30, 26) = (182ms, 0.28) >[0m
+[0;31m[3563]: offset=1447ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3487]: offset=1433ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3571]: offset=1503ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3587]: offset=1589ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3570]: offset=1657ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3565]: offset=1721ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=28.00 phase=0.30 nLoop=1 LT=3501
+[0;37m[3514]: offset=1734ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3627]: offset=-1641ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3553]: offset=-1591ms ropeAngle=0.29(+0.04)[0m
+[0;34mMachineLearning 0.25: f(0.30, 28) = (191ms, 0.29) >[0m
+[0;31m[3545]: offset=-1547ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3561]: offset=-1487ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3559]: offset=-1429ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3531]: offset=-1404ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3565]: offset=-1340ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3556]: offset=-1285ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3561]: offset=-1225ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3564]: offset=-1162ms ropeAngle=0.25(-0.00)[0m
+&&    ==>   servoAmp=30.00 phase=0.30 nLoop=1 LT=3501
+[0;37m[3472]: offset=-1191ms ropeAngle=0.20(-0.05)[0min motion [0]
+[0;37m[3682]: offset=-1010ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3553]: offset=-958ms ropeAngle=0.28(+0.03)[0m
+[0;34mMachineLearning 0.25: f(0.30, 30) = (204ms, 0.28) >[0m
+[0;31m[3553]: offset=-906ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3561]: offset=-846ms ropeAngle=0.28(+0.03)[0m
+[0;31m[3561]: offset=-786ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3472]: offset=-815ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3609]: offset=-707ms ropeAngle=0.27(+0.02)[0m
+[0;31m[3559]: offset=-649ms ropeAngle=0.26(+0.01)[0m
+[0;31m[3569]: offset=-581ms ropeAngle=0.25(+0.00)[0m
+&&    ==>   servoAmp=32.00 phase=0.30 nLoop=1 LT=3501
+[0;37m[3472]: offset=-610ms ropeAngle=0.19(-0.06)[0min motion [0]
+[0;37m[3660]: offset=-452ms ropeAngle=0.27(+0.02)[0mwait [1]
+[0;31m[3564]: offset=-389ms ropeAngle=0.29(+0.04)[0m
+[0;34mMachineLearning 0.25: f(0.30, 32) = (193ms, 0.29) >[0m
+~.Connected.
+Connected.
+
+Disconnected.

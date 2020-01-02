@@ -1,0 +1,5 @@
+
+cat ml | awk '/&&/ {print c} {c=$0}' | grep -v Machine | tr -d "[]" | cut -c7-10 | awk '{total += $0; count++} END { print total/count}'
+3560.05
+
+grep -a Machine ml | strings | grep "0.25)"| cut -c 29- | tr -d "f( )ms" | tr ",=" "  " | cut -d" " -f 1,2 | tr " " ","
