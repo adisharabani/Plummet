@@ -151,7 +151,7 @@ if [ "$1" = "attach_old" ]; then
  # ~. to quit CU process
 fi
 
-if [ "$1" = "attach" ]; then
+if [ "$1" = "attach" ] || [ "$1" = "record" ]; then
  sttys=($(stty size))
  if [ $(( ${sttys[0]} * 2 )) -lt ${sttys[1]} ]; then
  	layout="horizontal"
@@ -178,7 +178,11 @@ if [ "$1" = "attach" ]; then
       echo split >> /tmp/.screens
       echo focus >> /tmp/.screens
    fi
-   echo screen -t ${ard} /dev/${ard} >> /tmp/.screens
+   if [ "$1" = "attach" ]; then
+	   echo screen -t ${ard} /dev/${ard} >> /tmp/.screens
+	else
+		echo "screen -t ${ard} bash -c \"cu /dev/${ard} | tee -a _${ard}.record\"" >> /tmp/.screens
+	fi
    echo 'stuff "e\nB\n \n"' >> /tmp/.screens
    if [ "$isFirst" = "1" ]; then
       echo split -v >> /tmp/.screens
