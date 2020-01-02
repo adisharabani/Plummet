@@ -124,7 +124,7 @@ double oPhase = 0.25; // like stopping
 
 double mPhase = 0;
 int mAmp = 5;
-double mPhaseFrom = 0.05;
+double mPhaseFrom = 0;
 double mPhaseTo = 0.30;
 double mPhaseJump = 0.02;
 int mAmpFrom = 2;
