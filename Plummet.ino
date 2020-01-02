@@ -826,7 +826,7 @@ void handleKeyboardInput() {
 		   syncInitTime = millis();
 		   nextSerial.write("T");
 		   if ((abs(s) >= 20) && showShift) {
-		   	 sprint("["); sprint(syncInitTime); sprint (" / "); sprint(syncLoopTime); sprint("] shift: "); sprintln(s);
+		   	 sprint("["); sprint(syncInitTime); sprint (" / "); sprint(syncLoopTime); sprint("] shift: "); sprint(s); sprint("\r");
 		   }
 		 } else {
 		   KB[kblength++] = inByte;
