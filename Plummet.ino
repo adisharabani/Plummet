@@ -295,7 +295,6 @@ void sendAudioCommand(int8_t command, int8_t datah, int8_t datal) {
 }
 
 void playSong(int8_t songNumber=1, int8_t volume=30) {
-	if (!enableAudio) return;
 	sendAudioCommand(0x22, volume, songNumber);
 }
 
@@ -1592,7 +1591,7 @@ void loop(){
   }
   
   // Play Audio
-  if (itIsTime(audioTime+audioDelay) &&
+  if (enableAudio && itIsTime(audioTime+audioDelay) &&
 	  (ropeMaxRightAngle>0.05) && (ropeMaxLeftAngle<-0.05)) {
 	  playSong(audioSongNumber,audioVolume);
   }
