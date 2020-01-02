@@ -21,9 +21,8 @@
 
 // TODO: Better master detection
 // TODO: remove listenOnPrev and change to !isMaster
-// TODO: allow [ or ] to change syncAmp;
 // TODO: ML for circular phase options.
-// TODO: move if potCenter is not at the right place.
+// TODO: start move even if potCenter is not at the right place.
 // TODO: autoupdate potCenter
 // TODO: better speed up in calibrate loop time
 // TODO: Sync clock even if not master
@@ -82,7 +81,7 @@ boolean enableAudio = false;
 int8_t audioSongNumber = 1;
 int8_t maxAudioVolume = 30;
 int8_t audioVolume = maxAudioVolume;
-bool audioVolumeAdaptive = false;
+bool audioVolumeAdaptive = true;
 unsigned int audioDelay = 0; // in milliseconds
 unsigned int audioSnapToGrid = 10; // in milliseconds
 unsigned int audioSnapToSync = 50;
