@@ -1360,7 +1360,7 @@ void updateAmpAndTime(bool runNow=false) {
 				if (relativeOffset > syncLoopTime/2) relativeOffset = relativeOffset - syncLoopTime;
 				sprint("\x1b[0;34mMachineLearning "); sprint(lastRopeAngle); sprint(": f("); sprint(mPhase); sprint(", "); sprint(mAmp); sprint(") = ("); sprint(relativeOffset); sprint("ms, "); sprint(ropeAngle); sprint(") ");
 				sprint ((ropeAngleOffset < -0.005 ? "<" : (ropeAngleOffset > 0.005 ? ">" : "=")));
-				if ((ropeAngleOffset < 0.04) && (mAmp < maxServoAmp)) {
+				if ((ropeAngleOffset < 0.04) && (mAmp < mAmpTo)) {
 					// not wide enough, next time try harder
 					if (mAmp < mAmpTo) {
 						mAmp = min(mAmp + mAmpJump, mAmpTo);
