@@ -331,3 +331,11 @@ if [ "$1" = "control" ]; then
   done
 fi
 
+if [ "$1" = "ml" ]; then
+ ard=$($0 listDevices $2 | head -1)
+ echo "Type the following commands:"
+ echo " :0:M"
+ echo " :0:%"
+ echo " :0:m"
+ cu -l /dev/$ard | tee ml
+fi

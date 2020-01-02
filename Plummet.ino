@@ -78,6 +78,7 @@ boolean SERVO_VIA_TIMER1 = true;
 boolean printMeasures = false; 
 boolean enablePrint = true;
 boolean debug = false;
+boolean showShift = true;
 boolean enableAudio = false;
 int8_t audioSongNumber = 1;
 int8_t maxAudioVolume = 30;
@@ -120,6 +121,15 @@ double testAmp = 20;
 
 int oAmp = maxServoAmp;
 double oPhase = 0.25; // like stopping
+
+double mPhase = 0;
+int mAmp = 5;
+double mPhaseFrom = 0.05;
+double mPhaseTo = 0.30;
+double mPhaseJump = 0.02;
+int mAmpFrom = 2;
+int mAmpTo = 40;
+int mAmpJump = 2;
 
 unsigned long initTime;
 
@@ -415,7 +425,7 @@ double getOcsilatorPhase(unsigned long time) {
 ///////////////////////////
 
 // Potentiometer position history
-#define POSITIONS_STACK_SIZE 5
+#define POSITIONS_STACK_SIZE 10
 double positions[POSITIONS_STACK_SIZE]; 
 unsigned int positionsPTR = POSITIONS_STACK_SIZE;
 #define push(p) positions[(++positionsPTR)%POSITIONS_STACK_SIZE] = p
@@ -634,8 +644,6 @@ bool readByteAvailable() {
   return (Serial.available() || (listenOnPrev && prevSerial.available()));
 }
 
-
-
 int find(char *str, char c, int startingIndex=0) {
 	for (int index = startingIndex; str[index] != 0; index++) {
 		if (str[index] == c) return index;
@@ -818,8 +826,8 @@ void handleKeyboardInput() {
 		   if (s>syncLoopTime/2) s = s-syncLoopTime;
 		   syncInitTime = millis();
 		   nextSerial.write("T");
-		   if (abs(s) >= 20) {
-		   	 sprint("shift: "); sprintln(s);
+		   if ((abs(s) >= 20) && showShift) {
+		   	 sprint("["); sprint(syncInitTime); sprint (" / "); sprint(syncLoopTime); sprint("] shift: "); sprintln(s);
 		   }
 		 } else {
 		   KB[kblength++] = inByte;
@@ -899,7 +907,22 @@ void handleKeyboardInput() {
 	  smoothMove(servoCenter);
 	  break;
 	case 'm': // MAINTAIN
-	  setMode(MAINTAINING); sprintln("MAINTAIN");
+      if (CMD[0]!='\n') mPhaseFrom = atof(CMD);
+	  p = find(CMD, ',');
+	  if (p!=-1) mPhaseTo = atof(CMD+p+1);
+	  if (p!=-1) p = find(CMD, ',', p+1);
+	  if (p!=-1) mPhaseJump = atof(CMD+p+1);
+	  if (p!=-1) p = find(CMD, ',', p+1);
+	  if (p!=-1) mAmpFrom = atof(CMD+p+1);
+	  if (p!=-1) p = find(CMD, ',', p+1);
+	  if (p!=-1) mAmpTo = atof(CMD+p+1);
+	  if (p!=-1) p = find(CMD, ',', p+1);
+	  if (p!=-1) mAmpJump = atof(CMD+p+1);
+	  KB[0] = 0; CMD=KB;
+
+	  mAmp = mAmpFrom;
+	  mPhase = mPhaseFrom;
+	  setMode(MAINTAINING); sprint("ML phase("); sprint(mPhaseFrom);sprint("-");sprint(mPhaseTo);sprint(" +");sprint(mPhaseJump);sprint(") amp(");sprint(mAmpFrom);sprint("-");sprint(mAmpTo);sprint(" +");sprint(mAmpJump); sprintln(")");
 	  break;
 	case 'o': // ANALYZE Amp,Phase
 	  if (CMD[0]!='\n'){
@@ -922,6 +945,7 @@ void handleKeyboardInput() {
 	  break;
 	case 's': // SYNC
 	  syncLoopTime = atoi(CMD); 
+	  if (syncLoopTime == 0) syncLoopTime = defaultLoopTime;
 	  syncInitTime = millis();
 	  syncInitTimeOffset = 0;
 	  p = find(CMD, ',');
@@ -941,7 +965,11 @@ void handleKeyboardInput() {
 //	  if (abs(s) >= 20) {
 //	  	sprint("shift: "); sprintln(s);
 //	  }
-	  break;
+//	  break;
+    case '%': // disable clock update
+      showShift = !showShift;
+      sprintln(showShift);
+      break;
 	case 'u': // Print phase compared to sync clock
 	  s = atoi(CMD); KB[0] = 0; CMD=KB;
 	  sprint("sync: ");
@@ -1211,89 +1239,6 @@ double axisToAngle(double x, double y) {
   }
 }
 
-void updateAmpAndTimeForMaintaining() {
-  loopTime = defaultLoopTime;
-//  initTime = millis()-loopTime*(side==LEFT ? 0.75 : 0.25) + SYNC_MAGIC_NUMBER;
-  initTime = millis()-loopTime*(side==LEFT ? 0.5 : 0) + SYNC_MAGIC_NUMBER;
-  // Maybe add MAINTAIN looptime:::  if (time-leftTime >2000) { loopTime = time-leftTime;}
-  double desiredAngle = 0.4;
-  double ropeAngle = ropeMaxRightAngle-ropeMaxLeftAngle;
-  if ( ropeAngle > desiredAngle*1.2) {
-	servoAmp = 0;
-  } else if (ropeAngle > desiredAngle*1.1) {
-	servoAmp = (angleToServo(desiredAngle/2)-servoCenter)*2 * 0.8;
-  }  else {
-	servoAmp = (angleToServo(desiredAngle/2)-servoCenter)*2 * 0.8 + (1 - ropeAngle/desiredAngle)*maxServoAmp;
-  }
-	sprint("ServoAmp: ");sprint(servoAmp); sprint(" baseline: "); sprintln((angleToServo(desiredAngle/2)-servoCenter)*2 * 0.8);
-}
-
-void updateAmpAndTimeForRunning() {
-  loopTime = defaultLoopTime;
-  initTime = millis()-loopTime*(side==LEFT ? 0.75 : 0.25) + SYNC_MAGIC_NUMBER;
-  servoAmp = maxServoAmp;
-}
-
-#define MAP(v,fromL,fromH,toL,toH) ((v-fromL)/(fromH-fromL)*(toH-toL) + toL)
-
-void updateAmpAndTimeForStopping() {
-  double ropeAmp;
-  static double lastRopeAmp=0;
-  loopTime = defaultLoopTime;
-//
-//  if (initTime == 0) { 
-	 initTime = millis()-loopTime*(side==LEFT ? 0.25 : 0.75) + SYNC_MAGIC_NUMBER;
-//	 sprintln("initTime set");
-// }
-/*  if ((millis()-initTime)> loopTime*5) {
-	 mode = HALT;
-	 sprintln("HALT");
-  }*/
-  
-  sprint("- Stopping: maxRight("); sprint(ropeMaxRightAngle); sprint(")-maxLeft("); sprint(ropeMaxLeftAngle);
-  sprint(")="); sprint(ropeMaxRightAngle-ropeMaxLeftAngle);
-  ropeAmp = (angleToServo(ropeMaxRightAngle)-angleToServo(ropeMaxLeftAngle));
-  sprint (" | a="); sprint(ropeAmp);
-  
-  if (lastRopeAmp > ropeAmp) {
-  	servoAmp = max(0,ropeAmp-(lastRopeAmp-ropeAmp));
-	sprint (" | c="); sprint(servoAmp);
-  } else {
-  	servoAmp = ropeAmp;
-  }
-  lastRopeAmp = ropeAmp;
-
-  servoAmp = servoAmp * 1.5;
-  
-  if (servoAmp>=40) { 
-	 servoAmp = maxServoAmp;
-  } else if (servoAmp>=35) {
-  	 servoAmp = MAP(servoAmp, 35, 40, 25, maxServoAmp);
-   } else if (servoAmp>=10) {
-	 servoAmp = MAP(servoAmp,10,35,10,25);
-  } else if (servoAmp>=3) {
-  	servoAmp = MAP(servoAmp, 3, 10, 0, 10); 
-  } else {
-  	servoAmp = 0;
-  }
-
-/*  servoAmp = servoAmp*1.5;
-//  servoAmp = servoAmp*servoAmp/40;
-  if (servoAmp < 25) { servoAmp = servoAmp; } // was 25,servoAmp/2
-
-  if (servoAmp < 10) { servoAmp = max(0,servoAmp-2); }		// was <10,0
-  */
-
-  servoAmp = servoAmp*testAmp/20;
-
-  servoAmp = max(min(maxServoAmp,servoAmp),0);
-  sprint(" ==> New servoAmp: "); sprint(servoAmp); sprintln(" -");  
-//  if (ropeMaxRightAngle-ropeMaxLeftAngle < 0.4) {
-//	servoAmp = 10;
-//  } else {
-//	servoAmp = 0;
-//  }
-}
 #define PREDICT(x, y) (x + (x-y))
 #define PREDICT2(x, y) (x + (x-y)/2)
 
@@ -1309,6 +1254,9 @@ void updateAmpAndTime(bool runNow=false) {
 	static int waitLoops=0;
 	static double lastOffsetAxis = 0;
 	static double lastRopeOffsetAxis = 0;
+	static unsigned long lastTime = 0;
+	static double lastRopeAngle = 0;
+	static boolean inTest = false;
 
 	double tPhase;
 	double ropeAngle = (ropeMaxRightAngle-ropeMaxLeftAngle);
@@ -1335,7 +1283,7 @@ void updateAmpAndTime(bool runNow=false) {
 		double offsetAxis = offset / ML_MAX_OFFSET_SHIFT_IN_CYCLE;
 		double ropeOffsetAxis = ropeAngleOffset / ML_MAX_ROPE_SHIFT_IN_CYCLE;
 
-		if (true) { // show analysis
+		if (false) { // show analysis
 			double tetaLastTarget = axisToAngle(-lastOffsetAxis,-lastRopeOffsetAxis)/2/PI;
 			double rLastTarget = sqrt(pow(lastOffsetAxis,2) + pow(lastRopeOffsetAxis,2));
 	
@@ -1348,8 +1296,9 @@ void updateAmpAndTime(bool runNow=false) {
 			sprint(") @(");    sprint(rLastActual);            sprint(","); sprint(tetaLastActual);
 			sprint(")  ==>  Delta("); sprint(-offsetAxis+lastOffsetAxis);sprint(","); sprint(-ropeOffsetAxis+lastRopeOffsetAxis);
 			sprint(") @("); sprint(rLastActual/rLastTarget); sprint(","); sprint(tetaLastActual-tetaLastTarget); 
-			sprintln(")");
+			sprint(")");
 		}
+		sprintln("");
 
 
 		//predict
@@ -1357,7 +1306,7 @@ void updateAmpAndTime(bool runNow=false) {
 
         ropeOffsetAxis = ropeOffsetAxis - ML_ROPE_ANGLE_DECREASE*ropeAngle * LOOP_INTERVAL / ML_MAX_ROPE_SHIFT_IN_CYCLE ; //predict decrease in rope Angle in percentage
 		
-		sprint("** "); sprint(offsetAxis); sprint(",");sprintln(ropeOffsetAxis);
+		// sprint("** "); sprint(offsetAxis); sprint(",");sprintln(ropeOffsetAxis);
 		//if synced running:
 		
 		// if there might be more than 1 cycle change the ropeOffset so that system will slow things down.
@@ -1384,7 +1333,7 @@ void updateAmpAndTime(bool runNow=false) {
 			} 
 			M=SYNC_MAGIC_NUMBER;
 			waitLoops=2;
-		}else if (mode == RUNNING) {
+		} else if (mode == RUNNING) {
 			tPhase = 0.25;
 			tRadial = max(-ropeOffsetAxis,0); // only increase speed up to limit
 			waitLoops=1;
@@ -1395,16 +1344,64 @@ void updateAmpAndTime(bool runNow=false) {
 			syncInitTime = rightTime;
 			syncInitTimeOffset = 0;
 			syncLoopTime = defaultLoopTime;
-		}
-
+		} 
 
 		// HERE
 		servoAmp = int(min(1,tRadial)*maxServoAmp);
 		requestedNLoops = min(max(int(tRadial-0.01),1),3) ;
+				
 		//if ((mode != STOPPING) && (mode != TESTING)) requestedNLoops = 1 ;
-		
 		loopTime = defaultLoopTime - offset / max(1,tRadial) / LOOP_INTERVAL;
 		 
+
+		if (mode == MAINTAINING) {
+			if (inTest) {
+				int relativeOffset = (time-lastTime) % syncLoopTime;
+				if (relativeOffset > syncLoopTime/2) relativeOffset = relativeOffset - syncLoopTime;
+				sprint("\x1b[0;34mMachineLearning "); sprint(lastRopeAngle); sprint(": f("); sprint(mPhase); sprint(", "); sprint(mAmp); sprint(") = ("); sprint(relativeOffset); sprint("ms, "); sprint(ropeAngle); sprint(") ");
+				sprint ((ropeAngleOffset < -0.005 ? "<" : (ropeAngleOffset > 0.005 ? ">" : "=")));
+				if ((ropeAngleOffset < 0.04) && (mAmp < maxServoAmp)) {
+					// not wide enough, next time try harder
+					if (mAmp < mAmpTo) {
+						mAmp = min(mAmp + mAmpJump, mAmpTo);
+					}
+				} else {
+					mPhase = mPhase + mPhaseJump;
+					mAmp = mAmpFrom;
+				}
+				
+				sprintln("\x1b[0m");
+				inTest = false;
+				if (mPhase > mPhaseTo) {
+					setMode(HALT);
+				}
+			}
+			
+			if (ropeAngleOffset < -0.005) {
+				// speed up
+				tPhase = 0.25;
+				servoAmp = 20;
+				loopTime = defaultLoopTime;
+				requestedNLoops = 1;
+				waitLoops = LOOP_INTERVAL-2;
+				inTest = false;
+			} else if (ropeAngleOffset > 0.005) {
+				requestedNLoops = 0; // just wait...
+				waitLoops = 0;
+				inTest = false;
+				return;
+			} else { // start a test;
+				tPhase = mPhase;
+				servoAmp = mAmp;
+				loopTime = syncLoopTime;
+				requestedNLoops = 1;
+				waitLoops = LOOP_INTERVAL-2;
+				inTest = true;
+				sprint ("&& ");
+			}
+			//lastRopeAngle: f(lastTPhase, servoAmp) = relativeOffset, ropeAngle (if ropeAngle==syncRopeAngle: ==)
+		}
+
 		//loopTime = defaultLoopTime + sin(tPhase*2*PI)*ML_MAX_OFFSET_SHIFT_IN_CYCLE;
 		if (side == RIGHT) {
 			initTime = rightTime - tPhase * loopTime + M;
@@ -1418,6 +1415,8 @@ void updateAmpAndTime(bool runNow=false) {
 
 		lastOffsetAxis = offsetAxis;
 		lastRopeOffsetAxis = ropeOffsetAxis;
+		lastTime = time;
+		lastRopeAngle = ropeAngle;
 	}	
 }
 
@@ -1563,7 +1562,7 @@ void loop(){
 	  	  sprintln((millis()-syncInitTime) % syncLoopTime);
 	  }
 	  syncInitTime = millis();
-	  nextSerial.println("T"); // update the clock...	 
+	  nextSerial.write("T"); // update the clock...	 
 	}
   }
 
