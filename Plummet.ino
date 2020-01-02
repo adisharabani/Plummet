@@ -127,7 +127,7 @@ int mAmp = 5;
 double mPhaseFrom = 0;
 double mPhaseTo = 0.30;
 double mPhaseJump = 0.02;
-int mAmpFrom = 2;
+int mAmpFrom = 0;
 int mAmpTo = 40;
 int mAmpJump = 2;
 
@@ -1473,7 +1473,7 @@ void setup() {
 //  if (listenOnPrev) {
 	  // wait 1.5 seconds to see if you are a slave
 	  while ((millis() < initTime + 1500) && isMaster) {
-		  if (prevSerial.available() && (prevSerial.read()==' ') && prevSerial.available() && (prevSerial.read()==' ')) { 
+		  if (prevSerial.available() && (prevSerial.read()==' ') && prevSerial.available() && (prevSerial.read()==' ')&& prevSerial.available() && (prevSerial.read()==' ')) { 
 		      isMaster = false;
 	  	  }
 	  }
@@ -1546,7 +1546,7 @@ void sprintLoopEvents() {
 void loop(){
   showClockIfNeeded();
   if (time > keepalive) { nextSerial.print("      "); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
-  if (isMaster && prevSerial.available() && (prevSerial.read()==' ') && prevSerial.available() && (prevSerial.read()==' ')) { Serial.println("I am now a slave"); isMaster = false; listenOnPrev = !isMaster;} // inform 
+  if (isMaster && prevSerial.available() && (prevSerial.read()==' ') && prevSerial.available() && (prevSerial.read()==' ') && prevSerial.available() && (prevSerial.read()==' ')) { Serial.println("I am now a slave"); isMaster = false; listenOnPrev = !isMaster;} // inform 
 
   time = millis();
   
