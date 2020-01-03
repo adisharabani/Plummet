@@ -919,7 +919,7 @@ void handleKeyboardInput() {
 
 	  mAmp = mAmpFrom;
 	  mPhase = mPhaseFrom;
-	  setMode(MACHINE_LEARNING); sprint("ML phase("); sprint(mPhaseFrom);sprint("-");sprint(mPhaseTo);sprint(" +");sprint(mPhaseJump);sprint(") amp(");sprint(mAmpFrom);sprint("-");sprint(mAmpTo);sprint(" +");sprint(mAmpJump); sprintln(")");
+	  setMode(MACHINE_LEARNING); sprint("ML ");sprint(syncRopeAngle);sprint(": phase("); sprint(mPhaseFrom);sprint("-");sprint(mPhaseTo);sprint(" +");sprint(mPhaseJump);sprint(") amp(");sprint(mAmpFrom);sprint("-");sprint(mAmpTo);sprint(" +");sprint(mAmpJump); sprintln(")");
 	  break;
 	case 'o': // ANALYZE Amp,Phase
 	  if (CMD[0]!='\n'){
@@ -1251,6 +1251,7 @@ void updateAmpAndTime(bool runNow=false) {
 	static double ML_MAX_OFFSET_SHIFT_IN_CYCLE = 250.0;
 
 	static int waitLoops=0;
+	static unsigned long waitForTime=0;
 	static double lastOffsetAxis = 0;
 	static double lastRopeOffsetAxis = 0;
 	static unsigned long lastTime = 0;
@@ -1272,12 +1273,13 @@ void updateAmpAndTime(bool runNow=false) {
 	if (((side==RIGHT) && ((mode!=TESTING) && (mode != STOPPING))) ||
 	    ((side==LEFT)  && ((mode==TESTING) || (mode == STOPPING))) ||
 	    runNow) {
-		sprint(waitLoops ? "\x1b[0;37m" : "\x1b[0;31m");
+		sprint((waitLoops || millis()>waitForTime) ? "\x1b[0;37m" : "\x1b[0;31m");
 		sprint ("["); sprint(lastLoopTime); sprint("]: offset="); sprint(offset); sprint("ms ropeAngle="); 	sprint(ropeAngle); sprint((ropeAngleOffset > 0) ? "(+" : "(");sprint(ropeAngleOffset); sprint(")");
 		sprint("\x1b[0m");
 		
 		if (requestedMoveStarted && !runNow) { sprint("in motion [");sprint(requestedNLoops);sprintln("]"); return; }
 		if (waitLoops > 0) { sprint("wait ["); sprint(waitLoops--); sprintln("]"); /*servoAmp = 0;*/ return; }
+		if (millis() > waitForTime) { sprint("wait for time "); sprint(millis()-waitForTime); sprintln("ms"); return;}
 		
 		double offsetAxis = offset / ML_MAX_OFFSET_SHIFT_IN_CYCLE;
 		double ropeOffsetAxis = ropeAngleOffset / ML_MAX_ROPE_SHIFT_IN_CYCLE;
@@ -1374,18 +1376,17 @@ void updateAmpAndTime(bool runNow=false) {
 					setMode(HALT);
 				}
 			}
-			
+			waitLoops = 0;
 			if (ropeAngleOffset < -0.005) {
 				// speed up
 				tPhase = 0.25;
 				servoAmp = 20;
 				loopTime = defaultLoopTime;
 				requestedNLoops = 1;
-				waitLoops = LOOP_INTERVAL-2;
+				waitForTime = millis() + (LOOP_INTERVAL-0.5)*defaultLoopTime;
 				inTest = false;
 			} else if (ropeAngleOffset > 0.005) {
-				requestedNLoops = 0; // just wait...
-				waitLoops = 0;
+				requestedNLoops = 0; // just wait for next iteration...
 				inTest = false;
 				return;
 			} else { // start a test;
@@ -1393,7 +1394,7 @@ void updateAmpAndTime(bool runNow=false) {
 				servoAmp = mAmp;
 				loopTime = defaultLoopTime;
 				requestedNLoops = 1;
-				waitLoops = LOOP_INTERVAL-2;
+				waitForTime = millis() + (LOOP_INTERVAL-0.5)*defaultLoopTime;
 				inTest = true;
 				sprint ("&& ");
 			}
