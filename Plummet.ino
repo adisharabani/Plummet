@@ -172,7 +172,7 @@ enum mode_e {
   STOPPING,
   HALT,
   RUNNING,
-  MAINTAINING,
+  MACHINE_LEARNING,
   TESTING,
   SYNCED_RUNNING,
   ANALYZING
@@ -903,7 +903,7 @@ void handleKeyboardInput() {
 	  setMode(HALT); sprintln("HALT");
 	  smoothMove(servoCenter);
 	  break;
-	case 'm': // MAINTAIN
+	case 'm': // MACHINE_LEARNING
       if (CMD[0]!='\n') mPhaseFrom = atof(CMD);
 	  p = find(CMD, ',');
 	  if (p!=-1) mPhaseTo = atof(CMD+p+1);
@@ -919,7 +919,7 @@ void handleKeyboardInput() {
 
 	  mAmp = mAmpFrom;
 	  mPhase = mPhaseFrom;
-	  setMode(MAINTAINING); sprint("ML phase("); sprint(mPhaseFrom);sprint("-");sprint(mPhaseTo);sprint(" +");sprint(mPhaseJump);sprint(") amp(");sprint(mAmpFrom);sprint("-");sprint(mAmpTo);sprint(" +");sprint(mAmpJump); sprintln(")");
+	  setMode(MACHINE_LEARNING); sprint("ML phase("); sprint(mPhaseFrom);sprint("-");sprint(mPhaseTo);sprint(" +");sprint(mPhaseJump);sprint(") amp(");sprint(mAmpFrom);sprint("-");sprint(mAmpTo);sprint(" +");sprint(mAmpJump); sprintln(")");
 	  break;
 	case 'o': // ANALYZE Amp,Phase
 	  if (CMD[0]!='\n'){
@@ -1353,7 +1353,7 @@ void updateAmpAndTime(bool runNow=false) {
 		loopTime = defaultLoopTime - offset / max(1,tRadial) / LOOP_INTERVAL;
 		 
 
-		if (mode == MAINTAINING) {
+		if (mode == MACHINE_LEARNING) {
 			if (inTest) {
 				int mlLoopTime = (time-lastTime) / LOOP_INTERVAL;
 				sprint("\x1b[0;34mMachineLearning "); sprint(lastRopeAngle); sprint(": f("); sprint(mPhase); sprint(", "); sprint(mAmp); sprint(") = ("); sprint(mlLoopTime); sprint("ms, "); sprint(ropeAngle); sprint(") ");
@@ -1391,7 +1391,7 @@ void updateAmpAndTime(bool runNow=false) {
 			} else { // start a test;
 				tPhase = mPhase;
 				servoAmp = mAmp;
-				loopTime = syncLoopTime;
+				loopTime = defaultLoopTime;
 				requestedNLoops = 1;
 				waitLoops = LOOP_INTERVAL-2;
 				inTest = true;
@@ -1402,9 +1402,9 @@ void updateAmpAndTime(bool runNow=false) {
 
 		//loopTime = defaultLoopTime + sin(tPhase*2*PI)*ML_MAX_OFFSET_SHIFT_IN_CYCLE;
 		if (side == RIGHT) {
-			initTime = rightTime - tPhase * loopTime + M;
+			initTime = rightTime - tPhase * loopTime + (mode == MACHINE_LEARNING ? 0 : M);
 		} else {
-			initTime = leftTime  - (0.5+tPhase) * loopTime + M;
+			initTime = leftTime  - (0.5+tPhase) * loopTime + (mode == MACHINE_LEARNING ? 0 : 0);
 		}
 		//rightTime - loopTime*(side==LEFT ? 0.5 + tPhase : tPhase);
 		
