@@ -20,7 +20,6 @@
 //  Update stop based on new sync
 
 // TODO: Better master detection
-// TODO: remove listenOnPrev and change to !isMaster
 // TODO: ML for circular phase options.
 // TODO: start move even if potCenter is not at the right place.
 // TODO: autoupdate potCenter
@@ -152,7 +151,6 @@ boolean updateSlaveClock = false;
 //SoftwareSerial nextSerial(rxPinNext, txPinNext);
 SoftwareSerial nextSerial(rxPinPrev, txPinNext);
 #define prevSerial nextSerial
-bool listenOnPrev = true;
 
 #define audioSerial Serial
 
@@ -629,7 +627,7 @@ byte readByte() {
 	  b = Serial.read();
 	  //sprint(b);
 	  return b;
-	} else if (listenOnPrev && prevSerial.available()){
+	} else if (!isMaster && prevSerial.available()){
 	  char b = prevSerial.read();
 //	  if (b=='~') { Serial.write("Error:"); delay(100); while (prevSerial.available()) Serial.print("~"+String(int(prevSerial.read()))); Serial.println("");}
 	  //sprint(b);
@@ -640,7 +638,7 @@ sprint("?");
 }
 
 bool readByteAvailable() {
-  return (Serial.available() || (listenOnPrev && prevSerial.available()));
+  return (Serial.available() || (!isMaster && prevSerial.available()));
 }
 
 int find(char *str, char c, int startingIndex=0) {
@@ -1063,7 +1061,6 @@ void handleKeyboardInput() {
 	case '^': // toggle master/slave
 	  isMaster = !isMaster;
 	  ewrite(isMaster ? 0 : 1,14);
-	  listenOnPrev = !isMaster;
 	  Serial.print("I am ");
 	  Serial.println(isMaster ? "master" : "slave");
 	  break; 
@@ -1440,7 +1437,6 @@ void setup() {
 
   nextSerial.println("      "); // let the following arduino know you are here;
 
-  //prevSerial.attachInterrupt(t);
   delay(200);
   sendAudioCommand(0X09, 0X02); // Select TF Card
   sprintln("");
@@ -1451,44 +1447,16 @@ void setup() {
   myservowrite(servoCenter);
   tone(7, NOTE_G5, 100);
   
-  // Read all prevSerial data
-/*   if (prevSerial.available()) {
-  	  sprintln("prevdata?");
-	  while (prevSerial.available()) {prevSerial.read(); };
-	  delay(300);
-	  if (prevSerial.available()) {
-	  	sprintln("Noisy! Cancelling listen mode");
-	  	listenOnPrev = false;
-	  }
-  } 
-
-  sprintln("Done.");
-  */
-  
   initTime = millis();
   randomSeed((initTime + int(potentiometerRead()*100)) % 30000);
   
   setMode(HALT);
   smoothMove(servoCenter);
 
-/*
-//  if (listenOnPrev) {
-	  // wait 1.5 seconds to see if you are a slave
-	  while ((millis() < initTime + 1500) && isMaster) {
-		  if (prevSerial.available() && (prevSerial.read()==' ') && prevSerial.available() && (prevSerial.read()==' ')&& prevSerial.available() && (prevSerial.read()==' ')) { 
-		      isMaster = false;
-	  	  }
-	  }
-  	  Serial.println(isMaster ? "I am master" : "I am slave"); 
-  	  listenOnPrev = !isMaster;
-
-//  } else {
-//	  Serial.println("I am probably master");
-//  }
-*/      
   if ( eread(EEPROM_COMMANDS_LOC-2) == EEPROM_MAGIC) {
   	isAutoPlay = eread(EEPROM_COMMANDS_LOC-4);
   }
+
   if (isAutoPlay) startPlaySequence();
 
   pinMode(13, OUTPUT); digitalWrite(13, LOW);
@@ -1548,7 +1516,6 @@ void sprintLoopEvents() {
 void loop(){
   showClockIfNeeded();
   if (time > keepalive) { nextSerial.print("      "); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
-//  if (isMaster && prevSerial.available() && (prevSerial.read()==' ') && prevSerial.available() && (prevSerial.read()==' ') && prevSerial.available() && (prevSerial.read()==' ')) { Serial.println("I am now a slave"); isMaster = false; listenOnPrev = !isMaster;} // inform 
 
   time = millis();
   
