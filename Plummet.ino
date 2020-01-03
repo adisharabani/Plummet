@@ -571,7 +571,7 @@ void writeCalibration() {
   ewrite(pot50);
   ewrite(pot150);
   ewrite(defaultLoopTime);
-  ewrite(isMaster ? 0 : 1);
+  ewrite(isMaster);
   ewrite((unsigned int)0);
   ewrite((unsigned int)0);
   ewrite((unsigned int)0);
@@ -598,7 +598,7 @@ void readCalibration() {
 	pot50 = eread();
 	pot150 = eread();
 	defaultLoopTime = eread(); loopTime = defaultLoopTime;
-	isMaster = (eread() == 0);
+	isMaster = eread();
   } else {
 	sprintln("No EEPROM");
 	//servoCenter = eread(1);
@@ -1060,7 +1060,7 @@ void handleKeyboardInput() {
 	  break;
 	case '^': // toggle master/slave
 	  isMaster = !isMaster;
-	  ewrite(isMaster ? 0 : 1,14);
+	  ewrite(isMaster,14);
 	  Serial.print("I am ");
 	  Serial.println(isMaster ? "master" : "slave");
 	  break; 
