@@ -156,7 +156,7 @@ bool listenOnPrev = true;
 
 #define audioSerial Serial
 
-boolean isMaster = true;
+boolean isMaster = false;
 
 unsigned long rightTime = 0;
 unsigned long leftTime = 0;
@@ -573,7 +573,7 @@ void writeCalibration() {
   ewrite(pot50);
   ewrite(pot150);
   ewrite(defaultLoopTime);
-  ewrite((unsigned int)0);
+  ewrite(isMaster ? 0 : 1);
   ewrite((unsigned int)0);
   ewrite((unsigned int)0);
   ewrite((unsigned int)0);
@@ -588,6 +588,7 @@ void printCurrentCalibration() {
   sprint(" pot50="); sprint(pot50);
   sprint(" pot150="); sprint(pot150);
   sprint(" loopTime="); sprint(defaultLoopTime);
+  sprint(" isMaster="); sprint(isMaster);
   sprintln(""); 
 }
 
@@ -599,6 +600,7 @@ void readCalibration() {
 	pot50 = eread();
 	pot150 = eread();
 	defaultLoopTime = eread(); loopTime = defaultLoopTime;
+	isMaster = (eread() == 0);
   } else {
 	sprintln("No EEPROM");
 	//servoCenter = eread(1);
@@ -1058,11 +1060,12 @@ void handleKeyboardInput() {
 
 	  if (isMaster) tone(7, NOTE_A5, 1000);
 	  break;
-	case '^': // change master/slave
+	case '^': // toggle master/slave
 	  isMaster = !isMaster;
+	  ewrite(isMaster ? 0 : 1,14);
 	  listenOnPrev = !isMaster;
 	  Serial.print("I am ");
-	  Serial.print(isMaster ? "master" : "slave");
+	  Serial.println(isMaster ? "master" : "slave");
 	  break; 
 	case 'i':
 	  Serial.print("I am ");
@@ -1468,7 +1471,7 @@ void setup() {
   setMode(HALT);
   smoothMove(servoCenter);
 
-
+/*
 //  if (listenOnPrev) {
 	  // wait 1.5 seconds to see if you are a slave
 	  while ((millis() < initTime + 1500) && isMaster) {
@@ -1482,7 +1485,7 @@ void setup() {
 //  } else {
 //	  Serial.println("I am probably master");
 //  }
-      
+*/      
   if ( eread(EEPROM_COMMANDS_LOC-2) == EEPROM_MAGIC) {
   	isAutoPlay = eread(EEPROM_COMMANDS_LOC-4);
   }
@@ -1545,7 +1548,7 @@ void sprintLoopEvents() {
 void loop(){
   showClockIfNeeded();
   if (time > keepalive) { nextSerial.print("      "); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
-  if (isMaster && prevSerial.available() && (prevSerial.read()==' ') && prevSerial.available() && (prevSerial.read()==' ') && prevSerial.available() && (prevSerial.read()==' ')) { Serial.println("I am now a slave"); isMaster = false; listenOnPrev = !isMaster;} // inform 
+//  if (isMaster && prevSerial.available() && (prevSerial.read()==' ') && prevSerial.available() && (prevSerial.read()==' ') && prevSerial.available() && (prevSerial.read()==' ')) { Serial.println("I am now a slave"); isMaster = false; listenOnPrev = !isMaster;} // inform 
 
   time = millis();
   
