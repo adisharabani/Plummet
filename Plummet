@@ -349,10 +349,32 @@ if [ "$1" = "control" ]; then
 fi
 
 if [ "$1" = "ml" ]; then
- ard=$($0 listDevices $2 | head -1)
- echo "Type the following commands:"
- echo " :0:M"
- echo " :0:%"
- echo " :0:m"
- cu -l /dev/$ard | tee ml
+  echo "<html><head> <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>"
+  echo "<script>function loadPlot() {"
+
+  echo -n " a24 = ["; grep -a Machine $2 | cut -c 30- | strings | grep "<" | tr -d "f(,)=ms" | cut -d" " -f1 | xargs | tr " " , | tr -d "\n" ; echo "]"
+  echo -n " b24 = ["; grep -a Machine $2 | cut -c 30- | strings | grep "<" | tr -d "f(,)=ms" | cut -d" " -f2 | xargs | tr " " , | tr -d "\n" ; echo "]"
+  echo -n " c24 = ["; grep -a Machine $2 | cut -c 30- | strings | grep "<" | tr -d "f(,)=ms" | cut -d" " -f4 | xargs | tr " " , | tr -d "\n" ; echo "]"
+  echo -n " a25 = ["; grep -a Machine $2 | cut -c 30- | strings | grep "0.25) =" | tr -d "f(,)=ms" | cut -d" " -f1 | xargs | tr " " , | tr -d "\n" ; echo "]"
+  echo -n " b25 = ["; grep -a Machine $2 | cut -c 30- | strings | grep "0.25) =" | tr -d "f(,)=ms" | cut -d" " -f2 | xargs | tr " " , | tr -d "\n" ; echo "]"
+  echo -n " c25 = ["; grep -a Machine $2 | cut -c 30- | strings | grep "0.25) =" | tr -d "f(,)=ms" | cut -d" " -f4 | xargs | tr " " , | tr -d "\n" ; echo "]"
+  echo -n " a26 = ["; grep -a Machine $2 | cut -c 30- | strings | grep ">" | tr -d "f(,)=ms" | cut -d" " -f1 | xargs | tr " " , | tr -d "\n" ; echo "]"
+  echo -n " b26 = ["; grep -a Machine $2 | cut -c 30- | strings | grep ">" | tr -d "f(,)=ms" | cut -d" " -f2 | xargs | tr " " , | tr -d "\n" ; echo "]"
+  echo -n " c26 = ["; grep -a Machine $2 | cut -c 30- | strings | grep ">" | tr -d "f(,)=ms" | cut -d" " -f4 | xargs | tr " " , | tr -d "\n" ; echo "]"
+  echo -n " a = ["; grep -a Machine $2 | cut -c 30- | strings | tr -d "f(,)=ms" | cut -d" " -f1 | xargs | tr " " , | tr -d "\n" ; echo "]"
+  echo -n " b = ["; grep -a Machine $2 | cut -c 30- | strings | tr -d "f(,)=ms" | cut -d" " -f2 | xargs | tr " " , | tr -d "\n" ; echo "]"
+  echo -n " c = ["; grep -a Machine $2 | cut -c 30- | strings | tr -d "f(,)=ms" | cut -d" " -f4 | xargs | tr " " , | tr -d "\n" ; echo "]"
+  echo -n " r= ["; grep -a Machine $2 | cut -c 30- | strings | tr -d "f(,)=ms" | cut -d" " -f5 | xargs | tr " " , | tr -d "\n" ; echo "]"
+
+
+  echo "var data= { opacity:1, intensity:r, type: 'mesh3d', x: a, y: b, z: c, colorscale: [['0.0', 'black'],['0.3','blue'], ['0.5','green'],['0.7','orange'],['1.0','red']] } ;"
+  echo "var data24= { mode:'markers', marker: {opacity:0.3, color:'black',size:1,line:{width:0}}, type: 'scatter3d', x: a24, y: b24, z: c24 } ;"
+  echo "var data25= { mode:'markers', marker: {opacity:0.5, color:'rgb(0,255,0)',size:3,line:{width:0}}, type: 'scatter3d', x: a25, y: b25, z: c25 } ;"
+  echo "var data26= { mode:'markers', marker: {opacity:1, color:'rgb(255,100,100)',size:1,line:{width:0}}, type: 'scatter3d', x: a26, y: b26, z: c26 } ;"
+  echo "var layout = { autosize: false, width: 1000, height: 700, margin: { l: 0, r: 0, b: 0, t: 0, pad: 0 }, paper_bgcolor: '#ffffff', plot_bgcolor: '#f0f0f0' };"
+  echo " Plotly.newPlot('myDiv', [data, data24, data25, data26], layout);"
+  echo "}</script></head>"
+  echo "<body onload='loadPlot()'> <div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>"
+  echo "</body></html>"
+
 fi
