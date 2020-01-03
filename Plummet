@@ -18,6 +18,8 @@ if [ $# -eq 0 ]; then
          "List Commands" "Show list of commands." \
          "Update" "Update app from the internet." \
          "Compile" "Compile the Arduino code." \
+         "Revert" "Revert to a production version" \
+         "Record" "Attach to Arduinos while recording output" \
          "Join Attached" "Join an attached screen." \
          "Setup" "First time setup." 3>&2 2>&1 1>&3 )
 
@@ -75,11 +77,22 @@ if [ "$1" = "install" ]; then
  #tar -xf arduino-1.8.10-linuxarm.tar.xz 
 fi
 
-if [ "$1" = "compile" ]; then
+if [ "$1" = "compile" ] || [ "$1" = "revert" ]; then
  echo "Compiling Plummet"
+ if [ "$1" = "revert" ]; then
+   echo "Compiling Production environment"
+   srcfile='production/Plummet.ino'
+ else
+   srcfile='Plummet.ino'
+ fi
+
  mkdir -p build
- ${ARDLIB}/arduino-builder -hardware ${ARDLIB}/hardware -tools ${ARDLIB}/hardware/tools/avr -tools ${ARDLIB}/tools-builder -libraries ${ARDLIB}/libraries -libraries Libraries -fqbn arduino:avr:uno -prefs=compiler.path=${ARDLIB}/hardware/tools/avr/bin/ -prefs=tools.ctags.path=${ARDLIB}/tools-builder/ctags/5.8-arduino11 -build-path build $2 Plummet.ino 
- exit $? 
+ ${ARDLIB}/arduino-builder -hardware ${ARDLIB}/hardware -tools ${ARDLIB}/hardware/tools/avr -tools ${ARDLIB}/tools-builder -libraries ${ARDLIB}/libraries -libraries Libraries -fqbn arduino:avr:uno -prefs=compiler.path=${ARDLIB}/hardware/tools/avr/bin/ -prefs=tools.ctags.path=${ARDLIB}/tools-builder/ctags/5.8-arduino11 -build-path build $2 $srcfile 
+ status=$?
+ if [ $status ] && [ "$1" = "revert" ]; then
+  $0 upload
+ fi
+ exit $status 
 fi
 
 if [ "$1" = "upload" ]; then
@@ -173,7 +186,7 @@ if [ "$1" = "attach" ] || [ "$1" = "record" ]; then
  echo 'mousetrack on' >> /tmp/.screens
  isFirst=1
  for ard in $($0 listDevices $2); do
-   stty -F /dev/${ard} cs8 38400 ignbrk -brkint -icrnl -imaxbel -opost -ocrnl -onlret -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke noflsh -ixon -crtscts
+   stty -F /dev/${ard} cs8 9600 ignbrk -brkint -icrnl -imaxbel -opost -ocrnl -onlret -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke noflsh -ixon -crtscts
    if [ "$isFirst" = "0" ]; then
       echo split >> /tmp/.screens
       echo focus >> /tmp/.screens
@@ -181,7 +194,7 @@ if [ "$1" = "attach" ] || [ "$1" = "record" ]; then
    if [ "$1" = "attach" ]; then
 	   echo screen -t ${ard} /dev/${ard} >> /tmp/.screens
 	else
-		echo "screen -t ${ard} bash -c \"cu /dev/${ard} | tee -a _${ard}.record\"" >> /tmp/.screens
+		echo "screen -t ${ard} bash -c \"cu -l /dev/${ard} | tee -a _${ard}.record\"" >> /tmp/.screens
 	fi
    echo 'stuff "e\nB\n \n"' >> /tmp/.screens
    if [ "$isFirst" = "1" ]; then

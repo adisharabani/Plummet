@@ -1,3 +1,4 @@
+*.record
 /build
 # Windows image file caches
 Thumbs.db
