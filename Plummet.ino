@@ -122,7 +122,7 @@ double oPhase = 0.25; // like stopping
 double mPhase = 0;
 int mAmp = 5;
 double mPhaseFrom = 0;
-double mPhaseTo = 0.30;
+double mPhaseTo = 0.50;
 double mPhaseJump = 0.02;
 int mAmpFrom = 0;
 int mAmpTo = 40;
@@ -1355,9 +1355,8 @@ void updateAmpAndTime(bool runNow=false) {
 
 		if (mode == MAINTAINING) {
 			if (inTest) {
-				int relativeOffset = (time-lastTime) % syncLoopTime;
-				if (relativeOffset > syncLoopTime/2) relativeOffset = relativeOffset - syncLoopTime;
-				sprint("\x1b[0;34mMachineLearning "); sprint(lastRopeAngle); sprint(": f("); sprint(mPhase); sprint(", "); sprint(mAmp); sprint(") = ("); sprint(relativeOffset); sprint("ms, "); sprint(ropeAngle); sprint(") ");
+				int mlLoopTime = (time-lastTime) / LOOP_INTERVAL;
+				sprint("\x1b[0;34mMachineLearning "); sprint(lastRopeAngle); sprint(": f("); sprint(mPhase); sprint(", "); sprint(mAmp); sprint(") = ("); sprint(mlLoopTime); sprint("ms, "); sprint(ropeAngle); sprint(") ");
 				sprint ((ropeAngleOffset < -0.005 ? "<" : (ropeAngleOffset > 0.005 ? ">" : "=")));
 				if ((ropeAngleOffset < 0.04) && (mAmp < mAmpTo)) {
 					// not wide enough, next time try harder
@@ -1398,7 +1397,7 @@ void updateAmpAndTime(bool runNow=false) {
 				inTest = true;
 				sprint ("&& ");
 			}
-			//lastRopeAngle: f(lastTPhase, servoAmp) = relativeOffset, ropeAngle (if ropeAngle==syncRopeAngle: ==)
+			//lastRopeAngle: f(lastTPhase, servoAmp) = mlLoopTime, ropeAngle (if ropeAngle==syncRopeAngle: ==)
 		}
 
 		//loopTime = defaultLoopTime + sin(tPhase*2*PI)*ML_MAX_OFFSET_SHIFT_IN_CYCLE;
