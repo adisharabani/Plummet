@@ -1273,13 +1273,13 @@ void updateAmpAndTime(bool runNow=false) {
 	if (((side==RIGHT) && ((mode!=TESTING) && (mode != STOPPING))) ||
 	    ((side==LEFT)  && ((mode==TESTING) || (mode == STOPPING))) ||
 	    runNow) {
-		sprint((waitLoops || millis()>waitForTime) ? "\x1b[0;37m" : "\x1b[0;31m");
+		sprint((waitLoops || millis()<waitForTime) ? "\x1b[0;37m" : "\x1b[0;31m");
 		sprint ("["); sprint(lastLoopTime); sprint("]: offset="); sprint(offset); sprint("ms ropeAngle="); 	sprint(ropeAngle); sprint((ropeAngleOffset > 0) ? "(+" : "(");sprint(ropeAngleOffset); sprint(")");
 		sprint("\x1b[0m");
 		
 		if (requestedMoveStarted && !runNow) { sprint("in motion [");sprint(requestedNLoops);sprintln("]"); return; }
 		if (waitLoops > 0) { sprint("wait ["); sprint(waitLoops--); sprintln("]"); /*servoAmp = 0;*/ return; }
-		if (millis() > waitForTime) { sprint("wait for time "); sprint(millis()-waitForTime); sprintln("ms"); return;}
+		if (millis() < waitForTime) { sprint("waiting "); sprint(waitForTime - millis()); sprintln("ms"); return;}
 		
 		double offsetAxis = offset / ML_MAX_OFFSET_SHIFT_IN_CYCLE;
 		double ropeOffsetAxis = ropeAngleOffset / ML_MAX_ROPE_SHIFT_IN_CYCLE;
