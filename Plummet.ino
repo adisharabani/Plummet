@@ -938,7 +938,7 @@ void handleKeyboardInput() {
 	  }
 	  KB[0] = 0; CMD=KB;
 
-	  setMode(TESTING); sprint("TEST");
+	  setMode(TESTING); sprintln("TEST");
 	  break;
 	case 's': // SYNC
 	  syncLoopTime = atoi(CMD); 
@@ -1270,8 +1270,8 @@ void updateAmpAndTime(bool runNow=false) {
 //		waitLoops = 0;
 	}
 
-	if (((side==RIGHT) && ((mode!=TESTING) && (mode != STOPPING))) ||
-	    ((side==LEFT)  && ((mode==TESTING) || (mode == STOPPING))) ||
+	if (((side==RIGHT) && (mode != STOPPING)) ||
+	    ((side==LEFT)  && (mode == STOPPING)) ||
 	    runNow) {
 		sprint((waitLoops || millis()<waitForTime) ? "\x1b[0;37m" : "\x1b[0;31m");
 		sprint ("["); sprint(lastLoopTime); sprint("]: offset="); sprint(offset); sprint("ms ropeAngle="); 	sprint(ropeAngle); sprint((ropeAngleOffset > 0) ? "(+" : "(");sprint(ropeAngleOffset); sprint(")");
@@ -1380,18 +1380,20 @@ void updateAmpAndTime(bool runNow=false) {
 			// ropeAngle			
 			
 			//learn:
-			if (!runNow) {
+			if (!runNow && mAmp < 40) {
 				sum_l += mlLoopTime; sum_x += X; sum_xx += X*X; sum_xl += X*mlLoopTime;
 				sum_r += ropeAngle; sum_y += Y; sum_yr += Y*Y; sum_yr += Y*ropeAngle;
 				ML_count ++;
 			}
-			// decide:
+			// calculate ML models:
 			double ML_loop_mult = (ML_count*sum_xl - sum_x*sum_l) / (ML_count*sum_xx - sum_x*sum_x);
 			double ML_angle_mult = (ML_count*sum_yr - sum_y*sum_r) / (ML_count*sum_yy - sum_y*sum_y);
 			double ML_loop_default = (sum_l/ML_count) - (ML_loop_mult*sum_x)/ML_count;
 			double ML_angle_default = (sum_r/ML_count) - (ML_angle_mult*sum_y)/ML_count;
 
 			sprint("MMM: ");sprint(ML_loop_mult); sprint(",");sprint(ML_loop_default); sprint(" "); sprint(ML_angle_mult*1000); sprint("/1000,");sprint(ML_angle_default*100);sprint("/100");
+
+			// calculate phase and amp
 			mlLoopTime = syncLoopTime - offset / LOOP_INTERVAL; // desiredLoopTime
 			// double desiredRopeAngle = syncRopeAngle;
 			X = (mlLoopTime - ML_loop_default) / ML_loop_mult;
