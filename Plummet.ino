@@ -1405,7 +1405,7 @@ void updateAmpAndTime(bool runNow=false) {
 			tPhase = axisToAngle(X,Y)/2/PI;
 			servoAmp = int(min(max(sqrt(X*X+Y*Y),0),maxServoAmp));
 			
-			loopTime = mlLoopTime - (LOOP_INTERVAL-1)*ML_loop_default;
+			loopTime = mlLoopTime * LOOP_INTERVAL - (LOOP_INTERVAL-1)*ML_loop_default;
 
 			requestedNLoops = 1;
 			waitForTime = millis() + (LOOP_INTERVAL-0.5)*loopTime;
