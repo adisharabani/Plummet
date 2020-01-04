@@ -502,7 +502,7 @@ void calibrate() {
   pot150 = waitForSteadiness(4,6000); 
   sprint("Pot150: ");sprintln(pot150);
   
-  calibrateLoopTime();
+  //calibrateLoopTime();
 
   smoothMove(servoCenter);
   sprint("Calibrate is:  ");
