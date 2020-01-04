@@ -1406,12 +1406,14 @@ void updateAmpAndTime(bool runNow=false) {
 			double ML_loop_default = avg_l - ML_loop_mult*avg_x;
 			double ML_angle_default = avg_r - ML_angle_mult*avg_y;
 
-			sprint("X("); sprint(X);sprint(",");sprint(mlLoopTime);sprint(") Y(");sprint(Y);sprint(mlRopeOffset);sprint(") ML ");
+			sprint("X("); sprint(X);sprint(",");sprint(mlLoopTime);sprint(") Y(");sprint(Y);sprint(",");sprint(mlRopeOffset);sprint(") ML ");
 			sprint(ML_loop_mult); sprint(",");sprint(ML_loop_default); sprint(" "); sprint(ML_angle_mult*1000); sprint("/1000,");sprint(ML_angle_default*100);sprint("/100");
 
-			// calculate phase and amp
+			// calculate desired phase and amp
 			mlLoopTime = syncLoopTime - offset / LOOP_INTERVAL; // desiredLoopTime
 			mlRopeOffset = (syncRopeAngle-ropeAngle) / LOOP_INTERVAL; //desired RopeOffset
+			sprintln("");
+			sprint("----");sprint(mlLoopTime);sprint(",");sprint(mlRopeOffset);
 			X = (mlLoopTime - ML_loop_default) / ML_loop_mult;
 			Y = (mlRopeOffset - ML_angle_default) / ML_angle_mult;
 
@@ -1425,6 +1427,7 @@ void updateAmpAndTime(bool runNow=false) {
 				mlRopeOffset = ML_angle_mult * Y + ML_angle_default; 
 				sprint("much work:");sprint(offset - (syncLoopTime-mlLoopTime)*LOOP_INTERVAL); sprint(",");sprint(ropeAngle+mlRopeOffset*LOOP_INTERVAL);
 			}
+			sprint("XY");sprint(X);sprint(",");sprint(Y);
 			loopTime = mlLoopTime * LOOP_INTERVAL - (LOOP_INTERVAL-1)*ML_loop_default;
 
 			requestedNLoops = 1;
