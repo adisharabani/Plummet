@@ -1355,22 +1355,24 @@ void updateAmpAndTime(bool runNow=false) {
 		loopTime = defaultLoopTime - offset / max(1,tRadial) / LOOP_INTERVAL;
 		 
 		if (mode == TESTING) {
+			sprint("MMM: ");
 			M=0;
 			waitLoops = 0;
 			
 			//init
-			
-			static double sum_l = 3575; // loop default;
-			static double sum_x = -sum_l / 1.273; // 1.273 - loop_mult
-			static double sum_xx = sum_x*sum_x;
-			static double sum_xl = 0;
 
-			static double sum_r = syncRopeAngle-0.01; // angle defualt after 3 cycles
-			static double sum_y = -sum_r / 0.0016; // 0.0016 - angle multiplier
-			static double sum_yy = sum_y*sum_y;
-			static double sum_yr = 0;
+			static double ML_count = 10;
+
+			static double avg_l = 3575 / 2; // loop default;
+			static double avg_x = -avg_l / 1.273; // 1.273 - loop_mult
+			static double avg_xx = avg_x*avg_x * 2;
+			static double avg_xl = 0;
+
+			static double avg_r = 0.239 / 2; // angle defualt after 3 cycles
+			static double avg_y = -avg_r / 0.0016; // 0.0016 - angle multiplier
+			static double avg_yy = avg_y*avg_y * 2;
+			static double avg_yr = 0;
 			
-			static double ML_count = 2;
 			
 
 			// last results
@@ -1378,20 +1380,21 @@ void updateAmpAndTime(bool runNow=false) {
 			double Y = mAmp * sin(mPhase);
 			int mlLoopTime = (time-lastTime) / LOOP_INTERVAL;
 			// ropeAngle			
-			
+#define ML_UPDATE(a,b) a = a*(ML_count/(ML_count+1)) + b/(ML_count+1)
 			//learn:
 			if (!runNow && mAmp < 40) {
-				sum_l += mlLoopTime; sum_x += X; sum_xx += X*X; sum_xl += X*mlLoopTime;
-				sum_r += ropeAngle; sum_y += Y; sum_yr += Y*Y; sum_yr += Y*ropeAngle;
+				ML_UPDATE(avg_l, mlLoopTime); ML_UPDATE(avg_x, X); ML_UPDATE(avg_xx,X*X); ML_UPDATE(avg_xl,X*mlLoopTime);
+				ML_UPDATE(avg_r, ropeAngle); ML_UPDATE(avg_y, Y); ML_UPDATE(avg_yy,Y*Y); ML_UPDATE(avg_yr,Y*ropeAngle);
 				ML_count ++;
 			}
+			
 			// calculate ML models:
-			double ML_loop_mult = (ML_count*sum_xl - sum_x*sum_l) / (ML_count*sum_xx - sum_x*sum_x);
-			double ML_angle_mult = (ML_count*sum_yr - sum_y*sum_r) / (ML_count*sum_yy - sum_y*sum_y);
-			double ML_loop_default = (sum_l/ML_count) - (ML_loop_mult*sum_x)/ML_count;
-			double ML_angle_default = (sum_r/ML_count) - (ML_angle_mult*sum_y)/ML_count;
+			double ML_loop_mult = (avg_xl - avg_x*avg_l) / (avg_xx - avg_x*avg_x);
+			double ML_angle_mult = (avg_yr - avg_y*avg_r) / (avg_yy - avg_y*avg_y);
+			double ML_loop_default = avg_l - ML_loop_mult*avg_x;
+			double ML_angle_default = avg_r - ML_angle_mult*avg_y;
 
-			sprint("MMM: ");sprint(ML_loop_mult); sprint(",");sprint(ML_loop_default); sprint(" "); sprint(ML_angle_mult*1000); sprint("/1000,");sprint(ML_angle_default*100);sprint("/100");
+			sprint(ML_loop_mult); sprint(",");sprint(ML_loop_default); sprint(" "); sprint(ML_angle_mult*1000); sprint("/1000,");sprint(ML_angle_default*100);sprint("/100");
 
 			// calculate phase and amp
 			mlLoopTime = syncLoopTime - offset / LOOP_INTERVAL; // desiredLoopTime
