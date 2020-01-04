@@ -1334,12 +1334,12 @@ void updateAmpAndTime(bool runNow=false) {
 		loopTime = defaultLoopTime;
 	
 		int M = 0;
-		if (mode==TESTING) { //STOPPING
+/*		if (mode==TESTING) { //STOPPING
 			tPhase = 0.75;
 			tRadial = ropeAngle/ML_MAX_ROPE_SHIFT_IN_CYCLE;
 			waitLoops=2;
 			M=SYNC_MAGIC_NUMBER;
-		} else if (mode==STOPPING) { //STOPPING
+		} else */if (mode==STOPPING) { //STOPPING
 			tPhase = 0.75;
 			tRadial = ropeAngle/ML_MAX_ROPE_SHIFT_IN_CYCLE;
  			if (ropeAngle<=0.04) {
@@ -1395,7 +1395,7 @@ void updateAmpAndTime(bool runNow=false) {
 #define ML_UPDATE(a,b) a = a*(ML_count/(ML_count+1.0)) + b/(ML_count+1.0)
 			//learn:
 			if (!isFirstIter && mAmp < 40) {
-				sprint(" *** ");
+				sprint(" * ");
 				ML_UPDATE(avg_l, mlLoopTime); ML_UPDATE(avg_x, X); ML_UPDATE(avg_xx,X*X); ML_UPDATE(avg_xl,X*mlLoopTime);
 				ML_UPDATE(avg_r, mlRopeOffset); ML_UPDATE(avg_y, Y); ML_UPDATE(avg_yy,Y*Y); ML_UPDATE(avg_yr,Y*mlRopeOffset);
 				ML_count ++;
@@ -1413,7 +1413,7 @@ void updateAmpAndTime(bool runNow=false) {
 			mlLoopTime = syncLoopTime - offset / LOOP_INTERVAL; // desiredLoopTime
 			mlRopeOffset = (syncRopeAngle-ropeAngle) / LOOP_INTERVAL; //desired RopeOffset
 			sprintln("");
-			sprint("----");sprint(mlLoopTime);sprint(",");sprint(mlRopeOffset);
+			sprint("-");sprint(mlLoopTime);sprint(",");sprint(mlRopeOffset);
 			X = (mlLoopTime - ML_loop_default) / ML_loop_mult;
 			Y = (mlRopeOffset - ML_angle_default) / ML_angle_mult;
 
@@ -1425,9 +1425,9 @@ void updateAmpAndTime(bool runNow=false) {
 				Y = servoAmp * sin(tPhase);
 				mlLoopTime = ML_loop_mult * X + ML_loop_default;
 				mlRopeOffset = ML_angle_mult * Y + ML_angle_default; 
-				sprint("much work:");sprint(offset - (syncLoopTime-mlLoopTime)*LOOP_INTERVAL); sprint(",");sprint(ropeAngle+mlRopeOffset*LOOP_INTERVAL);
+				sprint("+++");//sprint(offset - (syncLoopTime-mlLoopTime)*LOOP_INTERVAL); sprint(",");sprint(ropeAngle+mlRopeOffset*LOOP_INTERVAL);
 			}
-			sprint("XY");sprint(X);sprint(",");sprint(Y);
+			sprint(" X");sprint(X);sprint(",");sprint(Y);
 			loopTime = mlLoopTime * LOOP_INTERVAL - (LOOP_INTERVAL-1)*ML_loop_default;
 
 			requestedNLoops = 1;
@@ -1440,7 +1440,7 @@ void updateAmpAndTime(bool runNow=false) {
 		if (mode == MACHINE_LEARNING) {
 			if (inTest) {
 				int mlLoopTime = (time-lastTime) / LOOP_INTERVAL;
-				sprint("\x1b[0;34mMachineLearning "); sprint(lastRopeAngle); sprint(": f("); sprint(mPhase); sprint(", "); sprint(mAmp); sprint(") = ("); sprint(mlLoopTime); sprint("ms, "); sprint(ropeAngle); sprint(") ");
+				sprint("\x1b[0;34mAI "); sprint(lastRopeAngle); sprint(": f("); sprint(mPhase); sprint(", "); sprint(mAmp); sprint(") = ("); sprint(mlLoopTime); sprint("ms, "); sprint(ropeAngle); sprint(") ");
 				sprint ((ropeAngleOffset < -0.005 ? "<" : (ropeAngleOffset > 0.005 ? ">" : "=")));
 				if ((ropeAngleOffset < 0.04) && (mAmp < mAmpTo)) {
 					// not wide enough, next time try harder
@@ -1492,7 +1492,7 @@ void updateAmpAndTime(bool runNow=false) {
 		//rightTime - loopTime*(side==LEFT ? 0.5 + tPhase : tPhase);
 		
 		
-		sprint("   ==>   servoAmp=");sprint(servoAmp); sprint(" phase=");sprint(tPhase); sprint(" nLoop="); sprint(requestedNLoops); sprint(" LT="); sprintln(loopTime);
+		sprint("  =>  servoAmp=");sprint(servoAmp); sprint(" phase=");sprint(tPhase); sprint(" nLoop="); sprint(requestedNLoops); sprint(" LT="); sprintln(loopTime);
 
 		lastOffsetAxis = offsetAxis;
 		lastRopeOffsetAxis = ropeOffsetAxis;
@@ -1590,8 +1590,8 @@ void showClockIfNeeded() {
 
 void sprintLoopEvents() {
 	if (showLoopEvents) {
-		sprint("# Loop: Time(");sprint(lastLoopTime);sprint(")"); sprint(side==LEFT ? " [L] :" : " [R]:");
-		sprint("maxRight(");sprint(ropeMaxRightAngle); sprint(")-maxLeft("); sprint(ropeMaxLeftAngle);
+		sprint("[");sprint(lastLoopTime);sprint("] LOOP "); sprint(side==LEFT ? "[L]:" : "[R]:");
+		sprint("maxR(");sprint(ropeMaxRightAngle); sprint(")-maxL("); sprint(ropeMaxLeftAngle);
 		sprint(")=");sprint(ropeMaxRightAngle-ropeMaxLeftAngle); sprintln(" #");
 	}
 }
@@ -1636,11 +1636,11 @@ void loop(){
   
   // Print measures
   if (printMeasures) {
-	sprint(" potRead: "); sprint(potRead);
-	sprint(" ServoPos: "); sprint(currentServoPos);
-	sprint(" potAngle: "); sprint(potAngle);
-	sprint(" servoAngle: "); sprint(servoAngle);
-	sprint(" ropeAngle: "); sprint(ropeAngle);
+	sprint("pot: "); sprint(potRead);
+	sprint("Servo: "); sprint(currentServoPos);
+	sprint("potAng: "); sprint(potAngle);
+	sprint("servoAng: "); sprint(servoAngle);
+	sprint("ropeAng: "); sprint(ropeAngle);
 	sprintln("");
   }
   
