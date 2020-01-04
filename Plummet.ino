@@ -1386,11 +1386,9 @@ void updateAmpAndTime(bool runNow=false) {
 			static double avg_yr = 0;
 			
 			
-#define U 1
-#define T 0
 			// last input
-			double X = mAmp * cos(mPhase*2*PI * U + T);
-			double Y = mAmp * sin(mPhase*2*PI * U + T);
+			double X = mAmp * cos(mPhase*2*PI);
+			double Y = mAmp * sin(mPhase*2*PI);
 
 			// last results
 			int mlLoopTime = (time-lastTime) / LOOP_INTERVAL;
@@ -1426,8 +1424,8 @@ void updateAmpAndTime(bool runNow=false) {
 			servoAmp = int(min(max(sqrt(X*X+Y*Y),0),maxServoAmp));
 			
 			if (servoAmp == maxServoAmp) {
-				X = servoAmp * cos(tPhase*2*PI * U + T);
-				Y = servoAmp * sin(tPhase*2*PI * U + T);
+				X = servoAmp * cos(tPhase*2*PI);
+				Y = servoAmp * sin(tPhase*2*PI);
 				mlLoopTime = ML_loop_mult * X + ML_loop_default;
 				mlRopeOffset = ML_angle_mult * Y + ML_angle_default; 
 				sprint("+++");//sprint(offset - (syncLoopTime-mlLoopTime)*LOOP_INTERVAL); sprint(",");sprint(ropeAngle+mlRopeOffset*LOOP_INTERVAL);
