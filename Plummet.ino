@@ -1245,6 +1245,9 @@ double axisToAngle(double x, double y) {
 void updateAmpAndTime(bool runNow=false) {
 	if (mode==HALT) return;
 	
+	static bool isFirstIter = true;
+	if (runNow) isFirstIter = true;
+	
 	static const uint8_t LOOP_INTERVAL = 3;
 	static double ML_ROPE_ANGLE_DECREASE = 0.05; // per cycle.  
 	static double ML_MAX_ROPE_SHIFT_IN_CYCLE = 0.18;
@@ -1363,18 +1366,16 @@ void updateAmpAndTime(bool runNow=false) {
 
 			static double ML_count = 10;
 
-			static double avg_l = 3575 / 2; // loop default;
-			static double avg_x = -avg_l / 1.273; // 1.273 - loop_mult
+			static double avg_l = 3575 / 2.0; // loop default;
+			static double avg_x = -avg_l / 1.273; // 1.273 - loop_mult (ratio between servo and offset per cycle)
 			static double avg_xx = avg_x*avg_x * 2;
 			static double avg_xl = 0;
 
 			static double avg_r = 0.239 / 2; // angle defualt after 3 cycles
-			static double avg_y = -avg_r / 0.0016; // 0.0016 - angle multiplier
+			static double avg_y = -avg_r / 0.0016; // 0.0016 - angle multiplier (ratio between servo and rope angle offset per cycle)
 			static double avg_yy = avg_y*avg_y * 2;
 			static double avg_yr = 0;
 			
-			
-
 			// last results
 			double X = mAmp * cos(mPhase);
 			double Y = mAmp * sin(mPhase);
@@ -1382,12 +1383,12 @@ void updateAmpAndTime(bool runNow=false) {
 			// ropeAngle			
 #define ML_UPDATE(a,b) a = a*(ML_count/(ML_count+1)) + b/(ML_count+1)
 			//learn:
-			if (!runNow && mAmp < 40) {
+			if (!isFirstIter && mAmp < 40) {
+				sprint(" *** ");
 				ML_UPDATE(avg_l, mlLoopTime); ML_UPDATE(avg_x, X); ML_UPDATE(avg_xx,X*X); ML_UPDATE(avg_xl,X*mlLoopTime);
 				ML_UPDATE(avg_r, ropeAngle); ML_UPDATE(avg_y, Y); ML_UPDATE(avg_yy,Y*Y); ML_UPDATE(avg_yr,Y*ropeAngle);
 				ML_count ++;
 			}
-			
 			// calculate ML models:
 			double ML_loop_mult = (avg_xl - avg_x*avg_l) / (avg_xx - avg_x*avg_x);
 			double ML_angle_mult = (avg_yr - avg_y*avg_r) / (avg_yy - avg_y*avg_y);
@@ -1405,10 +1406,17 @@ void updateAmpAndTime(bool runNow=false) {
 			tPhase = axisToAngle(X,Y)/2/PI;
 			servoAmp = int(min(max(sqrt(X*X+Y*Y),0),maxServoAmp));
 			
+			if (servoAmp == maxServoAmp) {
+				X = servoAmp * cos(tPhase);
+				Y = servoAmp * sin(tPhase);
+				mlLoopTime = ML_loop_mult * X + ML_loop_default;
+				double ra = ML_angle_mult * Y + ML_angle_default; 
+				sprint("much work:");sprint(mlLoopTime); sprint(",");sprint(ra);
+			}
 			loopTime = mlLoopTime * LOOP_INTERVAL - (LOOP_INTERVAL-1)*ML_loop_default;
 
 			requestedNLoops = 1;
-			waitForTime = millis() + (LOOP_INTERVAL-0.5)*loopTime;
+			waitForTime = millis() + (LOOP_INTERVAL-0.5)*defaultLoopTime;
 			
 			mAmp = servoAmp;
 			mPhase = tPhase;
@@ -1475,6 +1483,8 @@ void updateAmpAndTime(bool runNow=false) {
 		lastRopeOffsetAxis = ropeOffsetAxis;
 		lastTime = time;
 		lastRopeAngle = ropeAngle;
+		
+		isFirstIter = false;
 	}	
 }
 
