@@ -1378,16 +1378,20 @@ void updateAmpAndTime(bool runNow=false) {
 			static double avg_xx = avg_x*avg_x * 2;
 			static double avg_xl = 0;
 
-			static double avg_r = -0.011 / 2; // angle change after 3 cycles
+			static double avg_r = -(0.011/3) / 2; // angle change after 3 cycles
 			static double avg_y = -avg_r / 0.0016; // 0.0016 - angle multiplier (ratio between servo and rope angle offset per cycle)
 			static double avg_yy = avg_y*avg_y * 2;
 			static double avg_yr = 0;
 			
-			// last results
+			// last input
 			double X = mAmp * cos(mPhase);
 			double Y = mAmp * sin(mPhase);
+
+			// last results
 			int mlLoopTime = (time-lastTime) / LOOP_INTERVAL;
-			double mlRopeOffset = ropeAngle-lastRopeAngle;			
+			double mlRopeOffset = (ropeAngle-lastRopeAngle ) / LOOP_INTERVAL;
+			
+						
 #define ML_UPDATE(a,b) a = a*(ML_count/(ML_count+1.0)) + b/(ML_count+1.0)
 			//learn:
 			if (!isFirstIter && mAmp < 40) {
@@ -1407,7 +1411,7 @@ void updateAmpAndTime(bool runNow=false) {
 
 			// calculate phase and amp
 			mlLoopTime = syncLoopTime - offset / LOOP_INTERVAL; // desiredLoopTime
-			mlRopeOffset = syncRopeAngle-ropeAngle; //desired RopeOffset
+			mlRopeOffset = (syncRopeAngle-ropeAngle) / LOOP_INTERVAL; //desired RopeOffset
 			X = (mlLoopTime - ML_loop_default) / ML_loop_mult;
 			Y = (mlRopeOffset - ML_angle_default) / ML_angle_mult;
 
@@ -1419,7 +1423,7 @@ void updateAmpAndTime(bool runNow=false) {
 				Y = servoAmp * sin(tPhase);
 				mlLoopTime = ML_loop_mult * X + ML_loop_default;
 				mlRopeOffset = ML_angle_mult * Y + ML_angle_default; 
-				sprint("much work:");sprint(offset - (syncLoopTime-mlLoopTime)*LOOP_INTERVAL); sprint(",");sprint(ropeAngle+mlRopeOffset);
+				sprint("much work:");sprint(offset - (syncLoopTime-mlLoopTime)*LOOP_INTERVAL); sprint(",");sprint(ropeAngle+mlRopeOffset*LOOP_INTERVAL);
 			}
 			loopTime = mlLoopTime * LOOP_INTERVAL - (LOOP_INTERVAL-1)*ML_loop_default;
 
