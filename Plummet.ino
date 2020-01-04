@@ -1402,6 +1402,7 @@ void updateAmpAndTime(bool runNow=false) {
 			double ML_loop_default = avg_l - ML_loop_mult*avg_x;
 			double ML_angle_default = avg_r - ML_angle_mult*avg_y;
 
+			sprint("X("); sprint(X);sprint(",");sprint(mlLoopTime);sprint(") Y(");sprint(Y);sprint(mlRopeOffset);sprint(") ML ");
 			sprint(ML_loop_mult); sprint(",");sprint(ML_loop_default); sprint(" "); sprint(ML_angle_mult*1000); sprint("/1000,");sprint(ML_angle_default*100);sprint("/100");
 
 			// calculate phase and amp
