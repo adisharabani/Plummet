@@ -1354,7 +1354,61 @@ void updateAmpAndTime(bool runNow=false) {
 		//if ((mode != STOPPING) && (mode != TESTING)) requestedNLoops = 1 ;
 		loopTime = defaultLoopTime - offset / max(1,tRadial) / LOOP_INTERVAL;
 		 
+		if (mode == TESTING) {
+			M=0;
+			waitLoops = 0;
+			
+			//init
+			
+			static double sum_l = 3575; // loop default;
+			static double sum_x = -sum_l / 1.273; // 1.273 - loop_mult
+			static double sum_xx = sum_x*sum_x;
+			static double sum_xl = 0;
 
+			static double sum_r = syncRopeAngle-0.01; // angle defualt after 3 cycles
+			static double sum_y = -sum_r / 0.0016; // 0.0016 - angle multiplier
+			static double sum_yy = sum_y*sum_y;
+			static double sum_yr = 0;
+			
+			static double ML_count = 2;
+			
+
+			// last results
+			double X = mAmp * cos(mPhase);
+			double Y = mAmp * sin(mPhase);
+			int mlLoopTime = (time-lastTime) / LOOP_INTERVAL;
+			// ropeAngle			
+			
+			//learn:
+			if (!runNow) {
+				sum_l += mlLoopTime; sum_x += X; sum_xx += X*X; sum_xl += X*mlLoopTime;
+				sum_r += ropeAngle; sum_y += Y; sum_yr += Y*Y; sum_yr += Y*ropeAngle;
+				ML_count ++;
+			}
+			// decide:
+			double ML_loop_mult = (ML_count*sum_xl - sum_x*sum_l) / (ML_count*sum_xx - sum_x*sum_x);
+			double ML_angle_mult = (ML_count*sum_yr - sum_y*sum_r) / (ML_count*sum_yy - sum_y*sum_y);
+			double ML_loop_default = (sum_l/ML_count) - (ML_loop_mult*sum_x)/ML_count;
+			double ML_angle_default = (sum_r/ML_count) - (ML_angle_mult*sum_y)/ML_count;
+
+			sprint("MMM: ");sprint(ML_loop_mult); sprint(",");sprint(ML_loop_default); sprint(" "); sprint(ML_angle_mult*1000); sprint("/1000,");sprint(ML_angle_default*100);sprint("/100");
+			mlLoopTime = syncLoopTime - offset / LOOP_INTERVAL; // desiredLoopTime
+			// double desiredRopeAngle = syncRopeAngle;
+			X = (mlLoopTime - ML_loop_default) / ML_loop_mult;
+			Y = (syncRopeAngle - ML_angle_default) / ML_angle_mult;
+
+			tPhase = axisToAngle(X,Y)/2/PI;
+			servoAmp = int(min(max(sqrt(X*X+Y*Y),0),maxServoAmp));
+			
+			loopTime = mlLoopTime - (LOOP_INTERVAL-1)*ML_loop_default;
+
+			requestedNLoops = 1;
+			waitForTime = millis() + (LOOP_INTERVAL-0.5)*loopTime;
+			
+			mAmp = servoAmp;
+			mPhase = tPhase;
+		}
+		
 		if (mode == MACHINE_LEARNING) {
 			if (inTest) {
 				int mlLoopTime = (time-lastTime) / LOOP_INTERVAL;
@@ -1403,9 +1457,9 @@ void updateAmpAndTime(bool runNow=false) {
 
 		//loopTime = defaultLoopTime + sin(tPhase*2*PI)*ML_MAX_OFFSET_SHIFT_IN_CYCLE;
 		if (side == RIGHT) {
-			initTime = rightTime - tPhase * loopTime + (mode == MACHINE_LEARNING ? 0 : M);
+			initTime = rightTime - tPhase * loopTime + M;
 		} else {
-			initTime = leftTime  - (0.5+tPhase) * loopTime + (mode == MACHINE_LEARNING ? 0 : 0);
+			initTime = leftTime  - (0.5+tPhase) * loopTime + M;
 		}
 		//rightTime - loopTime*(side==LEFT ? 0.5 + tPhase : tPhase);
 		
