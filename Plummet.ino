@@ -4,7 +4,6 @@
 //  digital 1: (serialTx): connect to rx of the audio player (no need to connect tx of the player to anything)
 //  digital 2: (rxPrev): connect to digital 5(tx) of the previous arduino (no connection if master)
 //  digital 5: (txNext): connect to digital 2(rx) of the next arduino
-//  digital 7: Tone bit (not important)
 //  digital 10: Servo bit
 //  Ground: Servo ground, potentiometer ground, Servo Power ground, audio device ground, next & prev arduino Ground
 //  5V: Potntiometer VCC (+)
@@ -28,18 +27,49 @@
 // TODO: Stop calibration
 // TODO: Git pull different versions
 
+#define PLUMMET_VERSION "0.24"
 
-#define PLUMMET_VERSION "0.22"
-#define USE_SERVOLIB_NOT
+////// WHAT SERVO LIB TO USE
+// #define USE_TIMER1
+#define USE_SERVOLIB
+#define USE_SERVO2LIB
 
-// #include <SoftwareSerial.h>
+////// WHAT SERIAL LIB TO USE
+#define USE_NEOSWSERIAL
+// #define USE_ALTSOFTSERIAL
+// #define USE_SOFTWARESERIAL
+
+#ifdef USE_SOFTWARESERIAL
+#include <SoftwareSerial.h>
+#endif
+
+#ifdef USE_NEOSWSERIAL
 #include <NeoSWSerial.h>
 #define SoftwareSerial NeoSWSerial
+#endif
 
+#ifdef USEALTSOFTSERIAL
+#include <AltSoftSerial.h>
+#define SoftwareSerial AltSoftSerial
+#endif
+
+#ifdef USE_TIMER1
 #include <TimerOne.h>
+#define SERVO_PWM_RATE 20000
+// 6040
+#endif
 
 #ifdef USE_SERVOLIB
+#ifdef USE_SERVO2LIB
+#include <Servo2.h>
+#else
 #include <Servo.h>
+#endif
+// #include <PWMServo.h>
+// #define Servo PWMServo
+#endif
+
+#ifdef USE_SERVO2LIB
 #endif
 
 #include <EEPROM.h>
@@ -302,9 +332,8 @@ void playSong(int8_t songNumber=1, int8_t volume=30) {
 Servo myservo;  // create servo object to control a servo
 #endif
 double lastServoWriteValue = 95;
-#define SERVO_PWM_RATE 6040
 boolean servoAttached = false;
-static int originalTCCR1A = 0;
+int originalTCCR1A = 0;
 
 double smoothWrite(double desiredPosition) {
   static double lastWrite = desiredPosition;
@@ -329,9 +358,11 @@ void myservowrite(double pos) {
   lastServoWriteValue = pos;
   //Serial.println(duty);
 
-  if (SERVO_VIA_TIMER1) {
+  if (SERVO_VIA_TIMER1) { 
+#ifdef USE_TIMER1
 	int duty = int(double(map(int(pos), 0,180,544.0,2400.0))/SERVO_PWM_RATE*1024);
 	Timer1.pwm(servoPin, duty);
+#endif
   } else {
 #ifdef USE_SERVOLIB
 	myservo.write(int(pos));
@@ -352,6 +383,7 @@ double myservoread() {
 
 void myservoattach(int pin) {
   if (SERVO_VIA_TIMER1) {
+#ifdef USE_TIMER1
 	if (originalTCCR1A == 0) {
 	  pinMode(pin, OUTPUT);
 	  Timer1.initialize(SERVO_PWM_RATE);
@@ -359,6 +391,7 @@ void myservoattach(int pin) {
 	  TCCR1A = originalTCCR1A;
 	  Timer1.resume();
 	}
+#endif
 	servoAttached = true;
   } else {
 #ifdef USE_SERVOLIB
@@ -372,15 +405,19 @@ boolean myservoattached() {
 	return servoAttached;
   } else {
 #ifdef USE_SERVOLIB
-	return myservo.attached();
+	boolean ret = myservo.attached();
+	myservo.write(servoCenter);
+	return ret;
 #endif
   }
 }
 void myservodetach() {
   if (SERVO_VIA_TIMER1) {
+#ifdef USE_TIMER1
 	originalTCCR1A = TCCR1A;
 	Timer1.disablePwm(servoPin);
 	Timer1.stop();
+#endif
 	servoAttached = false;
   } else {
 #ifdef USE_SERVOLIB
@@ -1377,7 +1414,7 @@ void updateAmpAndTime(bool runNow=false) {
 			waitLoops = 0;
 			
 			//init 
-			static double avg_l = 3575 / 2.0; // loop default;
+			static double avg_l = defaultLoopTime / 2.0; // loop default;
 			static double avg_x = -avg_l / 1.273; // 1.273 - loop_mult (ratio between servo and offset per cycle)
 			static double avg_xx = avg_x*avg_x * 2;
 			static double avg_xl = 0;
