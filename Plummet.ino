@@ -48,7 +48,7 @@
 // #define txPinPrev 3 // soft serial
 // #define rxPinNext 4 // soft serial
 #define txPinNext 5 // soft serial
-#define tonePin 7 // digital
+// #define tonePin 7 // digital
 #define servoPin 10 // digital
 
 #define potPin 1 // analog
@@ -1058,7 +1058,7 @@ void handleKeyboardInput() {
 	 break; 
 #endif
 	case 'b': /* Beep */
-	  tone(7, NOTE_A5, 1000);
+	  //tone(7, NOTE_A5, 1000);
 	  break;
 	case 'B': // Are you a master?
 	  Serial.print("I am ");
@@ -1067,7 +1067,7 @@ void handleKeyboardInput() {
 	  Serial.println(myID);
       KB[0] = 0; CMD = KB;
 
-	  if (isMaster) tone(7, NOTE_A5, 1000);
+//	  if (isMaster) tone(7, NOTE_A5, 1000);
 	  break;
 	case '^': // toggle master/slave
 	  isMaster = !isMaster;
@@ -1536,7 +1536,7 @@ void setup() {
   
   myservoattach(servoPin);
   myservowrite(servoCenter);
-  tone(7, NOTE_G5, 100);
+//  tone(7, NOTE_G5, 100);
   
   initTime = millis();
   randomSeed((initTime + int(potentiometerRead()*100)) % 30000);
@@ -1665,7 +1665,7 @@ void loop(){
 	leftTime = time;
 	
 	sprintLoopEvents();
-	tone(7, NOTE_G6, 100);
+//	tone(7, NOTE_G6, 100);
 
 	updateAmpAndTime();
 
@@ -1679,7 +1679,7 @@ void loop(){
 	playAudioIn(loopTime/4,syncLoopTime/4);
 
 	sprintLoopEvents();
-	tone(7, NOTE_G5, 100);
+//	tone(7, NOTE_G5, 100);
 	
 	updateAmpAndTime();
 	
