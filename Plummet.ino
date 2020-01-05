@@ -981,12 +981,12 @@ void handleKeyboardInput() {
 	  updateSlaveClock = true;
 	  break;
 	case '{': // Offset the SYNC clock forward (1/32 of a loop)
-	  syncInitTimeOffset -= syncLoopTime/32;
+	  syncInitTimeOffset -= 10;
 	  sprint ("Offset:");sprintln(syncInitTimeOffset);
 	  setMode(SYNCED_RUNNING); 
 	  break;
 	case '}': // Offset the SYNC clock backwards (1/32 of a loop)
-	  syncInitTimeOffset += syncLoopTime/32;
+	  syncInitTimeOffset += 10;
 	  sprint ("Offset:");sprintln(syncInitTimeOffset);
 	  setMode(SYNCED_RUNNING);
 	  break;
@@ -1263,6 +1263,8 @@ void updateAmpAndTime(bool runNow=false) {
 	static double ML_ROPE_ANGLE_DECREASE = 0.05; // per cycle.  
 	static double ML_MAX_ROPE_SHIFT_IN_CYCLE = 0.18;
 	static double ML_MAX_OFFSET_SHIFT_IN_CYCLE = 250.0;
+	int mlLoopTime;
+	double mlRopeOffset;
 
 	static int waitLoops=0;
 	static unsigned long waitForTime=0;
@@ -1391,14 +1393,16 @@ void updateAmpAndTime(bool runNow=false) {
 			double Y = mAmp * sin(mPhase*2*PI);
 
 			// last results
-			int mlLoopTime = (time-lastTime) / LOOP_INTERVAL;
-			double mlRopeOffset = ropeAngle-lastRopeAngle ;
+			mlLoopTime = (time-lastTime) / LOOP_INTERVAL;
+			mlRopeOffset = ropeAngle-lastRopeAngle ;
 			
 						
 #define ML_UPDATE(a,b) a = a*(ML_count/(ML_count+1.0)) + b/(ML_count+1.0)
 			//learn:
 			if (!isFirstIter && mAmp < 40) {
 				sprint(" * ");
+				
+				// Update 
 				ML_UPDATE(avg_l, mlLoopTime); ML_UPDATE(avg_x, X); ML_UPDATE(avg_xx,X*X); ML_UPDATE(avg_xl,X*mlLoopTime);
 				ML_UPDATE(avg_r, mlRopeOffset); ML_UPDATE(avg_y, Y); ML_UPDATE(avg_yy,Y*Y); ML_UPDATE(avg_yr,Y*mlRopeOffset);
 				ML_count ++;
@@ -1640,10 +1644,10 @@ void loop(){
   // Print measures
   if (printMeasures) {
 	sprint("pot: "); sprint(potRead);
-	sprint("Servo: "); sprint(currentServoPos);
-	sprint("potAng: "); sprint(potAngle);
-	sprint("servoAng: "); sprint(servoAngle);
-	sprint("ropeAng: "); sprint(ropeAngle);
+	sprint(" Servo: "); sprint(currentServoPos);
+	sprint(" potAng: "); sprint(potAngle);
+	sprint(" servoAng: "); sprint(servoAngle);
+	sprint(" ropeAng: "); sprint(ropeAngle);
 	sprintln("");
   }
   
