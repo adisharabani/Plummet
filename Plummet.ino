@@ -27,7 +27,7 @@
 // TODO: Stop calibration
 // TODO: Git pull different versions
 
-#define PLUMMET_VERSION "0.24"
+#define PLUMMET_VERSION "0.25"
 
 ////// WHAT SERVO LIB TO USE
 #define USE_TIMER1
@@ -106,6 +106,7 @@ boolean printMeasures = false;
 boolean enablePrint = true;
 boolean debug = false;
 boolean showShift = true;
+boolean updateClock = true;
 boolean enableAudio = false;
 int8_t audioSongNumber = 1;
 int8_t maxAudioVolume = 30;
@@ -148,6 +149,8 @@ double testAmp = 20;
 
 int oAmp = maxServoAmp;
 double oPhase = 0.25; // like stopping
+int oLoopTime = 0;
+int oNLoops = 1;
 
 double mPhase = 0;
 int mAmp = 5;
@@ -157,6 +160,11 @@ double mPhaseJump = 0.02;
 int mAmpFrom = 0;
 int mAmpTo = 40;
 int mAmpJump = 2;
+int mLoopTimeFrom = 0;
+int mLoopTimeTo = 0;
+int mLoopTimeJump = 10;
+int mLoopTime = 0;
+int mNLoops = 1;
 
 int ML_count=10;
 unsigned long initTime;
@@ -384,12 +392,14 @@ double myservoread() {
 void myservoattach(int pin) {
   if (SERVO_VIA_TIMER1) {
 #ifdef USE_TIMER1
-	if (originalTCCR1A == 0) {
-	  pinMode(pin, OUTPUT);
-	  Timer1.initialize(SERVO_PWM_RATE);
-	} else {
-	  TCCR1A = originalTCCR1A;
-	  Timer1.resume();
+	if (!servoAttached) {
+		if (originalTCCR1A == 0) {
+		  pinMode(pin, OUTPUT);
+		  Timer1.initialize(SERVO_PWM_RATE);
+		} else {
+		  TCCR1A = originalTCCR1A;
+		  Timer1.resume();
+		}
 	}
 #endif
 	servoAttached = true;
@@ -414,9 +424,11 @@ boolean myservoattached() {
 void myservodetach() {
   if (SERVO_VIA_TIMER1) {
 #ifdef USE_TIMER1
-	originalTCCR1A = TCCR1A;
-	Timer1.disablePwm(servoPin);
-	Timer1.stop();
+    if (servoAttached) {
+		originalTCCR1A = TCCR1A;
+		Timer1.disablePwm(servoPin);
+		Timer1.stop();
+	}
 #endif
 	servoAttached = false;
   } else {
@@ -634,7 +646,7 @@ void readCalibration() {
 	potCenter = eread();
 	pot50 = eread();
 	pot150 = eread();
-	defaultLoopTime = eread(); loopTime = defaultLoopTime;
+	defaultLoopTime = eread(); loopTime = defaultLoopTime;syncLoopTime = loopTime;
 	isMaster = eread();
   } else {
 	sprintln("No EEPROM");
@@ -647,7 +659,7 @@ void readCalibration() {
 ///////////////////////////
 /// User Data
 ///////////////////////////
-#define KBSIZE 33
+#define KBSIZE 50
 char KB[KBSIZE];
 char *CMD=KB;
 
@@ -826,6 +838,10 @@ void handleKeyboardInput() {
 	} else {
 	  while (readByteAvailable() && (inByte != '\n')) {
 		 inByte = readByte();
+		 if (kblength >= (sizeof(KB)-2)) {
+		 	sprintln("TOO LONG");
+		 	KB[0] = 0; kblength =0;
+		 }
 		 if ((inByte=='\r') || (inByte=='\n')) {
 		   if (kblength>0) {
 			   forwardCommand();
@@ -859,11 +875,17 @@ void handleKeyboardInput() {
 		   // Handle clock sync
 		   int s = (millis()-syncInitTime) % syncLoopTime;
 		   if (s>syncLoopTime/2) s = s-syncLoopTime;
-		   syncInitTime = millis();
+		   if (updateClock) {
+			   syncInitTime = millis();
+		   }
 		   nextSerial.write("T");
 		   if ((abs(s) >= 20) && showShift) {
 		   	 sprint("["); sprint(syncInitTime); sprint (" / "); sprint(syncLoopTime); sprint("] shift: "); sprint(s); sprint("     \r");
 		   }
+		 } else if (inByte == 'Q') {
+		   // Delete command
+		   KB[0] = 0; kblength =0; inByte =0;
+		   sprint("\r        \r");
 		 } else {
 		   KB[kblength++] = inByte;
 		   KB[kblength] = 0;
@@ -936,7 +958,9 @@ void handleKeyboardInput() {
 	  setMode(HALT); sprintln("HALT");
 	  smoothMove(servoCenter);
 	  break;
-	case 'm': // MACHINE_LEARNING m0,0.5,0.2,0,40,20
+	case 'm': // MACHINE_LEARNING 
+	//Quick Learn m0,0.5,0.1,0,40,20
+	//Stop Learn m0.75,0.75,0.1,45,60,2,3000,3000,50,2
       if (CMD[0]!='\n') mPhaseFrom = atof(CMD);
 	  p = find(CMD, ',');
 	  if (p!=-1) mPhaseTo = atof(CMD+p+1);
@@ -948,18 +972,37 @@ void handleKeyboardInput() {
 	  if (p!=-1) mAmpTo = atof(CMD+p+1);
 	  if (p!=-1) p = find(CMD, ',', p+1);
 	  if (p!=-1) mAmpJump = atof(CMD+p+1);
+	  if (p!=-1) p = find(CMD, ',', p+1);
+	  if (p!=-1) mLoopTimeFrom = atof(CMD+p+1);
+	  if (p!=-1) p = find(CMD, ',', p+1);
+	  if (p!=-1) mLoopTimeTo = atof(CMD+p+1);
+	  if (p!=-1) p = find(CMD, ',', p+1);
+	  if (p!=-1) mLoopTimeJump = atof(CMD+p+1);
+	  if (p!=-1) p = find(CMD, ',', p+1);
+	  if (p!=-1) mNLoops = atof(CMD+p+1);
 	  KB[0] = 0; CMD=KB;
 
 	  mAmp = mAmpFrom;
 	  mPhase = mPhaseFrom;
-	  setMode(MACHINE_LEARNING); sprint("ML ");sprint(syncRopeAngle);sprint(": phase("); sprint(mPhaseFrom);sprint("-");sprint(mPhaseTo);sprint(" +");sprint(mPhaseJump);sprint(") amp(");sprint(mAmpFrom);sprint("-");sprint(mAmpTo);sprint(" +");sprint(mAmpJump); sprintln(")");
+	  mLoopTime = mLoopTimeFrom;
+	  setMode(MACHINE_LEARNING); sprint("ML ");sprint(syncRopeAngle);
+	  sprint(": phase("); sprint(mPhaseFrom);sprint("-");sprint(mPhaseTo);sprint(" +");sprint(mPhaseJump);
+	  sprint(") amp(");sprint(mAmpFrom);sprint("-");sprint(mAmpTo);sprint(" +");sprint(mAmpJump);
+	  sprint(") loopTime(");sprint(mLoopTimeFrom);sprint("-");sprint(mLoopTimeTo);sprint(" +");sprint(mLoopTimeJump);
+	  sprint(") mNLoops(");sprint(mNLoops);
+	  sprintln(")");
 	  break;
-	case 'o': // ANALYZE Amp,Phase
+	case 'o': // ANALYZE Amp,Phase, loopTime, nLoops
 	  if (CMD[0]!='\n'){
 		  oAmp = atoi(CMD);
 		  p = find(CMD, ',');
 		  if (p!=-1) oPhase = atof(CMD+p+1);
+		  if (p!=-1) p = find(CMD, ',', p+1);
+		  if (p!=-1) oLoopTime = atoi(CMD+p+1);
+		  if (p!=-1) p = find(CMD, ',', p+1);
+		  if (p!=-1) oNLoops = atoi(CMD+p+1);
 	  }
+	  sprint(oAmp);sprint(",");sprint(oPhase);sprint(",");sprint(oLoopTime);sprint(",");sprintln(oNLoops);
 	  setMode(ANALYZING);
 	  KB[0] = 0; CMD=KB;
 	  break;
@@ -1007,6 +1050,10 @@ void handleKeyboardInput() {
     case '%': // disable clock update
       showShift = !showShift;
       sprintln(showShift);
+      break;
+    case '$': // Don't update clock
+      updateClock = !updateClock;
+      sprintln(updateClock);
       break;
 	case 'u': // Print phase compared to sync clock
 	  s = atoi(CMD); KB[0] = 0; CMD=KB;
@@ -1080,23 +1127,20 @@ void handleKeyboardInput() {
 	  sprint("servo="); sprintln(myservoread());	
 	  break;
 	case '_': // Detach or reattach servo
-	  bool attached = myservoattached();
-	  if (CMD[0]=='_') { // __ to attach _ to detach
-		 if (!attached) myservoattach(servoPin);
-	  } else {
-		 if (attached) myservodetach();
-	  }
+	  // __ to attach _ to detach
+	  if (CMD[0]=='_') myservoattach(servoPin); // __ to attach
+	  if (CMD[0]!='_') myservodetach();
 	  KB[0] = 0; CMD= KB;
 	  sprint("servo="); sprintln(myservoattached() ? "attached" : "detached");
 	  break;
-#ifdef USE_SERVOLIB
    case '~': /* Change Servo type (Timer1 vs Servo library) */
-	 myservodetach();
-	 SERVO_VIA_TIMER1 = !SERVO_VIA_TIMER1;
-	 myservoattach(servoPin);
+// #ifdef USE_SERVOLIB
+//	 myservodetach();
+//	 SERVO_VIA_TIMER1 = !SERVO_VIA_TIMER1;
+//	 myservoattach(servoPin);
+// #endif
 	 sprintln(SERVO_VIA_TIMER1 ? "Using T1" : "Using Servolib");
 	 break; 
-#endif
 	case 'b': /* Beep */
 	  //tone(7, NOTE_A5, 1000);
 	  break;
@@ -1320,17 +1364,24 @@ void updateAmpAndTime(bool runNow=false) {
 
 	static int waitLoops=0;
 	static unsigned long waitForTime=0;
-	static double lastOffsetAxis = 0;
-	static double lastRopeOffsetAxis = 0;
 	static unsigned long lastTime = 0;
 	static double lastRopeAngle = 0;
 	static boolean inTest = false;
 
 	double tPhase;
+	double tRadial;
 	double ropeAngle = (ropeMaxRightAngle-ropeMaxLeftAngle);
 	double ropeAngleOffset = ropeAngle-syncRopeAngle;
 	int offset = (rightTime+syncLoopTime-(syncInitTime+syncInitTimeOffset)) % syncLoopTime;
 
+
+	double ML_loop_mult;
+	double ML_angle_mult;
+	double ML_loop_default;
+	double ML_angle_default;
+	
+	double X, Y;
+	
 	if (offset > syncLoopTime/2) offset = offset - syncLoopTime;
 
 	
@@ -1342,53 +1393,14 @@ void updateAmpAndTime(bool runNow=false) {
 	    ((side==LEFT)  && (mode == STOPPING)) ||
 	    runNow) {
 		sprint((waitLoops || millis()<waitForTime) ? "\x1b[0;37m" : "\x1b[0;31m");
-		sprint ("["); sprint(lastLoopTime); sprint("]: offset="); sprint(offset); sprint("ms ropeAngle="); 	sprint(ropeAngle); sprint((ropeAngleOffset > 0) ? "(+" : "(");sprint(ropeAngleOffset); sprint(")");
+		sprint ("["); sprint(lastLoopTime); sprint("]: s="); sprint(syncLoopTime); sprint(",");sprint(syncInitTime); sprint(" offset="); sprint(offset); sprint("ms ropeAngle="); 	sprint(ropeAngle); sprint((ropeAngleOffset > 0) ? "(+" : "(");sprint(ropeAngleOffset); sprint(")");
 		sprint("\x1b[0m");
 		
 		if (requestedMoveStarted && !runNow) { sprint("in motion [");sprint(requestedNLoops);sprintln("]"); return; }
 		if (waitLoops > 0) { sprint("wait ["); sprint(waitLoops--); sprintln("]"); /*servoAmp = 0;*/ return; }
 		if (millis() < waitForTime) { sprint("waiting "); sprint(waitForTime - millis()); sprintln("ms"); return;}
 		
-		double offsetAxis = offset / ML_MAX_OFFSET_SHIFT_IN_CYCLE;
-		double ropeOffsetAxis = ropeAngleOffset / ML_MAX_ROPE_SHIFT_IN_CYCLE;
 
-/*		if (false) { // show analysis
-			double tetaLastTarget = axisToAngle(-lastOffsetAxis,-lastRopeOffsetAxis)/2/PI;
-			double rLastTarget = sqrt(pow(lastOffsetAxis,2) + pow(lastRopeOffsetAxis,2));
-	
-	        double tetaLastActual = axisToAngle(offsetAxis - lastOffsetAxis, ropeOffsetAxis-lastRopeOffsetAxis)/2/PI;
-			double rLastActual = sqrt(pow(offsetAxis-lastOffsetAxis,2) + pow(ropeOffsetAxis - lastRopeOffsetAxis,2));
-			sprintln("");
-			sprint("Aimed("); sprint(-lastOffsetAxis); sprint(","); sprint(-lastRopeOffsetAxis);
-			sprint(") @(");    sprint(rLastTarget);            sprint(","); sprint(tetaLastTarget);
-			sprint(") Actual(");  sprint(-offsetAxis);     sprint(","); sprint(-ropeOffsetAxis);
-			sprint(") @(");    sprint(rLastActual);            sprint(","); sprint(tetaLastActual);
-			sprint(") => Delta("); sprint(-offsetAxis+lastOffsetAxis);sprint(","); sprint(-ropeOffsetAxis+lastRopeOffsetAxis);
-			sprint(") @("); sprint(rLastActual/rLastTarget); sprint(","); sprint(tetaLastActual-tetaLastTarget); 
-			sprint(")");
-		}
-		*/
-		sprintln("");
-
-
-		//predict
-		offsetAxis = offsetAxis + (defaultLoopTime-syncLoopTime) * LOOP_INTERVAL / ML_MAX_OFFSET_SHIFT_IN_CYCLE; //predict increase in offset in offsetAxis grid (hence devide by ML_MAX..)
-
-        ropeOffsetAxis = ropeOffsetAxis - ML_ROPE_ANGLE_DECREASE*ropeAngle * LOOP_INTERVAL / ML_MAX_ROPE_SHIFT_IN_CYCLE ; //predict decrease in rope Angle in percentage
-		
-		// sprint("** "); sprint(offsetAxis); sprint(",");sprintln(ropeOffsetAxis);
-		//if synced running:
-		
-		// if there might be more than 1 cycle change the ropeOffset so that system will slow things down.
-		
-		tPhase = axisToAngle(-offsetAxis,-ropeOffsetAxis)/2/PI;
-		double tRadial = sqrt(offsetAxis*offsetAxis + ropeOffsetAxis*ropeOffsetAxis);
-		if ((tRadial > 2) && (abs(offsetAxis) > 2)) {
-			tPhase = axisToAngle(-offsetAxis, -0.3)/2/PI;
-		}
-		waitLoops=LOOP_INTERVAL-2;
-		loopTime = defaultLoopTime;
-	
 		int M = 0;
 /*		if (mode==TESTING) { //STOPPING
 			tPhase = 0.75;
@@ -1399,44 +1411,51 @@ void updateAmpAndTime(bool runNow=false) {
 			tPhase = 0.75;
 			tRadial = ropeAngle/ML_MAX_ROPE_SHIFT_IN_CYCLE;
  			if (ropeAngle<=0.04) {
-				tRadial = ropeAngle*2;
+				tRadial = ropeAngle*1.5;
 			} 
 			M=SYNC_MAGIC_NUMBER;
+			loopTime = defaultLoopTime - offset / max(1,tRadial) / LOOP_INTERVAL;
 			waitLoops=2;
+			// HERE
+			servoAmp = int(min(1,tRadial)*maxServoAmp);
+			requestedNLoops = min(max(int(tRadial-0.01),1),3) ;
 		} else if (mode == RUNNING) {
 			tPhase = 0.25;
-			tRadial = max(-ropeOffsetAxis,0); // only increase speed up to limit
+			tRadial = min(max(-ropeAngleOffset / ML_MAX_ROPE_SHIFT_IN_CYCLE * 1.5,20.0/maxServoAmp),1); // only increase speed up to limit
 			waitLoops=1;
+			loopTime = defaultLoopTime;
+			// HERE
+			servoAmp = int(min(1,tRadial)*maxServoAmp);
+			requestedNLoops = min(max(int(tRadial-0.01),1),3) ;
 		} else if (mode == ANALYZING) {
 			tPhase = oPhase;
-			tRadial = double(oAmp)/maxServoAmp;
+			servoAmp = oAmp;
+			loopTime = oLoopTime == 0 ? defaultLoopTime : oLoopTime;
+			requestedNLoops = oNLoops ;
+
 			waitLoops = 5;
 			syncInitTime = rightTime;
 			syncInitTimeOffset = 0;
 			syncLoopTime = defaultLoopTime;
 		} 
 
-		// HERE
-		servoAmp = int(min(1,tRadial)*maxServoAmp);
-		requestedNLoops = min(max(int(tRadial-0.01),1),3) ;
 				
 		//if ((mode != STOPPING) && (mode != TESTING)) requestedNLoops = 1 ;
-		loopTime = defaultLoopTime - offset / max(1,tRadial) / LOOP_INTERVAL;
-		 
-		if (mode == TESTING) {
-			sprint("MMM: ");
+		//loopTime = defaultLoopTime - offset / max(1,tRadial) / LOOP_INTERVAL;
+		
+		if ((mode ==TESTING) || (mode == RUNNING) || (mode==SYNCED_RUNNING) || ((mode==MACHINE_LEARNING) && inTest)) {
 			M=0;
-			waitLoops = 0;			
-			
 			// last input
-			double X = mAmp * cos(mPhase*2*PI);
-			double Y = mAmp * sin(mPhase*2*PI);
+			X = mAmp * cos(mPhase*2*PI);
+			Y = mAmp * sin(mPhase*2*PI);
 
 			// last results
 			mlLoopTime = (time-lastTime) / LOOP_INTERVAL;
 			mlRopeOffset = ropeAngle-lastRopeAngle ;
+
+			sprintln("");
+			sprint("\x1b[0;34mMachineLearning "); sprint(lastRopeAngle); sprint(": f("); sprint(mPhase); sprint(", "); sprint(mAmp); sprint(") = ("); sprint(mlLoopTime); sprint("ms, "); sprint(mlRopeOffset); sprint(") "); sprint("LT:"); sprint(mLoopTime);
 			
-						
 #define ML_UPDATE(a,b) a = a*(ML_count/(ML_count+1.0)) + b/(ML_count+1.0)
 			//learn:
 			if (!isFirstIter && mAmp < maxServoAmp) {
@@ -1447,20 +1466,31 @@ void updateAmpAndTime(bool runNow=false) {
 				ML_UPDATE(avg_r, mlRopeOffset); ML_UPDATE(avg_y, Y); ML_UPDATE(avg_yy,Y*Y); ML_UPDATE(avg_yr,Y*mlRopeOffset);
 				ML_count ++;
 			}
-			// calculate ML models:
-			double ML_loop_mult = (avg_xl - avg_x*avg_l) / (avg_xx - avg_x*avg_x);
-			double ML_angle_mult = (avg_yr - avg_y*avg_r) / (avg_yy - avg_y*avg_y);
-			double ML_loop_default = avg_l - ML_loop_mult*avg_x;
-			double ML_angle_default = avg_r - ML_angle_mult*avg_y;
 
-			sprint("X("); sprint(X);sprint(",");sprint(mlLoopTime);sprint(") Y(");sprint(Y);sprint(",");sprint(mlRopeOffset);sprint(") ML ");
-			sprint(ML_loop_mult); sprint(",");sprint(ML_loop_default); sprint(" "); sprint(ML_angle_mult*1000); sprint("/1000,");sprint(ML_angle_default*1000);sprint("/1000");
+			// calculate ML models:
+			ML_loop_mult = (avg_xl - avg_x*avg_l) / (avg_xx - avg_x*avg_x);
+			ML_angle_mult = (avg_yr - avg_y*avg_r) / (avg_yy - avg_y*avg_y);
+			ML_loop_default = avg_l - ML_loop_mult*avg_x;
+			ML_angle_default = avg_r - ML_angle_mult*avg_y;
+
+			// print ML models
+			//sprint("X("); sprint(X);sprint(",");sprint(mlLoopTime);sprint(") Y(");sprint(Y);sprint(",");sprint(mlRopeOffset);sprint(") ML ");
+			sprint(" ML ");sprint(ML_loop_mult); sprint(",");sprint(ML_loop_default); sprint(" "); sprint(ML_angle_mult*1000); sprint("/1000,");sprint(ML_angle_default*1000);sprint("/1000");
+		}
+		 
+		if ((mode == TESTING) || (mode == RUNNING) || (mode == SYNCED_RUNNING)) { // synced_running
+			waitLoops = 0;			
 
 			// calculate desired phase and amp
 			mlLoopTime = syncLoopTime - offset / LOOP_INTERVAL; // desiredLoopTime
 			mlRopeOffset = (syncRopeAngle-ropeAngle); //desired RopeOffset
-			sprintln("");
-			sprint("-");sprint(mlLoopTime);sprint(",");sprint(mlRopeOffset);
+			
+			if (mode == RUNNING) {
+				mlLoopTime = ML_loop_default; // if running - we set the offset to make X=0 so that we just update the amp and not the offset
+			}
+
+			//sprintln("");
+			//sprint("-");sprint(mlLoopTime);sprint(",");sprint(mlRopeOffset);
 			X = (mlLoopTime - ML_loop_default) / ML_loop_mult;
 			Y = (mlRopeOffset - ML_angle_default) / ML_angle_mult;
 
@@ -1474,52 +1504,37 @@ void updateAmpAndTime(bool runNow=false) {
 				mlRopeOffset = ML_angle_mult * Y + ML_angle_default; 
 				sprint("+++");//sprint(offset - (syncLoopTime-mlLoopTime)*LOOP_INTERVAL); sprint(",");sprint(ropeAngle+mlRopeOffset*LOOP_INTERVAL);
 			}
-			sprint(" X");sprint(X);sprint(",");sprint(Y);sprint(";");sprint(tPhase);
+			//sprint(" X");sprint(X);sprint(",");sprint(Y);sprint(";");sprint(tPhase);
 			loopTime = mlLoopTime * LOOP_INTERVAL - (LOOP_INTERVAL-1)*ML_loop_default;
 
 			requestedNLoops = 1;
 			waitForTime = millis() + (LOOP_INTERVAL-0.5)*defaultLoopTime;
-			
+						
 			mAmp = servoAmp;
 			mPhase = tPhase;
+			mLoopTime = loopTime;
+			
+			sprintln("\x1b[0m");
 		}
 		
 		if (mode == MACHINE_LEARNING) {
 			if (inTest) {
-				mlLoopTime = (time-lastTime) / LOOP_INTERVAL;
-				mlRopeOffset = ropeAngle-lastRopeAngle ;
-				sprint("\x1b[0;34mAI "); sprint(lastRopeAngle); sprint(": f("); sprint(mPhase); sprint(", "); sprint(mAmp); sprint(") = ("); sprint(mlLoopTime); sprint("ms, "); sprint(ropeAngle); sprint(") ");
-				sprint ((ropeAngleOffset < -0.005 ? "<" : (ropeAngleOffset > 0.005 ? ">" : "=")));
 				
-			//learn:
-			if (!isFirstIter && mAmp < maxServoAmp) {
-				sprint(" * ");
-			// calculate ML models:
-				double X = servoAmp * cos(tPhase*2*PI);
-				double Y = servoAmp * sin(tPhase*2*PI);
-			double ML_loop_mult = (avg_xl - avg_x*avg_l) / (avg_xx - avg_x*avg_x);
-			double ML_angle_mult = (avg_yr - avg_y*avg_r) / (avg_yy - avg_y*avg_y);
-			double ML_loop_default = avg_l - ML_loop_mult*avg_x;
-			double ML_angle_default = avg_r - ML_angle_mult*avg_y;
-			sprint(ML_loop_mult); sprint(",");sprint(ML_loop_default); sprint(" "); sprint(ML_angle_mult*1000); sprint("/1000,");sprint(ML_angle_default*1000);sprint("/1000");
-				
-				// Update 
-				ML_UPDATE(avg_l, mlLoopTime); ML_UPDATE(avg_x, X); ML_UPDATE(avg_xx,X*X); ML_UPDATE(avg_xl,X*mlLoopTime);
-				ML_UPDATE(avg_r, mlRopeOffset); ML_UPDATE(avg_y, Y); ML_UPDATE(avg_yy,Y*Y); ML_UPDATE(avg_yr,Y*mlRopeOffset);
-				ML_count ++;
-			}
-				
-				if ((ropeAngleOffset < 0.04) && (mAmp < mAmpTo)) {
-					// not wide enough, next time try harder
-					if (mAmp < mAmpTo) {
-						mAmp = min(mAmp + mAmpJump, mAmpTo);
-					}
+				// Set up for next test
+				if ((mLoopTime + mLoopTimeJump) < mLoopTimeTo) {
+					// next loopTime
+					mLoopTime += mLoopTimeJump;
+				} else if (((mAmp + mAmpJump) < mAmpTo) && (ropeAngleOffset < 0.04)) {
+					// next Amp
+					mAmp = mAmp + mAmpJump;
+					mLoopTime = mLoopTimeFrom;
 				} else {
+				    // next phase
 					mPhase = mPhase + mPhaseJump;
 					mAmp = mAmpFrom;
+					mLoopTime = mLoopTimeFrom;
 				}
 				
-				sprintln("\x1b[0m");
 				inTest = false;
 				if (mPhase > mPhaseTo) {
 					setMode(HALT);
@@ -1529,7 +1544,7 @@ void updateAmpAndTime(bool runNow=false) {
 			if (ropeAngleOffset < -0.005) {
 				// speed up
 				tPhase = 0.25;
-				servoAmp = 20;
+				servoAmp = int(min(max(-ropeAngleOffset*10*maxServoAmp, 20),maxServoAmp));
 				loopTime = defaultLoopTime;
 				requestedNLoops = 1;
 				waitForTime = millis() + (LOOP_INTERVAL-0.5)*defaultLoopTime;
@@ -1537,17 +1552,22 @@ void updateAmpAndTime(bool runNow=false) {
 			} else if (ropeAngleOffset > 0.005) {
 				requestedNLoops = 0; // just wait for next iteration...
 				inTest = false;
+				sprintln("\x1b[0m");
+				//TODO: return is not nice...
 				return;
 			} else { // start a test;
 				tPhase = mPhase;
 				servoAmp = mAmp;
-				loopTime = defaultLoopTime;
-				requestedNLoops = 1;
+				loopTime = (mLoopTime==0 ? defaultLoopTime : mLoopTime);
 				waitForTime = millis() + (LOOP_INTERVAL-0.5)*defaultLoopTime;
+				
+				requestedNLoops = mNLoops;
+				waitForTime = waitForTime + (mNLoops-1)*defaultLoopTime;
 				inTest = true;
 				sprint ("&& ");
 			}
 			//lastRopeAngle: f(lastTPhase, servoAmp) = mlLoopTime, ropeAngle (if ropeAngle==syncRopeAngle: ==)
+			sprintln("\x1b[0m");
 		}
 
 		//loopTime = defaultLoopTime + sin(tPhase*2*PI)*ML_MAX_OFFSET_SHIFT_IN_CYCLE;
@@ -1559,10 +1579,8 @@ void updateAmpAndTime(bool runNow=false) {
 		//rightTime - loopTime*(side==LEFT ? 0.5 + tPhase : tPhase);
 		
 		
-		sprint(" => servoAmp=");sprint(servoAmp); sprint(" phs=");sprint(tPhase); sprint(" nL="); sprint(requestedNLoops); sprint(" LT="); sprintln(loopTime);
+		sprint(" => servoAmp=");sprint(servoAmp); sprint(" phs=");sprint(tPhase); sprint(" LT="); sprint(loopTime); sprint(" nL="); sprintln(requestedNLoops);
 
-		lastOffsetAxis = offsetAxis;
-		lastRopeOffsetAxis = ropeOffsetAxis;
 		lastTime = time;
 		lastRopeAngle = ropeAngle;
 		

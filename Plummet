@@ -194,7 +194,7 @@ if [ "$1" = "attach" ] || [ "$1" = "record" ]; then
    if [ "$1" = "attach" ]; then
 	   echo screen -t ${ard} /dev/${ard} >> /tmp/.screens
 	else
-		echo "screen -t ${ard} bash -c \"cu -l /dev/${ard} | tee -a _${ard}.record\"" >> /tmp/.screens
+		echo "screen -t ${ard} bash -c \"cu -l /dev/${ard} -s 9600 | tee -a _${ard}.record\"" >> /tmp/.screens
 	fi
    echo 'stuff "e\nB\n \n"' >> /tmp/.screens
    if [ "$isFirst" = "1" ]; then
