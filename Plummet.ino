@@ -109,9 +109,9 @@ boolean showShift = true;
 boolean updateClock = true;
 boolean enableAudio = false;
 int8_t audioSongNumber = 1;
-int8_t maxAudioVolume = 30;
+int8_t maxAudioVolume = 15;
 int8_t audioVolume = maxAudioVolume;
-bool audioVolumeAdaptive = true;
+bool audioVolumeAdaptive = false;
 unsigned int audioDelay = 0; // in milliseconds
 unsigned int audioSnapToGrid = 10; // in milliseconds
 unsigned int audioSnapToSync = 50;
@@ -148,9 +148,9 @@ double testPhase = 0.25;
 double testAmp = 20;
 
 int oAmp = maxServoAmp;
-double oPhase = 0.25; // like stopping
-int oLoopTime = 0;
-int oNLoops = 1;
+double oPhase = 0.75; // like stopping
+int oLoopTime = 3400;
+int oNLoops = 2;
 
 double mPhase = 0;
 int mAmp = 5;
@@ -165,6 +165,7 @@ int mLoopTimeTo = 0;
 int mLoopTimeJump = 10;
 int mLoopTime = 0;
 int mNLoops = 1;
+int mRequestedNLoops = 0;
 
 //ML DATA
 const uint8_t LOOP_INTERVAL = 3;
@@ -187,6 +188,9 @@ bool requestedMoveStarted = false;
 
 double ropeMaxLeftAngle = 0;
 double ropeMaxRightAngle = 0;
+
+double maxPotRead = 0;
+double minPotRead = 1024;
 
 unsigned long syncInitTime = 0;
 int syncInitTimeOffset = 0;
@@ -566,7 +570,7 @@ void calibrate() {
   sprint("servoCenter: "); sprintln(servoCenter);
   
   sprint("Old ");sprint("PotCenter: "); sprintln(potCenter);
-  potCenter = waitForSteadiness(1,6000);  
+  potCenter = waitForSteadiness(2,6000);  
   sprint("PotCenter: "); sprintln(potCenter);
 
   smoothMove(servoCenter-50,4000); 
@@ -954,7 +958,7 @@ void handleKeyboardInput() {
 		   int s = (millis()-syncInitTime) % syncLoopTime;
 		   if (s>syncLoopTime/2) s = s-syncLoopTime;
 		   if (updateClock) {
-			   syncInitTime = millis();
+			   syncInitTime = millis()-syncLoopTime;
 		   }
 		   nextSerial.write("T");
 		   if ((abs(s) >= 20) && showShift) {
@@ -1153,7 +1157,13 @@ syncLoopTime = atoi(CMD);
 	  setMode(SYNCED_RUNNING);
 	  break;
 	case 'h': // Offset the Sync clock by half loop
-	  syncInitTimeOffset -= syncLoopTime/2;
+	  if (CMD[0]!='\n') {
+	  	d = atof(CMD);
+	  } else {
+		d = 0.5;
+	  }
+	  KB[0] = 0; CMD=KB;
+	  syncInitTimeOffset -= syncLoopTime * d;
 	  sprint ("Offset:");sprintln(syncInitTimeOffset);
 	  setMode(SYNCED_RUNNING);
 	  break;
@@ -1164,7 +1174,9 @@ syncLoopTime = atoi(CMD);
 	  setMode(SYNCED_RUNNING); 
 	  break;
 	case 'S': /* SYNC to an already set clock (don't update the clock) */
-	  syncInitTimeOffset = atoi(CMD); KB[0]=0; CMD=KB;
+	  if(CMD[0]!='\n') syncInitTimeOffset = atoi(CMD);
+	  sprint ("Offset:");sprintln(syncInitTimeOffset);
+	  KB[0]=0; CMD=KB;
 	  //	if (s!=0) syncLoopTime = s;
       setMode(SYNCED_RUNNING);
 	  break;
@@ -1177,7 +1189,7 @@ syncLoopTime = atoi(CMD);
 	  break;
 	case 'X': // calc ML for phase,amp
 	  d = atof(CMD);
-	  p = find(CMD,",");
+	  p = find(CMD,',');
 	  if (p!=-1) s = atoi(CMD+p+1);
 	  
 	  printMLPoint(d,s);
@@ -1268,6 +1280,7 @@ syncLoopTime = atoi(CMD);
 	  break;
 	case '&': // Print current calibration
 	  printCurrentCalibration();
+	  break;
 	case 'a': // play audio
 	  playSong(audioSongNumber, maxAudioVolume);
 	  break;
@@ -1435,8 +1448,8 @@ void updateAmpAndTime(bool runNow=false) {
 //		waitLoops = 0;
 	}
 
-	if (((side==RIGHT) && (mode != STOPPING)) ||
-	    ((side==LEFT)  && (mode == STOPPING)) ||
+	if ((side==RIGHT) || // && (mode != STOPPING)) ||
+	  //  ((side==LEFT)  && (mode == STOPPING)) ||
 	    runNow) {
 		sprint((waitLoops || millis()<waitForTime) ? "\x1b[0;37m" : "\x1b[0;31m");
 		sprint ("["); sprint(lastLoopTime); sprint("]: s="); sprint(syncLoopTime); sprint(",");sprint(syncInitTime); sprint(" offset="); sprint(offset); sprint("ms ropeAngle="); 	sprint(ropeAngle); sprint((ropeAngleOffset > 0) ? "(+" : "(");sprint(ropeAngleOffset); sprint(")");
@@ -1483,7 +1496,7 @@ void updateAmpAndTime(bool runNow=false) {
 				
 		//if ((mode != STOPPING) && (mode != TESTING)) requestedNLoops = 1 ;
 		//loopTime = defaultLoopTime - offset / max(1,tRadial) / LOOP_INTERVAL;
-		
+		// learn
 		if ((mode == RUNNING) || (mode==SYNCED_RUNNING) || ((mode==MACHINE_LEARNING) && inTest)) {
 			M=0;
 			// last input
@@ -1499,7 +1512,7 @@ void updateAmpAndTime(bool runNow=false) {
 			
 #define ML_UPDATE(a,b) a = a*(ML_count/(ML_count+1.0)) + b/(ML_count+1.0)
 			//learn:
-			if (!isFirstIter && mAmp < maxServoAmp) {
+			if (!isFirstIter && (mAmp < maxServoAmp) && (mRequestedNLoops ==1)) {
 				sprint(" * ");
 				
 				// Update 
@@ -1519,7 +1532,7 @@ void updateAmpAndTime(bool runNow=false) {
 			printMLData();
 		}
 		 
-		if ((mode == RUNNING) || (mode == SYNCED_RUNNING)) { // synced_running
+		if ((mode == RUNNING) || (mode == SYNCED_RUNNING) || (mode == STOPPING)) { // synced_running
 			waitLoops = 0;			
 
 			// calculate desired phase and amp
@@ -1530,15 +1543,24 @@ void updateAmpAndTime(bool runNow=false) {
 				mlLoopTime = ML_loop_default; // if running - we set the offset to make X=0 so that we just update the amp and not the offset
 			}
 
+			if (mode == STOPPING) {
+				mlRopeOffset = -ropeAngle; // desired to stop
+				mlLoopTime = ML_loop_default;
+			}
+
 			//sprintln("");
 			//sprint("-");sprint(mlLoopTime);sprint(",");sprint(mlRopeOffset);
 			X = (mlLoopTime - ML_loop_default) / ML_loop_mult;
 			Y = (mlRopeOffset - ML_angle_default) / ML_angle_mult;
 
 			tPhase = axisToAngle(X,Y)/2/PI;
-			servoAmp = int(min(max(sqrt(X*X+Y*Y),0),maxServoAmp));
+			servoAmp = int(sqrt(X*X+Y*Y));
+			requestedNLoops = 1;
 			
-			if (servoAmp == maxServoAmp) {
+			if (servoAmp > maxServoAmp) {
+				sprint("wanted "); sprint(servoAmp);
+				requestedNLoops = int(servoAmp/maxServoAmp + 1);
+				servoAmp = min(servoAmp/requestedNLoops,maxServoAmp);
 				X = servoAmp * cos(tPhase*2*PI);
 				Y = servoAmp * sin(tPhase*2*PI);
 				mlLoopTime = ML_loop_mult * X + ML_loop_default;
@@ -1548,12 +1570,13 @@ void updateAmpAndTime(bool runNow=false) {
 			//sprint(" X");sprint(X);sprint(",");sprint(Y);sprint(";");sprint(tPhase);
 			loopTime = mlLoopTime * LOOP_INTERVAL - (LOOP_INTERVAL-1)*ML_loop_default;
 
-			requestedNLoops = 1;
-			waitForTime = millis() + (LOOP_INTERVAL-0.5)*defaultLoopTime;
+				waitForTime = millis() + (LOOP_INTERVAL-0.5)*defaultLoopTime;
+			waitForTime = millis() + requestedNLoops * loopTime + (LOOP_INTERVAL-1.5) * ML_loop_default;
 						
 			mAmp = servoAmp;
 			mPhase = tPhase;
 			mLoopTime = loopTime;
+			mRequestedNLoops = requestedNLoops;
 			
 			sprintln("\x1b[0m");
 		}
@@ -1592,6 +1615,7 @@ void updateAmpAndTime(bool runNow=false) {
 				inTest = false;
 			} else if (ropeAngleOffset > 0.005) {
 				requestedNLoops = 0; // just wait for next iteration...
+				mRequestedNLoops = 0;
 				inTest = false;
 				sprintln("\x1b[0m");
 				//TODO: return is not nice...
@@ -1607,7 +1631,7 @@ void updateAmpAndTime(bool runNow=false) {
 				inTest = true;
 				sprint ("&& ");
 			}
-			//lastRopeAngle: f(lastTPhase, servoAmp) = mlLoopTime, ropeAngle (if ropeAngle==syncRopeAngle: ==)
+			mRequestedNLoops = requestedNLoops;
 			sprintln("\x1b[0m");
 		}
 
@@ -1651,7 +1675,7 @@ void setup() {
   sendAudioCommand(0X09, 0X02); // Select TF Card
   sprintln("");
   readCalibration();
-  sendAudioCommand(0X22, 0X1E01);
+  sendAudioCommand(0X22, audioVolume);
   
   myservoattach(servoPin);
   myservowrite(servoCenter);
@@ -1759,7 +1783,9 @@ void loop(){
   }
   ropeMaxRightAngle = max(ropeAngle,ropeMaxRightAngle);
   ropeMaxLeftAngle = min(ropeAngle,ropeMaxLeftAngle);
-  
+ 
+  maxPotRead = max(potRead,maxPotRead);
+  minPotRead = min(potRead, minPotRead); 
   // Print measures
   if (printMeasures) {
 	sprint("pot: "); sprint(potRead);
@@ -1776,14 +1802,18 @@ void loop(){
 	  playSong(audioSongNumber,audioVolume);
   }
 
-  bool isStill = (time-rightTime > loopTime*3);
-
-  //if (isStill) {
-  //
-  //}
-
+  static unsigned long lastPosCenterUpdate = millis();
+  if ((mode == HALT) && // (lastPosCenterUpdate + 6000 < millis()) && 
+      (millis()-lastPosCenterUpdate > loopTime * 2.5)) {
+	if ( (maxPotRead>=minPotRead) && (maxPotRead-minPotRead<30)) {
+	  sprint("pot update? "); sprint(potCenter); sprint (" -> "); sprint((maxPotRead+minPotRead)/2); sprint("\r");
+sprintln("");
+	  potCenter = (maxPotRead+minPotRead)/2;
+        } else { sprint("&&&");}
+	maxPotRead = 0; minPotRead = 1024; lastPosCenterUpdate = millis();
+  }
   // Analysis when pendulum is at the center
-  if ((ropeAngle<0) && (side==RIGHT) && (time-rightTime>loopTime/4) || isStill) {
+  if ((ropeAngle<0) && (side==RIGHT) && (time-rightTime>loopTime/4)) {
 	  // This section is if we are now moving to the left side;
 	side = LEFT;
 	lastLoopTime = time-leftTime;
@@ -1793,6 +1823,7 @@ void loop(){
 //	tone(7, NOTE_G6, 100);
 
 	updateAmpAndTime();
+
 
 	ropeMaxLeftAngle = 0;
 	  
