@@ -27,7 +27,7 @@
 // TODO: Stop calibration
 // TODO: Git pull different versions
 
-#define PLUMMET_VERSION "0.25"
+#define PLUMMET_VERSION "0.26"
 
 ////// WHAT SERVO LIB TO USE
 #define USE_TIMER1
@@ -191,7 +191,7 @@ double ropeMaxRightAngle = 0;
 unsigned long syncInitTime = 0;
 int syncInitTimeOffset = 0;
 int syncLoopTime=3501;
-double syncRopeAngle=0.25;
+double syncRopeAngle=0.3;
 double syncPhase;
 boolean updateSlaveClock = false;
 
@@ -250,7 +250,7 @@ void setMode(mode_e m) {
 // #define sprintln(s)
 
 //void debugLog(const char *x) { if (debug) Serial.print(x);		 }
-#define debugLog(x) {if (debug) Serial.print(x);}
+// #define debugLog(x) {if (debug) Serial.print(x);}
 #define debugLog(x) {}
 
 ///////////////////////////
@@ -277,11 +277,13 @@ void ewritefloat(float data, int index=-1) {
 }
 
 float ereadfloat(int index=-1) {
+
 	float data;
 	byte *p = (byte *)(void *)&data;
     for (int i = 0; i < sizeof(data); i++) {
        *p++ = EEPROM.read(eIndex++);
     }
+    return data;
 }
 void ewrite(const char *data, int index=-1) {
 	if (index !=-1) eIndex = index;
@@ -339,14 +341,14 @@ void sendAudioCommand(int8_t command, int8_t datah, int8_t datal) {
   static int8_t Send_Audio_buf[8] = {0x7e, 0xff, 0x06, 0, 0, 0, 0, 0xef} ;
 
   debugLog("audio");
-  Send_Audio_buf[0] = 0x7e; //starting byte
-  Send_Audio_buf[1] = 0xff; //version
-  Send_Audio_buf[2] = 0x06; //the number of bytes of the command without starting byte and ending byte
+//  Send_Audio_buf[0] = 0x7e; //starting byte
+//  Send_Audio_buf[1] = 0xff; //version
+//  Send_Audio_buf[2] = 0x06; //the number of bytes of the command without starting byte and ending byte
   Send_Audio_buf[3] = command; //
-  Send_Audio_buf[4] = 0x00;//0x00 = no feedback, 0x01 = feedback
+//  Send_Audio_buf[4] = 0x00;//0x00 = no feedback, 0x01 = feedback
   Send_Audio_buf[5] = datah;//datah
   Send_Audio_buf[6] = datal; //datal
-  Send_Audio_buf[7] = 0xef; //ending byte
+//  Send_Audio_buf[7] = 0xef; //ending byte
   for(uint8_t i=0; i<8; i++)//
   {
 	audioSerial.write(Send_Audio_buf[i]) ;
@@ -587,7 +589,7 @@ void calibrate() {
   sprint(pot150); sprint(" ");
   sprint(loopTime); sprintln("");
 }
-
+/*
 void calibrateLoopTime() { 
   sprintln("");
   sprint("Old LoopTime "); sprintln(defaultLoopTime);
@@ -637,6 +639,7 @@ void calibrateLoopTime() {
 
   sprint("loopTime Calibration ("); sprint(cycles); sprint("): "); sprintln(loopTime); 
 }
+*/
 
 void writeCalibration() {
   ewrite(EEPROM_MAGIC,0); //magic number
@@ -1020,9 +1023,6 @@ void handleKeyboardInput() {
 	  }
 //	  sprint("showLoopEvents="); sprintln(showLoopEvents ? "on" : "off");
 	  break;
-	case '0': /* temporary move servo to center */
-	  smoothMove(servoCenter);
-	  break;
 	case '1': // START 
 	  setMode(RUNNING); sprintln("START");
 	  break;
@@ -1082,7 +1082,8 @@ void handleKeyboardInput() {
 	  KB[0] = 0; CMD=KB;
 	  break;
 	case 't': // TEST 
-	  syncLoopTime = atoi(CMD); 
+	  /*
+syncLoopTime = atoi(CMD); 
 	  if (syncLoopTime == 0) syncLoopTime = defaultLoopTime;
 	  syncInitTime = millis();
 	  syncInitTimeOffset = 0;
@@ -1096,6 +1097,7 @@ void handleKeyboardInput() {
 	  KB[0] = 0; CMD=KB;
 
 	  setMode(TESTING); sprintln("TEST");sprint(syncLoopTime); sprint(","); sprintln(syncRopeAngle);
+*/
 	  break;
 	case 's': // SYNC
 	  syncLoopTime = atoi(CMD); 
@@ -1183,9 +1185,9 @@ void handleKeyboardInput() {
 	  KB[0] = 0; CMD=KB;
 	  break;
 	case 'M': // Set magic number
-	  sprint("Old ");
-	  sprint("M=");
-	  sprintln(SYNC_MAGIC_NUMBER);
+	  //sprint("Old ");
+	  //sprint("M=");
+	  //sprintln(SYNC_MAGIC_NUMBER);
 	  s = atoi(CMD); KB[0]=0; CMD=KB;
 	  SYNC_MAGIC_NUMBER = s;
 	  sprint("M=");
@@ -1240,7 +1242,7 @@ void handleKeyboardInput() {
 	  Serial.println(isMaster ? "master" : "slave");
 	  break; 
 	case 'i':
-	  Serial.print("I am ");
+	  Serial.print("iI am ");
 	  Serial.print("#");
 	  Serial.println(myID);
 	  if (isMaster && (myID==-1)) {
@@ -1260,7 +1262,7 @@ void handleKeyboardInput() {
 	  	  loopTime = defaultLoopTime;
 	  	  sprint("loopTime=");sprintln(loopTime);
 	  } else {
-		  calibrateLoopTime();
+		  //calibrateLoopTime();
 	  }
 	  KB[0] = 0; CMD = KB;
 	  break;
@@ -1774,8 +1776,14 @@ void loop(){
 	  playSong(audioSongNumber,audioVolume);
   }
 
+  bool isStill = (time-rightTime > loopTime*3);
+
+  //if (isStill) {
+  //
+  //}
+
   // Analysis when pendulum is at the center
-  if ((ropeAngle<0) && (side==RIGHT) && (time-rightTime>loopTime/4)) {
+  if ((ropeAngle<0) && (side==RIGHT) && (time-rightTime>loopTime/4) || isStill) {
 	  // This section is if we are now moving to the left side;
 	side = LEFT;
 	lastLoopTime = time-leftTime;
