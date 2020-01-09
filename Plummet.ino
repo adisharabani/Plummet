@@ -1176,7 +1176,7 @@ void handleKeyboardInput() {
 	case 'X': // calc ML for phase,amp
 	  d = atof(CMD);
 	  p = find(CMD,",");
-	  if (p!=-1) s = atoi(CMD+p);
+	  if (p!=-1) s = atoi(CMD+p+1);
 	  
 	  printMLPoint(d,s);
 	  
