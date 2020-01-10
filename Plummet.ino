@@ -107,6 +107,7 @@ boolean enablePrint = true;
 boolean debug = false;
 boolean showShift = true;
 boolean updateClock = true;
+boolean updatePotCenter = false;
 boolean enableAudio = false;
 int8_t audioSongNumber = 1;
 int8_t maxAudioVolume = 15;
@@ -1027,6 +1028,8 @@ void handleKeyboardInput() {
 	  }
 //	  sprint("showLoopEvents="); sprintln(showLoopEvents ? "on" : "off");
 	  break;
+	case '0':
+	  updatePotCenter = true;
 	case '1': // START 
 	  setMode(RUNNING); sprintln("START");
 	  break;
@@ -1803,10 +1806,13 @@ void loop(){
   static unsigned long lastPosCenterUpdate = millis();
   if ((mode == HALT) && // (lastPosCenterUpdate + 6000 < millis()) && 
       (millis()-lastPosCenterUpdate > loopTime * 2.5)) {
-	if ( (maxPotRead>=minPotRead) && (maxPotRead-minPotRead<30)) {
-	  sprint("pot update? "); sprint(potCenter); sprint (" -> "); sprint((maxPotRead+minPotRead)/2); sprint("\r");
-sprintln("");
+	if ( (maxPotRead>=minPotRead) && (maxPotRead-minPotRead<30) && updatePotCenter) {
+	  sprint("pot update "); sprint(potCenter); sprint (" -> "); 
 	  potCenter = (maxPotRead+minPotRead)/2;
+	  sprint(potCenter);
+	  sprint("\r");
+	  sprintln("");
+	  updatePotCenter = false;
         } else { sprint("&&&");}
 	maxPotRead = 0; minPotRead = 1024; lastPosCenterUpdate = millis();
   }
