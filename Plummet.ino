@@ -1116,7 +1116,7 @@ syncLoopTime = atoi(CMD);
 	  }
 	  
 	  KB[0] = 0; CMD=KB;
-	  setMode(SYNCED_RUNNING); sprint("SYNC");sprint(syncLoopTime); sprint(","); sprintln(syncRopeAngle);
+	  sprint("SYNC");sprint(syncLoopTime); sprint(","); sprintln(syncRopeAngle);
 	  break;
 	case '[':
 	  syncRopeAngle = min(max(syncRopeAngle-0.01,0),0.4);
@@ -1165,13 +1165,11 @@ syncLoopTime = atoi(CMD);
 	  KB[0] = 0; CMD=KB;
 	  syncInitTimeOffset -= syncLoopTime * d;
 	  sprint ("Offset:");sprintln(syncInitTimeOffset);
-	  setMode(SYNCED_RUNNING);
 	  break;
 	case 'r': // Randomize the SYNC clock 
 	  syncInitTimeOffset = random(0,defaultLoopTime);
 	  sprint ("Offset:");sprintln(syncInitTimeOffset);
 	  //servoAmp = 20;
-	  setMode(SYNCED_RUNNING); 
 	  break;
 	case 'S': /* SYNC to an already set clock (don't update the clock) */
 	  if(CMD[0]!='\n') syncInitTimeOffset = atoi(CMD);
