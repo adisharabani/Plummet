@@ -1687,7 +1687,7 @@ void setup() {
   nextSerial.begin(9600);
   prevSerial.begin(9600);
 
-  nextSerialPrintln("      "); // let the following arduino know you are here;
+  nextSerialPrintln(" "); // let the following arduino know you are here;
 
   delay(200);
   sendAudioCommand(0X09, 0X02); // Select TF Card
@@ -1767,7 +1767,7 @@ void sprintLoopEvents() {
 
 void loop(){
   showClockIfNeeded();
-  if (time > keepalive) { nextSerialPrint("      "); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
+  if (time > keepalive) { nextSerialPrintln(" "); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
 
   time = millis();
   
