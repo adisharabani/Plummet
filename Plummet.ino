@@ -1030,6 +1030,7 @@ void handleKeyboardInput() {
 	  break;
 	case '0':
 	  updatePotCenter = true;
+	  break;
 	case '1': // START 
 	  setMode(RUNNING); sprintln("START");
 	  break;
@@ -1152,12 +1153,10 @@ syncLoopTime = atoi(CMD);
 	case '{': // Offset the SYNC clock forward (1/32 of a loop)
 	  syncInitTimeOffset -= 10;
 	  sprint ("Offset:");sprintln(syncInitTimeOffset);
-	  setMode(SYNCED_RUNNING); 
 	  break;
 	case '}': // Offset the SYNC clock backwards (1/32 of a loop)
 	  syncInitTimeOffset += 10;
 	  sprint ("Offset:");sprintln(syncInitTimeOffset);
-	  setMode(SYNCED_RUNNING);
 	  break;
 	case 'h': // Offset the Sync clock by half loop
 	  if (CMD[0]!='\n') {
@@ -1364,7 +1363,9 @@ syncLoopTime = atoi(CMD);
 void startPlaySequence() {
 	if (eread(EEPROM_COMMANDS_LOC-2) != EEPROM_MAGIC) {
 		sprint("No recording saved");
-	}
+	} 
+
+	if (!isMaster) return;
 	// Print commands:
 	unsigned int commandTime = eread(EEPROM_COMMANDS_LOC);
   	sprintln("Recorded Commands");
@@ -1576,6 +1577,7 @@ void updateAmpAndTime(bool runNow=false) {
 			loopTime = mlLoopTime * LOOP_INTERVAL - (LOOP_INTERVAL-1)*ML_loop_default;
 			//waitForTime = millis() + (LOOP_INTERVAL-0.5)*defaultLoopTime;
 			waitForTime = millis() + requestedNLoops * loopTime + (LOOP_INTERVAL-1.5) * ML_loop_default;
+
 						
 			mAmp = servoAmp;
 			mPhase = tPhase;
@@ -1645,6 +1647,22 @@ void updateAmpAndTime(bool runNow=false) {
 			initTime = leftTime  - (0.5+tPhase) * loopTime + M;
 		}
 		//rightTime - loopTime*(side==LEFT ? 0.5 + tPhase : tPhase);
+
+
+		if (((mode == RUNNING) || (mode == SYNCED_RUNNING)) && 
+		    (ropeAngle < 0.05)) {
+			sprint("Quick Start");
+			servoAmp = maxServoAmp;
+			loopTime = syncLoopTime;
+			initTime = syncInitTime + (side==LEFT ? 0.25 : 0.75)  * syncLoopTime;
+			requestedNLoops = 2;
+			waitForTime = millis() + requestedNLoops * loopTime + (LOOP_INTERVAL-1.5) * ML_loop_default;
+						
+			mAmp = servoAmp;
+			mPhase = 0.25;
+			mLoopTime = loopTime;
+			updateMLModel = false;
+		}
 		
 		
 		sprint(" => servoAmp=");sprint(servoAmp); sprint(" phs=");sprint(tPhase); sprint(" LT="); sprint(loopTime); sprint(" nL="); sprintln(requestedNLoops);
@@ -1779,11 +1797,16 @@ void loop(){
   double servoAngle = getServoAngle();
   double ropeAngle = potAngle+servoAngle;
   
-  if (potAngle < -1) {
+  static unsigned long POT0Time = 0;
+
+  if (millis() < POT0Time + 300) return;
+
+  if ((potAngle < -1) || (potAngle > 1)){
   	sprint("POT0   \r");
-  	delay(1000);
+	POT0Time = millis();
   	return;
   }
+
   ropeMaxRightAngle = max(ropeAngle,ropeMaxRightAngle);
   ropeMaxLeftAngle = min(ropeAngle,ropeMaxLeftAngle);
  
@@ -1806,9 +1829,9 @@ void loop(){
   }
 
   static unsigned long lastPosCenterUpdate = millis();
-  if ((mode == HALT) && // (lastPosCenterUpdate + 6000 < millis()) && 
-      (millis()-lastPosCenterUpdate > loopTime * 2.5)) {
-	if ( (maxPotRead>=minPotRead) && (maxPotRead-minPotRead<30) && updatePotCenter) {
+  if (((mode == HALT) || (mode==STOPPING)) && // (lastPosCenterUpdate + 6000 < millis()) && 
+      (millis()-lastPosCenterUpdate > loopTime * 1.5) && updatePotCenter) {
+	if ( (maxPotRead>=minPotRead) && (maxPotRead-minPotRead<30)) {
 	  sprint("pot update "); sprint(potCenter); sprint (" -> "); 
 	  potCenter = (maxPotRead+minPotRead)/2;
 	  sprint(potCenter);
