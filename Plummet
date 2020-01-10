@@ -269,7 +269,7 @@ fi
 if [ "$1" = "prepForShutDown" ]; then
  $0 kill
  for ard in $($0 listDevices $2); do
-   (echo; echo 9; echo _; sleep 3) | cu -l /dev/$ard &
+   (echo; echo 9; echo _; sleep 4) | cu -l /dev/$ard &
  done
  wait
 fi
