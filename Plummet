@@ -68,13 +68,17 @@ if [ "$1" = "cu" ] ; then
  $0 compile && $0 upload $2
 fi
 
-if [ "$1" = "install" ]; then
+if [ "$1" = "setup" ]; then
  command -v inotifywait > /dev/null || sudo apt-get install inotify-tools
  command -v screen > /dev/null || sudo apt-get install screen
  command -v cu > /dev/null || sudo apt-get install cu
+ if [ ! -d "$ARDLIB" ] ; then
+   cd ..
+   curl -L -o arduino-1.8.10-linuxarm.tar.xz https://www.arduino.cc/download.php?f=/arduino-1.8.10-linuxarm.tar.xz
+   tar -xf arduino-1.8.10-linuxarm.tar.xz 
+   cd Plummet
+ fi
 #sudo apt-get  install avahi-daemon
- #curl -L -o arduino-1.8.10-linuxarm.tar.xz https://www.arduino.cc/download.php?f=/arduino-1.8.10-linuxarm.tar.xz
- #tar -xf arduino-1.8.10-linuxarm.tar.xz 
 fi
 
 if [ "$1" = "compile" ] || [ "$1" = "revert" ]; then
