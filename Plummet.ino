@@ -752,12 +752,14 @@ boolean commandAvailable() {
 
 byte COMSTART[] = {111,110,112};
 int8_t prevSerialState = 0;
-void nextSerialPrintln(char *s) {
+void nextSerialPrintln(char *s, bool cr=true) {
    for (int8_t i = 0; i<sizeof(COMSTART); i++) {
 	nextSerial.write(COMSTART[i]);
    }
-   if (s!=0) {
+   if (cr) {
         nextSerial.println(s);
+   } else {
+	nextSerial.print(s);
    }
    // sprint("_");
 }
@@ -988,10 +990,12 @@ void handleKeyboardInput() {
 			   syncInitTime = millis()-syncLoopTime;
 		   }
 		   prevSerialState = 0;
-		   nextSerialPrintln(0); nextSerial.write("T"); 
+		   nextSerialPrintln("T",false); 
 		   if ((abs(s) >= 20) && showShift) {
 		   	 sprint("["); sprint(syncInitTime); sprint (" / "); sprint(syncLoopTime); sprint("] shift: "); sprint(s); sprint("     \r");
 		   }
+		 } else if (inByte == 'k') { // todo remove keepalive
+		   prevSerialState = 0;
 		 } else if (inByte == 'Q') {
 		   // Delete command
 		   KB[0] = 0; kblength =0; inByte =0;
@@ -1687,7 +1691,7 @@ void setup() {
   nextSerial.begin(9600);
   prevSerial.begin(9600);
 
-  nextSerialPrintln(" "); // let the following arduino know you are here;
+  nextSerialPrintln("k",false); // let the following arduino know you are here;
 
   delay(200);
   sendAudioCommand(0X09, 0X02); // Select TF Card
@@ -1767,7 +1771,7 @@ void sprintLoopEvents() {
 
 void loop(){
   showClockIfNeeded();
-  if (time > keepalive) { nextSerialPrintln(" "); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
+  if (time > keepalive) { nextSerialPrintln("k",false); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
 
   time = millis();
   
@@ -1783,7 +1787,7 @@ void loop(){
 	  	  sprintln((millis()-syncInitTime) % syncLoopTime);
 	  }
 	  syncInitTime = millis();
-	  nextSerialPrintln(0); nextSerial.write("T"); // update the clock...	 
+	  nextSerialPrintln("T",false); // update the clock...	 
 	}
   }
 
