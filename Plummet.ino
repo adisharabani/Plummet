@@ -166,7 +166,7 @@ int mLoopTimeTo = 0;
 int mLoopTimeJump = 10;
 int mLoopTime = 0;
 int mNLoops = 1;
-int mRequestedNLoops = 0;
+bool updateMLModel = false;
 
 //ML DATA
 const uint8_t LOOP_INTERVAL = 3;
@@ -1446,7 +1446,8 @@ void updateAmpAndTime(bool runNow=false) {
 
 	
 	if (runNow) {
-//		waitLoops = 0;
+		waitLoops = 0;
+		updateMLModel = false;
 	}
 
 	if ((side==RIGHT) || // && (mode != STOPPING)) ||
@@ -1513,13 +1514,14 @@ void updateAmpAndTime(bool runNow=false) {
 			
 #define ML_UPDATE(a,b) a = a*(ML_count/(ML_count+1.0)) + b/(ML_count+1.0)
 			//learn:
-			if (!isFirstIter && (mAmp < maxServoAmp) && (mRequestedNLoops ==1)) {
+			if (!isFirstIter && (mAmp < maxServoAmp) && (updateMLModel)) {
 				sprint(" * ");
 				
 				// Update 
 				ML_UPDATE(avg_l, mlLoopTime); ML_UPDATE(avg_x, X); ML_UPDATE(avg_xx,X*X); ML_UPDATE(avg_xl,X*mlLoopTime);
 				ML_UPDATE(avg_r, mlRopeOffset); ML_UPDATE(avg_y, Y); ML_UPDATE(avg_yy,Y*Y); ML_UPDATE(avg_yr,Y*mlRopeOffset);
 				ML_count ++;
+				updateMLModel = false;
 			}
 
 			// calculate ML models:
@@ -1567,17 +1569,17 @@ void updateAmpAndTime(bool runNow=false) {
 				mlLoopTime = ML_loop_mult * X + ML_loop_default;
 				mlRopeOffset = ML_angle_mult * Y + ML_angle_default; 
 				sprint("+++");//sprint(offset - (syncLoopTime-mlLoopTime)*LOOP_INTERVAL); sprint(",");sprint(ropeAngle+mlRopeOffset*LOOP_INTERVAL);
+			} else {
+				updateMLModel = true;
 			}
 			//sprint(" X");sprint(X);sprint(",");sprint(Y);sprint(";");sprint(tPhase);
 			loopTime = mlLoopTime * LOOP_INTERVAL - (LOOP_INTERVAL-1)*ML_loop_default;
-
-				waitForTime = millis() + (LOOP_INTERVAL-0.5)*defaultLoopTime;
+			//waitForTime = millis() + (LOOP_INTERVAL-0.5)*defaultLoopTime;
 			waitForTime = millis() + requestedNLoops * loopTime + (LOOP_INTERVAL-1.5) * ML_loop_default;
 						
 			mAmp = servoAmp;
 			mPhase = tPhase;
 			mLoopTime = loopTime;
-			mRequestedNLoops = requestedNLoops;
 			
 			sprintln("\x1b[0m");
 		}
@@ -1596,7 +1598,6 @@ void updateAmpAndTime(bool runNow=false) {
 				} else {
 				    // next phase
 					mPhase = mPhase + mPhaseJump;
-					mAmp = mAmpFrom;
 					mLoopTime = mLoopTimeFrom;
 				}
 				
@@ -1614,12 +1615,13 @@ void updateAmpAndTime(bool runNow=false) {
 				requestedNLoops = 1;
 				waitForTime = millis() + (LOOP_INTERVAL-0.5)*defaultLoopTime;
 				inTest = false;
+				updateMLModel = true;
 			} else if (ropeAngleOffset > 0.005) {
 				requestedNLoops = 0; // just wait for next iteration...
-				mRequestedNLoops = 0;
 				inTest = false;
 				sprintln("\x1b[0m");
 				//TODO: return is not nice...
+				
 				return;
 			} else { // start a test;
 				tPhase = mPhase;
@@ -1630,9 +1632,9 @@ void updateAmpAndTime(bool runNow=false) {
 				requestedNLoops = mNLoops;
 				waitForTime = waitForTime + (mNLoops-1)*defaultLoopTime;
 				inTest = true;
+				updateMLModel = true;
 				sprint ("&& ");
 			}
-			mRequestedNLoops = requestedNLoops;
 			sprintln("\x1b[0m");
 		}
 
