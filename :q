@@ -757,16 +757,14 @@ void nextSerialPrintln(char *s) {
 	nextSerial.write(COMSTART[i]);
    }
    if (s!=0) {
-   nextSerial.println(s);
+   nextSerialPrintln(s);
 }
-sprint("_");
 }
 
 bool prevSerialAvailable() {
        while (prevSerial.available() && (prevSerialState<sizeof(COMSTART))) {
           if (prevSerial.read() == COMSTART[prevSerialState]) {
 		prevSerialState ++;
-		sprint("-");sprint(prevSerialState);
 	  } else {
 		sprint(".");
 	  }
@@ -987,7 +985,7 @@ void handleKeyboardInput() {
 			   syncInitTime = millis()-syncLoopTime;
 		   }
 		   nextSerialPrintln(0); nextSerial.write("T"); 
-		   prevSerialState = 0;
+		   prevSerial.state = 0;
 		   if ((abs(s) >= 20) && showShift) {
 		   	 sprint("["); sprint(syncInitTime); sprint (" / "); sprint(syncLoopTime); sprint("] shift: "); sprint(s); sprint("     \r");
 		   }
