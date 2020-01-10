@@ -757,18 +757,19 @@ void nextSerialPrintln(char *s) {
 	nextSerial.write(COMSTART[i]);
    }
    if (s!=0) {
-   nextSerial.println(s);
-}
-sprint("_");
+        nextSerial.println(s);
+   }
+   // sprint("_");
 }
 
 bool prevSerialAvailable() {
        while (prevSerial.available() && (prevSerialState<sizeof(COMSTART))) {
-          if (prevSerial.read() == COMSTART[prevSerialState]) {
+          char b = prevSerial.read();
+	  if (b == COMSTART[prevSerialState]) {
 		prevSerialState ++;
-		sprint("-");sprint(prevSerialState);
+		//sprint("-");sprint(prevSerialState);
 	  } else {
-		sprint(".");
+		sprint(".");sprint((int)b);
 	  }
        }
        return (prevSerial.available() && (prevSerialState == sizeof(COMSTART)));
@@ -986,8 +987,8 @@ void handleKeyboardInput() {
 		   if (updateClock) {
 			   syncInitTime = millis()-syncLoopTime;
 		   }
-		   nextSerialPrintln(0); nextSerial.write("T"); 
 		   prevSerialState = 0;
+		   nextSerialPrintln(0); nextSerial.write("T"); 
 		   if ((abs(s) >= 20) && showShift) {
 		   	 sprint("["); sprint(syncInitTime); sprint (" / "); sprint(syncLoopTime); sprint("] shift: "); sprint(s); sprint("     \r");
 		   }
@@ -1276,7 +1277,7 @@ syncLoopTime = atoi(CMD);
 	  Serial.println(myID);
 	  if (isMaster && (myID==-1)) {
 	  	myID = 0;
-	  	nextSerial.print("B1");
+	  	nextSerialPrintln("B1");
 	  }
 	  break;
 	case 'c': // Calibrate
@@ -1766,7 +1767,7 @@ void sprintLoopEvents() {
 
 void loop(){
   showClockIfNeeded();
-  if (time > keepalive) { nextSerial.print("      "); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
+  if (time > keepalive) { nextSerialPrint("      "); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
 
   time = millis();
   
