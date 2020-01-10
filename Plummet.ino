@@ -457,7 +457,7 @@ boolean myservoattached() {
 void myservodetach() {
   if (SERVO_VIA_TIMER1) {
 #ifdef USE_TIMER1
-    if (servoAttached) {
+    if (servoAttached) {sprint("tccr");
 		originalTCCR1A = TCCR1A;
 		Timer1.disablePwm(servoPin);
 		Timer1.stop();
