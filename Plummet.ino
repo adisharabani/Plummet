@@ -1781,7 +1781,7 @@ void playAudioIn(int phase, int offset) {
 	} else {
 		audioTime = audioTime - offset + int(offset/audioSnapToGrid)*audioSnapToGrid;
 	}
-	sprint("A:");sprintln(audioTime-millis());
+	//sprint("A:");sprintln(audioTime-millis());
 }
 
 void showClockIfNeeded() {
