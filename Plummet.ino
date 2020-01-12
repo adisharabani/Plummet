@@ -752,7 +752,7 @@ char KB[KBSIZE];
 char *CMD=KB;
 
 boolean commandAvailable() {
-  return (isPlaying && (nextCommandTime != MAX_UINT) && (millis() > nextCommandTime*1000+playInitTime));
+  return (isPlaying && (nextCommandTime != MAX_UINT) && (nextCommandTime < (millis()-playInitTime)/1000));
 }
 
 byte COMSTART[] = {111,110,112};
@@ -1407,6 +1407,14 @@ syncLoopTime = atoi(CMD);
   }
 }
 
+//typedef struct Command {
+//	int time;
+//	char cmd[];
+//} Command;
+
+//Command timeline[] = { {0,"9"}, {1,"1"}, {5,":w:-0.1h"},{5,"s"}, {5, "S"}}; 
+//int8_t timelineIndex = -1;
+//#define nextCommand timeline[time
 
 void startPlaySequence() {
 	if (eread(EEPROM_COMMANDS_LOC-2) != EEPROM_MAGIC) {
