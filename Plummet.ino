@@ -1610,6 +1610,15 @@ void updateAmpAndTime(bool runNow=false) {
 			}
 			//sprint(" X");sprint(X);sprint(",");sprint(Y);sprint(";");sprint(tPhase);
 			loopTime = mlLoopTime * LOOP_INTERVAL - (LOOP_INTERVAL-1)*ML_loop_default;
+
+			if ((mode == STOPPING) && (ropeAngle>syncRopeAngle - 0.05)) {
+				loopTime = ML_loop_default - 100;
+				servoAmp = 80;
+				tPhase = 0.75;
+				requestedNLoops = 2;
+				updateMLModel = false;
+			}
+
 			//waitForTime = millis() + (LOOP_INTERVAL-0.5)*defaultLoopTime;
 			waitForTime = millis() + requestedNLoops * loopTime + (LOOP_INTERVAL-1.5) * ML_loop_default;
 
