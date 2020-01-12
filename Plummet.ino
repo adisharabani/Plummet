@@ -113,9 +113,9 @@ int8_t audioSongNumber = 1;
 int8_t maxAudioVolume = 15;
 int8_t audioVolume = maxAudioVolume;
 bool audioVolumeAdaptive = false;
-unsigned int audioDelay = 0; // in milliseconds
-unsigned int audioSnapToGrid = 10; // in milliseconds
-unsigned int audioSnapToSync = 50;
+int audioDelay = 0; // in milliseconds
+int audioSnapToGrid = 10; // in milliseconds
+int audioSnapToSync = 50;
 boolean showLoopEvents = false;
 
 #define EEPROM_MAGIC 5613
@@ -1501,7 +1501,10 @@ void updateAmpAndTime(bool runNow=false) {
 	
 	if (offset > syncLoopTime/2) offset = offset - syncLoopTime;
 
-	
+	if ((side == RIGHT) && (!runNow)) {
+		playAudioIn(loopTime/4,offset);
+	}
+
 	if (runNow) {
 		waitLoops = 0;
 		updateMLModel = false;
@@ -1767,26 +1770,18 @@ left_right_e direction = RIGHT;
 #define itIsTime(x) ((time>=x) && (lastIterationTime<x))
 
 unsigned long audioTime=0;
-void playAudioIn(int phase, int syncedPhase) {
+void playAudioIn(int phase, int offset) {
 	double ropeAngle = (ropeMaxRightAngle-ropeMaxLeftAngle);
 	audioVolume = (audioVolumeAdaptive ? min(max(ropeAngle/syncRopeAngle,0),1) : 1.0) * maxAudioVolume;
 
-	audioTime = time + phase;
+	audioTime = millis() + phase;
 	// Snap to Sync
-	int offsetToSync = (audioTime - (syncInitTime+syncInitTimeOffset)) % syncLoopTime - syncedPhase;
-	if (abs(offsetToSync) <= audioSnapToSync) {
-		audioTime = audioTime - offsetToSync;
+	if (abs(offset) <= audioSnapToSync) {
+		audioTime = audioTime - offset;
 	} else {
-		int offsetToGrid = ((audioTime - (syncInitTime+syncInitTimeOffset)) % syncLoopTime) % audioSnapToGrid;
-
-		// new audioTime is either audioTime-offsetToGrid or audioTime-offsetToGrid+snapToGrid;
-		if (offsetToGrid < audioSnapToGrid/2) {
-			audioTime = audioTime - offsetToGrid;
-		} else {
-			audioTime = audioTime - offsetToGrid + audioSnapToGrid;
-		}
-		
+		audioTime = audioTime - offset + int(offset/audioSnapToGrid)*audioSnapToGrid;
 	}
+	sprint("A:");sprintln(audioTime-millis());
 }
 
 void showClockIfNeeded() {
@@ -1905,7 +1900,6 @@ void loop(){
 	side = RIGHT;
 	lastLoopTime = time-rightTime;
 	rightTime = time;
-	playAudioIn(loopTime/4,syncLoopTime/4);
 
 	sprintLoopEvents();
 //	tone(7, NOTE_G5, 100);
