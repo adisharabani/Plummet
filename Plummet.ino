@@ -87,7 +87,7 @@
 int8_t myID = -1;
 int SYNC_MAGIC_NUMBER=-250;
 
-int defaultLoopTime = 3561; //Palo Alto: 3080; // 3160; // 3420;
+int defaultLoopTime = 3564; //Palo Alto: 3080; // 3160; // 3420;
 // int defaultLoopTime = 3080; // Palo Alto
 
 
@@ -193,9 +193,10 @@ double ropeMaxRightAngle = 0;
 double maxPotRead = 0;
 double minPotRead = 1024;
 
-unsigned long syncInitTime = 0;
+unsigned long syncInitTime = 3000;
 int syncInitTimeOffset = 0;
-int syncLoopTime=3501;
+int syncLoopTime=3564;
+double defaultSyncRopeAngle=0.3;
 double syncRopeAngle=0.3;
 double syncPhase;
 boolean updateSlaveClock = false;
@@ -1172,7 +1173,13 @@ syncLoopTime = atoi(CMD);
 	  sprint("SYNC");sprint(syncLoopTime); sprint(","); sprintln(syncRopeAngle);
 	  break;
 	case '[':
-	  syncRopeAngle = min(max(syncRopeAngle-0.01,0),0.4);
+	  d = atof(CMD);
+	  if (d>0) {
+		syncRopeAngle=d;
+		KB[0]=0;CMD=KB;
+	  } else {
+	  	syncRopeAngle = min(max(syncRopeAngle-0.01,0),0.4);
+	  }
 	  sprint("SyncAngle: ");
 	  sprintln(syncRopeAngle);
 	  break;
