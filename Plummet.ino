@@ -87,7 +87,7 @@
 int8_t myID = -1;
 int SYNC_MAGIC_NUMBER=-250;
 
-int defaultLoopTime = 3167; //Palo Alto: 3080; // 3160; // 3420;
+int defaultLoopTime = 3561; //Palo Alto: 3080; // 3160; // 3420;
 // int defaultLoopTime = 3080; // Palo Alto
 
 
@@ -571,7 +571,7 @@ void calibrate() {
   sprint("servoCenter: "); sprintln(servoCenter);
   
   sprint("Old ");sprint("PotCenter: "); sprintln(potCenter);
-  potCenter = waitForSteadiness(2,6000);  
+  potCenter = waitForSteadiness(3,6000);  
   sprint("PotCenter: "); sprintln(potCenter);
 
   smoothMove(servoCenter-50,4000); 
@@ -693,6 +693,14 @@ void printMLPoint(double phase, int amp) {
 	  sprint("aLT:"); sprint(loop * LOOP_INTERVAL - (LOOP_INTERVAL-1)*ML_loop_default);sprintln("");
 }
 
+void setDefaultCalibration() {
+		ML_loop_default = 3567;
+		ML_loop_mult = 1.28;
+		ML_angle_default = -0.02483;
+		ML_angle_mult = 0.00199;
+		ML_count = 2;
+}
+
 void readCalibration() {
 	int version = 0;
 	if (eread(0) == EEPROM_MAGIC) { // confirm magic number
@@ -719,11 +727,7 @@ void readCalibration() {
 		ML_angle_mult = ereadfloat();
 		ML_count = 10;
 	} else {
-		ML_loop_default = defaultLoopTime;
-		ML_loop_mult = 1.273;
-		ML_angle_default = -0.011;
-		ML_angle_mult = 0.0016;
-		ML_count = 2;
+		setDefaultCalibration();
 	}
 
 	avg_l = ML_loop_default / 2.0; // loop default;
@@ -897,6 +901,8 @@ char * forwardCommand() {
 	   	  nextSerialPrintln(KB);
 	      break;
 	   case '#':
+	   case 'c':
+	   case 'C':
 	   case ':':
 	   case 'U':
 	   case 'e':
@@ -994,8 +1000,8 @@ void handleKeyboardInput() {
 		   if ((abs(s) >= 20) && showShift) {
 		   	 sprint("["); sprint(syncInitTime); sprint (" / "); sprint(syncLoopTime); sprint("] shift: "); sprint(s); sprint("     \r");
 		   }
-		 } else if (inByte == 'k') { // todo remove keepalive
-		   prevSerialState = 0;
+//		 } else if (inByte == 'k') { /* todo remove keepalive */
+//		   prevSerialState = 0;
 		 } else if (inByte == 'Q') {
 		   // Delete command
 		   KB[0] = 0; kblength =0; inByte =0;
@@ -1072,6 +1078,18 @@ void handleKeyboardInput() {
 	  setMode(HALT); sprintln("HALT");
 	  smoothMove(servoCenter);
 	  break;
+	case 'M': // ML Calibration
+	  if (CMD[0] == '0') setDefaultCalibration();
+	  ML_count = 2;
+	  mPhase = mPhaseFrom = 0; mPhaseTo=0.5; mPhaseJump = 0.1;
+	  mAmp = mAmpFrom = 0; mAmpTo = 40; mAmpJump = 20;
+	  mLoopTime = mLoopTimeFrom = mLoopTimeTo = 0;
+	  mNLoops = 1;
+	  setMode(MACHINE_LEARNING);
+	  sprint("ML Calibrate");
+	  KB[0] = 0; CMD=KB;
+	  break;
+
 	case 'm': // MACHINE_LEARNING 
 	//Quick Learn m0,0.5,0.1,0,40,20
 	//Stop Learn m0.75,0.75,0.1,45,60,2,3000,3000,50,2
@@ -1290,6 +1308,7 @@ syncLoopTime = atoi(CMD);
 	case 'C': // Save calibration
 	  writeCalibration();
 	  break;
+
 	case 'l': /* Calibrate loop time */
 	  if (CMD[0] == '=') {
 	  	  defaultLoopTime = atoi(CMD+1);
@@ -1516,7 +1535,7 @@ void updateAmpAndTime(bool runNow=false) {
 			
 #define ML_UPDATE(a,b) a = a*(ML_count/(ML_count+1.0)) + b/(ML_count+1.0)
 			//learn:
-			if (!isFirstIter && (mAmp < maxServoAmp) && (updateMLModel)) {
+			if (!isFirstIter && (mAmp < maxServoAmp) && (updateMLModel) && (ropeAngle<syncRopeAngle + 0.08)) {
 				sprint(" * ");
 				
 				// Update 
@@ -1655,7 +1674,7 @@ void updateAmpAndTime(bool runNow=false) {
 			sprint("Quick Start");
 			servoAmp = maxServoAmp;
 			loopTime = syncLoopTime;
-			initTime = syncInitTime + (side==LEFT ? 0.25 : 0.75)  * syncLoopTime;
+			initTime = syncInitTime + 0.75 * syncLoopTime;
 			requestedNLoops = 2;
 			waitForTime = millis() + requestedNLoops * loopTime + (LOOP_INTERVAL-1.5) * ML_loop_default;
 						
@@ -1718,7 +1737,7 @@ void setup() {
   pinMode(13, OUTPUT); digitalWrite(13, LOW);
 }
 
-unsigned long keepalive = 0;
+//unsigned long keepalive = 0;
 
 left_right_e direction = RIGHT;
 #define itIsTime(x) ((time>=x) && (lastIterationTime<x))
@@ -1771,7 +1790,7 @@ void sprintLoopEvents() {
 
 void loop(){
   showClockIfNeeded();
-  if (time > keepalive) { nextSerialPrintln("k",false); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
+//  if (time > keepalive) { nextSerialPrintln("k",false); keepalive = time + 1000; }  // inform slaves they are slaves every 1 seconds;
 
   time = millis();
   
