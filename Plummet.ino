@@ -1698,7 +1698,7 @@ void updateAmpAndTime(bool runNow=false) {
 			sprint("Quick Start");
 			servoAmp = maxServoAmp;
 			loopTime = syncLoopTime;
-			initTime = syncInitTime + 0.75 * syncLoopTime;
+			initTime = syncInitTime + syncInitTimeOffset + 0.75 * syncLoopTime;
 			requestedNLoops = 2;
 			waitForTime = millis() + requestedNLoops * loopTime + (LOOP_INTERVAL-1.5) * ML_loop_default;
 						
