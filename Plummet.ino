@@ -327,10 +327,10 @@ void ereadstr(int index, char *p, int maxSize) { // todo: MAXSIZE
   return;
 }
 
-void eprintstr(int index=-1) {
+void eprintstr(int index=-1,bool isPrint=true) {
   if (index!=-1) eIndex = index;
   while (char c = EEPROM.read(eIndex++)) {
-  	sprint(c);
+  	if (isPrint) sprint(c);
   }
 }
 //////////////////////////////
@@ -593,7 +593,7 @@ void calibrate() {
   sprint(potCenter); sprint(" ");
   sprint(pot50); sprint(" ");
   sprint(pot150); sprint(" ");
-  sprint(loopTime); sprintln("");
+  sprintln(loopTime); 
 }
 /*
 void calibrateLoopTime() { 
@@ -679,8 +679,7 @@ void printCurrentCalibration() {
   sprint(" pot50="); sprint(pot50);
   sprint(" pot150="); sprint(pot150);
   sprint(" loopTime="); sprint(defaultLoopTime);
-  sprint(" isMaster="); sprint(isMaster);
-  sprintln("");
+  sprint(" isMaster="); sprintln(isMaster);
   printMLData(); 
 }
 
@@ -691,7 +690,7 @@ void printMLPoint(double phase, int amp) {
 	  sprint("f("); sprint(phase); sprint(", "); sprint(amp); sprint(") = ("); 
 	  sprint(loop); sprint("ms, "); 
 	  sprint(angle); sprint(") ");
-	  sprint("aLT:"); sprint(loop * LOOP_INTERVAL - (LOOP_INTERVAL-1)*ML_loop_default);sprintln("");
+	  sprint("aLT:"); sprintln(loop * LOOP_INTERVAL - (LOOP_INTERVAL-1)*ML_loop_default);
 }
 
 void setDefaultCalibration() {
@@ -1353,14 +1352,20 @@ syncLoopTime = atoi(CMD);
 	  sprint("Audio "); sprint(enableAudio ? "on" : "off"); sprint(" song="); sprint(audioSongNumber); sprint(" vol="); sprint(maxAudioVolume); sprint(" stg=");sprint(audioSnapToGrid);sprint(" sts=");sprint(audioSnapToSync); sprint(" delay=");sprint(audioDelay); sprint(" adaptive="); sprintln(audioVolumeAdaptive);
 	  break;
 	case 'P': // Play
-	  if (!isPlaying) {
+	  if (CMD[0] == 'P') {
+		printCommands();
+		KB[0] = 0; CMD = KB;
+	  } else if (!isPlaying) {
 		startPlaySequence();
 	  } else {
 		stopPlaySequence();
 	  }
 	  break;
 	case 'R': // Record
-	  if (cmdOriginFromRecordedSequence) {
+	  if (CMD[0] == 'R') {
+	  	importCommand(CMD+1);
+		KB[0] = 0; CMD = KB;
+	  } else if (cmdOriginFromRecordedSequence) {
 	  	if (isPlaying) {
 	  		if (isAutoPlay) {
 	  			startPlaySequence();
@@ -1422,16 +1427,7 @@ void startPlaySequence() {
 	} 
 
 	if (!isMaster) return;
-	// Print commands:
-	unsigned int commandTime = eread(EEPROM_COMMANDS_LOC);
-  	sprintln("Recorded Commands");
-  	while (commandTime != MAX_UINT) {
-  		 sprint(commandTime);
-  		 sprint("s: ");
-  		 eprintstr();
-  		 sprintln("");
-  		 commandTime = eread();
-	}
+	printCommands();
 	
 	nextCommandTime = eread(EEPROM_COMMANDS_LOC);
 	nextCommandLoc = eIndex;
@@ -1440,6 +1436,48 @@ void startPlaySequence() {
 	} else {
 	  	isPlaying = true;
 	  	playInitTime = millis();
+	}
+}
+
+void importCommand(char *cmd) {
+	// TODO: Write eprommagic;
+	eIndex = EEPROM_COMMANDS_LOC;
+	
+	for (int i = atoi(cmd); i>0; i--) {
+		if (eread() == MAX_UINT) {
+			sprintln("Bad");
+			return;
+		}
+		eprintstr(-1,false); 
+	}
+
+	int p = find(cmd, ':');
+	if (p==-1) { sprintln("BAd");return;}
+	unsigned int commandTime = atoi(cmd+p+1);
+
+	p = find(cmd,',');	
+	if (p==-1) { sprintln("BAD");return;}
+	cmd = cmd+p+1;
+
+	cmd[strcspn(cmd,"\r\n")] = 0; // trim newline
+
+	ewrite(commandTime);
+	ewrite(cmd);
+	ewrite(MAX_UINT);
+}
+
+void printCommands() {
+	// Print commands:
+	unsigned int commandTime = eread(EEPROM_COMMANDS_LOC);
+	sprintln("Recorded Commands");
+	int i =0;
+	while (commandTime != MAX_UINT) {
+		 sprint("RR"); sprint(i++);sprint(":");
+		 sprint(commandTime);
+		 sprint(",");
+		 eprintstr();
+		 sprintln("");
+		 commandTime = eread();
 	}
 }
 
@@ -1857,8 +1895,7 @@ void loop(){
 	sprint(" Servo: "); sprint(currentServoPos);
 	sprint(" potAng: "); sprint(potAngle);
 	sprint(" servoAng: "); sprint(servoAngle);
-	sprint(" ropeAng: "); sprint(ropeAngle);
-	sprintln("");
+	sprint(" ropeAng: "); sprintln(ropeAngle);
   }
   
   // Play Audio
@@ -1874,8 +1911,7 @@ void loop(){
 	  sprint("pot update "); sprint(potCenter); sprint (" -> "); 
 	  potCenter = (maxPotRead+minPotRead)/2;
 	  sprint(potCenter);
-	  sprint("\r");
-	  sprintln("");
+	  sprintln("\r");
 	  updatePotCenter = false;
         } else { sprint("&&&");}
 	maxPotRead = 0; minPotRead = 1024; lastPosCenterUpdate = millis();
