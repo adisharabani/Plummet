@@ -413,7 +413,7 @@ fi
 
 
 if [ "$1" = import ]; then
-	fname=${2:-$(ls Exports/* | sort | head -n 1)}
+	fname=${2:-$(ls Exports/* | sort | tail -1)}
 	masterScreen=$($0 getMaster)
 	if [ "$masterScreen" = "" ]; then
 		echo "No Master Screen"
