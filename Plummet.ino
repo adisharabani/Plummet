@@ -1545,7 +1545,7 @@ void updateAmpAndTime(bool runNow=false) {
 	}
 
 	if (runNow) {
-		waitLoops = 0;
+	//	waitLoops = 0;
 		updateMLModel = false;
 	}
 
