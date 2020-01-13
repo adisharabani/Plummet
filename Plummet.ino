@@ -1766,8 +1766,8 @@ void updateAmpAndTime(bool runNow=false) {
 //////////////////////////////
 void setup() {
   KB[0] = 0; CMD=KB;
-  pinMode(13, OUTPUT); digitalWrite(13, HIGH);
-  Serial.begin(9600);
+  //pinMode(13, OUTPUT); digitalWrite(13, HIGH);
+  //Serial.begin(9600);
   Serial.print("v");
   Serial.print(PLUMMET_VERSION);
 
@@ -1796,9 +1796,9 @@ void setup() {
   	isAutoPlay = eread(EEPROM_COMMANDS_LOC-4);
   }
 
-  if (isAutoPlay) startPlaySequence();
+  if (isMaster && isAutoPlay) startPlaySequence();
 
-  pinMode(13, OUTPUT); digitalWrite(13, LOW);
+  //pinMode(13, OUTPUT); digitalWrite(13, LOW);
 }
 
 //unsigned long keepalive = 0;
