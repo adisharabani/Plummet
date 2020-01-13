@@ -900,7 +900,6 @@ char * forwardCommand() {
 	   	  }
 	   	  nextSerialPrintln(KB);
 	      break;
-	   case '#':
 	   case 'c':
 	   case 'C':
 	   case ':':
@@ -1065,6 +1064,9 @@ void handleKeyboardInput() {
 	  }
 //	  sprint("showLoopEvents="); sprintln(showLoopEvents ? "on" : "off");
 	  break;
+	case '?': 
+	  sprint("Mode="); sprintln(mode);
+	  break;
 	case '0':
 	  updatePotCenter = true;
 	  break;
@@ -1221,7 +1223,7 @@ syncLoopTime = atoi(CMD);
 	  sprint ("Offset:");sprintln(syncInitTimeOffset);
 	  //servoAmp = 20;
 	  break;
-	case 'S': /* SYNC to an already set clock (don't update the clock) */
+	case 'S': // SYNC to an already set clock (don't update the clock) 
 	  if(CMD[0]!='\n') syncInitTimeOffset = atoi(CMD);
 	  sprint ("Offset:");sprintln(syncInitTimeOffset);
 	  KB[0]=0; CMD=KB;
@@ -1278,7 +1280,7 @@ syncLoopTime = atoi(CMD);
 // #endif
 	 sprintln(SERVO_VIA_TIMER1 ? "Using T1" : "Using Servolib");
 	 break; 
-	case 'B': // Are you a master?
+	case 'B': // which device is this 
 	  Serial.print("I am ");
 	  Serial.print(isMaster ? "master" : "slave"); 
 	  Serial.print(" #");
@@ -1904,7 +1906,7 @@ void loop(){
   }
 
   static unsigned long lastPosCenterUpdate = millis();
-  if (((mode == HALT) || (mode==STOPPING)) && // (lastPosCenterUpdate + 6000 < millis()) && 
+  if ((mode == HALT) && // (lastPosCenterUpdate + 6000 < millis()) && 
       (millis()-lastPosCenterUpdate > loopTime * 1.5) && updatePotCenter) {
 	if ( (maxPotRead>=minPotRead) && (maxPotRead-minPotRead<30)) {
 	  sprint("pot update "); sprint(potCenter); sprint (" -> "); 
