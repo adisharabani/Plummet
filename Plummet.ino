@@ -1171,7 +1171,7 @@ syncLoopTime = atoi(CMD);
 	  KB[0] = 0; CMD=KB;
 	  sprint("SYNC");sprint(syncLoopTime); sprint(","); sprintln(syncRopeAngle);
 	  break;
-	case '[':
+/*	case '[':
 	  d = atof(CMD);
 	  if (d>0) {
 		syncRopeAngle=d;
@@ -1187,6 +1187,8 @@ syncLoopTime = atoi(CMD);
 	  sprint("SyncAngle: ");
 	  sprintln(syncRopeAngle);
 	  break;
+
+*/
     case '%': // disable clock update
       showShift = !showShift;
       sprintln(showShift);
@@ -1204,14 +1206,6 @@ syncLoopTime = atoi(CMD);
 	  break;
 	case 'U': // Update slaves on current Sync Clock
 	  updateSlaveClock = true;
-	  break;
-	case '{': // Offset the SYNC clock forward (1/32 of a loop)
-	  syncInitTimeOffset -= 10;
-	  sprint ("Offset:");sprintln(syncInitTimeOffset);
-	  break;
-	case '}': // Offset the SYNC clock backwards (1/32 of a loop)
-	  syncInitTimeOffset += 10;
-	  sprint ("Offset:");sprintln(syncInitTimeOffset);
 	  break;
 	case 'h': // Offset the Sync clock by half loop
 	  if (CMD[0]!='\n') {
@@ -1331,16 +1325,21 @@ syncLoopTime = atoi(CMD);
 	case 'a': // play audio
 	  playSong(audioSongNumber, maxAudioVolume);
 	  break;
+	case 'V': // set audio volume
+	  if (CMD[0]!='\n') maxAudioVolume = atoi(CMD);
+	  sprint("Volume "); sprintln(maxAudioVolume);
+	  KB[0] = 0;CMD=KB;
+	  break;
 	case 'A': // Audio config #,Vol,STG,STS,delay,adaptive?
-	  if (CMD[0]=='\n'){
-	  	enableAudio = !enableAudio;
+	  if (CMD[0]=='+'){
+	  	enableAudio = true; CMD +=1;
+	  } else if (CMD[0]=='-') {
+		enableAudio = false; CMD +=1;
 	  }
 	  s = atoi(CMD);
 	  if (s>0) audioSongNumber = s;
 
 	  p = find(CMD, ',');
-	  if (p!=-1) maxAudioVolume = atoi(CMD+p+1);
-	  if (p!=-1) p = find(CMD, ',', p+1);
 	  if (p!=-1) audioSnapToGrid = atoi(CMD+p+1);
 	  if (p!=-1) p = find(CMD, ',', p+1);
 	  if (p!=-1) audioSnapToSync = atoi(CMD+p+1);
@@ -1349,7 +1348,7 @@ syncLoopTime = atoi(CMD);
 	  if (p!=-1) p = find(CMD, ',', p+1);
 	  if (p!=-1) audioVolumeAdaptive = CMD[p+1]!='0';
 	  KB[0] = 0; CMD=KB;
-	  sprint("Audio "); sprint(enableAudio ? "on" : "off"); sprint(" song="); sprint(audioSongNumber); sprint(" vol="); sprint(maxAudioVolume); sprint(" stg=");sprint(audioSnapToGrid);sprint(" sts=");sprint(audioSnapToSync); sprint(" delay=");sprint(audioDelay); sprint(" adaptive="); sprintln(audioVolumeAdaptive);
+	  sprint("Audio "); sprint(enableAudio ? "on" : "off"); sprint(" song="); sprint(audioSongNumber); sprint(" stg=");sprint(audioSnapToGrid);sprint(" sts=");sprint(audioSnapToSync); sprint(" delay=");sprint(audioDelay); sprint(" adaptive="); sprintln(audioVolumeAdaptive);
 	  break;
 	case 'P': // Play
 	  if (CMD[0] == 'P') {
