@@ -1767,7 +1767,7 @@ void updateAmpAndTime(bool runNow=false) {
 void setup() {
   KB[0] = 0; CMD=KB;
   //pinMode(13, OUTPUT); digitalWrite(13, HIGH);
-  //Serial.begin(9600);
+  Serial.begin(9600);
   Serial.print("v");
   Serial.print(PLUMMET_VERSION);
 
