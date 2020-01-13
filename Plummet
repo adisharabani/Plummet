@@ -115,10 +115,10 @@ if [ "$1" = "upload" ]; then
 #    (echo -n; sleep 0.1) | cu -l /dev/$ard &
 #  done
 #  wait
- for ard in $($0 listDevices $2); do
-   stty -F /dev/${ard} cs8 9600 ignbrk -brkint -icrnl -imaxbel -opost -ocrnl -onlret -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke noflsh -ixon -crtscts
- done
-  sleep 4
+# for ard in $($0 listDevices $2); do
+#   stty -F /dev/${ard} cs8 9600 ignbrk -brkint -icrnl -imaxbel -opost -ocrnl -onlret -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke noflsh -ixon -crtscts
+# done
+#  sleep 4
 fi
 
 if [ "$1" = "uploadLoop" ]; then
