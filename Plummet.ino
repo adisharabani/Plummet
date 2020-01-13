@@ -1556,7 +1556,7 @@ void updateAmpAndTime(bool runNow=false) {
 		
 		if (requestedMoveStarted && !runNow) { sprint("in motion [");sprint(requestedNLoops);sprintln("]"); return; }
 		if (waitLoops > 0) { sprint("wait ["); sprint(waitLoops--); sprintln("]"); /*servoAmp = 0;*/ return; }
-		if (millis() < waitForTime) { sprint("waiting "); sprint(waitForTime - millis()); sprintln("ms"); return;}
+		if (!runNow && (millis() < waitForTime)) { sprint("waiting "); sprint(waitForTime - millis()); sprintln("ms"); return;}
 		
 
 		if (mode == ANALYZING) {
