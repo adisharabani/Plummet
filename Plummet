@@ -10,6 +10,7 @@ if [ $# -eq 0 ]; then
  while : ; do
    cmd=$(whiptail --title "Plummet 2.0" --cancel-button "Quit" --menu "Choose an option:" 25 78 16 \
          "Attach" "View and control connected Arduinos." \
+         "Attach Master" "View and control master Arduino." \
          "Upload" "Upload app to the connected Arduinos." \
          "Reorder" "Automatically reorder devices by connection order" \
          "Upload Loop" "Continuesly upload to Arduinos." \
@@ -28,10 +29,10 @@ if [ $# -eq 0 ]; then
    cmd="${cmd,}"
    
    case "$cmd" in 
-     attach)
+     attach | attachMaster | uploadLoop)
         $0 $cmd 
      ;;
-     upload | uploadLoop | compile | setup | update | reorder)
+     upload | compile | setup | update | reorder)
      	nDevices=$( $0 listDevices | wc -l )
      	cmdSuffix=" (${nDevices} arduino${nDevices:+s} connected)"
         
@@ -166,6 +167,11 @@ if [ "$1" = "attach_old" ]; then
  #screen -R -S ${ard} bash -c 'tty > /tmp/screen${ard}; '$0' listCommands; cu -l /dev/'${ard}' -s 38400'
  #screen -R -S ${ard} bash -c 'tty > /tmp/screen${ard}; '$0' listCommands; tail -f /dev/'${ard}' &; cat > /dev/'${ard}
  # ~. to quit CU process
+fi
+
+if [ "$1" = "attachMaster" ]; then
+	masterScreen=$($0 getMaster)
+	$0 attach $masterScreen
 fi
 
 if [ "$1" = "attach" ] || [ "$1" = "record" ]; then
