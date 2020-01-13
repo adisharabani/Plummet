@@ -11,6 +11,7 @@ if [ $# -eq 0 ]; then
    cmd=$(whiptail --title "Plummet 2.0" --cancel-button "Quit" --menu "Choose an option:" 25 78 16 \
          "Attach" "View and control connected Arduinos." \
          "Attach Master" "View and control master Arduino." \
+         "Export" "export timeline to local file." \
          "Upload" "Upload app to the connected Arduinos." \
          "Reorder" "Automatically reorder devices by connection order" \
          "Upload Loop" "Continuesly upload to Arduinos." \
@@ -395,3 +396,39 @@ if [ "$1" = "ml" ]; then
   echo "</body></html>"
 
 fi
+
+if [ "$1" = export ]; then
+	masterScreen=$($0 getMaster)
+	if [ "$masterScreen" = "" ]; then
+		echo "No Master Screen"
+		exit -7
+	fi
+	screen -X at $masterScreen stuff "PP\n"
+	sleep 1
+	screen -X at $masterScreen hardcopy -h /tmp/PP
+	sleep 1
+	mkdir -p Exports
+	cat /tmp/PP |tail  +$(cat /tmp/PP | awk '/Recorded Commands/ {i=NR} END {print i}') | grep ^RR > ${2:-$(date +Exports/Record_%Y_%m_%d-%H:%M.txt)}
+fi
+
+
+if [ "$1" = import ]; then
+	fname=${2:-$(ls Exports/* | sort | head -n 1)}
+	masterScreen=$($0 getMaster)
+	if [ "$masterScreen" = "" ]; then
+		echo "No Master Screen"
+		exit -7
+	fi
+	cat $fname | while read p; do
+		if [[ "$p" = RR* ]]; then
+			echo "$p"
+			screen -X at $masterScreen stuff "${p}\n"
+			sleep 0.2
+		fi
+	done
+	$0 export /tmp/test
+	diff /tmp/test $fname
+	exit $?
+fi
+
+
