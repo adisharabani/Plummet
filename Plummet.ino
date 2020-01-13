@@ -1079,9 +1079,8 @@ void handleKeyboardInput() {
 	  smoothMove(servoCenter);
 	  break;
 	case 'M': // ML Calibration
-	  if (CMD[0] == '0') setDefaultCalibration();
 	  ML_count = 2;
-	  mPhase = mPhaseFrom = 0; mPhaseTo=0.5; mPhaseJump = 0.1;
+	  mPhase = mPhaseFrom = 0; mPhaseTo=1; mPhaseJump = 0.25;
 	  mAmp = mAmpFrom = 0; mAmpTo = 40; mAmpJump = 20;
 	  mLoopTime = mLoopTimeFrom = mLoopTimeTo = 0;
 	  mNLoops = 1;
@@ -1230,6 +1229,7 @@ syncLoopTime = atoi(CMD);
       setMode(SYNCED_RUNNING);
 	  break;
     case '#':
+	  if (CMD[0] == '0') setDefaultCalibration();
 	  s = atoi(CMD); KB[0] = 0; CMD=KB;
 	  if (s>=2) {
 	  	ML_count = s;
