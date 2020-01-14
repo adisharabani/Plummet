@@ -1651,6 +1651,9 @@ void updateAmpAndTime(bool runNow=false) {
 			
 			if (servoAmp > maxServoAmp) {
 				sprint("wanted "); sprint(servoAmp);
+				if (ropeAngle < syncRopeAngle - 0.1) {
+					servoAmp = min(servoAmp,maxServoAmp*3);
+				}
 				requestedNLoops = int(servoAmp/maxServoAmp + 1);
 				servoAmp = min(servoAmp/requestedNLoops,maxServoAmp);
 				X = servoAmp * cos(tPhase*2*PI);
@@ -1658,6 +1661,8 @@ void updateAmpAndTime(bool runNow=false) {
 				mlLoopTime = ML_loop_mult * X + ML_loop_default;
 				mlRopeOffset = ML_angle_mult * Y + ML_angle_default; 
 				sprint("+++");//sprint(offset - (syncLoopTime-mlLoopTime)*LOOP_INTERVAL); sprint(",");sprint(ropeAngle+mlRopeOffset*LOOP_INTERVAL);
+				updateMLModel = false;
+				
 			} else {
 				updateMLModel = true;
 			}
