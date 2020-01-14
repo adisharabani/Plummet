@@ -231,7 +231,7 @@ enum mode_e {
   SYNCED_RUNNING,
   ANALYZING
 };
-mode_e mode;
+mode_e mode = HALT;
 
 void updateAmpAndTime(bool runNow=false); 
 void setMode(mode_e m) {
@@ -1355,7 +1355,6 @@ syncLoopTime = atoi(CMD);
 	case 'P': // Play
 	  if (CMD[0] == 'P') {
 		printCommands();
-		KB[0] = 0; CMD = KB;
 	  } else if (CMD[0]=='+') {
 		startPlaySequence();
 	  } else if (CMD[0]=='-') {
@@ -1365,6 +1364,7 @@ syncLoopTime = atoi(CMD);
 	  } else {
 		stopPlaySequence();
 	  }
+	  KB[0] = 0; CMD = KB;
 	  break;
 	case 'R': // Record
 	  if (CMD[0] == 'R') {
@@ -1391,6 +1391,7 @@ syncLoopTime = atoi(CMD);
 	  isAutoPlay = !isAutoPlay;
 	  if (CMD[0]=='+') isAutoPlay = true;
 	  if (CMD[0]=='-') isAutoPlay = false;
+	  KB[0] = 0; CMD= KB;
 	  sprint("auto play is ");
 	  sprintln(isAutoPlay ? "on" : "off");
 	  ewrite((int)isAutoPlay, EEPROM_COMMANDS_LOC - 4);
@@ -1564,8 +1565,8 @@ void updateAmpAndTime(bool runNow=false) {
 		if (waitLoops > 0) { sprint("wait ["); sprint(waitLoops--); sprintln("]"); /*servoAmp = 0;*/ return; }
 		if (!runNow && (millis() < waitForTime)) { sprint("waiting "); sprint(waitForTime - millis()); sprintln("ms"); return;}
 		
-
-		if (mode==HALT) return;
+		if ((mode == STOPPING) && (lastLoopTime >defaultLoopTime*1.5)) { sprintln("long"); return;}
+		if (mode==HALT) {sprintln("");return;}
 
 		if (mode == ANALYZING) {
 			tPhase = oPhase;

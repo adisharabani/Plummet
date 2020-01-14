@@ -200,7 +200,7 @@ if [ "$1" = "attach" ] || [ "$1" = "record" ]; then
  echo 'mousetrack on' >> /tmp/.screens
  isFirst=1
  for ard in $($0 listDevices $2); do
-   stty -F /dev/${ard} cs8 9600 ignbrk -brkint -icrnl -imaxbel -opost -ocrnl -onlret -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke noflsh -ixon -crtscts
+   stty -F /dev/${ard} cs8 9600 ignbrk -brkint -icrnl -imaxbel -opost -ocrnl -onlret -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke -noflsh -ixon -crtscts
    if [ "$isFirst" = "0" ]; then
       echo split >> /tmp/.screens
       echo focus >> /tmp/.screens
@@ -260,6 +260,7 @@ if [ "$1" = "reorder" ]; then
  echo "Reordering Devices (this may take a few sec)"
  for ard in $($0 listDevicesHelper | tr " " "\n" | sort | cut -d : -f 2-); do
    touch /dev/$ard
+   sleep 0.5
  done
  echo done
 fi
@@ -434,14 +435,23 @@ if [ "$1" = import ]; then
 	exit $?
 fi
 
+if [ "$1" = "getMasterArd" ]; then
+	$0 listDevicesHelper | grep ^#0 | cut -d: -f 2
+fi
+
 if [ "$1" = "morningShow" ]; then
-	master=$($0 getMaster)
+	$0 kill
+	masterArd=$($0 getMasterArd)
 	echo "Master=" $master
-	(echo Y+ ; echo P+; sleep 3) | cu -l /dev/$master -s 9600  
+	(echo Y+ ; echo P+; sleep 3) | cu -l /dev/$masterArd -s 9600  
+	date > /tmp/date
 fi
 
 if [ "$1" = "nightShow" ]; then
-   echo 123
+	$0 kill
+	masterArd=$($0 getMasterArd)
+	echo "Master=" $master
+	(echo Y- ; sleep 3) | cu -l /dev/$masterArd -s 9600  
 fi
 
 
