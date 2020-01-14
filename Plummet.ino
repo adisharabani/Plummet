@@ -1125,7 +1125,11 @@ void handleKeyboardInput() {
 	  sprint(") mNLoops(");sprint(mNLoops);
 	  sprintln(")");
 	  break;
-	case 'o': // ANALYZE Amp,Phase, loopTime, nLoops
+	case 'o':
+	case 'k':
+		KB[0] = 0; CMD = KB;
+		break;
+	case 'O': // ANALYZE Amp,Phase, loopTime, nLoops
 	  if (CMD[0]!='\n'){
 		  oAmp = atoi(CMD);
 		  p = find(CMD, ',');
