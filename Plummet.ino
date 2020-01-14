@@ -1356,6 +1356,10 @@ syncLoopTime = atoi(CMD);
 	  if (CMD[0] == 'P') {
 		printCommands();
 		KB[0] = 0; CMD = KB;
+	  } else if (CMD[0]=='+') {
+		startPlaySequence();
+	  } else if (CMD[0]=='-') {
+		stopPlaySequence();
 	  } else if (!isPlaying) {
 		startPlaySequence();
 	  } else {
@@ -1385,6 +1389,8 @@ syncLoopTime = atoi(CMD);
 	  break;
 	case 'Y': // Autoplay and loop on restart
 	  isAutoPlay = !isAutoPlay;
+	  if (CMD[0]=='+') isAutoPlay = true;
+	  if (CMD[0]=='-') isAutoPlay = false;
 	  sprint("auto play is ");
 	  sprintln(isAutoPlay ? "on" : "off");
 	  ewrite((int)isAutoPlay, EEPROM_COMMANDS_LOC - 4);
