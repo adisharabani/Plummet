@@ -1516,7 +1516,6 @@ double axisToAngle(double x, double y) {
 
 
 void updateAmpAndTime(bool runNow=false) {
-	if (mode==HALT) return;
 	
 	static bool isFirstIter = true;
 	if (runNow) isFirstIter = true;
@@ -1550,14 +1549,13 @@ void updateAmpAndTime(bool runNow=false) {
 		playAudioIn(loopTime/4,offset);
 	}
 
+
 	if (runNow) {
 	//	waitLoops = 0;
 		updateMLModel = false;
 	}
 
-	if ((side==RIGHT) || // && (mode != STOPPING)) ||
-	  //  ((side==LEFT)  && (mode == STOPPING)) ||
-	    runNow) {
+	if ((side==RIGHT) || runNow) {
 		sprint((waitLoops || millis()<waitForTime) ? "\x1b[0;37m" : "\x1b[0;31m");
 		sprint ("["); sprint(lastLoopTime); sprint("]: s="); sprint(syncLoopTime); sprint(",");sprint(syncInitTime); sprint(" offset="); sprint(offset); sprint("ms ropeAngle="); 	sprint(ropeAngle); sprint((ropeAngleOffset > 0) ? "(+" : "(");sprint(ropeAngleOffset); sprint(")");
 		sprint("\x1b[0m");
@@ -1566,6 +1564,8 @@ void updateAmpAndTime(bool runNow=false) {
 		if (waitLoops > 0) { sprint("wait ["); sprint(waitLoops--); sprintln("]"); /*servoAmp = 0;*/ return; }
 		if (!runNow && (millis() < waitForTime)) { sprint("waiting "); sprint(waitForTime - millis()); sprintln("ms"); return;}
 		
+
+		if (mode==HALT) return;
 
 		if (mode == ANALYZING) {
 			tPhase = oPhase;

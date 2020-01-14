@@ -434,4 +434,14 @@ if [ "$1" = import ]; then
 	exit $?
 fi
 
+if [ "$1" = "morningShow" ]; then
+	master=$($0 getMaster)
+	echo "Master=" $master
+	(echo Y+ ; echo P+; sleep 3) | cu -l /dev/$master -s 9600  
+fi
+
+if [ "$1" = "nightShow" ]; then
+   echo 123
+fi
+
 
