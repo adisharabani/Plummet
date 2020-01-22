@@ -1611,7 +1611,7 @@ void updateAmpAndTime(bool runNow=false) {
 				// Update 
 				ML_UPDATE(avg_l, mlLoopTime); ML_UPDATE(avg_x, X); ML_UPDATE(avg_xx,X*X); ML_UPDATE(avg_xl,X*mlLoopTime);
 				ML_UPDATE(avg_r, mlRopeOffset); ML_UPDATE(avg_y, Y); ML_UPDATE(avg_yy,Y*Y); ML_UPDATE(avg_yr,Y*mlRopeOffset);
-				ML_count =min(ML_count, 10000);
+				ML_count =min(ML_count+1, 10000);
 				updateMLModel = false;
 			}
 
