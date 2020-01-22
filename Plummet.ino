@@ -1052,7 +1052,7 @@ void handleKeyboardInput() {
 	  }
 //	  sprint("printMeasures="); sprintln(printMeasures ? "on" : "off");
 	  break;
-	case 'L': // Print loop events (move from RIGHT to left)
+	case 'L': /* Print loop events (move from RIGHT to left) */
 	  showLoopEvents = !showLoopEvents;
 	  enablePrint = true;
 	  if (CMD[0]=='L') {
@@ -1080,7 +1080,7 @@ void handleKeyboardInput() {
 	  setMode(HALT); sprintln("HALT");
 	  smoothMove(servoCenter);
 	  break;
-	case 'M': // ML Calibration
+	case 'M': /* ML Calibration */
 	  //ML_count = 10;
 	  mPhase = mPhaseFrom = 0; mPhaseTo=1; mPhaseJump = 0.25;
 	  mAmp = mAmpFrom = 0; mAmpTo = 40; mAmpJump = 20;
@@ -1091,7 +1091,7 @@ void handleKeyboardInput() {
 	  KB[0] = 0; CMD=KB;
 	  break;
 
-	case 'm': // MACHINE_LEARNING 
+	case 'm': /* MACHINE_LEARNING */
 	//Quick Learn m0,0.5,0.1,0,40,20
 	//Stop Learn m0.75,0.75,0.1,45,60,2,3000,3000,50,2
       if (CMD[0]!='\n') mPhaseFrom = atof(CMD);
@@ -1129,7 +1129,7 @@ void handleKeyboardInput() {
 	case 'k':
 		KB[0] = 0; CMD = KB;
 		break;
-	case 'O': // ANALYZE Amp,Phase, loopTime, nLoops
+	case 'O': /* ANALYZE Amp,Phase, loopTime, nLoops */
 	  if (CMD[0]!='\n'){
 		  oAmp = atoi(CMD);
 		  p = find(CMD, ',');
@@ -1143,7 +1143,7 @@ void handleKeyboardInput() {
 	  setMode(ANALYZING);
 	  KB[0] = 0; CMD=KB;
 	  break;
-	case 't': // TEST 
+	case 't': /* TEST */
 	  /*
 syncLoopTime = atoi(CMD); 
 	  if (syncLoopTime == 0) syncLoopTime = defaultLoopTime;
@@ -1161,7 +1161,7 @@ syncLoopTime = atoi(CMD);
 	  setMode(TESTING); sprintln("TEST");sprint(syncLoopTime); sprint(","); sprintln(syncRopeAngle);
 */
 	  break;
-	case 's': // SYNC
+	case 's': // Set SYNC clock
 	  syncLoopTime = atoi(CMD); 
 	  if (syncLoopTime == 0) syncLoopTime = defaultLoopTime;
 	  syncInitTime = millis();
@@ -1194,22 +1194,22 @@ syncLoopTime = atoi(CMD);
 	  break;
 
 */
-    case '%': // disable clock update
+    case '%': /* disable clock update */
       showShift = !showShift;
       sprintln(showShift);
       break;
-    case '$': // Don't update clock
+    case '$': /* Don't update clock */
       updateClock = !updateClock;
       sprintln(updateClock);
       break;
-	case 'u': // Print phase compared to sync clock
+	case 'u': // Just print phase compared to sync clock
 	  s = atoi(CMD); KB[0] = 0; CMD=KB;
 	  sprint("sync: ");
 	  s = int((millis()-(syncInitTime+syncInitTimeOffset) - s) % syncLoopTime);
 	  if (s>syncLoopTime/2) s=s-syncLoopTime;
 	  sprintln(s);
 	  break;
-	case 'U': // Update slaves on current Sync Clock
+	case 'U': /* Update slaves on current Sync Clock */
 	  updateSlaveClock = true;
 	  break;
 	case 'h': // Offset the Sync clock by half loop
@@ -1234,7 +1234,7 @@ syncLoopTime = atoi(CMD);
 	  //	if (s!=0) syncLoopTime = s;
       setMode(SYNCED_RUNNING);
 	  break;
-    case '#':
+    case '#': // Show age of ML module
 	  if (CMD[0] == '0') setDefaultCalibration();
 	  s = atoi(CMD); KB[0] = 0; CMD=KB;
 	  if (s>=2) {
@@ -1242,7 +1242,7 @@ syncLoopTime = atoi(CMD);
 	  }
 	  printMLData();
 	  break;
-	case 'X': // calc ML for phase,amp
+	case 'X': /* calc ML for phase,amp */
 	  d = atof(CMD);
 	  p = find(CMD,',');
 	  if (p!=-1) s = atoi(CMD+p+1);
@@ -1293,7 +1293,7 @@ syncLoopTime = atoi(CMD);
 
 //	  if (isMaster) tone(7, NOTE_A5, 1000);
 	  break;
-	case '^': // toggle master/slave
+	case '^': /* toggle master/slave */
 	  isMaster = !isMaster;
 	  ewrite(isMaster,14);
 	  Serial.print("I am ");
@@ -1400,10 +1400,10 @@ syncLoopTime = atoi(CMD);
 	  sprintln(isAutoPlay ? "on" : "off");
 	  ewrite((int)isAutoPlay, EEPROM_COMMANDS_LOC - 4);
 	  break;
-	case '*': // Show Clock
+	case '*': /* Show Clock */
 	  showClock = !showClock;
 	  break;
-	case '@': // eprom access
+	case '@': /* eprom access */
 	  if (CMD[0]=='@') {
 	  	readCalibration();
 	  } else {
