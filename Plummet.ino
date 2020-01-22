@@ -176,7 +176,7 @@ double ML_loop_default;
 double ML_angle_default;
 double avg_l, avg_x, avg_xx, avg_xl;
 double avg_r, avg_y, avg_yy, avg_yr;
-int ML_count=10;
+int ML_count=100;
 
 
 unsigned long initTime;
@@ -725,7 +725,7 @@ void readCalibration() {
 		ML_loop_mult = ereadfloat();
 		ML_angle_default = ereadfloat();
 		ML_angle_mult = ereadfloat();
-		ML_count = 10;
+		ML_count = 100;
 	} else {
 		setDefaultCalibration();
 	}
@@ -1081,7 +1081,7 @@ void handleKeyboardInput() {
 	  smoothMove(servoCenter);
 	  break;
 	case 'M': // ML Calibration
-	  ML_count = 2;
+	  //ML_count = 10;
 	  mPhase = mPhaseFrom = 0; mPhaseTo=1; mPhaseJump = 0.25;
 	  mAmp = mAmpFrom = 0; mAmpTo = 40; mAmpJump = 20;
 	  mLoopTime = mLoopTimeFrom = mLoopTimeTo = 0;
@@ -1561,10 +1561,12 @@ void updateAmpAndTime(bool runNow=false) {
 	}
 
 	if ((side==RIGHT) || runNow) {
-		sprint((waitLoops || millis()<waitForTime) ? "\x1b[0;37m" : "\x1b[0;31m");
-		sprint ("["); sprint(lastLoopTime); sprint("]: s="); sprint(syncLoopTime); sprint(",");sprint(syncInitTime); sprint(" offset="); sprint(offset); sprint("ms ropeAngle="); 	sprint(ropeAngle); sprint((ropeAngleOffset > 0) ? "(+" : "(");sprint(ropeAngleOffset); sprint(")");
-		sprint("\x1b[0m");
-		
+		if (mode != HALT) {
+			sprint((waitLoops || millis()<waitForTime) ? "\x1b[0;37m" : "\x1b[0;31m");
+			sprint ("["); sprint(lastLoopTime); sprint("]: s="); sprint(syncLoopTime); sprint(",");sprint(syncInitTime); sprint(" offset="); sprint(offset); sprint("ms ropeAngle="); 	sprint(ropeAngle); sprint((ropeAngleOffset > 0) ? "(+" : "(");sprint(ropeAngleOffset); sprint(")");
+			sprint("\x1b[0m");
+		}
+
 		if (requestedMoveStarted && !runNow) { sprint("in motion [");sprint(requestedNLoops);sprintln("]"); return; }
 		if (waitLoops > 0) { sprint("wait ["); sprint(waitLoops--); sprintln("]"); /*servoAmp = 0;*/ return; }
 		if (!runNow && (millis() < waitForTime)) { sprint("waiting "); sprint(waitForTime - millis()); sprintln("ms"); return;}
@@ -1609,7 +1611,7 @@ void updateAmpAndTime(bool runNow=false) {
 				// Update 
 				ML_UPDATE(avg_l, mlLoopTime); ML_UPDATE(avg_x, X); ML_UPDATE(avg_xx,X*X); ML_UPDATE(avg_xl,X*mlLoopTime);
 				ML_UPDATE(avg_r, mlRopeOffset); ML_UPDATE(avg_y, Y); ML_UPDATE(avg_yy,Y*Y); ML_UPDATE(avg_yr,Y*mlRopeOffset);
-				ML_count ++;
+				ML_count =min(ML_count, 10000);
 				updateMLModel = false;
 			}
 
