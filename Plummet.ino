@@ -177,7 +177,7 @@ double ML_angle_default;
 double avg_l, avg_x, avg_xx, avg_xl;
 double avg_r, avg_y, avg_yy, avg_yr;
 int ML_count=100;
-
+bool updateMachineLearning = true;
 
 unsigned long initTime;
 
@@ -1202,7 +1202,7 @@ syncLoopTime = atoi(CMD);
       updateClock = !updateClock;
       sprintln(updateClock);
       break;
-	case 'u': // Just print phase compared to sync clock
+	case 'u': /* Just print phase compared to sync clock */
 	  s = atoi(CMD); KB[0] = 0; CMD=KB;
 	  sprint("sync: ");
 	  s = int((millis()-(syncInitTime+syncInitTimeOffset) - s) % syncLoopTime);
@@ -1211,6 +1211,10 @@ syncLoopTime = atoi(CMD);
 	  break;
 	case 'U': /* Update slaves on current Sync Clock */
 	  updateSlaveClock = true;
+	  break;
+	case '!': /* Toggle Machine Learning functionality */
+	  updateMachineLearning = !updateMachineLearning ;
+	  sprint("ML "); sprint(updateMachineLearning ? "on" : "off");
 	  break;
 	case 'h': // Offset the Sync clock by half loop
 	  if (CMD[0]!='\n') {
@@ -1242,15 +1246,15 @@ syncLoopTime = atoi(CMD);
 	  }
 	  printMLData();
 	  break;
-	case 'X': /* calc ML for phase,amp */
-	  d = atof(CMD);
-	  p = find(CMD,',');
-	  if (p!=-1) s = atoi(CMD+p+1);
+//	case 'X': /* calc ML for phase,amp */
+//	  d = atof(CMD);
+//	  p = find(CMD,',');
+//	  if (p!=-1) s = atoi(CMD+p+1);
 	  
-	  printMLPoint(d,s);
+//	  printMLPoint(d,s);
 	  
-	  KB[0] = 0; CMD=KB;
-	  break;
+//	  KB[0] = 0; CMD=KB;
+//	  break;
 	case '=': // Move servo to specific location
 	  s = atoi(CMD); KB[0]=0; CMD=KB;
 	  if (s!=0) smoothMove(s);
@@ -1605,13 +1609,13 @@ void updateAmpAndTime(bool runNow=false) {
 			
 #define ML_UPDATE(a,b) a = a*(ML_count/(ML_count+1.0)) + b/(ML_count+1.0)
 			//learn:
-			if (!isFirstIter && (mAmp < maxServoAmp) && (updateMLModel) && (ropeAngle<syncRopeAngle + 0.08)) {
+			if (updateMachineLearning && !isFirstIter && (mAmp < maxServoAmp) && (updateMLModel) && (ropeAngle<syncRopeAngle + 0.08)) {
 				sprint(" * ");
 				
 				// Update 
 				ML_UPDATE(avg_l, mlLoopTime); ML_UPDATE(avg_x, X); ML_UPDATE(avg_xx,X*X); ML_UPDATE(avg_xl,X*mlLoopTime);
 				ML_UPDATE(avg_r, mlRopeOffset); ML_UPDATE(avg_y, Y); ML_UPDATE(avg_yy,Y*Y); ML_UPDATE(avg_yr,Y*mlRopeOffset);
-				ML_count =min(ML_count+1, 10000);
+				ML_count = min(ML_count+1, 10000);
 				updateMLModel = false;
 			}
 
