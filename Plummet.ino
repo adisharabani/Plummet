@@ -48,7 +48,7 @@
 #define SoftwareSerial NeoSWSerial
 #endif
 
-#ifdef USEALTSOFTSERIAL
+#ifdef USE_ALTSOFTSERIAL
 #include <AltSoftSerial.h>
 #define SoftwareSerial AltSoftSerial
 #endif
@@ -196,7 +196,6 @@ double minPotRead = 1024;
 unsigned long syncInitTime = 3000;
 int syncInitTimeOffset = 0;
 int syncLoopTime=3564;
-double defaultSyncRopeAngle=0.3;
 double syncRopeAngle=0.3;
 double syncPhase;
 boolean updateSlaveClock = false;
@@ -213,7 +212,6 @@ boolean isMaster = false;
 unsigned long rightTime = 0;
 unsigned long leftTime = 0;
 
-unsigned long startTime = millis();
 
 enum left_right_e {
   LEFT,
@@ -251,6 +249,8 @@ void setMode(mode_e m) {
 
 #define sprint(s)   if (enablePrint) Serial.print(s)
 #define sprintln(s) if (enablePrint) Serial.println(s)
+#define sprintline() if (enablePrint) Serial.println()
+
 // void sprint(String s){}; void sprint(double s) {}
 // #define sprint(s) 
 // #define sprintln(s)
@@ -487,9 +487,9 @@ double getServoAngle() {
   return -(0.0+myservoread()-servoCenter)/100*(PI/2);
 }
 
-int angleToServo(double angle) {
-  return angle/(PI/2)*100+servoCenter;
-}
+//int angleToServo(double angle) {
+//  return angle/(PI/2)*100+servoCenter;
+//}
 
 double getOcsilatorPos(unsigned long time) {
   return sin(getOcsilatorPhase(time))*servoAmp/2+servoCenter;
@@ -597,7 +597,7 @@ void calibrate() {
 }
 /*
 void calibrateLoopTime() { 
-  sprintln("");
+  sprintline();
   sprint("Old LoopTime "); sprintln(defaultLoopTime);
   smoothMove(servoCenter);
   initTime = millis();
@@ -942,7 +942,7 @@ void handleKeyboardInput() {
 	  if (nextCommandTime != MAX_UINT) {
 		  sprint(" (in "); sprint(nextCommandTime-(millis()-playInitTime)/1000); sprint("s:");eprintstr();sprint(")");
 	  }
-	  sprintln("");
+	  sprintline();
 	  if (kblength==0) {
    	  	return;
    	  }
@@ -970,8 +970,8 @@ void handleKeyboardInput() {
 			   	// don't print the T (update clock command);
 			   	sprint("\r \r");
 			   } else {
-	  			   sprintln("");
-	  		   }*/ sprintln("");
+	  			   sprintline();
+	  		   }*/ sprintline();
 
 			}
 		 } else if (inByte == 127) {
@@ -1428,14 +1428,6 @@ syncLoopTime = atoi(CMD);
   }
 }
 
-//typedef struct Command {
-//	int time;
-//	char cmd[];
-//} Command;
-
-//Command timeline[] = { {0,"9"}, {1,"1"}, {5,":w:-0.1h"},{5,"s"}, {5, "S"}}; 
-//int8_t timelineIndex = -1;
-//#define nextCommand timeline[time
 
 void startPlaySequence() {
 	if (eread(EEPROM_COMMANDS_LOC-2) != EEPROM_MAGIC) {
@@ -1492,7 +1484,7 @@ void printCommands() {
 		 sprint(commandTime);
 		 sprint(",");
 		 eprintstr();
-		 sprintln("");
+		 sprintline();
 		 commandTime = eread();
 	}
 }
@@ -1576,7 +1568,7 @@ void updateAmpAndTime(bool runNow=false) {
 		if (!runNow && (millis() < waitForTime)) { sprint("waiting "); sprint(waitForTime - millis()); sprintln("ms"); return;}
 		
 		if ((mode == STOPPING) && (lastLoopTime >defaultLoopTime*1.5)) { sprintln("long"); return;}
-		if (mode==HALT) {sprintln("");return;}
+		if (mode==HALT) {return;}
 
 		if (mode == ANALYZING) {
 			tPhase = oPhase;
@@ -1604,7 +1596,7 @@ void updateAmpAndTime(bool runNow=false) {
 			mlLoopTime = (time-lastTime) / LOOP_INTERVAL;
 			mlRopeOffset = ropeAngle-lastRopeAngle ;
 
-			sprintln("");
+			sprintline();
 			sprint("\x1b[0;34mMachineLearning "); sprint(lastRopeAngle); sprint(": f("); sprint(mPhase); sprint(", "); sprint(mAmp); sprint(") = ("); sprint(mlLoopTime); sprint("ms, "); sprint(mlRopeOffset); sprint(") "); sprint("LT:"); sprint(mLoopTime);sprint(" ");
 			
 #define ML_UPDATE(a,b) a = a*(ML_count/(ML_count+1.0)) + b/(ML_count+1.0)
@@ -1634,7 +1626,7 @@ void updateAmpAndTime(bool runNow=false) {
 			waitLoops = 0;			
 
 			// calculate desired phase and amp
-			mlLoopTime = syncLoopTime - offset / LOOP_INTERVAL; // desiredLoopTime
+			mlLoopTime = syncLoopTime - offset / LOOP_INTERVAL; // desired loopTime
 			mlRopeOffset = (syncRopeAngle-ropeAngle); //desired RopeOffset
 			
 			if (mode == RUNNING) {
@@ -1802,7 +1794,7 @@ void setup() {
 
   delay(200);
   sendAudioCommand(0X09, 0X02); // Select TF Card
-  sprintln("");
+  sprintline();
   readCalibration();
   sendAudioCommand(0X22, audioVolume);
   
