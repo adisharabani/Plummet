@@ -1,0 +1,318 @@
+Date:   Fri Jan 24 00:00:38 2020     connect to rasp1
+Date:   Thu Jan 23 12:52:03 2020     machine learning now disabled by default
+Date:   Thu Jan 23 06:59:21 2020     ! disables MachineLearning
+Date:   Tue Jan 21 23:01:34 2020     Add +1 for ML_Count every learning
+Date:   Wed Jan 22 08:48:13 2020     edit Plummnet help menu
+Date:   Tue Jan 21 22:14:38 2020     Max ML_Count, dont show loop events during HALT
+Date:   Tue Jan 14 11:46:20 2020     Risky move - max nl=3 in case syncropeangle-0.1 angle
+Date:   Tue Jan 14 11:06:04 2020     .
+Date:   Tue Jan 14 10:27:07 2020     timeline
+Date:   Tue Jan 14 10:17:25 2020     ko - removes all line info...
+Date:   Tue Jan 14 09:58:25 2020     start stop cycle even if lower amp
+Date:   Tue Jan 14 09:39:27 2020     some last minute bugs
+Date:   Tue Jan 14 17:07:09 2020     Allow sound during HALT
+Date:   Tue Jan 14 14:52:54 2020     Add Y+, Y-, P+, P- commands
+Date:   Mon Jan 13 10:13:35 2020     wait when performing actions
+Date:   Mon Jan 13 09:58:14 2020     minor changes
+Date:   Mon Jan 13 09:27:43 2020     #0 - reset to default
+Date:   Mon Jan 13 06:15:49 2020     Readd stty
+Date:   Mon Jan 13 06:12:47 2020     fix bug of no serial communication
+Date:   Mon Jan 13 06:00:53 2020     remove stty after upload
+Date:   Mon Jan 13 05:52:02 2020     .
+Date:   Mon Jan 13 04:27:35 2020     autoplay on master only
+Date:   Mon Jan 13 04:20:28 2020     decoupling voice from timeline
+Date:   Mon Jan 13 02:13:03 2020     .
+Date:   Mon Jan 13 01:56:25 2020     .
+Date:   Mon Jan 13 01:55:00 2020     Create export / import functions on the Pineapple
+Date:   Mon Jan 13 10:10:49 2020     Add Attach Master option
+Date:   Mon Jan 13 10:04:31 2020     import and export sequence
+Date:   Sun Jan 12 18:48:43 2020     remove debug print
+Date:   Sun Jan 12 16:30:01 2020     audio
+Date:   Sun Jan 12 15:43:32 2020     Quick Start in sync offset
+Date:   Sun Jan 12 15:05:32 2020     Stop attempt
+Date:   Sun Jan 12 13:33:22 2020     Command line unsigned long problem
+Date:   Sun Jan 12 12:05:39 2020     '[' to change the syncRopeAngle
+Date:   Sun Jan 12 00:50:44 2020     Many sunday morning changes
+Date:   Fri Jan 10 04:59:49 2020     Add debug print in detach
+Date:   Fri Jan 10 04:54:41 2020     .
+Date:   Fri Jan 10 04:43:04 2020     .
+Date:   Fri Jan 10 04:39:44 2020     .
+Date:   Fri Jan 10 04:29:57 2020     Add COMSTART for each communication between arduino (noise protection)
+Date:   Fri Jan 10 03:43:09 2020     4 seconds wait when detaching
+Date:   Fri Jan 10 03:40:53 2020     POS0 handling and stuff
+Date:   Fri Jan 10 12:57:21 2020     set up installs arduino
+Date:   Thu Jan 9 21:02:06 2020     updateMLModel set in different scenarios
+Date:   Thu Jan 9 20:42:40 2020     command 0 to update potCenter
+Date:   Thu Jan 9 20:36:13 2020     s set sync cords, h set offset and S starts the sync
+Date:   Thu Jan 9 10:45:14 2020     first day at site
+Date:   Thu Jan 9 06:12:55 2020     Merge branch 'master' of github.com:adisharabani/Plummet
+Date:   Thu Jan 9 06:12:47 2020     fix bug in X command
+Date:   Thu Jan 9 15:08:10 2020     sync=0.3, isStill starts even if still
+Date:   Mon Jan 6 19:33:48 2020     Save ML Data
+Date:   Sun Jan 5 21:06:16 2020     ML for stopping
+Date:   Sun Jan 5 15:16:20 2020     Use timer1, ML updates during MACHINE_LEARNING mode
+Date:   Sun Jan 5 14:06:53 2020     Switch to ServoLib2
+Date:   Sun Jan 5 11:24:51 2020     Remove tone library
+Date:   Sun Jan 5 11:10:01 2020     Working version + minor changes before starting to work on engine problems
+Date:   Sat Jan 4 05:24:39 2020     Don't Calibrate loopTime
+Date:   Sat Jan 4 05:21:51 2020     .
+Date:   Sat Jan 4 05:06:12 2020     changine phase to phase *pi*2
+Date:   Fri Jan 3 21:22:44 2020     .
+Date:   Fri Jan 3 21:06:46 2020     Compresss
+Date:   Fri Jan 3 20:56:21 2020     .
+Date:   Fri Jan 3 20:49:05 2020     .
+Date:   Fri Jan 3 20:24:53 2020     .
+Date:   Fri Jan 3 20:13:19 2020     more fixes for rope amp
+Date:   Fri Jan 3 19:40:58 2020     Fix ropeamp in machine learning
+Date:   Fri Jan 3 18:32:36 2020     .
+Date:   Fri Jan 3 17:56:37 2020     Merge branch 'master' of github.com:adisharabani/Plummet
+Date:   Fri Jan 3 17:56:29 2020     .
+Date:   Sat Jan 4 03:55:17 2020     .
+Date:   Fri Jan 3 17:50:20 2020     Change ML sum to ML avg
+Date:   Fri Jan 3 16:51:43 2020     .
+Date:   Fri Jan 3 16:36:18 2020     Next generation machine learning
+Date:   Sat Jan 4 00:36:43 2020     Machine learning visualization
+Date:   Fri Jan 3 07:50:09 2020     ml visualization
+Date:   Fri Jan 3 04:24:48 2020     ./
+Date:   Thu Jan 2 17:35:42 2020     Wait exactly 3 cycles between ML Tests
+Date:   Thu Jan 2 17:11:57 2020     Make new arduino as slave by default
+Date:   Thu Jan 2 16:44:50 2020     dicard MAGIC NUMBER in machine learning modules
+Date:   Thu Jan 2 16:38:48 2020     ML now calculates mlLoopTime
+Date:   Thu Jan 2 16:34:44 2020     Remove listenOnPrev - and base logic on isMaster
+Date:   Thu Jan 2 16:28:33 2020     Set Master/Slave manually via ^ command
+Date:   Thu Jan 2 16:00:46 2020     Add ability to record arduino output
+Date:   Thu Jan 2 15:33:37 2020     Attach and record option (currently hidden)
+Date:   Thu Jan 2 08:22:47 2020     Make adaptive audio as default
+Date:   Thu Jan 2 08:20:36 2020     Allow increase or decrease of syncRopeAngle via [ and ]
+Date:   Thu Jan 2 08:06:48 2020     \r before shift
+Date:   Thu Jan 2 08:01:36 2020     allow 'a' even when audio is off
+Date:   Thu Jan 2 07:58:19 2020     Merge branch 'master' of github.com:adisharabani/Plummet
+Date:   Thu Jan 2 17:57:49 2020     Add ml responses
+Date:   Thu Jan 2 07:55:53 2020     wake up master with three spaces instead of two
+Date:   Wed Jan 1 21:54:09 2020     .
+Date:   Wed Jan 1 21:12:32 2020     .
+Date:   Wed Jan 1 20:54:10 2020     Machine Learning Analysis
+Date:   Wed Jan 1 10:45:29 2020     Better clock sync handling + error message
+Date:   Tue Dec 31 15:40:45 2019     recorded commands override keyboard
+Date:   Tue Dec 31 12:12:01 2019     Use sync magic number during stop
+Date:   Tue Dec 31 12:06:30 2019     .
+Date:   Tue Dec 31 12:01:35 2019     Better master detection and handling
+Date:   Tue Dec 31 10:32:09 2019     Better master handling
+Date:   Tue Dec 31 10:10:12 2019     .
+Date:   Tue Dec 31 10:09:36 2019     allow compile time usage of original servo library
+Date:   Tue Dec 31 09:47:43 2019     Show sync clock +-
+Date:   Mon Dec 30 22:11:36 2019     .
+Date:   Mon Dec 30 21:38:19 2019     .
+Date:   Mon Dec 30 16:45:55 2019     compile bug
+Date:   Sun Dec 22 01:04:24 2019     Major refactoring
+Date:   Sat Dec 21 18:26:35 2019     Not tested - added testing function to stop under new model
+Date:   Sat Dec 21 17:59:46 2019     Not tested - smoother move
+Date:   Sat Dec 21 13:52:14 2019     Great Sync Model
+Date:   Fri Dec 20 23:24:47 2019     Test file
+Date:   Fri Dec 20 22:11:56 2019     ML2
+Date:   Fri Dec 20 11:29:43 2019     ?
+Date:   Thu Dec 19 21:46:34 2019     revert more stuff :(
+Date:   Thu Dec 19 21:40:14 2019     rope angle
+Date:   Thu Dec 19 21:24:17 2019     comments changes
+Date:   Thu Dec 19 21:21:44 2019     Revert back to basic working sync
+Date:   Fri Dec 20 07:14:10 2019     Sophisticated but not working well
+Date:   Thu Dec 19 20:56:20 2019     Attempt for more accurate Sync3
+Date:   Thu Dec 19 20:55:11 2019     Attempt for more accurate Sync2
+Date:   Thu Dec 19 20:48:26 2019     Attempt for more accurate Sync
+Date:   Thu Dec 19 20:22:05 2019     Allow Adaptive Audio Volume
+Date:   Thu Dec 19 19:55:52 2019     execute several cycles if long offset
+Date:   Thu Dec 19 19:38:05 2019     Bug fixes
+Date:   Thu Dec 19 19:27:40 2019     Attempts for faster sync start
+Date:   Thu Dec 19 19:10:52 2019     Add colors to Sync mode
+Date:   Thu Dec 19 19:03:01 2019     myservowrite servoCenter at setup()
+Date:   Thu Dec 19 18:58:38 2019     Why am I making more changes???
+Date:   Thu Dec 19 16:59:34 2019     Add ability to set potCenter
+Date:   Thu Dec 19 16:44:28 2019     Some minor tweaks
+Date:   Thu Dec 19 16:10:47 2019     Clean up
+Date:   Fri Dec 20 01:07:12 2019     Sync works nicely
+Date:   Thu Dec 19 10:35:31 2019     .
+Date:   Thu Dec 19 10:31:40 2019     .
+Date:   Thu Dec 19 10:29:27 2019     .
+Date:   Thu Dec 19 10:24:46 2019     .
+Date:   Thu Dec 19 10:15:45 2019     First Smart sync attempt
+Date:   Thu Dec 19 08:49:02 2019     bug fixes in calibrate loop time
+Date:   Wed Dec 18 22:17:31 2019     .
+Date:   Wed Dec 18 21:59:33 2019     Add ability to share screen
+Date:   Wed Dec 18 21:48:03 2019     Analyzing: show ropeAmp compared to oldRopeAmp
+Date:   Wed Dec 18 21:39:01 2019     Allow manual override of loopTime
+Date:   Wed Dec 18 21:31:22 2019     Additional printing for analysis
+Date:   Wed Dec 18 21:20:00 2019     Analysis improvements: Add MAGIC_NUMBER and print old rope Amp
+Date:   Wed Dec 18 21:08:24 2019     Analysis mode - bug fixes
+Date:   Wed Dec 18 20:58:37 2019     Add Analyze mode
+Date:   Thu Dec 19 05:52:57 2019     Add reorder command
+Date:   Wed Dec 18 17:17:10 2019     .
+Date:   Wed Dec 18 17:15:24 2019     .
+Date:   Wed Dec 18 17:08:39 2019     Attach by order
+Date:   Wed Dec 18 14:53:57 2019     Allow Audio Configurations
+Date:   Wed Dec 18 09:43:43 2019     command 'i' shows ID of the device
+Date:   Wed Dec 18 09:36:46 2019     Show ID
+Date:   Mon Dec 16 19:46:38 2019     Nice version of SyncedRunning via t mode. takes time to get there but when it does it looks great. Try t3590
+Date:   Mon Dec 16 19:13:24 2019     .,
+Date:   Mon Dec 16 19:03:39 2019     Another test
+Date:   Mon Dec 16 18:55:06 2019     use defaultLoopTime in calibration
+Date:   Mon Dec 16 18:47:04 2019     .
+Date:   Mon Dec 16 18:43:33 2019     .
+Date:   Mon Dec 16 18:33:56 2019     .
+Date:   Mon Dec 16 18:27:10 2019     .
+Date:   Mon Dec 16 18:22:53 2019     .
+Date:   Mon Dec 16 18:01:09 2019     .
+Date:   Mon Dec 16 17:57:21 2019     .
+Date:   Mon Dec 16 17:54:00 2019     .
+Date:   Mon Dec 16 17:36:04 2019     .
+Date:   Mon Dec 16 17:21:29 2019     .
+Date:   Mon Dec 16 17:10:46 2019     .
+Date:   Mon Dec 16 16:51:52 2019     .
+Date:   Mon Dec 16 15:46:28 2019     .
+Date:   Mon Dec 16 14:42:00 2019     Don't print the 'T' update clock command
+Date:   Mon Dec 16 14:29:42 2019     .
+Date:   Mon Dec 16 14:18:45 2019     .
+Date:   Mon Dec 16 14:09:53 2019     .
+Date:   Mon Dec 16 14:02:00 2019     .
+Date:   Mon Dec 16 14:01:00 2019     .
+Date:   Mon Dec 16 14:00:22 2019     .
+Date:   Mon Dec 16 13:46:38 2019     Move Testing to be the real Stop, and start using Testing for synced running
+Date:   Mon Dec 16 13:34:53 2019     .
+Date:   Mon Dec 16 13:28:08 2019     .
+Date:   Mon Dec 16 13:15:37 2019     .
+Date:   Mon Dec 16 12:52:13 2019     .
+Date:   Mon Dec 16 12:50:13 2019     .
+Date:   Mon Dec 16 12:45:41 2019     testing syncedRunning
+Date:   Mon Dec 16 11:39:45 2019     syncedRunning test 1
+Date:   Mon Dec 16 02:09:31 2019     Comment Lib Servo
+Date:   Mon Dec 16 01:46:07 2019     Shortening strings
+Date:   Mon Dec 16 00:27:00 2019     default sync loop + 30
+Date:   Mon Dec 16 00:15:14 2019     0.3
+Date:   Sun Dec 15 23:41:08 2019     ismaster on prev
+Date:   Sun Dec 15 23:38:43 2019     listenOnPrev
+Date:   Sun Dec 15 23:25:44 2019     Magic=-250, max=80
+Date:   Sun Dec 15 22:08:04 2019     Change maxServoAmp from 80 to 60
+Date:   Sun Dec 15 20:49:44 2019     only update clock if you are master
+Date:   Sun Dec 15 20:47:35 2019     Update arduino clock every cycle
+Date:   Sun Dec 15 20:36:45 2019     EPROM Editor
+Date:   Sun Dec 15 19:41:13 2019     timer
+Date:   Sun Dec 15 19:31:12 2019     More bug fixes
+Date:   Sun Dec 15 19:20:56 2019     bug fixes
+Date:   Sun Dec 15 19:17:55 2019     Cancel arduino if noisy prev data
+Date:   Sun Dec 15 19:13:09 2019     .
+Date:   Sun Dec 15 18:58:05 2019     .
+Date:   Sun Dec 15 18:55:44 2019     fix Compile error
+Date:   Sun Dec 15 18:54:50 2019     hold device if prev data doesn't clear out
+Date:   Sun Dec 15 18:51:56 2019     Read data from prev at setup (and discard it)
+Date:   Sun Dec 15 18:44:20 2019     .
+Date:   Sun Dec 15 17:54:57 2019     .
+Date:   Sun Dec 15 17:49:12 2019     Maybe fix the sync looptime issue
+Date:   Sun Dec 15 17:28:49 2019     audio off option
+Date:   Sun Dec 15 17:09:28 2019     Show clock
+Date:   Sun Dec 15 16:40:14 2019     .
+Date:   Sun Dec 15 16:35:22 2019     .
+Date:   Sun Dec 15 16:22:01 2019     .
+Date:   Sun Dec 15 16:14:28 2019     minor stuff
+Date:   Mon Dec 16 02:04:56 2019     .
+Date:   Sun Dec 15 14:15:26 2019     Add Detach for Timer1
+Date:   Mon Dec 16 00:05:10 2019     Move to NeoSWSerial (doesn't work yet)
+Date:   Sun Dec 15 13:41:51 2019     Ctrl-Z for switching between layouts
+Date:   Sun Dec 15 13:22:55 2019     added none layout
+Date:   Sun Dec 15 11:36:41 2019     Massive change - remove all String usage
+Date:   Sat Dec 14 17:36:43 2019     combine nextSerial and PrevSerial
+Date:   Fri Dec 13 21:16:09 2019     minor fixes
+Date:   Fri Dec 13 19:21:17 2019     horizontal view for Plummet (iPhone support)
+Date:   Fri Dec 13 17:17:52 2019     Calculate phase compared to sync
+Date:   Fri Dec 13 12:36:49 2019     Better String management (not final)
+Date:   Fri Dec 13 11:38:29 2019     Add pin13 led on setup
+Date:   Thu Dec 12 22:54:14 2019     .
+Date:   Thu Dec 12 22:37:19 2019     Add snap to gris (first try - no testing)
+Date:   Thu Dec 12 21:30:45 2019     Reintroduce Timer1
+Date:   Wed Dec 11 23:18:27 2019     Better record management, playback loop, etc.
+Date:   Wed Dec 11 20:51:58 2019     Add special commands to attach function
+Date:   Wed Dec 11 15:36:14 2019     fix read calibration
+Date:   Wed Dec 11 15:32:10 2019     fix read calibration
+Date:   Wed Dec 11 13:37:42 2019     New control screen in Plummet
+Date:   Tue Dec 10 14:40:08 2019     stop test v2
+Date:   Tue Dec 10 22:44:32 2019     set magic to -70, 't' as new stop motion
+Date:   Tue Dec 10 11:40:39 2019     Stop motion via magic number
+Date:   Sun Dec 8 16:22:37 2019     Testing stop motion t
+Date:   Sun Dec 8 16:06:23 2019     Testing stop motion 6
+Date:   Sun Dec 8 16:00:19 2019     Testing stop motion 5
+Date:   Sun Dec 8 15:52:13 2019     Testing stop motion 4
+Date:   Sun Dec 8 15:41:37 2019     Testing stop motion 3
+Date:   Sun Dec 8 15:29:43 2019     testing stop options 3
+Date:   Sun Dec 8 15:21:14 2019     testing stop options 2
+Date:   Sun Dec 8 15:03:08 2019     testing stop options 1
+Date:   Sun Dec 8 13:27:00 2019     update clocks via T and U commands
+Date:   Sun Dec 8 13:13:32 2019     Add Audio config
+Date:   Sun Dec 8 12:04:33 2019     Merge branch 'master' of github.com:adisharabani/Plummet
+Date:   Sun Dec 8 12:04:28 2019     dummy
+Date:   Sun Dec 8 22:03:17 2019     some structure
+Date:   Sat Dec 7 05:19:35 2019     Better wave manipulation
+Date:   Sat Dec 7 04:39:11 2019     Adding even and odd options
+Date:   Sat Dec 7 02:59:28 2019     Fix command forwarding
+Date:   Fri Dec 6 16:20:40 2019     Add record and playback options
+Date:   Thu Dec 5 23:11:37 2019     More cleanup
+Date:   Thu Dec 5 22:59:29 2019     Some clean up 1
+Date:   Fri Dec 6 08:50:39 2019     better random
+Date:   Thu Dec 5 22:43:28 2019     SyncedRun - agree on a syncLoopTime
+Date:   Thu Dec 5 22:37:02 2019     SyncedRun - agree on a syncLoopTime
+Date:   Thu Dec 5 21:58:16 2019     Update clibration thresholds
+Date:   Thu Dec 5 21:48:17 2019     Add better calibration messages
+Date:   Thu Dec 5 20:58:21 2019     Increase calibration's threshold 2
+Date:   Thu Dec 5 20:35:14 2019     Increase calibration's threshold 2
+Date:   Thu Dec 5 20:13:10 2019     Increase calibration's threshold 2
+Date:   Thu Dec 5 20:12:37 2019     Increase calibration's threshold 2
+Date:   Thu Dec 5 19:05:27 2019     Increase calibration's threshold 2
+Date:   Thu Dec 5 18:55:21 2019     Improving calibration 2
+Date:   Thu Dec 5 18:49:47 2019     Improving calibration 2
+Date:   Thu Dec 5 18:43:24 2019     Improving calibration 2
+Date:   Thu Dec 5 18:39:15 2019     Improving calibration 2
+Date:   Thu Dec 5 18:30:06 2019     Improving calibrationw
+Date:   Thu Dec 5 18:18:44 2019     Improving calibrationw
+Date:   Thu Dec 5 17:49:45 2019     loopTime Calibration 10
+Date:   Thu Dec 5 17:31:01 2019     loopTime Calibration 10
+Date:   Thu Dec 5 17:16:37 2019     loopTime Calibration 9
+Date:   Thu Dec 5 17:09:36 2019     loopTime Calibration 8
+Date:   Thu Dec 5 17:07:04 2019     loopTime Calibration 8
+Date:   Thu Dec 5 16:56:59 2019     loopTime Calibration 7
+Date:   Thu Dec 5 16:18:17 2019     loopTime Calibration 6
+Date:   Thu Dec 5 16:14:14 2019     loopTime Calibration 5
+Date:   Thu Dec 5 16:11:00 2019     loopTime Calibration 5
+Date:   Thu Dec 5 16:09:35 2019     loopTime Calibration 5
+Date:   Thu Dec 5 14:21:57 2019     loopTime Calibration 4
+Date:   Thu Dec 5 14:11:48 2019     loopTime Calibration 3
+Date:   Thu Dec 5 14:04:15 2019     loopTime Calibration 2
+Date:   Thu Dec 5 13:55:33 2019     loopTime Calibration 1
+Date:   Thu Dec 5 13:50:24 2019     speed for looptime calibration
+Date:   Thu Dec 5 13:42:50 2019     Merge branch 'master' of github.com:adisharabani/Plummet
+Date:   Thu Dec 5 13:42:43 2019     Calibrate Loop Time (just print - no real calibration)
+Date:   Thu Dec 5 13:21:43 2019     3166
+Date:   Thu Dec 5 09:32:06 2019     verbose compile on update
+Date:   Wed Dec 4 23:30:08 2019     Cancel button as Quit
+Date:   Thu Dec 5 09:26:14 2019     exit note
+Date:   Wed Dec 4 23:17:43 2019     Add splash screen
+Date:   Wed Dec 4 21:54:21 2019     Plummet 2.0 interface
+Date:   Thu Dec 5 05:36:59 2019     minor fix update problem
+Date:   Wed Dec 4 20:31:25 2019     minor fix in git pull
+Date:   Tue Dec 3 23:04:46 2019     Add support for listConnections
+Date:   Tue Dec 3 22:52:44 2019     Massive changes. including better string handling, removal of readnumber etc.
+Date:   Tue Dec 3 17:39:19 2019     Add Help menu to Plummet
+Date:   Tue Dec 3 17:33:54 2019     Removing junk
+Date:   Tue Dec 3 17:32:39 2019     Automatically compile upon update
+Date:   Tue Dec 3 17:27:06 2019     Better screen handling
+Date:   Tue Dec 3 14:38:51 2019     Better attach nevigation
+Date:   Tue Dec 3 23:43:48 2019     Merge branch 'master' of github.com:adisharabani/Plummet
+Date:   Tue Dec 3 23:43:42 2019     comment
+Date:   Tue Dec 3 13:42:32 2019     Multi attach
+Date:   Tue Dec 3 11:30:12 2019     better support for multiple arduinos connected
+Date:   Mon Dec 2 20:46:31 2019     Fix the multi serial problem
+Date:   Mon Dec 2 17:46:20 2019     fix gibrish chars
+Date:   Mon Dec 2 16:20:13 2019     Add cua interface
+Date:   Mon Dec 2 15:25:43 2019     Git stuff
+Date:   Mon Dec 2 15:23:25 2019     support multiple serials
+Date:   Mon Dec 2 11:36:52 2019     Added support for update_many
+Date:   Mon Dec 2 10:43:54 2019     Add Plummet app
+Date:   Sun Nov 24 21:12:00 2019     Add PLUMMET_VERSION
+Date:   Sun Nov 24 21:07:04 2019     Plummet7+
+Date:   Wed Nov 20 15:28:47 2019     Initial commit
