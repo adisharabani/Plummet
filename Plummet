@@ -31,7 +31,7 @@ whiptail --textbox Plummet.txt 25 78
    cmd="${cmd,}"
    
    case "$cmd" in 
-     attach | attachMaster | uploadLoop | connectToRasp1)
+     attach | attachMaster | uploadLoop | connectToRasp1 | history)
         $0 $cmd 
      ;;
      upload | compile | setup | update | reorder)
