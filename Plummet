@@ -446,6 +446,7 @@ if [ "$1" = "getMasterArd" ]; then
 fi
 
 if [ "$1" = "morningShow" ]; then
+	echo $(date) morningShow >> ~/p.log
 	$0 kill
 	masterArd=$($0 getMasterArd)
 	echo "Master=" $master
@@ -454,6 +455,7 @@ if [ "$1" = "morningShow" ]; then
 fi
 
 if [ "$1" = "nightShow" ]; then
+	echo $(date) nightShow >> ~/p.log
 	$0 kill
 	masterArd=$($0 getMasterArd)
 	echo "Master=" $master
