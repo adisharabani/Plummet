@@ -499,6 +499,8 @@ if [ "$1" = "networkTest" ]; then
    echo $host2 " Offline" | tee -a $LOGFILE
  fi
 
-
+ if [ $(grep Checking $LOGFILE | tail -4 | grep Offline | wc -l) == 4 ]; then
+    echo "Would recommend restart" | tee -a $LOGFILE
+ fi
 fi
 
