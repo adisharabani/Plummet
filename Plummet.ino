@@ -510,14 +510,20 @@ unsigned int positionsPTR = POSITIONS_STACK_SIZE;
 #define getPos(i) positions[(positionsPTR-i)%POSITIONS_STACK_SIZE]
 #define lastPos getPos(0)
 
-
+int rawPotentiometerRead() {
+  return analogRead(potPin);
+}
+double potentiometerAvg(double p) {
+  push(p);
+  return posAvg();
+}
 double potentiometerRead() {
   push(double(analogRead(potPin)));
   return posAvg();
 }
 
-double getPotAngle() {
-  double p = potentiometerRead();
+double getPotAngle(double p) {
+//  double p = potentiometerRead();
   return (0.0+p-potCenter)/(pot150-pot50)*(PI/2);
 //  p-pot150
 }
@@ -1883,21 +1889,24 @@ void loop(){
   }
 
   // Read input
-  int potRead = potentiometerRead();
-  double currentServoPos = myservoread();
-  double potAngle = getPotAngle();
-  double servoAngle = getServoAngle();
-  double ropeAngle = potAngle+servoAngle;
-  
+  int potRead = rawPotentiometerRead();
+
   static unsigned long POT0Time = 0;
 
   if (millis() < POT0Time + 300) return;
 
-  if ((potAngle < -1) || (potAngle > 1)){
+  if ((potRead < 20) || (potRead > 980)){
   	sprint("POT0   \r");
 	POT0Time = millis();
   	return;
   }
+
+  potRead = potentiometerAvg(potRead);
+  double currentServoPos = myservoread();
+  double potAngle = getPotAngle(potRead);
+  double servoAngle = getServoAngle();
+  double ropeAngle = potAngle+servoAngle;
+  
 
   ropeMaxRightAngle = max(ropeAngle,ropeMaxRightAngle);
   ropeMaxLeftAngle = min(ropeAngle,ropeMaxLeftAngle);
