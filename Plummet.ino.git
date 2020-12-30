@@ -27,7 +27,7 @@
 // TODO: Stop calibration
 // TODO: Git pull different versions
 
-#define PLUMMET_VERSION "0.27"
+#define PLUMMET_VERSION "0.26"
 
 ////// WHAT SERVO LIB TO USE
 #define USE_TIMER1
@@ -87,9 +87,9 @@
 int8_t myID = -1;
 int SYNC_MAGIC_NUMBER=-250;
 
-//int defaultLoopTime = 3564; // Orig Work: 3654 (3.30 meter)//Palo Alto: 3080; // 3160; // 3420;
+int defaultLoopTime = 3564; //Palo Alto: 3080; // 3160; // 3420;
 // int defaultLoopTime = 3080; // Palo Alto
-int defaultLoopTime = 3020;
+
 
 #define EPPROM
 
@@ -195,7 +195,7 @@ double minPotRead = 1024;
 
 unsigned long syncInitTime = 3000;
 int syncInitTimeOffset = 0;
-int syncLoopTime=3020;//3564;
+int syncLoopTime=3564;
 double syncRopeAngle=0.3;
 double syncPhase;
 boolean updateSlaveClock = false;
@@ -700,10 +700,10 @@ void printMLPoint(double phase, int amp) {
 }
 
 void setDefaultCalibration() {
-		ML_loop_default = 3020;//3567;
-		ML_loop_mult = 1.27;//1.28;
-		ML_angle_default = -0.01765;//-0.02483;
-		ML_angle_mult = 0.0224;//0.00199;
+		ML_loop_default = 3567;
+		ML_loop_mult = 1.28;
+		ML_angle_default = -0.02483;
+		ML_angle_mult = 0.00199;
 		ML_count = 2;
 }
 

@@ -27,7 +27,7 @@
 // TODO: Stop calibration
 // TODO: Git pull different versions
 
-#define PLUMMET_VERSION "0.27"
+#define PLUMMET_VERSION "0.26"
 
 ////// WHAT SERVO LIB TO USE
 #define USE_TIMER1
@@ -87,9 +87,9 @@
 int8_t myID = -1;
 int SYNC_MAGIC_NUMBER=-250;
 
-//int defaultLoopTime = 3564; // Orig Work: 3654 (3.30 meter)//Palo Alto: 3080; // 3160; // 3420;
+int defaultLoopTime = 3564; //Palo Alto: 3080; // 3160; // 3420;
 // int defaultLoopTime = 3080; // Palo Alto
-int defaultLoopTime = 3020;
+
 
 #define EPPROM
 
@@ -195,7 +195,7 @@ double minPotRead = 1024;
 
 unsigned long syncInitTime = 3000;
 int syncInitTimeOffset = 0;
-int syncLoopTime=3020;//3564;
+int syncLoopTime=3564;
 double syncRopeAngle=0.3;
 double syncPhase;
 boolean updateSlaveClock = false;
@@ -510,20 +510,14 @@ unsigned int positionsPTR = POSITIONS_STACK_SIZE;
 #define getPos(i) positions[(positionsPTR-i)%POSITIONS_STACK_SIZE]
 #define lastPos getPos(0)
 
-int rawPotentiometerRead() {
-  return analogRead(potPin);
-}
-double potentiometerAvg(double p) {
-  push(p);
-  return posAvg();
-}
+
 double potentiometerRead() {
   push(double(analogRead(potPin)));
   return posAvg();
 }
 
-double getPotAngle(double p) {
-//  double p = potentiometerRead();
+double getPotAngle() {
+  double p = potentiometerRead();
   return (0.0+p-potCenter)/(pot150-pot50)*(PI/2);
 //  p-pot150
 }
@@ -700,10 +694,10 @@ void printMLPoint(double phase, int amp) {
 }
 
 void setDefaultCalibration() {
-		ML_loop_default = 3020;//3567;
-		ML_loop_mult = 1.27;//1.28;
-		ML_angle_default = -0.01765;//-0.02483;
-		ML_angle_mult = 0.0224;//0.00199;
+		ML_loop_default = 3567;
+		ML_loop_mult = 1.28;
+		ML_angle_default = -0.02483;
+		ML_angle_mult = 0.00199;
 		ML_count = 2;
 }
 
@@ -1889,24 +1883,21 @@ void loop(){
   }
 
   // Read input
-  int potRead = rawPotentiometerRead();
-
+  int potRead = potentiometerRead();
+  double currentServoPos = myservoread();
+  double potAngle = getPotAngle();
+  double servoAngle = getServoAngle();
+  double ropeAngle = potAngle+servoAngle;
+  
   static unsigned long POT0Time = 0;
 
   if (millis() < POT0Time + 300) return;
 
-  if ((potRead < 20) || (potRead > 980)){
+  if ((potAngle < -1) || (potAngle > 1)){
   	sprint("POT0   \r");
 	POT0Time = millis();
   	return;
   }
-
-  potRead = potentiometerAvg(potRead);
-  double currentServoPos = myservoread();
-  double potAngle = getPotAngle(potRead);
-  double servoAngle = getServoAngle();
-  double ropeAngle = potAngle+servoAngle;
-  
 
   ropeMaxRightAngle = max(ropeAngle,ropeMaxRightAngle);
   ropeMaxLeftAngle = min(ropeAngle,ropeMaxLeftAngle);
