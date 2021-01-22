@@ -1,0 +1,33 @@
+After installing dataplicity set default use to be pi
+You can do this by editing the file: /etc/supervisor/conf.d/tuxtunnel.conf
+The content should be something like: 
+
+
+# Installed by Dataplicity Agent installer
+[program:tuxtunnel]
+environment=DATAPLICITY_M2M_URL="wss://m2m.dataplicity.com/m2m/",HOME="/home/pi",USER="pi",TERM=xterm-256color
+command=/opt/dataplicity/agent/dataplicity --server-url https://api.dataplicity.com/ run
+autorestart=true
+redirect_stderr=true
+user=pi
+stdout_logfile=/var/log/dataplicity.log
+stderr_logfile=/var/log/dataplicity.log
+
+------
+
+You may want to change the hostname of the device via raspi-config
+
+Then restart the machine.
+
+
+set git keys: https://docs.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+clone git code: git clone https://github.com/adisharabani/Plummet.git
+
+edit ~/.bashrc to include:
+cd ~/Plummet
+./Plummet
+
+
+install important libraries: 
+./Plummet setup
+

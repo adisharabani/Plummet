@@ -1,0 +1,261 @@
+e
+B
+I am slave #3
+B
+I am slave #3
+B
+I am slave #3
+[0;31m[3004]: s=3024,1633788 offset=-201ms ropeAngle=0.31(+0.01)[0m[0m
+[1637336 / 3024] shift: 524     [0;31m[3024]: s=3024,1637336 offset=-725ms ropeAngle=0.30(-0.00)[0m&& [0m
+ => servoAmp=20.00 phs=0.00 LT=3024 nL=1
+[1640882 / 3024] shift: 522     [0;37m[2913]: s=3024,1640882 offset=-1358ms ropeAngle=0.34(+0.04)[0min motion [0]
+[1644432 / 3024] shift: 526     [0;37m[3223]: s=3024,1644432 offset=1339ms ropeAngle=0.32(+0.02)[0mwaiting 1417ms
+[1647979 / 3024] shift: 523     [0;31m[2986]: s=3024,1647979 offset=778ms ropeAngle=0.28(-0.02)[0m
+[0;34mMachineLearning 0.30: f(0.00, 20) = (3040ms, -0.02) LT:0  * MLData 1.28,3020.99 2.96/1000,-25.26/1000 #4
+[0m
+ => servoAmp=20.00 phs=0.25 LT=3024 nL=1
+[1651526 / 3024] shift: 523     [0;37m[2910]: s=3024,1651526 offset=141ms ropeAngle=0.23(-0.07)[0min motion [0]
+[0;37m[3166]: s=3024,1651526 offset=283ms ropeAngle=0.29(-0.01)[0mwaiting 1596ms
+[1655073 / 3024] shift: 523     [0;31m[2988]: s=3024,1655073 offset=-276ms ropeAngle=0.31(+0.01)[0m[0m
+[1658620 / 3024] shift: 523     [0;31m[3039]: s=3024,1658620 offset=-784ms ropeAngle=0.30(-0.00)[0m&& [0m
+ => servoAmp=25.00 phs=0.00 LT=3024 nL=1
+[1662167 / 3024] shift: 523     [0;37m[2902]: s=3024,1662167 offset=-1429ms ropeAngle=0.34(+0.04)[0min motion [0]
+[1665716 / 3024] shift: 525     [0;37m[3256]: s=3024,1665716 offset=1302ms ropeAngle=0.34(+0.04)[0mwaiting 1394ms
+[1669263 / 3024] shift: 522     [0;31m[3010]: s=3024,1669263 offset=765ms ropeAngle=0.28(-0.02)[0m
+[0;34mMachineLearning 0.30: f(0.00, 25) = (3056ms, -0.02) LT:0  * MLData 1.28,3021.63 2.85/1000,-24.32/1000 #5
+[0m
+ => servoAmp=20.00 phs=0.25 LT=3024 nL=1
+[1672809 / 3024] shift: 522     [0;37m[2889]: s=3024,1672809 offset=108ms ropeAngle=0.23(-0.07)[0min motion [0]
+[0;37m[3172]: s=3024,1672809 offset=256ms ropeAngle=0.28(-0.02)[0mwaiting 1610ms
+[1676356 / 3024] shift: 523     [0;31m[3001]: s=3024,1676356 offset=-290ms ropeAngle=0.29(-0.01)[0m[0m
+ => servoAmp=20.00 phs=0.25 LT=3024 nL=1
+[1679903 / 3024] shift: 523     [0;37m[2923]: s=3024,1679903 offset=-914ms ropeAngle=0.26(-0.04)[0min motion [0]
+[1683452 / 3024] shift: 525     [0;37m[3156]: s=3024,1683452 offset=-1307ms ropeAngle=0.30(+0.00)[0mwaiting 1472ms
+[1686998 / 3024] shift: 522     [0;31m[2999]: s=3024,1686998 offset=1170ms ropeAngle=0.33(+0.03)[0m[0m
+[1690547 / 3024] shift: 525     [0;31m[3018]: s=3024,1690547 offset=639ms ropeAngle=0.33(+0.03)[0m[0m
+[1694094 / 3024] shift: 523     [0;31m[3023]: s=3024,1694094 offset=115ms ropeAngle=0.32(+0.02)[0m[0m
+[0;31m[3023]: s=3024,1694094 offset=114ms ropeAngle=0.31(+0.01)[0m[0m
+[1697641 / 3024] shift: 523     [0;31m[2994]: s=3024,1697641 offset=-439ms ropeAngle=0.30(-0.00)[0m&& [0m
+ => servoAmp=30.00 phs=0.00 LT=3024 nL=1
+[1701189 / 3024] shift: 524     [0;37m[3109]: s=3024,1701189 offset=-878ms ropeAngle=0.35(+0.05)[0mwaiting 4443ms
+[1704735 / 3024] shift: 522     [0;37m[3006]: s=3024,1704735 offset=-1418ms ropeAngle=0.29(-0.01)[0mwaiting 1437ms
+[1708283 / 3024] shift: 524     [0;31m[3027]: s=3024,1708283 offset=1085ms ropeAngle=0.27(-0.03)[0m
+[0;34mMachineLearning 0.30: f(0.00, 30) = (3047ms, -0.02) LT:0  * MLData 1.28,3019.36 2.85/1000,-24.31/1000 #6
+[0m
+ => servoAmp=20.00 phs=0.25 LT=3024 nL=1
+[1711830 / 3024] shift: 523     [0;37m[2886]: s=3024,1711830 offset=424ms ropeAngle=0.24(-0.06)[0min motion [0]
+[1715377 / 3024] shift: 523     [0;37m[3178]: s=3024,1715377 offset=55ms ropeAngle=0.29(-0.01)[0mwaiting 1610ms
+[0;31m[3002]: s=3024,1715377 offset=33ms ropeAngle=0.31(+0.01)[0m[0m
+[1718926 / 3024] shift: 525     [0;31m[3020]: s=3024,1718926 offset=-496ms ropeAngle=0.30(-0.00)[0m&& [0m
+ => servoAmp=35.00 phs=0.00 LT=3024 nL=1
+[1722472 / 3024] shift: 522     [0;37m[3116]: s=3024,1722472 offset=-926ms ropeAngle=0.36(+0.06)[0mwaiting 4437ms
+[1726019 / 3024] shift: 523     [0;37m[2981]: s=3024,1726019 offset=-1492ms ropeAngle=0.29(-0.01)[0mwaiting 1454ms
+[1729567 / 3024] shift: 524     [0;31m[3028]: s=3024,1729567 offset=1012ms ropeAngle=0.29(-0.01)[0m
+[0;34mMachineLearning 0.30: f(0.00, 35) = (3041ms, -0.01) LT:0  * MLData 1.28,3015.93 2.60/1000,-22.25/1000 #7
+[0m
+ => servoAmp=20.00 phs=0.25 LT=3024 nL=1
+[1733113 / 3024] shift: 522     [0;37m[2902]: s=3024,1733113 offset=368ms ropeAngle=0.24(-0.06)[0min motion [0]
+[0;37m[3160]: s=3024,1733113 offset=504ms ropeAngle=0.29(-0.01)[0mwaiting 1611ms
+[1736661 / 3024] shift: 524     [0;31m[3015]: s=3024,1736661 offset=-29ms ropeAngle=0.31(+0.01)[0m[0m
+[1740209 / 3024] shift: 524     [0;31m[3018]: s=3024,1740209 offset=-559ms ropeAngle=0.31(+0.01)[0m[0m
+[1743756 / 3024] shift: 523     [0;31m[3014]: s=3024,1743756 offset=-1092ms ropeAngle=0.30(-0.00)[0m&& [0m
+ => servoAmp=35.00 phs=0.10 LT=3024 nL=1
+[1747304 / 3024] shift: 524     [0;37m[2808]: s=3024,1747304 offset=1192ms ropeAngle=0.33(+0.03)[0min motion [0]
+[1750851 / 3024] shift: 523     [0;37m[3366]: s=3024,1750851 offset=1011ms ropeAngle=0.34(+0.04)[0mwaiting 1379ms
+[1754398 / 3024] shift: 523     [0;31m[3009]: s=3024,1754398 offset=473ms ropeAngle=0.33(+0.03)[0m
+[0;34mMachineLearning 0.30: f(0.10, 35) = (3061ms, 0.03) LT:0  * MLData 1.28,3017.07 2.44/1000,-22.21/1000 #8
+[0m
+[0;31m[3008]: s=3024,1754398 offset=457ms ropeAngle=0.31(+0.01)[0m[0m
+[1757945 / 3024] shift: 523     [0;31m[3013]: s=3024,1757945 offset=-77ms ropeAngle=0.31(+0.01)[0m[0m
+[1761492 / 3024] shift: 523     [0;31m[3009]: s=3024,1761492 offset=-615ms ropeAngle=0.30(-0.00)[0m&& [0m
+ => servoAmp=35.00 phs=0.20 LT=3024 nL=1
+[1765040 / 3024] shift: 524     [0;37m[2825]: s=3024,1765040 offset=-1338ms ropeAngle=0.26(-0.04)[0min motion [0]
+[1768588 / 3024] shift: 524     [0;37m[3297]: s=3024,1768588 offset=1435ms ropeAngle=0.31(+0.01)[0mwaiting 1429ms
+[1772135 / 3024] shift: 523     [0;31m[3004]: s=3024,1772135 offset=892ms ropeAngle=0.35(+0.05)[0m
+[0;34mMachineLearning 0.30: f(0.20, 35) = (3042ms, 0.05) LT:0  * MLData 1.28,3018.33 2.28/1000,-22.01/1000 #9
+[0m
+[1775681 / 3024] shift: 522     [0;31m[3027]: s=3024,1775681 offset=373ms ropeAngle=0.36(+0.06)[0m[0m
+[0;31m[3010]: s=3024,1775681 offset=359ms ropeAngle=0.34(+0.04)[0m[0m
+[1779229 / 3024] shift: 524     [0;31m[3023]: s=3024,1779229 offset=-166ms ropeAngle=0.34(+0.04)[0m[0m
+[1782775 / 3024] shift: 522     [0;31m[3018]: s=3024,1782775 offset=-694ms ropeAngle=0.33(+0.03)[0m[0m
+[1786322 / 3024] shift: 523     [0;31m[3023]: s=3024,1786322 offset=-1218ms ropeAngle=0.33(+0.03)[0m[0m
+[1789872 / 3024] shift: 526     [0;31m[3027]: s=3024,1789872 offset=1283ms ropeAngle=0.31(+0.01)[0m[0m
+#[1793418 / 3024] shift: 522     
+MLData 1.28,3018.33 2.28/1000,-22.01/1000 #9
+[0;31m[3027]: s=3024,1793418 offset=764ms ropeAngle=0.31(+0.01)[0m[0m
+#2
+MLData 1.28,3018.33 2.28/1000,-22.01/1000 #2
+[1796966 / 3024] shift: 524     [0;31m[3011]: s=3024,1796966 offset=227ms ropeAngle=0.31(+0.01)[0m[0m
+[0;31m[3013]: s=3024,1796966 offset=216ms ropeAngle=0.30(-0.00)[0m&& [0m
+ => servoAmp=35.00 phs=0.30 LT=3024 nL=1
+[1800513 / 3024] shift: 523     [0;37m[2874]: s=3024,1800513 offset=-457ms ropeAngle=0.25(-0.05)[0min motion [0]
+[1804061 / 3024] shift: 524     [0;37m[3168]: s=3024,1804061 offset=-837ms ropeAngle=0.34(+0.04)[0mwaiting 1507ms
+[1807608 / 3024] shift: 523     [0;31m[3008]: s=3024,1807608 offset=-1376ms ropeAngle=0.35(+0.05)[0m
+[0;34mMachineLearning 0.30: f(0.30, 35) = (3016ms, 0.05) LT:0  * MLData 1.28,3022.20 2.15/1000,-21.84/1000 #3
+[0m
+[1811154 / 3024] shift: 522     [0;31m[3026]: s=3024,1811154 offset=1128ms ropeAngle=0.35(+0.05)[0m[0m
+[1814702 / 3024] shift: 524     [0;31m[3023]: s=3024,1814702 offset=603ms ropeAngle=0.35(+0.05)[0m[0m
+[1818250 / 3024] shift: 524     [0;31m[3015]: s=3024,1818250 offset=70ms ropeAngle=0.34(+0.04)[0m[0m
+[0;31m[3018]: s=3024,1818250 offset=64ms ropeAngle=0.34(+0.04)[0m[0m
+[1821797 / 3024] shift: 523     [0;31m[3026]: s=3024,1821797 offset=-457ms ropeAngle=0.33(+0.03)[0m[0m
+[1825345 / 3024] shift: 524     [0;31m[3029]: s=3024,1825345 offset=-976ms ropeAngle=0.32(+0.02)[0m[0m
+[1828892 / 3024] shift: 523     [0;31m[3039]: s=3024,1828892 offset=-1484ms ropeAngle=0.32(+0.02)[0m[0m
+[1832439 / 3024] shift: 523     [0;31m[3023]: s=3024,1832439 offset=1016ms ropeAngle=0.31(+0.01)[0m[0m
+[1835986 / 3024] shift: 523     [0;31m[3003]: s=3024,1835986 offset=472ms ropeAngle=0.30(-0.00)[0m&& [0m
+ => servoAmp=35.00 phs=0.40 LT=3024 nL=1
+[0;37m[2998]: s=3024,1835986 offset=446ms ropeAngle=0.19(-0.11)[0min motion [0]
+[1839532 / 3024] shift: 522     [0;37m[2974]: s=3024,1839532 offset=-126ms ropeAngle=0.34(+0.04)[0mwaiting 1578ms
+[1843082 / 3024] shift: 526     [0;31m[3020]: s=3024,1843082 offset=-656ms ropeAngle=0.35(+0.05)[0m
+[0;34mMachineLearning 0.30: f(0.40, 35) = (2997ms, 0.05) LT:0  * MLData 1.28,3024.97 2.29/1000,-17.54/1000 #4
+[0m
+[1846628 / 3024] shift: 522     [0;31m[3017]: s=3024,1846628 offset=-1185ms ropeAngle=0.34(+0.04)[0m[0m
+[1850176 / 3024] shift: 524     [0;31m[3021]: s=3024,1850176 offset=1312ms ropeAngle=0.34(+0.04)[0m[0m
+[1853723 / 3024] shift: 523     [0;31m[3013]: s=3024,1853723 offset=778ms ropeAngle=0.34(+0.04)[0m[0m
+[1857270 / 3024] shift: 523     [0;31m[3024]: s=3024,1857270 offset=255ms ropeAngle=0.33(+0.03)[0m[0m
+[0;31m[3010]: s=3024,1857270 offset=241ms ropeAngle=0.31(+0.01)[0m[0m
+[1860817 / 3024] shift: 522     [0;31m[3010]: s=3024,1860817 offset=-296ms ropeAngle=0.30(+0.00)[0m&& [0m
+ => servoAmp=35.00 phs=0.50 LT=3024 nL=1
+[1864365 / 3024] shift: 524     [0;37m[3026]: s=3024,1864365 offset=-818ms ropeAngle=0.30(+0.00)[0min motion [0]
+[1867913 / 3024] shift: 524     [0;37m[3082]: s=3024,1867913 offset=-1284ms ropeAngle=0.29(-0.01)[0mwaiting 1442ms
+[1871460 / 3024] shift: 523     [0;31m[2862]: s=3024,1871460 offset=1055ms ropeAngle=0.31(+0.01)[0m
+[0;34mMachineLearning 0.30: f(0.50, 35) = (2990ms, 0.01) LT:0  * MLData 1.28,3026.93 1.91/1000,-7.01/1000 #5
+[0m
+[1875007 / 3024] shift: 523     [0;31m[3020]: s=3024,1875007 offset=528ms ropeAngle=0.32(+0.02)[0m[0m
+[0;31m[3019]: s=3024,1875007 offset=523ms ropeAngle=0.30(+0.00)[0m&& [0m
+ => servoAmp=35.00 phs=0.60 LT=3024 nL=1
+[1878611 / 3024] shift: 580     [0;37m[3265]: s=3024,1878611 offset=184ms ropeAngle=0.29(-0.01)[0min motion [0]
+[1882103 / 3024] shift: 468     [0;37m[2661]: s=3024,1882103 offset=-647ms ropeAngle=0.35(+0.05)[0mwaiting 1624ms
+[1885649 / 3024] shift: 522     #[0;31m[3000]: s=3024,1885649 offset=-1193ms ropeAngle=0.26(-0.04)[0m
+[0;34mMachineLearning 0.30: f(0.60, 35) = (2975ms, -0.05) LT:0  * MLData 1.28,3024.31 1.90/1000,-6.65/1000 #6
+[0m
+ => servoAmp=34.00 phs=0.25 LT=3024 nL=1
+2
+MLData 1.28,3024.31 1.90/1000,-6.65/1000 #2
+[1889197 / 3024] shift: 524     [0;37m[2774]: s=3024,1889197 offset=1057ms ropeAngle=0.21(-0.09)[0min motion [0]
+[1892745 / 3024] shift: 524     [0;37m[3305]: s=3024,1892745 offset=814ms ropeAngle=0.31(+0.01)[0mwaiting 1594ms
+[1896291 / 3024] shift: 522     [0;31m[2995]: s=3024,1896291 offset=263ms ropeAngle=0.33(+0.03)[0m[0m
+[0;31m[3020]: s=3024,1896291 offset=259ms ropeAngle=0.33(+0.03)[0m[0m
+[1899838 / 3024] shift: 523     [0;31m[3012]: s=3024,1899838 offset=-276ms ropeAngle=0.32(+0.02)[0m[0m
+[1903386 / 3024] shift: 524     [0;31m[3028]: s=3024,1903386 offset=-796ms ropeAngle=0.31(+0.01)[0m[0m
+[1906932 / 3024] shift: 522     [0;31m[3013]: s=3024,1906932 offset=-1329ms ropeAngle=0.31(+0.01)[0m[0m
+[1910480 / 3024] shift: 524     [0;31m[3020]: s=3024,1910480 offset=1167ms ropeAngle=0.29(-0.01)[0m[0m
+ => servoAmp=20.00 phs=0.25 LT=3024 nL=1
+[1914027 / 3024] shift: 523     [0;37m[2915]: s=3024,1914027 offset=535ms ropeAngle=0.26(-0.04)[0min motion [0]
+[1917575 / 3024] shift: 524     [0;37m[3168]: s=3024,1917575 offset=155ms ropeAngle=0.31(+0.01)[0mwaiting 1469ms
+[0;31m[2981]: s=3024,1917575 offset=112ms ropeAngle=0.32(+0.02)[0m[0m
+[1921122 / 3024] shift: 523     [0;31m[3034]: s=3024,1921122 offset=-401ms ropeAngle=0.33(+0.03)[0m[0m
+[1924670 / 3024] shift: 524     [0;31m[3016]: s=3024,1924670 offset=-933ms ropeAngle=0.31(+0.01)[0m[0m
+[1928218 / 3024] shift: 524     [0;31m[3016]: s=3024,1928218 offset=-1465ms ropeAngle=0.29(-0.01)[0m[0m
+ => servoAmp=20.00 phs=0.25 LT=3024 nL=1
+[1931765 / 3024] shift: 523     [0;37m[2931]: s=3024,1931765 offset=943ms ropeAngle=0.26(-0.04)[0min motion [0]
+[1935311 / 3024] shift: 522     [0;37m[3153]: s=3024,1935311 offset=550ms ropeAngle=0.31(+0.01)[0mwaiting 1469ms
+[1938859 / 3024] shift: 524     [0;31m[3011]: s=3024,1938859 offset=13ms ropeAngle=0.33(+0.03)[0m[0m
+[0;31m[3023]: s=3024,1938859 offset=12ms ropeAngle=0.33(+0.03)[0m[0m
+[1942406 / 3024] shift: 523     [0;31m[3012]: s=3024,1942406 offset=-523ms ropeAngle=0.33(+0.03)[0m[0m
+[1945954 / 3024] shift: 524     [0;31m[3019]: s=3024,1945954 offset=-1052ms ropeAngle=0.31(+0.01)[0m[0m
+[1949500 / 3024] shift: 522     [0;31m[3024]: s=3024,1949500 offset=1450ms ropeAngle=0.30(+0.00)[0m&& [0m
+ => servoAmp=35.00 phs=0.70 LT=3024 nL=1
+[1953047 / 3024] shift: 523     [0;37m[3173]: s=3024,1953047 offset=1076ms ropeAngle=0.35(+0.05)[0min motion [0]
+[1956596 / 3024] shift: 525     [0;37m[2796]: s=3024,1956596 offset=323ms ropeAngle=0.38(+0.08)[0mwaiting 1583ms
+[0;31m[2995]: s=3024,1956596 offset=294ms ropeAngle=0.21(-0.09)[0m
+[0;34mMachineLearning 0.30: f(0.70, 35) = (2988ms, -0.09) LT:0  * MLData 1.28,3016.73 2.16/1000,-10.72/1000 #3
+[0m
+ => servoAmp=68.00 phs=0.25 LT=3024 nL=1
+[1960142 / 3024] shift: 522     [0;37m[1793]: s=3024,1960142 offset=-1459ms ropeAngle=0.16(-0.14)[0min motion [0]
+[0;37m[1634]: s=3024,1960142 offset=175ms ropeAngle=0.06(-0.24)[0min motion [0]
+[1963690 / 3024] shift: 524     [0;37m[2647]: s=3024,1963690 offset=-726ms ropeAngle=0.35(+0.05)[0mwaiting 1597ms
+[1967236 / 3024] shift: 522     [0;31m[3012]: s=3024,1967236 offset=-1260ms ropeAngle=0.37(+0.07)[0m[0m
+[1970786 / 3024] shift: 526     [0;31m[3021]: s=3024,1970786 offset=1235ms ropeAngle=0.37(+0.07)[0m[0m
+[1974332 / 3024] shift: 522     [0;31m[3013]: s=3024,1974332 offset=702ms ropeAngle=0.37(+0.07)[0m[0m
+[1977879 / 3024] shift: 523     [0;31m[3009]: s=3024,1977879 offset=164ms ropeAngle=0.34(+0.04)[0m[0m
+[0;31m[3032]: s=3024,1977879 offset=172ms ropeAngle=0.35(+0.05)[0m[0m
+[1981426 / 3024] shift: 523     [0;31m[3013]: s=3024,1981426 offset=-362ms ropeAngle=0.34(+0.04)[0m[0m
+[1984974 / 3024] shift: 524     [0;31m[3024]: s=3024,1984974 offset=-886ms ropeAngle=0.34(+0.04)[0m[0m
+[1988521 / 3024] shift: 523     [0;31m[3029]: s=3024,1988521 offset=-1404ms ropeAngle=0.33(+0.03)[0m[0m
+[1992068 / 3024] shift: 523     [0;31m[3025]: s=3024,1992068 offset=1098ms ropeAngle=0.32(+0.02)[0m[0m
+[1995616 / 3024] shift: 524     [0;31m[3056]: s=3024,1995616 offset=606ms ropeAngle=0.32(+0.02)[0m[0m
+[1999165 / 3024] shift: 525     [0;31m[3008]: s=3024,1999165 offset=65ms ropeAngle=0.30(-0.00)[0m&& [0m
+ => servoAmp=35.00 phs=0.80 LT=3024 nL=1
+[0;37m[3050]: s=3024,1999165 offset=91ms ropeAngle=0.38(+0.08)[0min motion [0]
+[2002710 / 3024] shift: 521     [0;37m[2967]: s=3024,2002710 offset=-487ms ropeAngle=0.38(+0.08)[0mwaiting 1531ms
+[2006259 / 3024] shift: 525     [0;31m[3007]: s=3024,2006259 offset=-1029ms ropeAngle=0.20(-0.10)[0m
+[0;34mMachineLearning 0.30: f(0.80, 35) = (3008ms, -0.10) LT:0  * MLData 1.27,3011.00 2.32/1000,-13.19/1000 #4
+[0m
+ => servoAmp=80.00 phs=0.25 LT=3024 nL=1
+[2009806 / 3024] shift: 523     in motion [0]
+waiting 3771ms
+[2013352 / 3024] shift: 522     waiting 1589ms
+[2016900 / 3024] shift: 524     [2020447 / 3024] shift: 523     [2023995 / 3024] shift: 524     [2027542 / 3024] shift: 523     [2031089 / 3024] shift: 523     [2034636 / 3024] shift: 522     [2038185 / 3024] shift: 524     [2041731 / 3024] shift: 522     [2045279 / 3024] shift: 524     [2048826 / 3024] shift: 523     [2052374 / 3024] shift: 524     [2055921 / 3024] shift: 523     [2059469 / 3024] shift: 524     [2063015 / 3024] shift: 522     [2066562 / 3024] shift: 523     [2070111 / 3024] shift: 525     [2073657 / 3024] shift: 522     s[2077206 / 3024] shift: 525     3024
+SYNC3024,0.30
+[2080751 / 3024] shift: -1495     [2084299 / 3024] shift: 524     S
+Offset:0
+[0;31m[3026]: s=3024,2084299 offset=-532ms ropeAngle=0.23(-0.07)[0m
+[0;34mMachineLearning 0.20: f(0.90, 35) = (25907ms, 0.03) LT:0 MLData 1.27,3011.00 2.32/1000,-13.19/1000 #4
+wanted 154.00+++[0m
+ => servoAmp=77.00 phs=0.04 LT=3292 nL=2
+[0;37m[3010]: s=3024,2084299 offset=-546ms ropeAngle=0.23(-0.07)[0mwaiting 10440ms
+[2087846 / 3024] shift: 523     [0;37m[2853]: s=3024,2087846 offset=-1240ms ropeAngle=0.37(+0.07)[0min motion [1]
+[2091394 / 3024] shift: 524     [0;37m[3297]: s=3024,2091394 offset=-1491ms ropeAngle=0.40(+0.10)[0min motion [0]
+[2094942 / 3024] shift: 524     [0;37m[2522]: s=3024,2094942 offset=507ms ropeAngle=0.21(-0.09)[0mwaiting 1769ms
+[0;37m[1648]: s=3024,2094942 offset=-869ms ropeAngle=0.10(-0.20)[0mwaiting 121ms
+[2098489 / 3024] shift: 523     [0;31m[2860]: s=3024,2098489 offset=1468ms ropeAngle=0.19(-0.11)[0m
+[0;34mMachineLearning 0.23: f(0.04, 77) = (4660ms, -0.03) LT:3292 MLData 1.27,3011.00 2.32/1000,-13.19/1000 #4
+wanted 378.00+++[0m
+ => servoAmp=60.00 phs=0.48 LT=2782 nL=4
+[2102036 / 3024] shift: 523     [0;37m[3266]: s=3024,2102036 offset=1187ms ropeAngle=0.32(+0.02)[0min motion [2]
+[2105584 / 3024] shift: 524     [0;37m[2715]: s=3024,2105584 offset=354ms ropeAngle=0.34(+0.04)[0min motion [1]
+[0;37m[2755]: s=3024,2105584 offset=85ms ropeAngle=0.37(+0.07)[0min motion [0]
+[2109130 / 3024] shift: 522     [0;37m[2546]: s=3024,2109130 offset=-915ms ropeAngle=0.42(+0.12)[0mwaiting 4490ms
+[2112679 / 3024] shift: 525     [0;37m[2906]: s=3024,2112679 offset=1466ms ropeAngle=0.34(+0.04)[0mwaiting 1584ms
+Connected.
+e
+B
+I am slave #-1
+B
+I am slave #-1
+B
+I am slave #-1
+[0;31m[2959]: s=3020,103533144 offset=211ms ropeAngle=0.08(-0.22)[0m
+[0;34mMachineLearning 0.17: f(0.42, 69) = (3855ms, -0.08) LT:2700 MLData 1.55,2987.84 3.82/1000,-107.64/1000 #100
+wanted 88.00+++[0m
+ => servoAmp=44.00 phs=0.29 LT=2928 nL=2
+[0;37m[6954]: s=3020,103539163 offset=1146ms ropeAngle=ovf(+ovf)[0mwaiting 3513ms
+[0;37m[1983]: s=3020,103542169 offset=123ms ropeAngle=0.09(-0.21)[0mwaiting 1530ms
+[0;31m[2960]: s=3020,103545174 offset=78ms ropeAngle=0.08(-0.22)[0m
+[0;34mMachineLearning 0.08: f(0.29, 44) = (3965ms, -0.00) LT:2928 MLData 1.55,2987.84 3.82/1000,-107.64/1000 #100
+wanted 85.00+++[0m
+ => servoAmp=42.50 phs=0.24 LT=2994 nL=2
+[0;37m[7259]: s=3020,103551187 offset=1324ms ropeAngle=ovf(+ovf)[0mwaiting 3335ms
+[0;37m[1773]: s=3020,103554193 offset=91ms ropeAngle=0.07(-0.23)[0mwaiting 1563ms
+[0;31m[3116]: s=3020,103557198 offset=202ms ropeAngle=0.06(-0.24)[0m
+[0;34mMachineLearning 0.08: f(0.24, 42) = (4049ms, -0.02) LT:2994 MLData 1.55,2987.84 3.82/1000,-107.64/1000 #100
+wanted 92.00+++[0m
+ => servoAmp=46.00 phs=0.29 LT=2934 nL=2
+[0;37m[6972]: s=3020,103563210 offset=1162ms ropeAngle=ovf(+ovf)[0mwaiting 3507ms
+[0;37m[1966]: s=3020,103566215 offset=123ms ropeAngle=0.06(-0.24)[0mwaiting 1540ms
+9
+HALT
+[103569509 / 3020] shift: 273     s3020
+SYNC3020,0.30
+:w:h-0.1
+Offset:302
+h-0.1
+Offset:604
+h-0.1
+Offset:906
+h-0.1
+Offset:1208
+[103572522 / 3020] shift: -33     S
+Offset:1208
+[0;31m[2727]: s=3020,103572522 offset=-1488ms ropeAngle=0.04(-0.26)[0m
+[0;34mMachineLearning 0.06: f(0.29, 46) = (5348ms, -0.02) LT:2934 MLData 1.55,2987.84 3.82/1000,-107.64/1000 #100
+wanted 353.00+++[0m
+Quick Start => servoAmp=80.00 phs=0.04 LT=3020 nL=2
+_
+tccrservo=detached
+[103584550 / 3020] shift: -31     9   :0:9
+HALT
+[103603477 / 3020] shift: 867     [103605613 / 3020] shift: -893     __
+servo=attached
+[103620814 / 3020] shift: 155     A-1,50,200,0,0
+Audio off song=1 stg=50 sts=200 delay=0 adaptive=0
