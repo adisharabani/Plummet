@@ -1675,7 +1675,7 @@ void updateAmpAndTime(bool runNow=false) {
 
 			if ((mode == STOPPING) && (ropeAngle>syncRopeAngle - 0.08)) {
 				loopTime = ML_loop_default - 100;
-				servoAmp = 80;
+				servoAmp = 70;
 				tPhase = 0.75;
 				requestedNLoops = 2;
 				updateMLModel = false;
