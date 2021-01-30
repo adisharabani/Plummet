@@ -27,7 +27,7 @@
 // TODO: Stop calibration
 // TODO: Git pull different versions
 
-#define PLUMMET_VERSION "0.27"
+#define PLUMMET_VERSION "0.28"
 
 ////// WHAT SERVO LIB TO USE
 #define USE_TIMER1
@@ -89,7 +89,7 @@ int SYNC_MAGIC_NUMBER=-250;
 
 //int defaultLoopTime = 3564; // Orig Work: 3654 (3.30 meter)//Palo Alto: 3080; // 3160; // 3420;
 // int defaultLoopTime = 3080; // Palo Alto
-int defaultLoopTime = 3020;
+int defaultLoopTime = 3200; //3020;
 
 #define EPPROM
 
@@ -152,6 +152,7 @@ int oAmp = maxServoAmp;
 double oPhase = 0.75; // like stopping
 int oLoopTime = 3400;
 int oNLoops = 2;
+int oWaitLoops = 0;
 
 double mPhase = 0;
 int mAmp = 5;
@@ -195,7 +196,7 @@ double minPotRead = 1024;
 
 unsigned long syncInitTime = 3000;
 int syncInitTimeOffset = 0;
-int syncLoopTime=3020;//3564;
+int syncLoopTime=3200; //3020;//3564;
 double syncRopeAngle=0.3;
 double syncPhase;
 boolean updateSlaveClock = false;
@@ -700,10 +701,10 @@ void printMLPoint(double phase, int amp) {
 }
 
 void setDefaultCalibration() {
-		ML_loop_default = 3020;//3567;
-		ML_loop_mult = 1.27;//1.28;
-		ML_angle_default = -0.01765;//-0.02483;
-		ML_angle_mult = 0.0224;//0.00199;
+		ML_loop_mult = 1.35; //1.27;//1.28;
+		ML_loop_default = 3222; //3020;//3567;
+		ML_angle_mult = 0.0289; //0.0224;//0.00199;
+		ML_angle_default = -0.011128; //-0.01765;//-0.02483;
 		ML_count = 2;
 }
 
@@ -1135,7 +1136,7 @@ void handleKeyboardInput() {
 	case 'k':
 		KB[0] = 0; CMD = KB;
 		break;
-	case 'O': /* ANALYZE Amp,Phase, loopTime, nLoops */
+	case 'O': /* ANALYZE Amp,Phase, loopTime, nLoops, oWaitLoops */
 	  if (CMD[0]!='\n'){
 		  oAmp = atoi(CMD);
 		  p = find(CMD, ',');
@@ -1144,8 +1145,10 @@ void handleKeyboardInput() {
 		  if (p!=-1) oLoopTime = atoi(CMD+p+1);
 		  if (p!=-1) p = find(CMD, ',', p+1);
 		  if (p!=-1) oNLoops = atoi(CMD+p+1);
+		  if (p!=-1) p = find(CMD, ',', p+1);
+		  if (p!=-1) oWaitLoops = atoi(CMD+p+1);
 	  }
-	  sprint(oAmp);sprint(",");sprint(oPhase);sprint(",");sprint(oLoopTime);sprint(",");sprintln(oNLoops);
+	  sprint(oAmp);sprint(",");sprint(oPhase);sprint(",");sprint(oLoopTime);sprint(",");sprintln(oNLoops);sprint(",");sprintln(oWaitLoops);
 	  setMode(ANALYZING);
 	  KB[0] = 0; CMD=KB;
 	  break;
@@ -1331,7 +1334,7 @@ syncLoopTime = atoi(CMD);
 	  	  loopTime = defaultLoopTime;
 	  	  sprint("loopTime=");sprintln(loopTime);
 	  } else {
-		  //calibrateLoopTime();
+		  ///calibrateLoopTime();
 	  }
 	  KB[0] = 0; CMD = KB;
 	  break;
@@ -1582,7 +1585,7 @@ void updateAmpAndTime(bool runNow=false) {
 			loopTime = oLoopTime == 0 ? defaultLoopTime : oLoopTime;
 			requestedNLoops = oNLoops ;
 
-			waitLoops = 5;
+			waitLoops = oWaitLoops;
 			syncInitTime = rightTime;
 			syncInitTimeOffset = 0;
 			syncLoopTime = defaultLoopTime;
