@@ -1658,9 +1658,9 @@ void updateAmpAndTime(bool runNow=false) {
 			
 			if (servoAmp > maxServoAmp) {
 				sprint("wanted "); sprint(servoAmp);
-				if (ropeAngle < syncRopeAngle - 0.1) {
+				//if (ropeAngle < syncRopeAngle - 0.1) {
 					servoAmp = min(servoAmp,maxServoAmp*3);
-				}
+				//}
 				requestedNLoops = int(servoAmp/maxServoAmp + 1);
 				servoAmp = min(servoAmp/requestedNLoops,maxServoAmp);
 				X = servoAmp * cos(tPhase*2*PI);
