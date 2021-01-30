@@ -150,7 +150,7 @@ double testAmp = 20;
 
 int oAmp = maxServoAmp;
 double oPhase = 0.75; // like stopping
-int oLoopTime = 3400;
+int oLoopTime = defaultLoopTime;
 int oNLoops = 2;
 int oWaitLoops = 0;
 
@@ -196,7 +196,7 @@ double minPotRead = 1024;
 
 unsigned long syncInitTime = 3000;
 int syncInitTimeOffset = 0;
-int syncLoopTime=3200; //3020;//3564;
+int syncLoopTime=defaultLoopTime; //3020;//3564;
 double syncRopeAngle=0.3;
 double syncPhase;
 boolean updateSlaveClock = false;
@@ -1148,7 +1148,7 @@ void handleKeyboardInput() {
 		  if (p!=-1) p = find(CMD, ',', p+1);
 		  if (p!=-1) oWaitLoops = atoi(CMD+p+1);
 	  }
-	  sprint(oAmp);sprint(",");sprint(oPhase);sprint(",");sprint(oLoopTime);sprint(",");sprintln(oNLoops);sprint(",");sprintln(oWaitLoops);
+	  sprint(oAmp);sprint(",");sprint(oPhase);sprint(",");sprint(oLoopTime);sprint(",");sprint(oNLoops);sprint(",");sprintln(oWaitLoops);
 	  setMode(ANALYZING);
 	  KB[0] = 0; CMD=KB;
 	  break;
