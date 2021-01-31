@@ -27,7 +27,7 @@
 // TODO: Stop calibration
 // TODO: Git pull different versions
 
-#define PLUMMET_VERSION "0.28"
+#define PLUMMET_VERSION "0.29"
 
 ////// WHAT SERVO LIB TO USE
 #define USE_TIMER1
@@ -1676,11 +1676,22 @@ void updateAmpAndTime(bool runNow=false) {
 			//sprint(" X");sprint(X);sprint(",");sprint(Y);sprint(";");sprint(tPhase);
 			loopTime = mlLoopTime * LOOP_INTERVAL - (LOOP_INTERVAL-1)*ML_loop_default;
 
-			if ((mode == STOPPING) && (ropeAngle>syncRopeAngle - 0.08)) {
-				loopTime = ML_loop_default - 100;
-				servoAmp = 70;
+			if ((mode == STOPPING)) {
 				tPhase = 0.75;
-				requestedNLoops = 2;
+				if (ropeAngle>syncRopeAngle - 0.08) {
+					loopTime = ML_loop_default - 100;
+					servoAmp = 70;
+					requestedNLoops = 2;
+				} else if (ropeAngle > 0.01){
+					loopTime = ML_loop_default-100;
+					servoAmp = (ropeAngle) / ML_angle_mult;
+					servoAmp = min(servoAmp, maxServoAmp);
+					requestedNLoops = 1;
+sprint("LLL");sprintln(loopTime);
+				} else {
+					servoAmp = 0;
+					requestedNLoops = 0;
+				}
 				updateMLModel = false;
 			}
 

@@ -261,6 +261,7 @@ fi
 
 if [ "$1" = "kill" ]; then
 while [ $(screen -ls | grep '(' | wc -l) -gt 0 ]; do screen -S $(screen -ls | grep '(' | head -1 | cut -d. -f 1) -X kill; screen -wipe; sleep 0.1; done
+killall screen
 fi
 
 
