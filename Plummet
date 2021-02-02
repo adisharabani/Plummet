@@ -183,8 +183,8 @@ if [ "$1" = "attach_old" ]; then
 fi
 
 if [ "$1" = "attachMaster" ]; then
-	masterScreen=$($0 getMaster)
-	$0 attach $masterScreen
+	masterArd=$($0 getMasterArd)
+	$0 attach $masterArd
 fi
 
 if [ "$1" = "attach" ] || [ "$1" = "record" ] || [ "$1" = "detached" ]; then
