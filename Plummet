@@ -215,9 +215,9 @@ if [ "$1" = "attach" ] || [ "$1" = "record" ] || [ "$1" = "detached" ]; then
    fi
    if [ "$1" = "record" ]; then
 		# echo "screen -t ${ard} bash -c \"cu -l /dev/${ard} -s 9600 | tee -a _${ard}.record\"" >> /tmp/.screens
-		echo logfile "log.${ard}" >> /tmp/.screens
+		echo "--" $(date) "--" >> _${ard}.record
+		echo logfile "${ard}.record" >> /tmp/.screens
 		echo logtstamp on >> /tmp/.screens
-		echo logtstamp after 5 >> /tmp/.screens
 	   echo screen -L -t ${ard} /dev/${ard} >> /tmp/.screens
 	else
 	   echo screen -t ${ard} /dev/${ard} >> /tmp/.screens
@@ -466,17 +466,16 @@ if [ "$1" = "morningShow" ]; then
 	echo $(date) morningShow >> $LOGFILE
 	$0 kill
 	masterArd=$($0 getMasterArd)
-	echo "Master=" $master
+	echo "Master=" $masterArd
 	# (echo Y+ ; echo P+; sleep 3) | cu -l /dev/$masterArd -s 9600  
 	$0 command $masterArd "Y+\nP+"
-	date > /tmp/date
 fi
 
 if [ "$1" = "nightShow" ]; then
 	echo $(date) nightShow >> $LOGFILE
 	$0 kill
 	masterArd=$($0 getMasterArd)
-	echo "Master=" $master
+	echo "Master=" $masterArd
 	
 	# (echo Y- ; sleep 3) | cu -l /dev/$masterArd -s 9600  
 	$0 command $masterArd "Y-"
