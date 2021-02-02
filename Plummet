@@ -186,7 +186,7 @@ if [ "$1" = "attachMaster" ]; then
 	$0 attach $masterScreen
 fi
 
-if [ "$1" = "attach" ] || [ "$1" = "record" ]; then
+if [ "$1" = "attach" ] || [ "$1" = "record" ] || [ "$1" = "detached" ]; then
  sttys=($(stty size))
  if [ $(( ${sttys[0]} * 2 )) -lt ${sttys[1]} ]; then
  	layout="horizontal"
@@ -213,10 +213,14 @@ if [ "$1" = "attach" ] || [ "$1" = "record" ]; then
       echo split >> /tmp/.screens
       echo focus >> /tmp/.screens
    fi
-   if [ "$1" = "attach" ]; then
-	   echo screen -t ${ard} /dev/${ard} >> /tmp/.screens
+   if [ "$1" = "record" ]; then
+		# echo "screen -t ${ard} bash -c \"cu -l /dev/${ard} -s 9600 | tee -a _${ard}.record\"" >> /tmp/.screens
+		echo logfile "log.${ard}" >> /tmp/.screens
+		echo logtstamp on >> /tmp/.screens
+		echo logtstamp after 5 >> /tmp/.screens
+	   echo screen -L -t ${ard} /dev/${ard} >> /tmp/.screens
 	else
-		echo "screen -t ${ard} bash -c \"cu -l /dev/${ard} -s 9600 | tee -a _${ard}.record\"" >> /tmp/.screens
+	   echo screen -t ${ard} /dev/${ard} >> /tmp/.screens
 	fi
    echo 'stuff "e\nB\n \n"' >> /tmp/.screens
    if [ "$isFirst" = "1" ]; then
@@ -248,7 +252,11 @@ if [ "$1" = "attach" ] || [ "$1" = "record" ]; then
  	  echo "layout save vertical" >> /tmp/.screens 
 	  echo "layout select ${layout}" >> /tmp/.screens
  echo "layout save default" >> /tmp/.screens 
- screen -c /tmp/.screens -S ATTACH
+ if [ "$1" = "detached" ]; then
+    screen -d -m -c /tmp/.screens -S ATTACH
+ else 
+    screen -c /tmp/.screens -S ATTACH
+ fi
  #$0 kill
  #screen -R -S ${ard} bash -c 'tty > /tmp/screen${ard}; '$0' listCommands; cu -l /dev/'${ard}' -s 38400'
  #screen -R -S ${ard} bash -c 'tty > /tmp/screen${ard}; '$0' listCommands; tail -f /dev/'${ard}' &; cat > /dev/'${ard}
@@ -261,7 +269,7 @@ fi
 
 if [ "$1" = "kill" ]; then
 while [ $(screen -ls | grep '(' | wc -l) -gt 0 ]; do screen -S $(screen -ls | grep '(' | head -1 | cut -d. -f 1) -X kill; screen -wipe; sleep 0.1; done
-killall screen
+#killall screen
 fi
 
 
@@ -281,17 +289,23 @@ fi
 if [ "$1" = "listDevicesHelper" ]; then
  $0 kill > /dev/null
  for d in $(find /dev/ -type c -regextype "posix-extended" -iregex '/dev/('${2}'|'${ARDTTY_PATTERN}${2}'.*)' | cut -c 6- ); do
-    screenType=$((echo B; sleep 0.1) | cu -l /dev/$d 2>&1 | grep 'I am' | tr ' ' '\n' | grep '#' | tail -1 | tr -d '\r\n')
+    #screenType=$((echo B; sleep 0.1) | cu -l /dev/$d 2>&1 | grep 'I am' | tr ' ' '\n' | grep '#' | tail -1 | tr -d '\r\n')
+    screenType=$($0 command $d B | grep 'I am' | tr ' ' '\n' | grep '#' | tail -1 | tr -d '\r\n')
     echo ${screenType}:$d
   done  
 fi
 
 if [ "$1" = "prepForShutDown" ]; then
  $0 kill
- for ard in $($0 listDevices $2); do
-   (echo; echo 9; echo _; sleep 4) | cu -l /dev/$ard &
- done
- wait
+ $0 command "$2" 9
+ sleep 4
+ $0 command "$2" _
+#
+# for ard in $($0 listDevices $2); do
+#   $0 command 
+#   (echo; echo 9; echo _; sleep 4) | cu -l /dev/$ard &
+# done
+# wait
 fi
 
 if [ "$1" = "getMaster" ]; then
@@ -453,7 +467,8 @@ if [ "$1" = "morningShow" ]; then
 	$0 kill
 	masterArd=$($0 getMasterArd)
 	echo "Master=" $master
-	(echo Y+ ; echo P+; sleep 3) | cu -l /dev/$masterArd -s 9600  
+	# (echo Y+ ; echo P+; sleep 3) | cu -l /dev/$masterArd -s 9600  
+	$0 command $masterArd "Y+\nP+"
 	date > /tmp/date
 fi
 
@@ -462,7 +477,9 @@ if [ "$1" = "nightShow" ]; then
 	$0 kill
 	masterArd=$($0 getMasterArd)
 	echo "Master=" $master
-	(echo Y- ; sleep 3) | cu -l /dev/$masterArd -s 9600  
+	
+	# (echo Y- ; sleep 3) | cu -l /dev/$masterArd -s 9600  
+	$0 command $masterArd "Y-"
 fi
 
 if [ "$1" = "history" ]; then
@@ -504,4 +521,20 @@ if [ "$1" = "networkTest" ]; then
     echo "Would recommend restart" | tee -a $LOGFILE
  fi
 fi
+
+if [ "$1" = "command" ]; then
+ for ard in $($0 listDevices $2); do  
+   #stty -F /dev/${ard} cs8 9600 ignbrk -brkint -icrnl -imaxbel -opost -ocrnl -onlret -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke -noflsh -ixon -crtscts
+   if ! screen -list | grep -q ATTACH; then
+      $0 detached;
+   fi
+   #screen -d -m -t $ard /dev/$ard;
+   screen -X at $ard stuff "\n5555555555\n${3}\n";
+   sleep 1 
+   screen -X at $ard hardcopy -h /tmp/.hardcopy.$ard;
+   tac /tmp/.hardcopy.$ard | sed '/5555555555/Q' | tac 
+   rm /tmp/.hardcopy.$ard
+ done;
+fi
+
 
