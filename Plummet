@@ -83,6 +83,8 @@ if [ "$1" = "setup" ]; then
  command -v inotifywait > /dev/null || sudo apt-get install inotify-tools
  command -v screen > /dev/null || sudo apt-get install screen
  command -v cu > /dev/null || sudo apt-get install cu
+ command -v apache2 > /dev/null || ( sudo apt-get install apache2 && sudo a2enmod cgi  && sudo systemctl restart apache2 )
+
  if [ ! -d "$ARDLIB" ] ; then
    cd ..
    curl -L -o arduino-1.8.10-linuxarm.tar.xz https://www.arduino.cc/download.php?f=/arduino-1.8.10-linuxarm.tar.xz
@@ -301,6 +303,7 @@ if [ "$1" = "prepForShutDown" ]; then
  $0 command "$2" 9
  sleep 4
  $0 command "$2" _
+ $0 kill
 #
 # for ard in $($0 listDevices $2); do
 #   $0 command 
