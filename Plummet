@@ -16,6 +16,7 @@ whiptail --textbox Plummet.txt 25 78
          "Export" "export timeline to local file." \
          "Upload" "Upload app to the connected Arduinos." \
          "Reorder" "Automatically reorder devices by connection order" \
+         "Edit Playback" "Edit the playback file" \
          "Upload Loop" "Continuesly upload to Arduinos." \
          "List Connections" "Show wiring instructions." \
          "List Devices" "Show all connected Arduinos." \
@@ -33,7 +34,7 @@ whiptail --textbox Plummet.txt 25 78
    cmd="${cmd,}"
    
    case "$cmd" in 
-     attach | attachMaster | uploadLoop | connectToRasp1 | history)
+     attach | record | editPlayback | joinAttached | attachMaster | uploadLoop | connectToRasp1 | history)
         $0 $cmd 
      ;;
      upload | compile | setup | update | reorder)
@@ -438,7 +439,6 @@ if [ "$1" = export ]; then
 	cat /tmp/PP |tail  +$(cat /tmp/PP | awk '/Recorded Commands/ {i=NR} END {print i}') | grep ^RR > ${2:-$(date +Exports/Record_%Y_%m_%d-%H:%M.txt)}
 fi
 
-
 if [ "$1" = import ]; then
 	fname=${2:-$(ls Exports/* | sort | tail -1)}
 	masterScreen=$($0 getMaster)
@@ -457,6 +457,20 @@ if [ "$1" = import ]; then
 	diff /tmp/test $fname
 	exit $?
 fi
+
+if [ "$1" = editPlayback ]; then
+	mkdir -p Exports
+	fname=${2:-$(date +Exports/Record_%Y_%m_%d-%H:%M.txt)}
+	$0 export $fname
+	pico $fname
+
+	if (( 0 < $(stat -c %Y-%X $fname | bc) )); then
+	   $0 import $fname
+	else 
+		whiptail --title "Operation Canceled" --msgbox "Playback was not changed" 8 30
+	fi
+fi
+
 
 if [ "$1" = "getMasterArd" ]; then
 	$0 listDevicesHelper | grep ^#0 | cut -d: -f 2
