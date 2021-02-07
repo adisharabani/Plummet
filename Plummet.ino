@@ -1370,16 +1370,18 @@ syncLoopTime = atoi(CMD);
 	  sprint("Audio "); sprint(enableAudio ? "on" : "off"); sprint(" song="); sprint(audioSongNumber); sprint(" stg=");sprint(audioSnapToGrid);sprint(" sts=");sprint(audioSnapToSync); sprint(" delay=");sprint(audioDelay); sprint(" adaptive="); sprintln(audioVolumeAdaptive);
 	  break;
 	case 'P': // Play
-	  if (CMD[0] == 'P') {
-		printCommands();
-	  } else if (CMD[0]=='+') {
-		startPlaySequence();
-	  } else if (CMD[0]=='-') {
-		stopPlaySequence();
-	  } else if (!isPlaying) {
-		startPlaySequence();
-	  } else {
-		stopPlaySequence();
+	  if (isMaster) {
+		if (CMD[0] == 'P') {
+			printCommands();
+		  } else if (CMD[0]=='+') {
+			startPlaySequence();
+		  } else if (CMD[0]=='-') {
+			stopPlaySequence();
+		  } else if (!isPlaying) {
+			startPlaySequence();
+		  } else {
+			stopPlaySequence();
+		  }
 	  }
 	  KB[0] = 0; CMD = KB;
 	  break;
@@ -1405,13 +1407,15 @@ syncLoopTime = atoi(CMD);
 	  }
 	  break;
 	case 'Y': // Autoplay and loop on restart
-	  isAutoPlay = !isAutoPlay;
-	  if (CMD[0]=='+') isAutoPlay = true;
-	  if (CMD[0]=='-') isAutoPlay = false;
+	  if (isMaster) { 
+		  isAutoPlay = !isAutoPlay;
+		  if (CMD[0]=='+') isAutoPlay = true;
+		  if (CMD[0]=='-') isAutoPlay = false;
+		  sprint("auto play is ");
+		  sprintln(isAutoPlay ? "on" : "off");
+		  ewrite((int)isAutoPlay, EEPROM_COMMANDS_LOC - 4);
+	  }
 	  KB[0] = 0; CMD= KB;
-	  sprint("auto play is ");
-	  sprintln(isAutoPlay ? "on" : "off");
-	  ewrite((int)isAutoPlay, EEPROM_COMMANDS_LOC - 4);
 	  break;
 	case '*': /* Show Clock */
 	  showClock = !showClock;

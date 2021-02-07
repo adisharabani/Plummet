@@ -485,7 +485,7 @@ if [ "$1" = "morningShow" ]; then
 	masterArd=$($0 getMasterArd)
 	echo "Master=" $masterArd
 	# (echo Y+ ; echo P+; sleep 3) | cu -l /dev/$masterArd -s 9600  
-	$0 command $masterArd "Y+\nP+"
+	$0 command "$masterArd" "Y+\nP+"
 fi
 
 if [ "$1" = "nightShow" ]; then
@@ -495,7 +495,7 @@ if [ "$1" = "nightShow" ]; then
 	echo "Master=" $masterArd
 	
 	# (echo Y- ; sleep 3) | cu -l /dev/$masterArd -s 9600  
-	$0 command $masterArd "Y-"
+	$0 command "$masterArd" "Y-"
 fi
 
 if [ "$1" = "history" ]; then
