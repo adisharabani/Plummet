@@ -1,0 +1,70 @@
+#! /bin/bash
+echo "Content-type: text/html"
+echo ""
+
+#set -x 
+echo "<pre>"
+
+cd /home/pi/Plummet
+p=(${1//=/ })
+key=${p[0]}
+value=${p[1]}
+
+if [ "$key" = "command" ] ;then 
+	./Plummet kill;
+	./Plummet detached;
+#rm /tmp/.h 
+#set -x
+#screen -p0 -X at ttyUSB3 hardcopy -h /tmp/.h 2>&1
+#cat /tmp/.h 2>&1
+#ls -l /tmp/.h 2>&1
+
+	echo "running command $value"
+	masterArd=$(./Plummet getMasterArd)
+	echo masterArd=$masterArd
+	if [ "$value" = "startup" ]; then
+		./Plummet command "$masterArd" "Y+\nP+"
+	fi
+	if [ "$value" = "shutdown" ]; then
+		./Plummet command "$masterArd" "Y-P-"
+	fi
+	if [ "$value" = "ongoing_stop" ]; then
+		./Plummet command "$masterArd" "9"
+		sleep 5
+		./Plummet command "$masterArd" "2"
+	fi
+	if [ "$value" = "5" ]; then
+		./Plummet command "$masterArd" "5"
+	fi
+
+else 
+ cat << EOF
+
+<html>
+<head>
+<script>
+function command(cmd) {
+ var t = event.target;
+ var frm = document.getElementById("frm")
+
+ t.disabled=true;
+ frm.onload = ()=>{t.disabled=false}
+ frm.src = "?command="+cmd
+}
+</script>
+</head>
+<body>
+<button onclick="command('6')">Startup</button>
+<button onclick="command('7')">Shutdown</button>
+<iframe id=frm />
+</body>
+</html>
+EOF
+
+fi
+
+
+# ./Plummet getMasterArd
+# ./Plummet command "" 5
+
+echo done

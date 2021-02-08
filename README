@@ -28,6 +28,21 @@ cd ~/Plummet
 ./Plummet
 
 
+install apache2  & cgi:
+sudo apt-get install Apache2 
+sudo a2enmod cgi 
+sudo service apache2 restart
+
+create /usr/lib/cgi-bin/dashboard to include:
+#! /bin/bash
+sudo -u pi /home/pi/Plummet/dashboard $QUERY_STRING
+
+
+edit (with sudo) the /etc/sudoers to include:
+www-data ALL=(pi) NOPASSWD: /home/pi/Plummet/dashboard
+
+
+
 install important libraries: 
 ./Plummet setup
 
