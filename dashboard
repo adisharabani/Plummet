@@ -97,6 +97,7 @@ function updateSchedule() {
 </script>
 </head>
 <body>
+<h1>$HOSTNAME</h1>
 <button onclick="command('startup')">Startup</button>
 <button onclick="command('shutdown')">Shutdown</button>
 <iframe id=frm ></iframe>
