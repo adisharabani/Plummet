@@ -1,16 +1,30 @@
 #! /bin/bash
 echo "Content-type: text/html"
 echo ""
-
 #set -x 
-echo "<pre>"
 
 cd /home/pi/Plummet
 p=(${1//=/ })
 key=${p[0]}
 value=${p[1]}
 
-if [ "$key" = "command" ] ;then 
+
+#echo "${morningCron[@]}"
+#echo "${nightCron[@]}"
+
+
+if [ "$key" = "update" ]; then
+	if [[ "$value" =~ ^/?,?[0-9]+,[0-9]+,_,[0-6]-[0-6]:/?,?[0-9]+,[0-9]+,_,[0-6]-[0-6]$ ]]; then
+	morningCron=$(echo "${value}" | tr "/:" "#\n" | head -1 | sed 's/_/\* \*/' | sed -e 's_$_ cd ~/Plummet \&\& ./Plummet morningShow_' | tr "," " ")
+	nightCron=$(echo "${value}" | tr "/:" "#\n" | tail -1 | sed 's/_/\* \*/' | sed -e 's_$_ cd ~/Plummet \&\& ./Plummet nightShow_' | tr "," " ")
+	#echo "$morningCron"
+	#echo "$nightCron"
+	(crontab -l 2>/dev/null | grep -v morningShow | grep -v nightShow; echo "$morningCron"; echo "$nightCron" ) | crontab -
+	echo Updated
+	else
+		echo Error "$value"
+	fi
+elif [ "$key" = "command" ] ;then 
 	./Plummet kill;
 	./Plummet detached;
 #rm /tmp/.h 
@@ -18,7 +32,7 @@ if [ "$key" = "command" ] ;then
 #screen -p0 -X at ttyUSB3 hardcopy -h /tmp/.h 2>&1
 #cat /tmp/.h 2>&1
 #ls -l /tmp/.h 2>&1
-
+	echo "<pre>"
 	echo "running command $value"
 	masterArd=$(./Plummet getMasterArd)
 	echo masterArd=$masterArd
@@ -26,7 +40,8 @@ if [ "$key" = "command" ] ;then
 		./Plummet command "$masterArd" "Y+\nP+"
 	fi
 	if [ "$value" = "shutdown" ]; then
-		./Plummet command "$masterArd" "Y-P-"
+		./Plummet command "$masterArd" "Y-\nP-"
+		./Plummet command "$masterArd" "9"
 	fi
 	if [ "$value" = "ongoing_stop" ]; then
 		./Plummet command "$masterArd" "9"
@@ -38,10 +53,19 @@ if [ "$key" = "command" ] ;then
 	fi
 
 else 
+ morningCron=($(crontab -l 2>/dev/null | grep morningShow | sed 's:#:# :' | sed 's:^\s*[^#]:checked \0:' | sed 's/  */ /g' | cut -d" " -f 1,2,3,6 | tr "-" " " ))
+ nightCron=($(crontab -l 2>/dev/null | grep nightShow | sed 's:#:# :' | sed 's:^\s*[^#]:checked \0:' | sed 's/  */ /g' | cut -d" " -f 1,2,3,6 | tr "-" " " ))
  cat << EOF
 
 <html>
 <head>
+<style>
+ilabel {display:inline-block !important;float:left}
+iinput {display:inline-block;float:left}
+
+iframe { position:absolute; top:200px; left:0; right:0; botton:0; width:100%;}
+</style>
+
 <script>
 function command(cmd) {
  var t = event.target;
@@ -51,15 +75,58 @@ function command(cmd) {
  frm.onload = ()=>{t.disabled=false}
  frm.src = "?command="+cmd
 }
+
+function updateSchedule() {
+	var cronStart = (autostart.checked ? "" : "/," ) + 
+		parseInt(autostart_time.value.split(":")[1]) + "," +
+		parseInt(autostart_time.value.split(":")[0]) +
+		",_," +
+		autostart_day_from.selectedIndex + "-" +
+		autostart_day_to.selectedIndex
+	
+	var cronStop = (autostop.checked ? "" : "/," ) + 
+		parseInt(autostop_time.value.split(":")[1]) + "," +
+		parseInt(autostop_time.value.split(":")[0]) +
+		",_," +
+		autostop_day_from.selectedIndex + "-" +
+		autostop_day_to.selectedIndex
+
+	//alert("?update="+cronStart+":"+cronStop)
+	frm.src = ("?update="+cronStart+":"+cronStop)
+}
 </script>
 </head>
 <body>
-<button onclick="command('6')">Startup</button>
-<button onclick="command('7')">Shutdown</button>
-<iframe id=frm />
+<button onclick="command('startup')">Startup</button>
+<button onclick="command('shutdown')">Shutdown</button>
+<iframe id=frm ></iframe>
+<br><br>
+<input type=checkbox id=autostart ${morningCron[0]}/><label for=autostart>Auto Start </label>
+<select id=autostart_day_from><option value=0>Sun</option><option value=1>Mon</option><option value=2>Tue</option><option value=3>Wed</option><option value=4>Thu</option><option value=5>Fri</option><option value=6>Sat</option></select>
+to
+<select id=autostart_day_to><option value=0>Sun</option><option value=1>Mon</option><option value=2>Tue</option><option value=3>Wed</option><option value=4>Thu</option><option value=5>Fri</option><option value=6>Sat</option></select>
+at
+<input type=time id=autostart_time min="00:01" max="23:59" value="$(printf "%02d" ${morningCron[2]}):$(printf "%02d" ${morningCron[1]})"/>
+<br><br>
+<input type=checkbox id=autostop ${nightCron[0]}><label for=autostop>Auto Stop </label>
+<select id=autostop_day_from><option value=0>Sun</option><option value=1>Mon</option><option value=2>Tue</option><option value=3>Wed</option><option value=4>Thu</option><option value=5>Fri</option><option value=6>Sat</option></select>
+to
+<select id=autostop_day_to><option value=0>Sun</option><option value=1>Mon</option><option value=2>Tue</option><option value=3>Wed</option><option value=4>Thu</option><option value=5>Fri</option><option value=6>Sat</option></select>
+at
+<input type=time id=autostop_time min="00:01" max="23:59" value="$(printf "%02d" ${nightCron[2]}):$(printf "%02d" ${nightCron[1]})">
+
+<button onclick="updateSchedule()">update schedule</button>
+<script>
+autostart_day_from.selectedIndex = "${morningCron[3]}"
+autostart_day_to.selectedIndex = "${morningCron[4]}"
+autostop_day_from.selectedIndex = "${nightCron[3]}"
+autostop_day_to.selectedIndex = "${nightCron[4]}"
+</script>
+
 </body>
 </html>
 EOF
+
 
 fi
 
@@ -67,4 +134,3 @@ fi
 # ./Plummet getMasterArd
 # ./Plummet command "" 5
 
-echo done
