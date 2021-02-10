@@ -1614,14 +1614,17 @@ void updateAmpAndTime(bool runNow=false) {
 			
 #define ML_UPDATE(a,b) a = a*(ML_count/(ML_count+1.0)) + b/(ML_count+1.0)
 			//learn:
-			if (updateMachineLearning && !isFirstIter && (mAmp < maxServoAmp) && (updateMLModel) && (ropeAngle<syncRopeAngle + 0.08)) {
-				sprint(" * ");
-				
-				// Update 
-				ML_UPDATE(avg_l, mlLoopTime); ML_UPDATE(avg_x, X); ML_UPDATE(avg_xx,X*X); ML_UPDATE(avg_xl,X*mlLoopTime);
-				ML_UPDATE(avg_r, mlRopeOffset); ML_UPDATE(avg_y, Y); ML_UPDATE(avg_yy,Y*Y); ML_UPDATE(avg_yr,Y*mlRopeOffset);
-				ML_count = min(ML_count+1, 10000);
-				updateMLModel = false;
+			if (updateMLModel && !isFirstIter && (mAmp < maxServoAmp) && (ropeAngle<syncRopeAngle + 0.08) && (ropeAngle>0.2)) {
+				sprint(" *");
+				if (updateMachineLearning) {
+					sprint ("*");	
+					// Update 
+					ML_UPDATE(avg_l, mlLoopTime); ML_UPDATE(avg_x, X); ML_UPDATE(avg_xx,X*X); ML_UPDATE(avg_xl,X*mlLoopTime);
+					ML_UPDATE(avg_r, mlRopeOffset); ML_UPDATE(avg_y, Y); ML_UPDATE(avg_yy,Y*Y); ML_UPDATE(avg_yr,Y*mlRopeOffset);
+					ML_count = min(ML_count+1, 10000);
+					updateMLModel = false;
+				}
+				sprint(" ");
 			}
 
 			// calculate ML models:
