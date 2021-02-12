@@ -27,10 +27,10 @@
 // TODO: Stop calibration
 // TODO: Git pull different versions
 
-#define PLUMMET_VERSION "0.29"
+#define PLUMMET_VERSION "0.30"
 
 #define BAUD_RATE 9600
-#define BAUD_RATE 115200
+#define BAUD_RATE 38400
 
 ////// WHAT SERVO LIB TO USE
 #define USE_TIMER1
@@ -257,7 +257,10 @@ void setMode(mode_e m) {
 #define sprintln(s) if (enablePrint) Serial.println(s)
 #define sprintline() if (enablePrint) Serial.println()
 
-#define sprint_override(s)  Serial.print(s)
+#define sprint(s)    Serial.print(s)
+#define sprint2(s,f)    Serial.print(s,f)
+#define sprintln(s)  Serial.println(s)
+#define sprintline()  Serial.println()
 
 // void sprint(String s){}; void sprint(double s) {}
 // #define sprint(s) 
@@ -710,8 +713,8 @@ void printMLPoint(double phase, int amp) {
 void setDefaultCalibration() {
 		ML_loop_mult = 1.34; //1.27;//1.28;
 		ML_loop_default = 3200; //3020;//3567;
-		ML_angle_mult = 0.00187; //0.0224;//0.00199;
-		ML_angle_default = -0.08856; //-0.01765;//-0.02483;
+		ML_angle_mult = 0.001957; //0.0224;//0.00199;
+		ML_angle_default = -0.09367; //-0.01765;//-0.02483;
 		ML_count = 2;
 		fakeAvg();
 }
@@ -1652,8 +1655,9 @@ void updateAmpAndTime(bool runNow=false) {
 		if ((mode == RUNNING) || (mode == SYNCED_RUNNING) || (mode == STOPPING)) { // synced_running
 			waitLoops = 0;			
 
-			// calculate desired phase and amp
-			mlLoopTime = syncLoopTime - offset / LOOP_INTERVAL; // desired loopTime
+			// calculate desired phase and amp (aim)
+			// mlLoopTime = syncLoopTime - offset / LOOP_INTERVAL; // desired loopTime
+			mlLoopTime = syncLoopTime * LOOP_INTERVAL - ML_loop_default * (LOOP_INTERVAL-1) - offset;
 			mlRopeOffset = (syncRopeAngle-ropeAngle); //desired RopeOffset
 			
 			if (mode == RUNNING) {
@@ -1680,6 +1684,17 @@ void updateAmpAndTime(bool runNow=false) {
 					servoAmp = min(servoAmp,maxServoAmp*3);
 				//}
 				requestedNLoops = int(servoAmp/maxServoAmp + 1);
+
+
+				// recalculate aim
+				mlLoopTime = (syncLoopTime * (LOOP_INTERVAL+requestedNLoops-1) - ML_loop_default * (LOOP_INTERVAL-1) - offset) / requestedNLoops;;
+				X = (mlLoopTime - ML_loop_default) / ML_loop_mult;
+				Y = (mlRopeOffset - ML_angle_default) / ML_angle_mult;
+
+				tPhase = axisToAngle(X,Y)/2/PI;
+				servoAmp = int(sqrt(X*X+Y*Y));
+				requestedNLoops = int(servoAmp/maxServoAmp + 1);
+
 				servoAmp = min(servoAmp/requestedNLoops,maxServoAmp);
 				X = servoAmp * cos(tPhase*2*PI);
 				Y = servoAmp * sin(tPhase*2*PI);
@@ -1750,7 +1765,7 @@ sprint("LLL");sprintln(loopTime);
 			if (ropeAngleOffset < -0.005) {
 				// speed up
 				tPhase = 0.25;
-				servoAmp = int(min(max(-ropeAngleOffset*15*maxServoAmp, 20),maxServoAmp));
+				servoAmp = int(min(max(-ropeAngleOffset*20*maxServoAmp, 20),maxServoAmp));
 				loopTime = defaultLoopTime;
 				requestedNLoops = 1;
 				waitForTime = millis() + (LOOP_INTERVAL-0.5)*defaultLoopTime;

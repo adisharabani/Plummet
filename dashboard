@@ -35,7 +35,7 @@ elif [ "$key" = "command" ] ;then
 	echo "<pre>"
 	echo "running command $value"
 	if [ "$value" = "clear" ]; then
-		mv tty*.record /tmp
+		mv tty*.record ../
 		exit
 	fi
 	if [ "$value" = "showML" ]; then
