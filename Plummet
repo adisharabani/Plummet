@@ -219,7 +219,7 @@ if [ "$1" = "attach" ] || [ "$1" = "record" ] || [ "$1" = "detached" ] || [ "$1"
       echo split >> /tmp/.screens
       echo focus >> /tmp/.screens
    fi
-   if [ "$1" = "record" ] || [ "$1" = "detached_record" ]; then
+   if [ "1" = "1" ] || [ "$1" = "record" ] || [ "$1" = "detached_record" ]; then
 		# echo "screen -t ${ard} bash -c \"cu -l /dev/${ard} -s $BAUD_RATE | tee -a _${ard}.record\"" >> /tmp/.screens
 		echo "--" $(date) "--" >> ${ard}.record
 		echo logfile "${ard}.record" >> /tmp/.screens
