@@ -36,8 +36,6 @@ elif [ "$key" = "command" ] ;then
 	echo "running command $value"
 	if [ "$value" = "clear" ]; then
 		mv tty*.record ../
-		sleep 3;
-		./Plummet record_detached
 		echo Done
 		exit
 	fi
@@ -135,6 +133,36 @@ function playOne() {
 <body>
 <h1>$HOSTNAME</h1>
 EOF
+
+if [ "$key" = "ml" ]; then
+  echo " <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>"
+
+  echo "<div id=myDiv></div>"
+
+  echo "<script>"
+  echo "data = [" 
+  cat -v ${value}.record | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk '(/MachineLearning .* MLData/)  {gsub("[=:f(),ms]",""); print "[" $2 "," $3 "," $4 "," $5 "," ($6 +0.3) "],"}'
+  echo "]"
+  echo "rope_angle_input = data.map((d)=>d[0])"
+  echo "phs = data.map((d)=>d[1])"
+  echo "amp = data.map((d)=>d[2])"
+  echo "loop_time = data.map((d)=>d[3])"
+  echo "rope_angle = data.map((d)=>d[4])"
+  echo "t = 0//0.1"
+  echo "X = data.map((d)=>d[2]*Math.cos(d[1]*2*Math.PI-t))"
+  echo "Y = data.map((d)=>d[2]*Math.sin(d[1]*2*Math.PI-t))"
+  echo "x = X"
+  echo "y= loop_time"
+  echo "z = data.map((d)=>0)"
+  echo "r = rope_angle_input"
+
+
+  echo "Plotly.newPlot('myDiv', [{mode:'markers',marker: {opacity:0.5, size:2, line:{width:0}},opacity:1, intensity: r, colorscale: [['0.290', 'orange'],['0.310','blue']], type:'scatter3d', x:x, y:y,z:z}], {width:1000, height:700, margin:{l:0,r:0,b:0, t:0, pad:0}});"
+
+ echo "</script>"
+
+fi
+
 if [ "$key" = "analyze" ]; then
   echo "<canvas id='myChart'></canvas>"
   echo "<button onclick='play()'>play</button>"
@@ -146,7 +174,7 @@ if [ "$key" = "analyze" ]; then
   echo "var ctx = document.getElementById('myChart').getContext('2d');"
   echo "var colors = ['#cc9999','#99cc99','9999cc','#cccc99']"
  #echo "var c = new Chart(ctx, {type:'scatter', options:{scales:{xAxes: [{scaleLabel:{display:true, labelString:'as'}}]}, data:{datasets:["
-  echo "var c = new Chart(ctx, {type:'scatter', options:{scales:{xAxes: [{scaleLabel:{display:true,labelString:'offset [ms]'}}], yAxes:[{scaleLabel:{display:true,labelString:'ropeAngle'}}]}}, data:{datasets:["
+  echo "var c = new Chart(ctx, {type:'scatter', options:{scales:{xAxes: [{ticks: {min:-150, max:150, stepSize:25}, scaleLabel:{display:true,labelString:'offset [ms]'}}], yAxes:[{ticks: {min:0.27,max:0.33,stepSize:0.01}, scaleLabel:{display:true,labelString:'ropeAngle'}}]}}, data:{datasets:["
   #for device in $(./Plummet listDevicesHelper); do
   for device in $(./Plummet listDevices | sort); do
     ard="${device#*:}"
@@ -161,7 +189,8 @@ if [ "$key" = "analyze" ]; then
     #grep -a "MachineLearning 0.[2-5].*\* MLData" ${ard}.record | cut -d" " -f 6,7 | awk '{print "{x:" $1 "y:" $2 "},"}' | tr -d "ms()\n"
     #cat -v ${ard}.record | sed 's:\^M:\n:g' | awk '(/MachineLearning .*\* MLData/ && (nl ~ "nL=1")) {print "{x:" o ",y:" r "},"} /=> servoAmp/ {nl=$5;} /^\^\[\[0;31m\[[0-9]*\]/ {gsub("[=()]"," "); o=$5; r=$7;}' | tr -d "ms\n"
     #cat -v ${ard}.record | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk '/MachineLearning .*\* MLData/  {print "{x:" o ",y:" r "},"} /^\^\[\[0;31m\[[0-9]*\]/ {gsub("[=()]"," "); o=$5; r=$7;}' | tr -d "ms\n"
-    cat -v ${ard}.record | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk '(/MachineLearning .*\* MLData/ && (o ~ /^[0-9.-]+ms$/) && (r ~ /^[0-9.-]+$/))  {print "{x:" o ",y:" r "},"} /^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()]"," "); o=$5; r=$7;}' | tr -d "ms\n"
+    #cat -v ${ard}.record | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk '(/MachineLearning .*\* MLData/ && (o ~ /^[0-9.-]+ms$/) && (r ~ /^[0-9.-]+$/))  {print "{x:" o ",y:" r "},"} /^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()]"," "); o=$5; r=$7;}' | tr -d "ms\n"
+    cat -v ${ard}.record | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk '(/MachineLearning .* MLData/ && (o ~ /^[0-9.-]+ms$/) && (r ~ /^[0-9.-]+$/))  {print "{x:" o ",y:" r "},"} /^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()]"," "); o=$5; r=$7;}' | tr -d "ms\n"
     echo "]},"
   done
   echo "]}})"
