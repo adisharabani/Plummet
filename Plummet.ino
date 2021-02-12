@@ -1693,7 +1693,6 @@ void updateAmpAndTime(bool runNow=false) {
 
 				tPhase = axisToAngle(X,Y)/2/PI;
 				servoAmp = int(sqrt(X*X+Y*Y));
-				requestedNLoops = int(servoAmp/maxServoAmp + 1);
 
 				servoAmp = min(servoAmp/requestedNLoops,maxServoAmp);
 				X = servoAmp * cos(tPhase*2*PI);
