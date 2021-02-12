@@ -684,7 +684,7 @@ void writeCalibration() {
 }
 
 void printMLData() {
-	sprint("MLData ");sprint(ML_loop_mult); sprint(",");sprint(ML_loop_default); sprint(" "); sprint2(ML_angle_mult,2); sprint(" "); sprint2(ML_angle_default,6);sprint(" #"); sprintln(ML_count);
+	sprint("MLData ");sprint(ML_loop_mult); sprint(",");sprint(ML_loop_default); sprint(" "); sprint2(ML_angle_mult,6); sprint(" "); sprint2(ML_angle_default,6);sprint(" #"); sprintln(ML_count);
 }
 
 void printCurrentCalibration() {
