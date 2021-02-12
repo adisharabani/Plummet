@@ -1708,7 +1708,8 @@ void updateAmpAndTime(bool runNow=false) {
 				updateMLModel = true;
 			}
 			//sprint(" X");sprint(X);sprint(",");sprint(Y);sprint(";");sprint(tPhase);
-			loopTime = mlLoopTime * LOOP_INTERVAL - (LOOP_INTERVAL-1)*ML_loop_default;
+			//loopTime = mlLoopTime * LOOP_INTERVAL - (LOOP_INTERVAL-1)*ML_loop_default;
+			loopTime = mlLoopTime;
 
 			if ((mode == STOPPING)) {
 				tPhase = 0.75;
