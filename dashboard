@@ -38,6 +38,10 @@ elif [ "$key" = "command" ] ;then
 		mv tty*.record /tmp
 		exit
 	fi
+	if [ "$value" = "showML" ]; then
+		./Plummet command "" "&"
+		exit
+	fi
 	masterArd=$(./Plummet getMasterArd)
 	echo masterArd=$masterArd
 	if [ "$value" = "startup" ]; then
@@ -114,6 +118,7 @@ if [ "$key" = "analyze" ]; then
   echo "<canvas id='myChart'></canvas>"
   echo "<button onclick='command(\"detached_record\")'>record</button>"
   echo "<button onclick='command(\"clear\")'>clear</button>"
+  echo "<button onclick='command(\"showML\")'>show ML data</button>"
   echo "<script src='https://cdn.jsdelivr.net/npm/chart.js@2.8.0'></script>"
   echo "<script>"
   echo "var ctx = document.getElementById('myChart').getContext('2d');"
