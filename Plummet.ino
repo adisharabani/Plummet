@@ -186,6 +186,7 @@ unsigned long time;
 unsigned long lastIterationTime  = millis();
 
 int requestedNLoops = 0;
+int lastRequestedNLoops = 0;
 bool requestedMoveStarted = false;
 
 double ropeMaxLeftAngle = 0;
@@ -249,8 +250,11 @@ void setMode(mode_e m) {
 #define NOTE_G6 1568
 
 #define sprint(s)   if (enablePrint) Serial.print(s)
+#define sprint2(s,f)   if (enablePrint) Serial.print(s,f)
 #define sprintln(s) if (enablePrint) Serial.println(s)
 #define sprintline() if (enablePrint) Serial.println()
+
+#define sprint_override(s)  Serial.print(s)
 
 // void sprint(String s){}; void sprint(double s) {}
 // #define sprint(s) 
@@ -677,7 +681,7 @@ void writeCalibration() {
 }
 
 void printMLData() {
-	sprint("MLData ");sprint(ML_loop_mult); sprint(",");sprint(ML_loop_default); sprint(" "); sprint(ML_angle_mult*1000); sprint("/1000,");sprint(ML_angle_default*1000);sprint("/1000 #"); sprintln(ML_count);
+	sprint("MLData ");sprint(ML_loop_mult); sprint(",");sprint(ML_loop_default); sprint(" "); sprint(ML_angle_mult); sprint2(ML_angle_default,6);sprint(" #"); sprintln(ML_count);
 }
 
 void printCurrentCalibration() {
@@ -701,11 +705,12 @@ void printMLPoint(double phase, int amp) {
 }
 
 void setDefaultCalibration() {
-		ML_loop_mult = 1.35; //1.27;//1.28;
-		ML_loop_default = 3222; //3020;//3567;
-		ML_angle_mult = 0.0289; //0.0224;//0.00199;
-		ML_angle_default = -0.011128; //-0.01765;//-0.02483;
+		ML_loop_mult = 1.34; //1.27;//1.28;
+		ML_loop_default = 3200; //3020;//3567;
+		ML_angle_mult = 0.00187; //0.0224;//0.00199;
+		ML_angle_default = -0.08856; //-0.01765;//-0.02483;
 		ML_count = 2;
+		fakeAvg();
 }
 
 void readCalibration() {
@@ -733,10 +738,14 @@ void readCalibration() {
 		ML_angle_default = ereadfloat();
 		ML_angle_mult = ereadfloat();
 		ML_count = 100;
+ 		fakeAvg(); 	
 	} else {
 		setDefaultCalibration();
 	}
 
+	printCurrentCalibration();
+}
+void fakeAvg() {
 	avg_l = ML_loop_default / 2.0; // loop default;
 	avg_x = -avg_l / ML_loop_mult; // 1.273 - loop_mult (ratio between servo and offset per cycle)
 	avg_xx = avg_x*avg_x * 2;
@@ -746,8 +755,6 @@ void readCalibration() {
 	avg_y = -avg_r / ML_angle_mult; // 0.0016 - angle multiplier (ratio between servo and rope angle offset per cycle)
 	avg_yy = avg_y*avg_y * 2;
 	avg_yr = 0;
-  	
-	printCurrentCalibration();
 }
 
 ///////////////////////////
@@ -1572,10 +1579,10 @@ void updateAmpAndTime(bool runNow=false) {
 	if ((side==RIGHT) || runNow) {
 		if (mode != HALT) {
 			sprint((waitLoops || millis()<waitForTime) ? "\x1b[0;37m" : "\x1b[0;31m");
-			sprint ("["); sprint(lastLoopTime); sprint("]: s="); sprint(syncLoopTime); sprint(",");sprint(syncInitTime); sprint(" offset="); sprint(offset); sprint("ms ropeAngle="); 	sprint(ropeAngle); sprint((ropeAngleOffset > 0) ? "(+" : "(");sprint(ropeAngleOffset); sprint(")");
+			sprint(time); sprint("|");
+			sprint ("["); sprint(lastLoopTime); sprint("]: s="); sprint(syncLoopTime); sprint(",");sprint(syncInitTime); sprint(" offset="); sprint(offset); sprint("ms ropeAngle="); 	sprint2(ropeAngle,3); sprint((ropeAngleOffset > 0) ? "(+" : "(");sprint2(ropeAngleOffset,3); sprint(")");
 			sprint("\x1b[0m");
 		}
-
 		if (requestedMoveStarted && !runNow) { sprint("in motion [");sprint(requestedNLoops);sprintln("]"); return; }
 		if (waitLoops > 0) { sprint("wait ["); sprint(waitLoops--); sprintln("]"); /*servoAmp = 0;*/ return; }
 		if (!runNow && (millis() < waitForTime)) { sprint("waiting "); sprint(waitForTime - millis()); sprintln("ms"); return;}
@@ -1606,11 +1613,11 @@ void updateAmpAndTime(bool runNow=false) {
 			Y = mAmp * sin(mPhase*2*PI);
 
 			// last results
-			mlLoopTime = (time-lastTime) / LOOP_INTERVAL;
+			mlLoopTime = (time-lastTime) / (LOOP_INTERVAL + lastRequestedNLoops-1);
 			mlRopeOffset = ropeAngle-lastRopeAngle ;
 
 			sprintline();
-			sprint("\x1b[0;34mMachineLearning "); sprint(lastRopeAngle); sprint(": f("); sprint(mPhase); sprint(", "); sprint(mAmp); sprint(") = ("); sprint(mlLoopTime); sprint("ms, "); sprint(mlRopeOffset); sprint(") "); sprint("LT:"); sprint(mLoopTime);sprint(" ");
+			sprint("\x1b[0;34mMachineLearning "); sprint2(lastRopeAngle,3); sprint(": f("); sprint(mPhase); sprint(", "); sprint(mAmp); sprint(") = ("); sprint(mlLoopTime); sprint("ms, "); sprint2(mlRopeOffset,3); sprint(") "); sprint("LT:"); sprint(mLoopTime);sprint(" ");
 			
 #define ML_UPDATE(a,b) a = a*(ML_count/(ML_count+1.0)) + b/(ML_count+1.0)
 			//learn:
@@ -1623,15 +1630,16 @@ void updateAmpAndTime(bool runNow=false) {
 					ML_UPDATE(avg_r, mlRopeOffset); ML_UPDATE(avg_y, Y); ML_UPDATE(avg_yy,Y*Y); ML_UPDATE(avg_yr,Y*mlRopeOffset);
 					ML_count = min(ML_count+1, 10000);
 					updateMLModel = false;
+
+					// calculate ML models:
+					ML_loop_mult = (avg_xl - avg_x*avg_l) / (avg_xx - avg_x*avg_x);
+					ML_angle_mult = (avg_yr - avg_y*avg_r) / (avg_yy - avg_y*avg_y);
+					ML_loop_default = avg_l - ML_loop_mult*avg_x;
+					ML_angle_default = avg_r - ML_angle_mult*avg_y;
 				}
 				sprint(" ");
 			}
 
-			// calculate ML models:
-			ML_loop_mult = (avg_xl - avg_x*avg_l) / (avg_xx - avg_x*avg_x);
-			ML_angle_mult = (avg_yr - avg_y*avg_r) / (avg_yy - avg_y*avg_y);
-			ML_loop_default = avg_l - ML_loop_mult*avg_x;
-			ML_angle_default = avg_r - ML_angle_mult*avg_y;
 
 			// print ML models
 			//sprint("X("); sprint(X);sprint(",");sprint(mlLoopTime);sprint(") Y(");sprint(Y);sprint(",");sprint(mlRopeOffset);sprint(") ML ");
@@ -1739,7 +1747,7 @@ sprint("LLL");sprintln(loopTime);
 			if (ropeAngleOffset < -0.005) {
 				// speed up
 				tPhase = 0.25;
-				servoAmp = int(min(max(-ropeAngleOffset*10*maxServoAmp, 20),maxServoAmp));
+				servoAmp = int(min(max(-ropeAngleOffset*15*maxServoAmp, 20),maxServoAmp));
 				loopTime = defaultLoopTime;
 				requestedNLoops = 1;
 				waitForTime = millis() + (LOOP_INTERVAL-0.5)*defaultLoopTime;
@@ -1796,7 +1804,7 @@ sprint("LLL");sprintln(loopTime);
 
 		lastTime = time;
 		lastRopeAngle = ropeAngle;
-		
+		lastRequestedNLoops = requestedNLoops;
 		isFirstIter = false;
 	}	
 }

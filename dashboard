@@ -129,7 +129,7 @@ if [ "$key" = "analyze" ]; then
     #grep -a "MachineLearning 0.[2-5].*\* MLData" ${ard}.record | cut -d" " -f 6,7 | awk '{print "{x:" $1 "y:" $2 "},"}' | tr -d "ms()\n"
     #cat -v ${ard}.record | sed 's:\^M:\n:g' | awk '(/MachineLearning .*\* MLData/ && (nl ~ "nL=1")) {print "{x:" o ",y:" r "},"} /=> servoAmp/ {nl=$5;} /^\^\[\[0;31m\[[0-9]*\]/ {gsub("[=()]"," "); o=$5; r=$7;}' | tr -d "ms\n"
     #cat -v ${ard}.record | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk '/MachineLearning .*\* MLData/  {print "{x:" o ",y:" r "},"} /^\^\[\[0;31m\[[0-9]*\]/ {gsub("[=()]"," "); o=$5; r=$7;}' | tr -d "ms\n"
-    cat -v ${ard}.record | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk '(/MachineLearning .*\* MLData/ && (o ~ /^[0-9.-]+ms$/) && (r ~ /^[0-9.-]+$/))  {print "{x:" o ",y:" r "},"} /^\^\[\[0;31m\[[0-9]*\]/ {gsub("[=()]"," "); o=$5; r=$7;}' | tr -d "ms\n"
+    cat -v ${ard}.record | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk '(/MachineLearning .*\* MLData/ && (o ~ /^[0-9.-]+ms$/) && (r ~ /^[0-9.-]+$/))  {print "{x:" o ",y:" r "},"} /^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()]"," "); o=$5; r=$7;}' | tr -d "ms\n"
     echo "]},"
   done
   echo "]}})"
