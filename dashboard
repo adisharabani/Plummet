@@ -34,6 +34,10 @@ elif [ "$key" = "command" ] ;then
 #ls -l /tmp/.h 2>&1
 	echo "<pre>"
 	echo "running command $value"
+	if [ "$value" = "clear" ]; then
+		mv tty*.record /tmp
+		exit
+	fi
 	masterArd=$(./Plummet getMasterArd)
 	echo masterArd=$masterArd
 	if [ "$value" = "startup" ]; then
@@ -79,7 +83,7 @@ function command(cmd) {
  var frm = document.getElementById("frm")
 
  t.disabled=true;
- frm.onload = ()=>{t.disabled=false}
+ frm.onload = ()=>{t.disabled=false;if (cmd=="clear") document.location.reload()}
  frm.src = "?command="+cmd
 }
 
@@ -108,7 +112,8 @@ function updateSchedule() {
 EOF
 if [ "$key" = "analyze" ]; then
   echo "<canvas id='myChart'></canvas>"
-  echo "<button onclick='command(\"detached_record\")'>analyze</button>"
+  echo "<button onclick='command(\"detached_record\")'>record</button>"
+  echo "<button onclick='command(\"clear\")'>clear</button>"
   echo "<script src='https://cdn.jsdelivr.net/npm/chart.js@2.8.0'></script>"
   echo "<script>"
   echo "var ctx = document.getElementById('myChart').getContext('2d');"
