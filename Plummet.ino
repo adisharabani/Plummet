@@ -711,10 +711,11 @@ void printMLPoint(double phase, int amp) {
 }
 
 void setDefaultCalibration() {
-		ML_loop_mult = 1.34; //1.27;//1.28;
-		ML_loop_default = 3200; //3020;//3567;
-		ML_angle_mult = 0.001957; //0.0224;//0.00199;
-		ML_angle_default = -0.09367; //-0.01765;//-0.02483;
+		// 2.28,3227.39 0.001328 -0.033839
+		ML_loop_mult = 2.35; // 1.34; //1.27;//1.28;
+		ML_loop_default = 3211; //3020;//3567;
+		ML_angle_mult = 0.002167; //0.001957; //0.0224;//0.00199;
+		ML_angle_default = -0.055560; //-0.09367; //-0.01765;//-0.02483;
 		ML_count = 2;
 		fakeAvg();
 }
@@ -1619,7 +1620,8 @@ void updateAmpAndTime(bool runNow=false) {
 			Y = mAmp * sin(mPhase*2*PI);
 
 			// last results
-			mlLoopTime = (time-lastTime) / (LOOP_INTERVAL + lastRequestedNLoops-1);
+			// mlLoopTime = (time-lastTime) / (LOOP_INTERVAL + lastRequestedNLoops-1);
+			mlLoopTime = ((time-lastTime) - ML_loop_default * (LOOP_INTERVAL-1)) / (lastRequestedNLoops>0 ? lastRequestedNLoops : 1);
 			mlRopeOffset = ropeAngle-lastRopeAngle ;
 
 			sprintline();

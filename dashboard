@@ -36,6 +36,9 @@ elif [ "$key" = "command" ] ;then
 	echo "running command $value"
 	if [ "$value" = "clear" ]; then
 		mv tty*.record ../
+		sleep 3;
+		./Plummet record_detached
+		echo Done
 		exit
 	fi
 	if [ "$value" = "showML" ]; then
@@ -91,6 +94,7 @@ function command(cmd) {
  frm.src = "?command="+cmd
 }
 
+
 function updateSchedule() {
 	var cronStart = (autostart.checked ? "" : "/," ) + 
 		parseInt(autostart_time.value.split(":")[1]) + "," +
@@ -109,6 +113,23 @@ function updateSchedule() {
 	//alert("?update="+cronStart+":"+cronStop)
 	frm.src = ("?update="+cronStart+":"+cronStop)
 }
+
+
+function play() {
+  datasets = []
+  c.data.datasets.forEach((dataset) => {datasets.push(dataset.data); dataset.data = []})
+  playInterval = setInterval(playOne,500);
+}
+function playOne() {
+  var had_data = false;
+  for (var i=0; i<datasets.length; i++) {
+     var d = datasets[i].shift()
+     if (d) {had_data = true; c.data.datasets[i].data.push(d)}
+  }
+  if (had_data == false) clearInterval(playInterval)
+ c.update()
+}
+
 </script>
 </head>
 <body>
@@ -116,6 +137,7 @@ function updateSchedule() {
 EOF
 if [ "$key" = "analyze" ]; then
   echo "<canvas id='myChart'></canvas>"
+  echo "<button onclick='play()'>play</button>"
   echo "<button onclick='command(\"detached_record\")'>record</button>"
   echo "<button onclick='command(\"clear\")'>clear</button>"
   echo "<button onclick='command(\"showML\")'>show ML data</button>"
@@ -134,7 +156,7 @@ if [ "$key" = "analyze" ]; then
     else 
 	errors=""
     fi
-    echo -n "{label: '$device$errors', backgroundColor:colors.pop(), data : ["
+    echo -n "{label: '$device$errors', backgroundColor:colors.pop(), showLine:true,fill:false,borderWidth:1,data : ["
     #cat -v ${ard}.record | sed 's:^M::g' | awk '(/MachineLearning 0.[2-3]/ && (nl ~ "nL=1")) {print "{x:" $6 "y:" $7 "},"} /=> servoAmp/ {nl=$5;}'  | tr -d "ms()\n" 
     #grep -a "MachineLearning 0.[2-5].*\* MLData" ${ard}.record | cut -d" " -f 6,7 | awk '{print "{x:" $1 "y:" $2 "},"}' | tr -d "ms()\n"
     #cat -v ${ard}.record | sed 's:\^M:\n:g' | awk '(/MachineLearning .*\* MLData/ && (nl ~ "nL=1")) {print "{x:" o ",y:" r "},"} /=> servoAmp/ {nl=$5;} /^\^\[\[0;31m\[[0-9]*\]/ {gsub("[=()]"," "); o=$5; r=$7;}' | tr -d "ms\n"
@@ -147,6 +169,7 @@ if [ "$key" = "analyze" ]; then
 fi
 cat <<EOF
 <button onclick="command('startup')">Startup</button>
+
 <button onclick="command('shutdown')">Shutdown</button>
 <br><br>
 <input type=checkbox id=autostart ${morningCron[0]}/><label for=autostart>Auto Start </label>
