@@ -29,6 +29,9 @@
 
 #define PLUMMET_VERSION "0.29"
 
+#define BAUD_RATE 9600
+#define BAUD_RATE 115200
+
 ////// WHAT SERVO LIB TO USE
 #define USE_TIMER1
 //#define USE_SERVOLIB
@@ -681,7 +684,7 @@ void writeCalibration() {
 }
 
 void printMLData() {
-	sprint("MLData ");sprint(ML_loop_mult); sprint(",");sprint(ML_loop_default); sprint(" "); sprint(ML_angle_mult); sprint2(ML_angle_default,6);sprint(" #"); sprintln(ML_count);
+	sprint("MLData ");sprint(ML_loop_mult); sprint(",");sprint(ML_loop_default); sprint(" "); sprint2(ML_angle_mult,2); sprint(" "); sprint2(ML_angle_default,6);sprint(" #"); sprintln(ML_count);
 }
 
 void printCurrentCalibration() {
@@ -1818,7 +1821,7 @@ sprint("LLL");sprintln(loopTime);
 void setup() {
   KB[0] = 0; CMD=KB;
   //pinMode(13, OUTPUT); digitalWrite(13, HIGH);
-  Serial.begin(9600);
+  Serial.begin(BAUD_RATE);
   Serial.print("v");
   Serial.print(PLUMMET_VERSION);
 

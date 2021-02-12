@@ -6,6 +6,9 @@ ARDLIB=/home/pi/arduino-1.8.10
 
 ARDTTY_PATTERN="tty(USB|ACM)"
 
+BAUD_RATE=9600
+BAUD_RATE=115200
+
 if [ $# -eq 0 ]; then
 whiptail --textbox Plummet.txt 25 78
  while : ; do
@@ -127,7 +130,7 @@ if [ "$1" = "upload" ]; then
 #  done
 #  wait
  for ard in $($0 listDevices $2); do
-   stty -F /dev/${ard} cs8 9600 ignbrk -brkint -icrnl -imaxbel -opost -ocrnl -onlret -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke noflsh -ixon -crtscts
+   stty -F /dev/${ard} cs8 $BAUD_RATE ignbrk -brkint -icrnl -imaxbel -opost -ocrnl -onlret -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke noflsh -ixon -crtscts
  done
   sleep 4
 fi
@@ -177,7 +180,7 @@ if [ "$1" = "attach_old" ]; then
  #stty -F /dev/${ard} cs8 38400 ignbrk -brkint -icrnl -imaxbel -opost -ocrnl -onlret -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke noflsh -ixon -crtscts
  stty -F /dev/${ard} raw -echo -echoe -echok -echoctl -echoke
 
- screen -R -S ${ard} /dev/${ard} 9600
+ screen -R -S ${ard} /dev/${ard} $BAUD_RATE
 
  #screen -R -S ${ard} bash -c 'tty > /tmp/screen${ard}; '$0' listCommands; cu -l /dev/'${ard}' -s 38400'
  #screen -R -S ${ard} bash -c 'tty > /tmp/screen${ard}; '$0' listCommands; tail -f /dev/'${ard}' &; cat > /dev/'${ard}
@@ -211,19 +214,19 @@ if [ "$1" = "attach" ] || [ "$1" = "record" ] || [ "$1" = "detached" ] || [ "$1"
  echo 'mousetrack on' >> /tmp/.screens
  isFirst=1
  for ard in $($0 listDevices $2); do
-   stty -F /dev/${ard} cs8 9600 ignbrk -brkint -icrnl -imaxbel -opost -ocrnl -onlret -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke -noflsh -ixon -crtscts
+   stty -F /dev/${ard} cs8 $BAUD_RATE ignbrk -brkint -icrnl -imaxbel -opost -ocrnl -onlret -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke -noflsh -ixon -crtscts
    if [ "$isFirst" = "0" ]; then
       echo split >> /tmp/.screens
       echo focus >> /tmp/.screens
    fi
    if [ "$1" = "record" ] || [ "$1" = "detached_record" ]; then
-		# echo "screen -t ${ard} bash -c \"cu -l /dev/${ard} -s 9600 | tee -a _${ard}.record\"" >> /tmp/.screens
+		# echo "screen -t ${ard} bash -c \"cu -l /dev/${ard} -s $BAUD_RATE | tee -a _${ard}.record\"" >> /tmp/.screens
 		echo "--" $(date) "--" >> ${ard}.record
 		echo logfile "${ard}.record" >> /tmp/.screens
 		echo logtstamp on >> /tmp/.screens
-	   echo screen -L -t ${ard} /dev/${ard} >> /tmp/.screens
+	   echo screen -L -t ${ard} /dev/${ard} $BAUD_RATE >> /tmp/.screens
 	else
-	   echo screen -t ${ard} /dev/${ard} >> /tmp/.screens
+	   echo screen -t ${ard} /dev/${ard} $BAUD_RATE >> /tmp/.screens
 	fi
    echo 'stuff "e\nB\n \n"' >> /tmp/.screens
    if [ "$isFirst" = "1" ]; then
@@ -484,7 +487,7 @@ if [ "$1" = "morningShow" ]; then
 	#$0 kill
 	masterArd=$($0 getMasterArd)
 	echo "Master=" $masterArd
-	# (echo Y+ ; echo P+; sleep 3) | cu -l /dev/$masterArd -s 9600  
+	# (echo Y+ ; echo P+; sleep 3) | cu -l /dev/$masterArd -s $BAUD_RATE  
 	$0 command "$masterArd" "Y+\nP+"
 fi
 
@@ -494,7 +497,7 @@ if [ "$1" = "nightShow" ]; then
 	masterArd=$($0 getMasterArd)
 	echo "Master=" $masterArd
 	
-	# (echo Y- ; sleep 3) | cu -l /dev/$masterArd -s 9600  
+	# (echo Y- ; sleep 3) | cu -l /dev/$masterArd -s $BAUD_RATE  
 	$0 command "$masterArd" "Y-"
 fi
 
@@ -544,7 +547,7 @@ if [ "$1" = "command" ]; then
     $0 detached;
  fi
  for ard in $($0 listDevices $2); do  
-   #stty -F /dev/${ard} cs8 9600 ignbrk -brkint -icrnl -imaxbel -opost -ocrnl -onlret -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke -noflsh -ixon -crtscts
+   #stty -F /dev/${ard} cs8 $BAUD_RATE ignbrk -brkint -icrnl -imaxbel -opost -ocrnl -onlret -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke -noflsh -ixon -crtscts
    #screen -d -m -t $ard /dev/$ard;
    screen -X at $ard stuff "\n5555555555\n${3}\n";
    sleep 1 
