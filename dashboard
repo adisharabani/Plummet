@@ -64,6 +64,22 @@ elif [ "$key" = "command" ] ;then
 		./Plummet command "$masterArd" "5"
 	fi
 
+elif [ "$key" = "analyze" ] && [ "$value" = "datasets" ]; then
+  echo "["
+  for device in $(./Plummet listDevices | sort); do
+    ard="${device#*:}"
+    pot0=$(grep -a POT0 ${ard}.record | wc -l)
+    if [ "$pot0" -gt 0 ]; then 
+	errors=" - $pot0 POT0 errors!";
+    else 
+	errors=""
+    fi
+    echo -n "{label: '$device$errors', backgroundColor:colors.pop(), showLine:true,fill:false,borderWidth:1,data : ["
+    cat -v ${ard}.record | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk '(/MachineLearning .* MLData/ && (o ~ /^[0-9.-]+ms$/) && (r ~ /^[0-9.-]+$/))  {print "{x:" o ",y:" r "},"} /^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()]"," "); o=$5; r=$7;}' | tr -d "ms\n"
+    echo "]},"
+  done
+  echo "]"
+
 else 
  morningCron=($(crontab -l 2>/dev/null | grep morningShow | sed 's:#:# :' | sed 's:^\s*[^#]:checked \0:' | sed 's/  */ /g' | cut -d" " -f 1,2,3,6 | tr "-" " " ))
  nightCron=($(crontab -l 2>/dev/null | grep nightShow | sed 's:#:# :' | sed 's:^\s*[^#]:checked \0:' | sed 's/  */ /g' | cut -d" " -f 1,2,3,6 | tr "-" " " ))
@@ -113,21 +129,6 @@ function updateSchedule() {
 }
 
 
-function play() {
-  datasets = []
-  c.data.datasets.forEach((dataset) => {datasets.push(dataset.data); dataset.data = []})
-  playInterval = setInterval(playOne,500);
-}
-function playOne() {
-  var had_data = false;
-  for (var i=0; i<datasets.length; i++) {
-     var d = datasets[i].shift()
-     if (d) {had_data = true; c.data.datasets[i].data.push(d)}
-  }
-  if (had_data == false) clearInterval(playInterval)
- c.update()
-}
-
 </script>
 </head>
 <body>
@@ -164,8 +165,10 @@ if [ "$key" = "ml" ]; then
 fi
 
 if [ "$key" = "analyze" ]; then
+    
   echo "<canvas id='myChart'></canvas>"
-  echo "<button onclick='play()'>play</button>"
+  echo "<button onclick='replay()'>replay</button>"
+  echo "<button onclick='realtime()'>realtime</button>"
   echo "<button onclick='command(\"detached_record\")'>record</button>"
   echo "<button onclick='command(\"clear\")'>clear</button>"
   echo "<button onclick='command(\"showML\")'>show ML data</button>"
@@ -195,6 +198,46 @@ if [ "$key" = "analyze" ]; then
   done
   echo "]}})"
   echo "</script>"
+  cat <<EOF
+  <script>
+function replay() {
+  datasets = []
+  c.data.datasets.forEach((dataset) => {datasets.push(dataset.data); dataset.data = []})
+  replayInterval = setInterval(replayOne,500);
+}
+function replayOne() {
+  var had_data = false;
+  for (var i=0; i<datasets.length; i++) {
+     var d = datasets[i].shift()
+     if (d) {had_data = true; c.data.datasets[i].data.push(d)}
+  }
+  if (had_data == false) clearInterval(replayInterval)
+ c.update()
+}
+
+  function updateChart() {
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+		var datasets = eval(xhttp.responseText)	
+		for (var i in c.data.datasets) {
+			c.data.datasets[i].data.push(...datasets[i].data.slice(c.data.datasets[i].data.length))
+	       		c.data.datasets[i].pointRadius = datasets[i].data.map((e,i,a)=>(i<a.length-1)?2:10)
+		}
+		c.update()
+	    }
+	};
+	xhttp.open("GET", "?analyze=datasets", true);
+	xhttp.send();
+
+  }
+function realtime() {
+
+	realtimeInterval = setInterval(updateChart,2500)
+}
+  </script>
+EOF
+
 fi
 cat <<EOF
 <button onclick="command('startup')">Startup</button>
