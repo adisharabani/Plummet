@@ -134,6 +134,8 @@ bool isPlaying = false;
 bool isAutoPlay = false;
 bool showClock = false;
 int recordingLoc;
+int clockShift;
+unsigned long clockShiftCalibration = 0;
 
 //servo
 int loopTime = defaultLoopTime;
@@ -578,6 +580,7 @@ double waitForSteadiness(double threshold, int steadyTime=5000) {
   } while ((maxRead-minRead)/2 > threshold);
   return (maxRead+minRead)/2;
 }
+
 
 void calibrate() {
   //myservo.detach();
@@ -1431,8 +1434,25 @@ syncLoopTime = atoi(CMD);
 	  }
 	  KB[0] = 0; CMD= KB;
 	  break;
-	case '*': /* Show Clock */
-	  showClock = !showClock;
+	case '*': /* Show Clock. ** calibrate Clock */
+	  if (CMD[0]=='*') {
+		if(isMaster) {
+			sprintln("10s Clock Calibration");
+			delay(10000);
+			nextSerialPrintln("**");
+			sprintln("done");
+		} else {
+			if (clockShiftCalibration != 0) {
+				clockShift = (millis()-clockShiftCalibration)/10;
+			}
+			clockShiftCalibration = millis();
+			sprint("**="); sprintln(clockShift);
+		}
+	  } else {
+	  	showClock = !showClock;
+	  }
+
+	  KB[0] = 0; CMD = KB;
 	  break;
 	case '@': /* eprom access */
 	  if (CMD[0]=='@') {
