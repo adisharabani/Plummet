@@ -134,7 +134,7 @@ bool isPlaying = false;
 bool isAutoPlay = false;
 bool showClock = false;
 int recordingLoc;
-int clockShift;
+double clockShift = 1;
 unsigned long clockShiftCalibration = 0;
 
 //servo
@@ -1443,10 +1443,10 @@ syncLoopTime = atoi(CMD);
 			sprintln("done");
 		} else {
 			if (clockShiftCalibration != 0) {
-				clockShift = (millis()-clockShiftCalibration)/10;
+				clockShift = (millis()-clockShiftCalibration)/((double)10000.0);
 			}
 			clockShiftCalibration = millis();
-			sprint("**="); sprintln(clockShift);
+			sprint("**="); sprint2(clockShift,4);sprintline();
 		}
 	  } else {
 	  	showClock = !showClock;
@@ -1679,7 +1679,7 @@ void updateAmpAndTime(bool runNow=false) {
 
 			// calculate desired phase and amp (aim)
 			// mlLoopTime = syncLoopTime - offset / LOOP_INTERVAL; // desired loopTime
-			mlLoopTime = syncLoopTime * LOOP_INTERVAL - ML_loop_default * (LOOP_INTERVAL-1) - offset;
+			mlLoopTime = syncLoopTime * LOOP_INTERVAL * clockShift - ML_loop_default * (LOOP_INTERVAL-1) - offset;
 			mlRopeOffset = (syncRopeAngle-ropeAngle); //desired RopeOffset
 			
 			if (mode == RUNNING) {
