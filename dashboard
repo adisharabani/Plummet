@@ -233,7 +233,7 @@ function replayOne() {
   }
 function realtime() {
 
-	realtimeInterval = setInterval(updateChart,2500)
+	realtimeInterval = setInterval(updateChart,5000)
 }
   </script>
 EOF
