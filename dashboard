@@ -4,10 +4,14 @@ echo ""
 #set -x 
 
 cd /home/pi/Plummet
-p=(${1//=/ })
+
+args=(${1//&/ })
+p=(${args[0]//=/ })
 key=${p[0]}
 value=${p[1]}
-
+p=(${args[1]//=/ })
+key2=${p[0]}
+value2=${p[1]}
 
 #echo "${morningCron[@]}"
 #echo "${nightCron[@]}"
@@ -74,8 +78,8 @@ elif [ "$key" = "analyze" ] && [ "$value" = "datasets" ]; then
     else 
 	errors=""
     fi
-    echo -n "{label: '$device$errors', backgroundColor:colors.pop(), showLine:true,fill:false,borderWidth:1,data : ["
-    cat -v ${ard}.record | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk '(/MachineLearning .* MLData/ && (o ~ /^[0-9.-]+ms$/) && (r ~ /^[0-9.-]+$/))  {print "{x:" o ",y:" r "},"} /^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()]"," "); o=$5; r=$7;}' | tr -d "ms\n"
+    echo -n "{label: '$device$errors',  showLine:true,fill:false,borderWidth:1,data : ["
+    tail -100 ${ard}.record  | cat -v| sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk '/^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()|]|;31m"," "); if (($7 ~ /^[0-9.-]+ms$/) && ($9 ~ /^[0-9.-]+$/)) {print "{x:" $7 ",y:" $9 ",__id:" $2 "},"}} '| tail -10 | tr -d "ms\n"
     echo "]},"
   done
   echo "]"
@@ -172,12 +176,15 @@ if [ "$key" = "analyze" ]; then
   echo "<button onclick='command(\"detached_record\")'>record</button>"
   echo "<button onclick='command(\"clear\")'>clear</button>"
   echo "<button onclick='command(\"showML\")'>show ML data</button>"
-  echo "<script src='https://cdn.jsdelivr.net/npm/chart.js@2.8.0'></script>"
+  #echo "<script src='https://cdn.jsdelivr.net/npm/chart.js@2.8.0'></script>"
+  echo "<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script> <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script> <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.7"></script> "
   echo "<script>"
   echo "var ctx = document.getElementById('myChart').getContext('2d');"
-  echo "var colors = ['#cc9999','#99cc99','9999cc','#cccc99']"
+  echo "var _colors = ['#cc9999','#99cc99','9999cc','#cccc99']"
  #echo "var c = new Chart(ctx, {type:'scatter', options:{scales:{xAxes: [{scaleLabel:{display:true, labelString:'as'}}]}, data:{datasets:["
-  echo "var c = new Chart(ctx, {type:'scatter', options:{scales:{xAxes: [{ticks: {min:-150, max:150, stepSize:25}, scaleLabel:{display:true,labelString:'offset [ms]'}}], yAxes:[{ticks: {min:0.27,max:0.33,stepSize:0.01}, scaleLabel:{display:true,labelString:'ropeAngle'}}]}}, data:{datasets:["
+  echo "var c = new Chart(ctx, {type:'scatter', options:{"
+  echo "plugins: {zoom: {pan: {enabled: true,mode:'xy'},zoom: {enabled: false, drag:true, mode: 'xy'}}},"
+  echo "scales:{xAxes: [{ticks: {min:-150, max:150, stepSize:25}, scaleLabel:{display:true,labelString:'offset [ms]'}}], yAxes:[{ticks: {min:0.27,max:0.33,stepSize:0.01}, scaleLabel:{display:true,labelString:'ropeAngle'}}]}}, data:{datasets:["
   #for device in $(./Plummet listDevicesHelper); do
   for device in $(./Plummet listDevices | sort); do
     ard="${device#*:}"
@@ -187,16 +194,20 @@ if [ "$key" = "analyze" ]; then
     else 
 	errors=""
     fi
-    echo -n "{label: '$device$errors', backgroundColor:colors.pop(), showLine:true,fill:false,borderWidth:1,data : ["
+    echo -n "{label: '$device$errors', backgroundColor:_colors.pop(), showLine:true,fill:false,borderWidth:1,data : ["
     #cat -v ${ard}.record | sed 's:^M::g' | awk '(/MachineLearning 0.[2-3]/ && (nl ~ "nL=1")) {print "{x:" $6 "y:" $7 "},"} /=> servoAmp/ {nl=$5;}'  | tr -d "ms()\n" 
     #grep -a "MachineLearning 0.[2-5].*\* MLData" ${ard}.record | cut -d" " -f 6,7 | awk '{print "{x:" $1 "y:" $2 "},"}' | tr -d "ms()\n"
     #cat -v ${ard}.record | sed 's:\^M:\n:g' | awk '(/MachineLearning .*\* MLData/ && (nl ~ "nL=1")) {print "{x:" o ",y:" r "},"} /=> servoAmp/ {nl=$5;} /^\^\[\[0;31m\[[0-9]*\]/ {gsub("[=()]"," "); o=$5; r=$7;}' | tr -d "ms\n"
     #cat -v ${ard}.record | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk '/MachineLearning .*\* MLData/  {print "{x:" o ",y:" r "},"} /^\^\[\[0;31m\[[0-9]*\]/ {gsub("[=()]"," "); o=$5; r=$7;}' | tr -d "ms\n"
     #cat -v ${ard}.record | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk '(/MachineLearning .*\* MLData/ && (o ~ /^[0-9.-]+ms$/) && (r ~ /^[0-9.-]+$/))  {print "{x:" o ",y:" r "},"} /^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()]"," "); o=$5; r=$7;}' | tr -d "ms\n"
-    cat -v ${ard}.record | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk '(/MachineLearning .* MLData/ && (o ~ /^[0-9.-]+ms$/) && (r ~ /^[0-9.-]+$/))  {print "{x:" o ",y:" r "},"} /^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()]"," "); o=$5; r=$7;}' | tr -d "ms\n"
-    echo "]},"
+    #cat -v ${ard}.record | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk '(/MachineLearning .* MLData/ && (o ~ /^[0-9.-]+ms$/) && (r ~ /^[0-9.-]+$/))  {print "{x:" o ",y:" r "},"} /^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()]"," "); o=$5; r=$7;}' | tr -d "ms\n"
+    #cat -v ${ard}.record | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk '/^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()|]|;31m"," "); if (($7 ~ /^[0-9.-]+ms$/) && ($9 ~ /^[0-9.-]+$/)) {print "{x:" $7 ",y:" $9 ",__id:" $2 "},"}}'| tr -d "ms\n"
+    tail -10000 ${ard}.record | cat -v | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk 'BEGIN{first=1} /^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()|]|;31m"," "); if (($7 ~ /^[0-9.-]+ms$/) && ($9 ~ /^[0-9.-]+$/)) {if (first==0) print "},"; first = 0; print "{x:" $7 ",y:" $9; __id=$2; }} END {print ",__id:" __id "}"}'| tr -d "ms\n"
+
+   echo "]},"
   done
   echo "]}})"
+  #echo "cleanChartMem();c.update()"
   echo "</script>"
   cat <<EOF
   <script>
@@ -214,15 +225,24 @@ function replayOne() {
   if (had_data == false) clearInterval(replayInterval)
  c.update()
 }
+function cleanChartMem() {
+  for (var i in c.data.datasets){
+    c.data.datasets[i].data = c.data.datasets[i].data.map((e,i,a)=>(i==a.length-1) ? e : {x:e.x,y:e.y})
+}
 
+}
   function updateChart() {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 	    if (this.readyState == 4 && this.status == 200) {
 		var datasets = eval(xhttp.responseText)	
 		for (var i in c.data.datasets) {
-			c.data.datasets[i].data.push(...datasets[i].data.slice(c.data.datasets[i].data.length))
-	       		c.data.datasets[i].pointRadius = datasets[i].data.map((e,i,a)=>(i<a.length-1)?2:10)
+			var dataset = c.data.datasets[i];
+			var last_id = 0;
+			if (dataset.data.length>0) last_id = dataset.data[dataset.data.length-1].__id
+			if (last_id == undefined) last_id = 0;
+			dataset.data.push(...datasets[i].data.filter((x)=>x.__id > last_id))
+	       		dataset.pointRadius = dataset.data.map((e,i)=>(i<dataset.data.length-1)?2:10)
 		}
 		c.update()
 	    }
