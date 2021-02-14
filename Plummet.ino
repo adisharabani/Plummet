@@ -90,6 +90,8 @@
 int8_t myID = -1;
 int SYNC_MAGIC_NUMBER=-250;
 
+#define SYNC_INIT_TIME_DELTA 100
+
 //int defaultLoopTime = 3564; // Orig Work: 3654 (3.30 meter)//Palo Alto: 3080; // 3160; // 3420;
 // int defaultLoopTime = 3080; // Palo Alto
 int defaultLoopTime = 3200; //3020;
@@ -205,7 +207,7 @@ double ropeMaxRightAngle = 0;
 double maxPotRead = 0;
 double minPotRead = 1024;
 
-unsigned long syncInitTime = 3000;
+unsigned long syncInitTime = 0;
 int syncInitTimeOffset = 0;
 int syncLoopTime=defaultLoopTime; //3020;//3564;
 double syncRopeAngle=0.3;
@@ -1033,12 +1035,12 @@ void handleKeyboardInput() {
 	  	   nextSerialPrintln("T", false); // update the clock...	 
 
 		   // Handle clock sync
-		   int s = (time-syncInitTime ) % syncLoopTime;
+		   int s = (time-SYNC_INIT_TIME_DELTA - syncInitTime ) % syncLoopTime;
 		   if (s>syncLoopTime/2) s = s-syncLoopTime;
 
 		   prevSerialState = 0;
 		   if ((updateClock) && (!avoidShiftUpdate) && (abs(s)>2)) {
-			syncInitTime = time-s+min(max(s,-5),5) - syncLoopTime;
+			syncInitTime = time-SYNC_INIT_TIME_DELTA-s+min(max(s,-5),5) - syncLoopTime;
 		   	if (showShift && (abs(s)>10)) {
 		   		sprint("["); sprint(time); sprint (" / ");sprint(syncInitTime); sprint (" / "); sprint(syncLoopTime); sprint("] shift: "); sprintln(s); //sprint(" ");
 				// sprintln (avoidShiftUpdate ? "AV" : "VV");
@@ -1202,7 +1204,7 @@ void handleKeyboardInput() {
 	  /*
 syncLoopTime = atoi(CMD); 
 	  if (syncLoopTime == 0) syncLoopTime = defaultLoopTime;
-	  syncInitTime = time;
+	  syncInitTime = time - SYNC_INIT_TIME_DELTA;
 	  syncInitTimeOffset = 0;
 	  p = find(CMD, ',');
 	  
@@ -1221,9 +1223,9 @@ syncLoopTime = atoi(CMD);
 	  if (syncLoopTime == 0) syncLoopTime = defaultLoopTime;
 	  syncInitTimeOffset = 0;
 	  if (isMaster) {
-		syncInitTime = millis2();
+		syncInitTime = millis2() - SYNC_INIT_TIME_DELTA;
 	  } else { 
-		syncInitTime = time;
+		syncInitTime = time - SYNC_INIT_TIME_DELTA;
 		avoidShiftUpdate = true;
 	  }
 	  p = find(CMD, ',');
@@ -1472,7 +1474,7 @@ syncLoopTime = atoi(CMD);
 	case '*': /* Show Clock. ** calibrate Clock */
 	  if (CMD[0]=='c') {
 	    if (isMaster) {
-	  	sprintln("30s cali");
+	  	sprintln("100s cali");
 		nextSerialPrintln("*B");
 		delay(100000);
 		nextSerialPrintln("*E");
@@ -1649,7 +1651,7 @@ void updateAmpAndTime(bool runNow=false) {
 		if (mode != HALT) {
 			sprint((waitLoops || time<waitForTime) ? "\x1b[0;37m" : "\x1b[0;31m");
 			sprint(time); sprint("|");
-			sprint ("["); sprint(lastLoopTime); sprint("]: s="); sprint(syncLoopTime); sprint(",");sprint(syncInitTime); sprint(" offset="); sprint(offset); sprint("ms ropeAngle="); 	sprint2(ropeAngle,3); sprint((ropeAngleOffset > 0) ? "(+" : "(");sprint2(ropeAngleOffset,3); sprint(")");
+			sprint ("["); sprint(lastLoopTime); sprint("]: o="); sprint(syncInitTimeOffset); sprint("/"); sprint(syncLoopTime); sprint(",");sprint(syncInitTime); sprint(" offset="); sprint(offset); sprint("ms ropeAngle="); 	sprint2(ropeAngle,3); sprint((ropeAngleOffset > 0) ? "(+" : "(");sprint2(ropeAngleOffset,3); sprint(")");
 			sprint("\x1b[0m");
 		}
 		if (requestedMoveStarted && !runNow) { sprint("in motion [");sprint(requestedNLoops);sprintln("]"); return; }
@@ -1992,7 +1994,7 @@ void loop(){
   time = millis2();
   // Update clock of slaves
   if (updateSlaveClock || isMaster) { 
-	if ((time-syncInitTime)%syncLoopTime  < (lastIterationTime-syncInitTime) % syncLoopTime) {
+	if ((time-syncInitTime+SYNC_INIT_TIME_DELTA)%syncLoopTime  < (lastIterationTime-syncInitTime+SYNC_INIT_TIME_DELTA) % syncLoopTime) {
 	  // this means we just got to the init time frame;
 	  if (updateSlaveClock) {
 		  updateSlaveClock = false;
@@ -2001,7 +2003,7 @@ void loop(){
 	  }
 	  int delta = (time-syncInitTime) % syncLoopTime;
 	  if (delta <5) {
-		syncInitTime = time-delta;
+		syncInitTime = time-SYNC_INIT_TIME_DELTA -delta;
 	  	nextSerialPrintln("T",false); // update the clock...	 
 		// sprint("T<");sprintln(delta);
 	  } else { sprint("longOp "); sprintln(delta);}

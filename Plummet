@@ -316,8 +316,13 @@ if [ "$1" = "prepForShutDown" ]; then
 fi
 
 if [ "$1" = "getMaster" ]; then
+ if ! screen -list | grep -q ATTACH; then
+    #$0 kill
+    $0 detached;
+	sleep 1;
+ fi
   # send the B command
-  for i in $(screen -Q windows | tr -d -- "-*&%:" | tr " " : | sed -e 's/::/\n/g'); do
+  for i in $(screen -Q windows | tr -d -- "-*&%:(L)" | tr " " : | sed -e 's/::/\n/g'); do
     if [[ ${i#*:} =~ $ARDTTY_PATTERN ]]; then
         screen -X at ${i%:*} stuff "B\n";
     fi
@@ -325,7 +330,7 @@ if [ "$1" = "getMaster" ]; then
   # wait a sec
   sleep 0.5;
   # read who is master and who is slave
-  for i in $(screen -Q windows | tr -d -- "-*&%:" | tr " " : | sed -e 's/::/\n/g'); do
+  for i in $(screen -Q windows | tr -d -- "-*&%:(L)" | tr " " : | sed -e 's/::/\n/g'); do
     if [[ ${i#*:} =~ $ARDTTY_PATTERN ]]; then
         screenType=$(screen -X at ${i%:*} hardcopy -h /tmp/.hardcopy; cat /tmp/.hardcopy |grep -a "I am" | tr " " "\n" | grep -E '(slave|master)' | tail -1);
         
