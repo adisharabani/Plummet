@@ -1749,7 +1749,10 @@ void updateAmpAndTime(bool runNow=false) {
 				//if (ropeAngle < syncRopeAngle - 0.1) {
 					servoAmp = min(servoAmp,maxServoAmp*3);
 				//}
-				requestedNLoops = int(servoAmp/maxServoAmp + 1);
+				requestedNLoops = int(servoAmp/maxServoAmp);
+				servoAmp = maxServoAmp;
+
+/*				requestedNLoops = int(servoAmp/maxServoAmp + 1);
 
 
 				// recalculate aim
@@ -1761,6 +1764,8 @@ void updateAmpAndTime(bool runNow=false) {
 				servoAmp = int(sqrt(X*X+Y*Y));
 
 				servoAmp = min(servoAmp/requestedNLoops,maxServoAmp);
+
+*/
 				X = servoAmp * cos(tPhase*2*PI);
 				Y = servoAmp * sin(tPhase*2*PI);
 				mlLoopTime = ML_loop_mult * X + ML_loop_default;
