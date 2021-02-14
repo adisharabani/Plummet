@@ -1027,21 +1027,22 @@ void handleKeyboardInput() {
 		   // disregard spaces
 		   inByte = KB[kblength-1];
 		 } else if (inByte == 'T') {
-	  	   nextSerialPrintln("T", false); // update the clock...	 
-
 		   // Handle clock sync
 		   int s = (time-syncInitTime ) % syncLoopTime;
 		   if (s>syncLoopTime/2) s = s-syncLoopTime;
 
 		   prevSerialState = 0;
-		   if ((updateClock) && (!avoidShiftUpdate) && (abs(s)>2)) {
-			syncInitTime = time-s+min(max(s,-5),5) - syncLoopTime;
-		   	if (showShift && (abs(s)>10)) {
-		   		sprint("["); sprint(time); sprint (" / ");sprint(syncInitTime); sprint (" / "); sprint(syncLoopTime); sprint("] shift: "); sprintln(s); //sprint(" ");
-				// sprintln (avoidShiftUpdate ? "AV" : "VV");
-			}
+	  	   nextSerialPrintln("T", false); // update the clock...	 
+		   if ((abs(s) >= 0) && showShift) {
+		   	 sprint("["); sprint(time); sprint (" / ");sprint(syncInitTime); sprint (" / "); sprint(syncLoopTime); sprint("] shift: "); sprint(s); //sprint(" ");
 		   }
+		   if ((updateClock) && (!avoidShiftUpdate) && (abs(s)<5)) {
+			   syncInitTime = time-syncLoopTime;
+			sprint ("*");
+		   }
+sprint (avoidShiftUpdate ? "AV" : "VV");
 		avoidShiftUpdate = false;
+		sprintln();
 
 //		 } else if (inByte == 'k') { /* todo remove keepalive */
 //		   prevSerialState = 0;
@@ -1215,6 +1216,7 @@ syncLoopTime = atoi(CMD);
 		syncInitTime = millis2();
 	  } else { 
 		syncInitTime = time;
+sprint (avoidShiftUpdate ? "AA" : "VA");
 		avoidShiftUpdate = true;
 	  }
 	  p = find(CMD, ',');
@@ -1465,20 +1467,18 @@ syncLoopTime = atoi(CMD);
 	    if (isMaster) {
 	  	sprintln("30s cali");
 		nextSerialPrintln("*B");
-		delay(100000);
+		delay(30000);
 		nextSerialPrintln("*E");
 	    } 
 	  } else if (CMD[0]=='B') {
 		clockShiftCalibration = millis();
 		sprint(millis()); sprint (";"); sprint (millis2()); sprint(";"); sprintln(millis());
 	  } else if (CMD[0]=='E') {
-		unsigned long dt = (millis()-clockShiftCalibration);
-		sprint (" ++="); sprint(dt);
-		clockShift = (millis()-clockShiftCalibration)/((double)100000.0);
+		clockShift = (millis()-clockShiftCalibration)/((double)30000.0);
 		if ((clockShift >1.1) || (clockShift < 0.9)) {
 			clockShift = 1;
 		}
-		sprint(" **="); sprint2(clockShift,5);
+		sprint("**="); sprint2(clockShift,5);
 		sprint((unsigned long ) ((millis()-clockShiftCalibration) * clockShift));
 		sprintline();
 	  } else {
@@ -1992,7 +1992,7 @@ void loop(){
 	  if (delta <5) {
 		syncInitTime = time-delta;
 	  	nextSerialPrintln("T",false); // update the clock...	 
-		// sprint("T<");sprintln(delta);
+		sprint("T<");sprintln(delta);
 	  } else { sprint("longOp "); sprintln(delta);}
 	}
   }

@@ -72,14 +72,14 @@ elif [ "$key" = "analyze" ] && [ "$value" = "datasets" ]; then
   echo "["
   for device in $(./Plummet listDevices | sort); do
     ard="${device#*:}"
-    pot0=$(grep -a POT0 ${ard}.record | wc -l)
+    pot0=$(grep -a POT0 ${ard}.record 2>/dev/null | wc -l )
     if [ "$pot0" -gt 0 ]; then 
 	errors=" - $pot0 POT0 errors!";
     else 
 	errors=""
     fi
     echo -n "{label: '$device$errors',  showLine:true,fill:false,borderWidth:1,data : ["
-    tail -100 ${ard}.record  | cat -v| sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk '/^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()|]|;31m"," "); if (($7 ~ /^[0-9.-]+ms$/) && ($9 ~ /^[0-9.-]+$/)) {print "{x:" $7 ",y:" $9 ",__id:" $2 "},"}} '| tail -10 | tr -d "ms\n"
+    tail -100 ${ard}.record 2>/dev/null | cat -v| sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk '/^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()|]|;31m"," "); if (($7 ~ /^[0-9.-]+ms$/) && ($9 ~ /^[0-9.-]+$/)) {print "{x:" $7 ",y:" $9 ",__id:" $2 "},"}} '| tail -10 | tr -d "ms\n" 
     echo "]},"
   done
   echo "]"
@@ -188,7 +188,7 @@ if [ "$key" = "analyze" ]; then
   #for device in $(./Plummet listDevicesHelper); do
   for device in $(./Plummet listDevices | sort); do
     ard="${device#*:}"
-    pot0=$(grep -a POT0 ${ard}.record | wc -l)
+    pot0=$(grep -a POT0 ${ard}.record 2>/dev/null | wc -l )
     if [ "$pot0" -gt 0 ]; then 
 	errors=" - $pot0 POT0 errors!";
     else 
@@ -202,7 +202,7 @@ if [ "$key" = "analyze" ]; then
     #cat -v ${ard}.record | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk '(/MachineLearning .*\* MLData/ && (o ~ /^[0-9.-]+ms$/) && (r ~ /^[0-9.-]+$/))  {print "{x:" o ",y:" r "},"} /^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()]"," "); o=$5; r=$7;}' | tr -d "ms\n"
     #cat -v ${ard}.record | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk '(/MachineLearning .* MLData/ && (o ~ /^[0-9.-]+ms$/) && (r ~ /^[0-9.-]+$/))  {print "{x:" o ",y:" r "},"} /^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()]"," "); o=$5; r=$7;}' | tr -d "ms\n"
     #cat -v ${ard}.record | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk '/^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()|]|;31m"," "); if (($7 ~ /^[0-9.-]+ms$/) && ($9 ~ /^[0-9.-]+$/)) {print "{x:" $7 ",y:" $9 ",__id:" $2 "},"}}'| tr -d "ms\n"
-    tail -10000 ${ard}.record | cat -v | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk 'BEGIN{first=1} /^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()|]|;31m"," "); if (($7 ~ /^[0-9.-]+ms$/) && ($9 ~ /^[0-9.-]+$/)) {if (first==0) print "},"; first = 0; print "{x:" $7 ",y:" $9; __id=$2; }} END {print ",__id:" __id "}"}'| tr -d "ms\n"
+    tail -10000 ${ard}.record 2>/dev/null | cat -v | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk 'BEGIN{first=1} /^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()|]|;31m"," "); if (($7 ~ /^[0-9.-]+ms$/) && ($9 ~ /^[0-9.-]+$/)) {if (first==0) print "},"; first = 0; print "{x:" $7 ",y:" $9; __id=$2; }} END {if (__id) print ",__id:" __id "}"}'| tr -d "ms\n" 
 
    echo "]},"
   done
