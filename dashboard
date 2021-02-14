@@ -171,6 +171,7 @@ fi
 if [ "$key" = "analyze" ]; then
     
   echo "<canvas id='myChart'></canvas>"
+  echo "<button onclick='c.config.options.scales.xAxes[0].ticks = {};c.config.options.scales.yAxes[0].ticks = {};c.update()'>zoom out</button>"
   echo "<button onclick='replay()'>replay</button>"
   echo "<button onclick='realtime()'>realtime</button>"
   echo "<button onclick='command(\"detached_record\")'>record</button>"

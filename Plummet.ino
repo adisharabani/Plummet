@@ -1035,12 +1035,12 @@ void handleKeyboardInput() {
 	  	   nextSerialPrintln("T", false); // update the clock...	 
 
 		   // Handle clock sync
-		   int s = (time-SYNC_INIT_TIME_DELTA - syncInitTime ) % syncLoopTime;
+		   int s = (time+SYNC_INIT_TIME_DELTA - syncInitTime ) % syncLoopTime;
 		   if (s>syncLoopTime/2) s = s-syncLoopTime;
 
 		   prevSerialState = 0;
 		   if ((updateClock) && (!avoidShiftUpdate) && (abs(s)>2)) {
-			syncInitTime = time-SYNC_INIT_TIME_DELTA-s+min(max(s,-5),5) - syncLoopTime;
+			syncInitTime = time+SYNC_INIT_TIME_DELTA-s+min(max(s,-5),5) - syncLoopTime;
 		   	if (showShift && (abs(s)>10)) {
 		   		sprint("["); sprint(time); sprint (" / ");sprint(syncInitTime); sprint (" / "); sprint(syncLoopTime); sprint("] shift: "); sprintln(s); //sprint(" ");
 				// sprintln (avoidShiftUpdate ? "AV" : "VV");
@@ -1204,7 +1204,7 @@ void handleKeyboardInput() {
 	  /*
 syncLoopTime = atoi(CMD); 
 	  if (syncLoopTime == 0) syncLoopTime = defaultLoopTime;
-	  syncInitTime = time - SYNC_INIT_TIME_DELTA;
+	  syncInitTime = time + SYNC_INIT_TIME_DELTA;
 	  syncInitTimeOffset = 0;
 	  p = find(CMD, ',');
 	  
@@ -1223,9 +1223,9 @@ syncLoopTime = atoi(CMD);
 	  if (syncLoopTime == 0) syncLoopTime = defaultLoopTime;
 	  syncInitTimeOffset = 0;
 	  if (isMaster) {
-		syncInitTime = millis2() - SYNC_INIT_TIME_DELTA;
+		syncInitTime = millis2() + SYNC_INIT_TIME_DELTA;
 	  } else { 
-		syncInitTime = time - SYNC_INIT_TIME_DELTA;
+		syncInitTime = time + SYNC_INIT_TIME_DELTA;
 		avoidShiftUpdate = true;
 	  }
 	  p = find(CMD, ',');
@@ -2001,9 +2001,9 @@ void loop(){
 		  sprint("Sync moved:");
 	  	  sprintln((time-syncInitTime) % syncLoopTime);
 	  }
-	  int delta = (time-syncInitTime) % syncLoopTime;
+	  int delta = (time-syncInitTime+SYNC_INIT_TIME_DELTA) % syncLoopTime;
 	  if (delta <5) {
-		syncInitTime = time-SYNC_INIT_TIME_DELTA -delta;
+		syncInitTime = time+SYNC_INIT_TIME_DELTA -delta;
 	  	nextSerialPrintln("T",false); // update the clock...	 
 		// sprint("T<");sprintln(delta);
 	  } else { sprint("longOp "); sprintln(delta);}
