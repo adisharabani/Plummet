@@ -39,7 +39,9 @@ elif [ "$key" = "command" ] ;then
 	echo "<pre>"
 	echo "running command $value"
 	if [ "$value" = "clear" ]; then
+		./Plummet kill; 
 		mv tty*.record ../
+		./Plummet command "" "&"
 		echo Done
 		exit
 	fi
