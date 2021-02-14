@@ -160,6 +160,9 @@ int oLoopTime = defaultLoopTime;
 int oNLoops = 2;
 int oWaitLoops = 0;
 
+int sLoopDelta = 300;
+float sAmpMult = 400;
+
 double mPhase = 0;
 int mAmp = 5;
 double mPhaseFrom = 0;
@@ -1118,7 +1121,13 @@ void handleKeyboardInput() {
 	  setMode(RUNNING); sprintln("START");
 	  break;
 	case '2': // STOP
-	  setMode(STOPPING); sprintln("STOP");
+	  if (CMD[0]=='=')  {
+		sLoopDelta = atoi(CMD+1);
+		p = find(CMD,',');
+		if (p!=-1) sAmpMult = atof(CMD+p+1);
+	 }
+	setMode(STOPPING); sprint("STOP ");sprint(sLoopDelta); sprint (","); sprintln(sAmpMult);
+	  KB[0] = 0; CMD=KB;
 	  break;
 	case '9': // HALT: STOP and dont move anymore;
 	  setMode(HALT); sprintln("HALT");
@@ -1771,9 +1780,11 @@ void updateAmpAndTime(bool runNow=false) {
 					servoAmp = 70;
 					requestedNLoops = 2;
 				} else if (ropeAngle > 0.01){
-					loopTime = ML_loop_default-100;
-					servoAmp = (ropeAngle) / ML_angle_mult;
-					servoAmp = min(servoAmp, maxServoAmp);
+					loopTime = ML_loop_default-sLoopDelta;
+					//servoAmp = (ropeAngle) / ML_angle_mult;
+					servoAmp = sAmpMult * ropeAngle ;
+					sprint("S");sprint(servoAmp);
+					servoAmp = min(max(servoAmp,0),  maxServoAmp);
 					requestedNLoops = 1;
 sprint("LLL");sprintln(loopTime);
 				} else {
