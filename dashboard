@@ -1,5 +1,6 @@
 #! /bin/bash
 echo "Content-type: text/html"
+echo "Access-Control-Allow-Origin: *"
 echo ""
 #set -x 
 
@@ -77,7 +78,8 @@ elif [ "$key" = "analyze" ] && [ "$value" = "datasets" ]; then
     [ $isFirst = "0" ] && echo "],"
     isFirst=0
     ard="${device#*:}"
-    echo "\"$ard\" : ["
+    ardNumber=$(grep -a -m 1 "I am" ${ard}.record  | cut -d# -f2)
+    echo "\"#${ardNumber}:$ard\" : ["
     [ "$key2" = "options" ] && [[ "$value2" == *"absolute"* ]] && absolute=1
 
     if [ "$key2" = "options" ] && [[ "$value2" == *"reload"* ]]; then
@@ -197,13 +199,14 @@ if [ "$key" = "analyze" ]; then
   #for device in $(./Plummet listDevicesHelper); do
   for device in $(./Plummet listDevices | sort); do
     ard="${device#*:}"
+    ardNumber=$(grep -a -m 1 "I am" ${ard}.record  | cut -d# -f2)
     pot0=$(grep -a POT0 ${ard}.record 2>/dev/null | wc -l )
     if [ "$pot0" -gt 0 ]; then 
 	errors=" - $pot0 POT0 errors!";
     else 
 	errors=""
     fi
-    echo -n "{deviceName: '$ard', label: '$device$errors', backgroundColor:_colors.pop(), showLine:true,fill:false,borderWidth:1,data : []},"
+    #echo -n "{deviceName: '#${ardNumber}:$ard', label: '$device$errors', backgroundColor:_colors.pop(), showLine:true,fill:false,borderWidth:1,data : []},"
   done
   echo "]}})"
   #echo "cleanChartMem();c.update()"
@@ -236,9 +239,13 @@ function cleanChartMem() {
 	    if (this.readyState == 4 && this.status == 200) {
 g=xhttp.responseText
 		var datasets = JSON.parse(xhttp.responseText)	
-		for (var i in c.data.datasets) {
-			var dataset = c.data.datasets[i];
-			var newData = datasets[dataset.deviceName]
+		for (var deviceName in datasets) {
+			var newData = datasets[deviceName]
+			var dataset = c.data.datasets.filter((x) => x.deviceName==deviceName)[0]
+			if (dataset == undefined) {
+				dataset = {deviceName: deviceName, label: deviceName, backgroundColor:_colors.pop(), showLine:true,fill:false,borderWidth:1,data : []};
+    				c.data.datasets.push(dataset);
+			}
 			if (reload) {
 				dataset.data = newData;
 			} else {
@@ -261,6 +268,13 @@ g=xhttp.responseText
 
 function updateChart(reload) {
 	updateChartHelper("",reload);
+
+	otherURL=document.location.search.match("otherURL=([^&]*)");
+	if (otherURL) {
+		for (var u in otherURL.split(",")) {
+			updateChartHelper(u,reload)
+		}
+	}
 }
 
 function realtime() {
