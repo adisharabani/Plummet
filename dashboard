@@ -71,20 +71,26 @@ elif [ "$key" = "command" ] ;then
 	fi
 
 elif [ "$key" = "analyze" ] && [ "$value" = "datasets" ]; then
-  echo "["
+  echo "{"
+  isFirst=1
   for device in $(./Plummet listDevices | sort); do
+    [ $isFirst = "0" ] && echo "],"
+    isFirst=0
     ard="${device#*:}"
-    pot0=$(grep -a POT0 ${ard}.record 2>/dev/null | wc -l )
-    if [ "$pot0" -gt 0 ]; then 
-	errors=" - $pot0 POT0 errors!";
+    echo "\"$ard\" : ["
+    [ "$key2" = "options" ] && [[ "$value2" == *"absolute"* ]] && absolute=1
+
+    if [ "$key2" = "options" ] && [[ "$value2" == *"reload"* ]]; then
+	tail -10000 ${ard}.record 2>/dev/null | cat -v | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk -v absolute=$absolute 'BEGIN{first=1} /^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()|]|;31m|ms"," "); if (($7 ~ /^[0-9.-]+$/) && ($9 ~ /^[0-9.-]+$/)) {if (first==0) print "},"; first = 0; print "{\"x\":" (int($7)+absolute*int($5)) ",\"y\":" $9; __id=$2; }} END {if (__id) print ",\"__id\":" __id "}"}'| tr -d "\n" | sed 's:,$::g'
+
     else 
-	errors=""
+tail -100 ${ard}.record 2>/dev/null | cat -v| sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk -v absolute=$absolute '/^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()|]|;31m|ms"," "); if (($7 ~ /^[0-9.-]+$/) && ($9 ~ /^[0-9.-]+$/)) {print "{\"x\":" (int($7)+absolute*int($5)) ",\"y\":" $9 ",\"__id\":" $2 "},"}} '| tail -10 | tr -d "\n" | sed 's:,$::g'
+
     fi
-    echo -n "{label: '$device$errors',  showLine:true,fill:false,borderWidth:1,data : ["
-    tail -100 ${ard}.record 2>/dev/null | cat -v| sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk '/^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()|]|;31m"," "); if (($7 ~ /^[0-9.-]+ms$/) && ($9 ~ /^[0-9.-]+$/)) {print "{x:" $7 ",y:" $9 ",__id:" $2 "},"}} '| tail -10 | tr -d "ms\n" 
-    echo "]},"
   done
-  echo "]"
+  [ $isFirst = "0" ] && echo "]"
+  echo "}"
+
 
 else 
  morningCron=($(crontab -l 2>/dev/null | grep morningShow | sed 's:#:# :' | sed 's:^\s*[^#]:checked \0:' | sed 's/  */ /g' | cut -d" " -f 1,2,3,6 | tr "-" " " ))
@@ -158,10 +164,10 @@ if [ "$key" = "ml" ]; then
   echo "t = 0//0.1"
   echo "X = data.map((d)=>d[2]*Math.cos(d[1]*2*Math.PI-t))"
   echo "Y = data.map((d)=>d[2]*Math.sin(d[1]*2*Math.PI-t))"
-  echo "x = X"
-  echo "y= loop_time"
-  echo "z = data.map((d)=>0)"
-  echo "r = rope_angle_input"
+  echo "x = phs//X"
+  echo "y= amp//loop_time"
+  echo "r = rope_angle.map((e,i)=>e-rope_angle_input[i]) //data.map((d)=>0)"
+  echo "z = loop_time//rope_angle_input"
 
 
   echo "Plotly.newPlot('myDiv', [{mode:'markers',marker: {opacity:0.5, size:2, line:{width:0}},opacity:1, intensity: r, colorscale: [['0.290', 'orange'],['0.310','blue']], type:'scatter3d', x:x, y:y,z:z}], {width:1000, height:700, margin:{l:0,r:0,b:0, t:0, pad:0}});"
@@ -197,17 +203,7 @@ if [ "$key" = "analyze" ]; then
     else 
 	errors=""
     fi
-    echo -n "{label: '$device$errors', backgroundColor:_colors.pop(), showLine:true,fill:false,borderWidth:1,data : ["
-    #cat -v ${ard}.record | sed 's:^M::g' | awk '(/MachineLearning 0.[2-3]/ && (nl ~ "nL=1")) {print "{x:" $6 "y:" $7 "},"} /=> servoAmp/ {nl=$5;}'  | tr -d "ms()\n" 
-    #grep -a "MachineLearning 0.[2-5].*\* MLData" ${ard}.record | cut -d" " -f 6,7 | awk '{print "{x:" $1 "y:" $2 "},"}' | tr -d "ms()\n"
-    #cat -v ${ard}.record | sed 's:\^M:\n:g' | awk '(/MachineLearning .*\* MLData/ && (nl ~ "nL=1")) {print "{x:" o ",y:" r "},"} /=> servoAmp/ {nl=$5;} /^\^\[\[0;31m\[[0-9]*\]/ {gsub("[=()]"," "); o=$5; r=$7;}' | tr -d "ms\n"
-    #cat -v ${ard}.record | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk '/MachineLearning .*\* MLData/  {print "{x:" o ",y:" r "},"} /^\^\[\[0;31m\[[0-9]*\]/ {gsub("[=()]"," "); o=$5; r=$7;}' | tr -d "ms\n"
-    #cat -v ${ard}.record | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk '(/MachineLearning .*\* MLData/ && (o ~ /^[0-9.-]+ms$/) && (r ~ /^[0-9.-]+$/))  {print "{x:" o ",y:" r "},"} /^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()]"," "); o=$5; r=$7;}' | tr -d "ms\n"
-    #cat -v ${ard}.record | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk '(/MachineLearning .* MLData/ && (o ~ /^[0-9.-]+ms$/) && (r ~ /^[0-9.-]+$/))  {print "{x:" o ",y:" r "},"} /^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()]"," "); o=$5; r=$7;}' | tr -d "ms\n"
-    #cat -v ${ard}.record | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk '/^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()|]|;31m"," "); if (($7 ~ /^[0-9.-]+ms$/) && ($9 ~ /^[0-9.-]+$/)) {print "{x:" $7 ",y:" $9 ",__id:" $2 "},"}}'| tr -d "ms\n"
-    tail -10000 ${ard}.record 2>/dev/null | cat -v | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk 'BEGIN{first=1} /^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()|]|;31m"," "); if (($7 ~ /^[0-9.-]+ms$/) && ($9 ~ /^[0-9.-]+$/)) {if (first==0) print "},"; first = 0; print "{x:" $7 ",y:" $9; __id=$2; }} END {if (__id) print ",__id:" __id "}"}'| tr -d "ms\n" 
-
-   echo "]},"
+    echo -n "{deviceName: '$ard', label: '$device$errors', backgroundColor:_colors.pop(), showLine:true,fill:false,borderWidth:1,data : []},"
   done
   echo "]}})"
   #echo "cleanChartMem();c.update()"
@@ -234,30 +230,46 @@ function cleanChartMem() {
 }
 
 }
-  function updateChart() {
+  function updateChartHelper(dashboardURL, reload) {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 	    if (this.readyState == 4 && this.status == 200) {
-		var datasets = eval(xhttp.responseText)	
+g=xhttp.responseText
+		var datasets = JSON.parse(xhttp.responseText)	
 		for (var i in c.data.datasets) {
 			var dataset = c.data.datasets[i];
-			var last_id = 0;
-			if (dataset.data.length>0) last_id = dataset.data[dataset.data.length-1].__id
-			if (last_id == undefined) last_id = 0;
-			dataset.data.push(...datasets[i].data.filter((x)=>x.__id > last_id))
-	       		dataset.pointRadius = dataset.data.map((e,i)=>(i<dataset.data.length-1)?2:10)
+			var newData = datasets[dataset.deviceName]
+			if (reload) {
+				dataset.data = newData;
+			} else {
+				var last_id = 0;
+				if (dataset.data.length>0) last_id = dataset.data[dataset.data.length-1].__id
+				if (last_id == undefined) last_id = 0;
+				dataset.data.push(...newData.filter((x)=>x.__id > last_id))
+	       			dataset.pointRadius = dataset.data.map((e,i)=>(i<dataset.data.length-1)?2:10)
+			}
 		}
 		c.update()
 	    }
 	};
-	xhttp.open("GET", "?analyze=datasets", true);
+	var optionsMatch = document.location.search.match("options=([^&]*)");
+	xhttp.open("GET", dashboardURL+ "?analyze=datasets&options=" + (reload ? "reload,":"") + (optionsMatch ? ","+optionsMatch[1] : ""), true);
+
 	xhttp.send();
 
   }
-function realtime() {
 
+function updateChart(reload) {
+	updateChartHelper("",reload);
+}
+
+function realtime() {
 	realtimeInterval = setInterval(updateChart,5000)
 }
+
+
+updateChart(true);
+
   </script>
 EOF
 

@@ -1481,7 +1481,6 @@ syncLoopTime = atoi(CMD);
 	    } 
 	  } else if (CMD[0]=='B') {
 		clockShiftCalibration = millis();
-		sprint(millis()); sprint (";"); sprint (millis2()); sprint(";"); sprintln(millis());
 	  } else if (CMD[0]=='E') {
 		unsigned long dt = (millis()-clockShiftCalibration);
 		sprint (" ++="); sprint(dt);
@@ -1490,7 +1489,6 @@ syncLoopTime = atoi(CMD);
 			clockShift = 1;
 		}
 		sprint(" **="); sprint2(clockShift,5);
-		sprint((unsigned long ) ((millis()-clockShiftCalibration) * clockShift));
 		sprintline();
 	  } else {
 	  	showClock = !showClock;
