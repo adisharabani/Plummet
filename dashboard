@@ -191,7 +191,7 @@ if [ "$key" = "analyze" ]; then
   echo "<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script> <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script> <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.7"></script> "
   echo "<script>"
   echo "var ctx = document.getElementById('myChart').getContext('2d');"
-  echo "var _colors = ['#cc9999','#99cc99','9999cc','#cccc99']"
+  echo "var _colors = [ '#993333','#339933','#333399', '#cc9999','#99cc99','9999cc','#cccc99','#cc99cc','#99cccc']"
  #echo "var c = new Chart(ctx, {type:'scatter', options:{scales:{xAxes: [{scaleLabel:{display:true, labelString:'as'}}]}, data:{datasets:["
   echo "var c = new Chart(ctx, {type:'scatter', options:{"
   echo "plugins: {zoom: {pan: {enabled: true,mode:'xy'},zoom: {enabled: false, drag:true, mode: 'xy'}}},"
@@ -268,10 +268,10 @@ g=xhttp.responseText
 
 function updateChart(reload) {
 	updateChartHelper("",reload);
-return;
+	
 	otherURL=document.location.search.match("otherURL=([^&]*)");
 	if (otherURL) {
-		for (var u in otherURL.split(",")) {
+		for (var u of otherURL[1].split(",")) {
 			updateChartHelper(u,reload)
 		}
 	}
