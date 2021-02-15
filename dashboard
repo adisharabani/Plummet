@@ -72,14 +72,14 @@ elif [ "$key" = "command" ] ;then
 	fi
 
 elif [ "$key" = "analyze" ] && [ "$value" = "datasets" ]; then
-  echo "{"
+  echo -n "{"
   isFirst=1
   for device in $(./Plummet listDevices | sort); do
     [ $isFirst = "0" ] && echo "],"
     isFirst=0
     ard="${device#*:}"
-    ardNumber=$(grep -a -m 1 "I am" ${ard}.record  | cut -d# -f2)
-    echo "\"#${ardNumber}:$ard\" : ["
+    ardNumber=$(grep -a -m 1 "I am" ${ard}.record  | cut -d# -f2 | tr -d " \r\n")
+    echo -n "\"#${ardNumber}:$ard\" : ["
     [ "$key2" = "options" ] && [[ "$value2" == *"absolute"* ]] && absolute=1
 
     if [ "$key2" = "options" ] && [[ "$value2" == *"reload"* ]]; then
@@ -90,8 +90,8 @@ tail -100 ${ard}.record 2>/dev/null | cat -v| sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M
 
     fi
   done
-  [ $isFirst = "0" ] && echo "]"
-  echo "}"
+  [ $isFirst = "0" ] && echo -n "]"
+  echo -n "}"
 
 
 else 
@@ -199,7 +199,7 @@ if [ "$key" = "analyze" ]; then
   #for device in $(./Plummet listDevicesHelper); do
   for device in $(./Plummet listDevices | sort); do
     ard="${device#*:}"
-    ardNumber=$(grep -a -m 1 "I am" ${ard}.record  | cut -d# -f2)
+    ardNumber=$(grep -a -m 1 "I am" ${ard}.record  | cut -d# -f2 | tr -d " \r\n")
     pot0=$(grep -a POT0 ${ard}.record 2>/dev/null | wc -l )
     if [ "$pot0" -gt 0 ]; then 
 	errors=" - $pot0 POT0 errors!";
@@ -238,7 +238,7 @@ function cleanChartMem() {
 	xhttp.onreadystatechange = function() {
 	    if (this.readyState == 4 && this.status == 200) {
 g=xhttp.responseText
-		var datasets = JSON.parse(xhttp.responseText)	
+		var datasets = JSON.parse(xhttp.responseText)
 		for (var deviceName in datasets) {
 			var newData = datasets[deviceName]
 			var dataset = c.data.datasets.filter((x) => x.deviceName==deviceName)[0]
@@ -268,7 +268,7 @@ g=xhttp.responseText
 
 function updateChart(reload) {
 	updateChartHelper("",reload);
-
+return;
 	otherURL=document.location.search.match("otherURL=([^&]*)");
 	if (otherURL) {
 		for (var u in otherURL.split(",")) {
