@@ -78,7 +78,7 @@ elif [ "$key" = "analyze" ] && [ "$value" = "datasets" ]; then
     [ $isFirst = "0" ] && echo "],"
     isFirst=0
     ard="${device#*:}"
-    ardNumber=$(grep -a -m 1 "I am" ${ard}.record  | cut -d# -f2 | tr -d " \r\n")
+    ardNumber=$(tac ${ard}.record 2>/dev/null  |grep -a -m 1 "I am" | cut -d# -f2 | tr -d " \r\n")
     echo -n "\"#${ardNumber}:$ard\" : ["
     [ "$key2" = "options" ] && [[ "$value2" == *"absolute"* ]] && absolute=1
 
