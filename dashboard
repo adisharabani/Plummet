@@ -258,6 +258,7 @@ function replay() {
   replay_datasets = []
   c.data.datasets.forEach((dataset) => {replay_datasets.push(dataset.data); dataset.data = []})
   replayInterval = setInterval(replayOne,500);
+  replayOne()
 }
 function replayOne() {
   var had_data = false;
