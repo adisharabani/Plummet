@@ -227,8 +227,10 @@ if [ "$key" = "analyze" ]; then
 function updateRadial() {
   if (radialCheckbox.checked) {  
     c.data.datasets.forEach((d)=>d.data.forEach((e)=>Object.assign(e,{x:e.y*Math.cos(e.x*2*Math.PI/3200), y:e.y*Math.sin(e.x*2*Math.PI/3200)})))
+    replay_datasets.forEach((d)=>d.data.forEach((e)=>Object.assign(e,{x:e.y*Math.cos(e.x*2*Math.PI/3200), y:e.y*Math.sin(e.x*2*Math.PI/3200)})))
   } else {
     c.data.datasets.forEach((d)=>d.data.forEach((e)=>Object.assign(e,{x:Math.atan2(e.y,e.x)/2/Math.PI*3200,y:(e.x**2+e.y**2)**0.5})))
+    replay_datasets.forEach((d)=>d.data.forEach((e)=>Object.assign(e,{x:Math.atan2(e.y,e.x)/2/Math.PI*3200,y:(e.x**2+e.y**2)**0.5})))
   }
   toggleZoom();
 }
@@ -248,18 +250,19 @@ function toggleZoom() {
 }
 toggleZoom();toggleZoom();
 
+replay_datasets = []
 function replay() {
   clearInterval(window.realtimeInterval)
   document.getElementById("realtimeCheckbox").checked = false;
 
-  datasets = []
-  c.data.datasets.forEach((dataset) => {datasets.push(dataset.data); dataset.data = []})
+  replay_datasets = []
+  c.data.datasets.forEach((dataset) => {replay_datasets.push(dataset.data); dataset.data = []})
   replayInterval = setInterval(replayOne,500);
 }
 function replayOne() {
   var had_data = false;
-  for (var i=0; i<datasets.length; i++) {
-     var d = datasets[i].shift()
+  for (var i=0; i<replay_datasets.length; i++) {
+     var d = replay_datasets[i].shift()
      if (d) {had_data = true; 
 	c.data.datasets[i].data.push(d)
 	c.data.datasets[i].pointRadius = c.data.datasets[i].data.map((e,index)=>(index<c.data.datasets[i].data.length-1)?2:10)
