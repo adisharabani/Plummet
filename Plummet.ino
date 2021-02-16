@@ -1646,6 +1646,7 @@ void updateAmpAndTime(bool runNow=false) {
 	}
 
 	if ((side==RIGHT) || runNow) {
+		if (!myservoattached()) {return;}
 		if (mode != HALT) {
 			sprint((waitLoops || time<waitForTime) ? "\x1b[0;37m" : "\x1b[0;31m");
 			sprint(time); sprint("|");
