@@ -41,8 +41,9 @@ elif [ "$key" = "command" ] ;then
 	echo "running command $value"
 	if [ "$value" = "clear" ]; then
 		./Plummet kill; 
-		mv tty*.record ../
-		./Plummet command "" "&"
+		sleep 1; 
+		cp tty*.record ../
+		rm tty*.record
 		echo Done
 		exit
 	fi
@@ -118,8 +119,15 @@ function command(cmd) {
  var frm = document.getElementById("frm")
 
  t.disabled=true;
- frm.onload = ()=>{t.disabled=false;if (cmd=="clear") document.location.reload()}
- frm.src = "?command="+cmd
+
+ var frames = [frm];
+
+ if ((cmd=="clear") | (cmd=="showML")) frames = document.getElementsByTagName("iframe")
+
+ for (var f of frames) {
+   	f.onload = ()=>{t.disabled=false;if (cmd=="clear") document.location.reload()}
+ 	f.src = f.getAttribute("dashboard") + "?command="+cmd
+ }
 }
 
 
@@ -181,10 +189,10 @@ fi
 if [ "$key" = "analyze" ]; then
     
   echo "<canvas id='myChart'></canvas>"
-  echo "<button onclick='c.config.options.scales.xAxes[0].ticks = {};c.config.options.scales.yAxes[0].ticks = {};c.update()'>zoom out</button>"
-  echo "<button onclick='replay()'>replay</button>"
+  echo "<button onclick='toggleZoom()'>zoom</button>"
   echo "<button onclick='realtime()'>realtime</button>"
-  echo "<button onclick='command(\"detached_record\")'>record</button>"
+  echo "<button onclick='replay()'>replay</button>"
+  #echo "<button onclick='command(\"detached_record\")'>record</button>"
   echo "<button onclick='command(\"clear\")'>clear</button>"
   echo "<button onclick='command(\"showML\")'>show ML data</button>"
   #echo "<script src='https://cdn.jsdelivr.net/npm/chart.js@2.8.0'></script>"
@@ -195,7 +203,7 @@ if [ "$key" = "analyze" ]; then
  #echo "var c = new Chart(ctx, {type:'scatter', options:{scales:{xAxes: [{scaleLabel:{display:true, labelString:'as'}}]}, data:{datasets:["
   echo "var c = new Chart(ctx, {type:'scatter', options:{"
   echo "plugins: {zoom: {pan: {enabled: true,mode:'xy'},zoom: {enabled: false, drag:true, mode: 'xy'}}},"
-  echo "scales:{xAxes: [{ticks: {min:-150, max:150, stepSize:25}, scaleLabel:{display:true,labelString:'offset [ms]'}}], yAxes:[{ticks: {min:0.27,max:0.33,stepSize:0.01}, scaleLabel:{display:true,labelString:'ropeAngle'}}]}}, data:{datasets:["
+  echo "scales:{xAxes: [{scaleLabel:{display:true,labelString:'offset [ms]'}}], yAxes:[{scaleLabel:{display:true,labelString:'ropeAngle'}}]}}, data:{datasets:["
   #for device in $(./Plummet listDevicesHelper); do
   for device in $(./Plummet listDevices | sort); do
     ard="${device#*:}"
@@ -213,6 +221,18 @@ if [ "$key" = "analyze" ]; then
   echo "</script>"
   cat <<EOF
   <script>
+function toggleZoom() {
+  if (c.config.options.scales.xAxes[0].ticks.min==undefined) {
+    c.config.options.scales.xAxes[0].ticks = {min:-150, max:150, stepSize:25}
+    c.config.options.scales.yAxes[0].ticks = {min:0.27,max:0.33,stepSize:0.01}
+  } else {
+    c.config.options.scales.xAxes[0].ticks = {}
+    c.config.options.scales.yAxes[0].ticks = {}
+  }
+    c.update()
+}
+
+
 function replay() {
   datasets = []
   c.data.datasets.forEach((dataset) => {datasets.push(dataset.data); dataset.data = []})
@@ -222,7 +242,10 @@ function replayOne() {
   var had_data = false;
   for (var i=0; i<datasets.length; i++) {
      var d = datasets[i].shift()
-     if (d) {had_data = true; c.data.datasets[i].data.push(d)}
+     if (d) {had_data = true; 
+	c.data.datasets[i].data.push(d)
+	c.data.datasets[i].pointRadius = c.data.datasets[i].data.map((e,index)=>(index<c.data.datasets[i].data.length-1)?2:10)
+     }
   }
   if (had_data == false) clearInterval(replayInterval)
  c.update()
@@ -245,6 +268,7 @@ g=xhttp.responseText
 			if (dataset == undefined) {
 				dataset = {deviceName: deviceName, label: deviceName, backgroundColor:_colors.pop(), showLine:true,fill:false,borderWidth:1,data : []};
     				c.data.datasets.push(dataset);
+				c.data.datasets.sort((x,y)=>x.label>y.label)
 			}
 			if (reload) {
 				dataset.data = newData;
@@ -308,13 +332,22 @@ at
 <input type=time id=autostop_time min="00:01" max="23:59" value="$(printf "%02d" ${nightCron[2]}):$(printf "%02d" ${nightCron[1]})">
 
 <button onclick="updateSchedule()">update schedule</button>
-<iframe id=frm ></iframe>
+<iframe id=frm dashboard=""></iframe>
 
 <script>
 autostart_day_from.selectedIndex = "${morningCron[3]}"
 autostart_day_to.selectedIndex = "${morningCron[4]}"
 autostop_day_from.selectedIndex = "${nightCron[3]}"
 autostop_day_to.selectedIndex = "${nightCron[4]}"
+
+	otherURL=document.location.search.match("otherURL=([^&]*)");
+if (otherURL) {
+	for (var u of otherURL[1].split(",")) {
+		var f = document.createElement("iframe");
+		f.setAttribute("dashboard",u)
+		document.body.appendChild(f);
+	}
+}
 </script>
 
 
