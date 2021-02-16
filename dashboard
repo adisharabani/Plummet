@@ -30,8 +30,8 @@ if [ "$key" = "update" ]; then
 		echo Error "$value"
 	fi
 elif [ "$key" = "command" ] ;then 
-	./Plummet kill;
-	./Plummet detached;
+	#./Plummet kill;
+	#./Plummet detached;
 #rm /tmp/.h 
 #set -x
 #screen -p0 -X at ttyUSB3 hardcopy -h /tmp/.h 2>&1
