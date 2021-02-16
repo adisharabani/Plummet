@@ -43,6 +43,7 @@ elif [ "$key" = "command" ] ;then
 		cp tty*.record ../
 		rm tty*.record
 		sleep 1;
+		./Plummet command "" "B"
 		echo Done
 		exit
 	fi
