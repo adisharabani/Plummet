@@ -259,9 +259,9 @@ if [ "$1" = "attach" ] || [ "$1" = "record" ] || [ "$1" = "detached" ] || [ "$1"
 	  echo "layout select ${layout}" >> /tmp/.screens
  echo "layout save default" >> /tmp/.screens 
  if [ "$1" = "detached" ] || [ "$1" = "detached_record" ]; then
-    screen -d -m -c /tmp/.screens -S ATTACH
+    screen -d -L -m -c /tmp/.screens -S ATTACH
  else 
-    screen -c /tmp/.screens -S ATTACH
+    screen -L -c /tmp/.screens -S ATTACH
  fi
  #$0 kill
  #screen -R -S ${ard} bash -c 'tty > /tmp/screen${ard}; '$0' listCommands; cu -l /dev/'${ard}' -s 38400'
