@@ -122,10 +122,10 @@ function command(cmd) {
 
  var frames = [frm];
 
- if ((cmd=="clear") | (cmd=="showML")) frames = document.getElementsByTagName("iframe")
+ if ((cmd=="clear") || (cmd=="showML")) frames = document.getElementsByTagName("iframe")
 
  for (var f of frames) {
-   	f.onload = ()=>{t.disabled=false;if (cmd=="clear") document.location.reload()}
+   	f.onload = ()=>{t.disabled=false;if (cmd=="clear") {c.data.datasets=[];_colorIndex=0;c.update();toggleZoom();toggleZoom()}}
  	f.src = f.getAttribute("dashboard") + "?command="+cmd
  }
 }
@@ -189,18 +189,21 @@ fi
 if [ "$key" = "analyze" ]; then
     
   echo "<canvas id='myChart'></canvas>"
+  echo "<input type=checkbox onclick='realtime(this.checked)' id=realtimeCheckbox><label for='realtimeCheckbox'>realtime</label>"
+  echo "<input type=checkbox onclick='updateRadial()' id=radialCheckbox><label for='radialCheckbox'>radial</label>"
   echo "<button onclick='toggleZoom()'>zoom</button>"
-  echo "<button onclick='realtime()'>realtime</button>"
   echo "<button onclick='replay()'>replay</button>"
   #echo "<button onclick='command(\"detached_record\")'>record</button>"
   echo "<button onclick='command(\"clear\")'>clear</button>"
   echo "<button onclick='command(\"showML\")'>show ML data</button>"
+  echo "<br><BR>"
   #echo "<script src='https://cdn.jsdelivr.net/npm/chart.js@2.8.0'></script>"
   echo "<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script> <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script> <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.7"></script> "
   echo "<script>"
   echo "var ctx = document.getElementById('myChart').getContext('2d');"
   echo "var _colors = [ '#993333','#339933','#333399', '#cc9999','#99cc99','9999cc','#cccc99','#cc99cc','#99cccc']"
- #echo "var c = new Chart(ctx, {type:'scatter', options:{scales:{xAxes: [{scaleLabel:{display:true, labelString:'as'}}]}, data:{datasets:["
+  echo "var _colorIndex = 0;"
+  #echo "var c = new Chart(ctx, {type:'scatter', options:{scales:{xAxes: [{scaleLabel:{display:true, labelString:'as'}}]}, data:{datasets:["
   echo "var c = new Chart(ctx, {type:'scatter', options:{"
   echo "plugins: {zoom: {pan: {enabled: true,mode:'xy'},zoom: {enabled: false, drag:true, mode: 'xy'}}},"
   echo "scales:{xAxes: [{scaleLabel:{display:true,labelString:'offset [ms]'}}], yAxes:[{scaleLabel:{display:true,labelString:'ropeAngle'}}]}}, data:{datasets:["
@@ -214,26 +217,41 @@ if [ "$key" = "analyze" ]; then
     else 
 	errors=""
     fi
-    #echo -n "{deviceName: '#${ardNumber}:$ard', label: '$device$errors', backgroundColor:_colors.pop(), showLine:true,fill:false,borderWidth:1,data : []},"
+    #echo -n "{deviceName: '#${ardNumber}:$ard', label: '$device$errors', backgroundColor:_colors[_colorIndex++], showLine:true,fill:false,borderWidth:1,data : []},"
   done
   echo "]}})"
   #echo "cleanChartMem();c.update()"
   echo "</script>"
   cat <<EOF
   <script>
+function updateRadial() {
+  if (radialCheckbox.checked) {  
+    c.data.datasets.forEach((d)=>d.data.forEach((e)=>Object.assign(e,{x:e.y*Math.cos(e.x*2*Math.PI/3200), y:e.y*Math.sin(e.x*2*Math.PI/3200)})))
+  } else {
+    c.data.datasets.forEach((d)=>d.data.forEach((e)=>Object.assign(e,{x:Math.atan2(e.y,e.x)/2/Math.PI*3200,y:(e.x**2+e.y**2)**0.5})))
+  }
+  toggleZoom();
+}
+
 function toggleZoom() {
-  if (c.config.options.scales.xAxes[0].ticks.min==undefined) {
+  if (radialCheckbox.checked) {
+    c.config.options.scales.xAxes[0].ticks = {min:-0.6, max:0.6, stepSize:0.1}
+    c.config.options.scales.yAxes[0].ticks = {min:-0.4, max:0.4, stepSize:0.1}
+  } else if (c.config.options.scales.xAxes[0].ticks.min==undefined) {
     c.config.options.scales.xAxes[0].ticks = {min:-150, max:150, stepSize:25}
     c.config.options.scales.yAxes[0].ticks = {min:0.27,max:0.33,stepSize:0.01}
   } else {
-    c.config.options.scales.xAxes[0].ticks = {}
-    c.config.options.scales.yAxes[0].ticks = {}
+    c.config.options.scales.xAxes[0].ticks = {suggestedMin:-1600,suggestedMax:1600, stepSize:100}
+    c.config.options.scales.yAxes[0].ticks = {suggestedMin:0, suggestedMax:0.4,stepSize:0.01}
   }
     c.update()
 }
-
+toggleZoom();toggleZoom();
 
 function replay() {
+  clearInterval(window.realtimeInterval)
+  document.getElementById("realtimeCheckbox").checked = false;
+
   datasets = []
   c.data.datasets.forEach((dataset) => {datasets.push(dataset.data); dataset.data = []})
   replayInterval = setInterval(replayOne,500);
@@ -247,7 +265,7 @@ function replayOne() {
 	c.data.datasets[i].pointRadius = c.data.datasets[i].data.map((e,index)=>(index<c.data.datasets[i].data.length-1)?2:10)
      }
   }
-  if (had_data == false) clearInterval(replayInterval)
+  if (had_data == false) clearInterval(window.replayInterval)
  c.update()
 }
 function cleanChartMem() {
@@ -256,6 +274,7 @@ function cleanChartMem() {
 }
 
 }
+
   function updateChartHelper(dashboardURL, reload) {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
@@ -264,9 +283,12 @@ g=xhttp.responseText
 		var datasets = JSON.parse(xhttp.responseText)
 		for (var deviceName in datasets) {
 			var newData = datasets[deviceName]
+			if (radialCheckbox.checked) {
+				newData.forEach((e)=>Object.assign(e,{x:e.y*Math.cos(e.x*2*Math.PI/3200), y:e.y*Math.sin(e.x*2*Math.PI/3200)}))
+			}
 			var dataset = c.data.datasets.filter((x) => x.deviceName==deviceName)[0]
 			if (dataset == undefined) {
-				dataset = {deviceName: deviceName, label: deviceName, backgroundColor:_colors.pop(), showLine:true,fill:false,borderWidth:1,data : []};
+				dataset = {deviceName: deviceName, label: deviceName, backgroundColor:_colors[_colorIndex++], showLine:true,fill:false,borderWidth:1,data : []};
     				c.data.datasets.push(dataset);
 				c.data.datasets.sort((x,y)=>x.label>y.label)
 			}
@@ -277,8 +299,8 @@ g=xhttp.responseText
 				if (dataset.data.length>0) last_id = dataset.data[dataset.data.length-1].__id
 				if (last_id == undefined) last_id = 0;
 				dataset.data.push(...newData.filter((x)=>x.__id > last_id))
-	       			dataset.pointRadius = dataset.data.map((e,i)=>(i<dataset.data.length-1)?2:10)
 			}
+	       		dataset.pointRadius = dataset.data.map((e,i)=>(i<dataset.data.length-1)?2:10)
 		}
 		c.update()
 	    }
@@ -301,8 +323,12 @@ function updateChart(reload) {
 	}
 }
 
-function realtime() {
-	realtimeInterval = setInterval(updateChart,5000)
+function realtime(checked) {
+	if (checked == false) {
+		clearInterval(window.realtimeInterval);
+	} else {
+		realtimeInterval = setInterval(updateChart,5000)
+	}
 }
 
 
