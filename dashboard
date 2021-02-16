@@ -332,6 +332,7 @@ function realtime(checked) {
 		clearInterval(window.realtimeInterval);
 	} else {
 		realtimeInterval = setInterval(updateChart,5000)
+		updateChart()
 	}
 }
 
