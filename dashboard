@@ -84,10 +84,10 @@ elif [ "$key" = "analyze" ] && [ "$value" = "datasets" ]; then
     [ "$key2" = "options" ] && [[ "$value2" == *"absolute"* ]] && absolute=1
 
     if [ "$key2" = "options" ] && [[ "$value2" == *"reload"* ]]; then
-	tail -10000 ${ard}.record 2>/dev/null | cat -v | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk -v absolute=$absolute 'BEGIN{first=1} /^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()|]|;31m|ms"," "); if (($7 ~ /^[0-9.-]+$/) && ($9 ~ /^[0-9.-]+$/)) {if (first==0) print "},"; first = 0; print "{\"x\":" (int($7)+absolute*int($5)) ",\"y\":" $9; __id=$2; }} END {if (__id) print ",\"__id\":" __id "}"}'| tr -d "\n" | sed 's:,$::g'
+	tail -10000 ${ard}.record 2>/dev/null | cat -v | sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk -v absolute=$absolute 'BEGIN{first=1} /^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()|/]|;31m|ms"," "); if (($8 ~ /^[0-9.-]+$/) && ($10 ~ /^[0-9.-]+$/)) {if (first==0) print "},"; first = 0; shift =(absolute? (int($8)+int($5)+int($6))%int($6) : int($8)) ; if (shift>int($6)/2) shift=shift-int($6); print "{\"x\":" shift ",\"y\":" $10; __id=$2; }} END {if (__id) print ",\"__id\":" __id "}"}'| tr -d "\n" | sed 's:,$::g'
 
     else 
-tail -100 ${ard}.record 2>/dev/null | cat -v| sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk -v absolute=$absolute '/^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()|]|;31m|ms"," "); if (($7 ~ /^[0-9.-]+$/) && ($9 ~ /^[0-9.-]+$/)) {print "{\"x\":" (int($7)+absolute*int($5)) ",\"y\":" $9 ",\"__id\":" $2 "},"}} '| tail -10 | tr -d "\n" | sed 's:,$::g'
+tail -100 ${ard}.record 2>/dev/null | cat -v| sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M::g'| sed 's:\^M:\n:g' | awk -v absolute=$absolute '/^\^\[\[0;31m[0-9]*|\?\[[0-9]*\]/ {gsub("[=()|/]|;31m|ms"," "); if (($8 ~ /^[0-9.-]+$/) && ($10 ~ /^[0-9.-]+$/)) { shift =  (absolute?( int($8)+int($5)+int($6))%int($6) : int($8)); if (shift>int($6)/2) shift = shift-int($6); print "{\"x\":" shift ",\"y\":" $10 ",\"__id\":" $2 "},"}} '| tail -10 | tr -d "\n" | sed 's:,$::g'
 
     fi
   done
