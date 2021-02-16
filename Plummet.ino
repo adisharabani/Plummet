@@ -1238,7 +1238,7 @@ syncLoopTime = atoi(CMD);
 	  KB[0] = 0; CMD=KB;
 	  sprint("SYNC");sprint(syncLoopTime); sprint(","); sprintln(syncRopeAngle);
 	  break;
-/*	case '[':
+	case '[': // decrease or set syncRopeAngle
 	  d = atof(CMD);
 	  if (d>0) {
 		syncRopeAngle=d;
@@ -1249,13 +1249,13 @@ syncLoopTime = atoi(CMD);
 	  sprint("SyncAngle: ");
 	  sprintln(syncRopeAngle);
 	  break;
-	case ']':
+	case ']': // increase syncRopeAngle
 	  syncRopeAngle = min(max(syncRopeAngle+0.01,0),0.4);
 	  sprint("SyncAngle: ");
 	  sprintln(syncRopeAngle);
 	  break;
 
-*/
+
     case '%': /* disable clock update */
       showShift = !showShift;
       sprintln(showShift);
