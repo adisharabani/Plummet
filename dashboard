@@ -40,10 +40,9 @@ elif [ "$key" = "command" ] ;then
 	echo "<pre>"
 	echo "running command $value"
 	if [ "$value" = "clear" ]; then
-		./Plummet kill; 
-		sleep 1; 
 		cp tty*.record ../
 		rm tty*.record
+		sleep 1;
 		echo Done
 		exit
 	fi
