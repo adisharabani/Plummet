@@ -1843,7 +1843,7 @@ sprint("LLL");sprintln(loopTime);
 			if (ropeAngleRatio < 0.98) {
 				// speed up
 				tPhase = 0.25;
-				servoAmp = int(min(max(ropeAngleRatio*1.2*maxServoAmp, 20),maxServoAmp));
+				servoAmp = int(min(max((syncRopeAngle-ropeAngle)/0.05 * maxServoAmp, 0),maxServoAmp));
 				loopTime = defaultLoopTime;
 				requestedNLoops = 1;
 				waitForTime = time + (LOOP_INTERVAL-0.5)*defaultLoopTime;
