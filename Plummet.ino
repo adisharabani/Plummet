@@ -1698,7 +1698,7 @@ void updateAmpAndTime(bool runNow=false) {
 			
 #define ML_UPDATE(a,b) a = a*(ML_count/(ML_count+1.0)) + b/(ML_count+1.0)
 			//learn:
-			if (updateMLModel && !isFirstIter && (mAmp < maxServoAmp) && (ropeAngle<syncRopeAngle + 0.08) && (ropeAngle>0.2)) {
+			if (updateMLModel && !isFirstIter && (mAmp < maxServoAmp) && (ropeAngleRatio<1.75) && (ropeAngle>0.2)) {
 				sprint(" *");
 				if (updateMachineLearning) {
 					sprint ("*");	
