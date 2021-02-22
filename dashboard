@@ -49,6 +49,7 @@ elif [ "$key" = "command" ] ;then
 	fi
 	if [ "$value" = "showML" ]; then
 		./Plummet command "" "&"
+		echo done
 		exit
 	fi
 	masterArd=$(./Plummet getMasterArd)
