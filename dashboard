@@ -221,6 +221,8 @@ if [ "$key" = "analyze" ]; then
     #echo -n "{deviceName: '#${ardNumber}:$ard', label: '$device$errors', backgroundColor:_colors[_colorIndex++], showLine:true,fill:false,borderWidth:1,data : []},"
   done
   echo "]}})"
+  echo "c.data.datasets.push({label:'', deviceName:'_', backgroundColor:'#eeeeee',borderWidth:2, pointRadius:0, showLine:true, fill:true, data:[...Array(33).keys()].map((i)=>({x:100*i-1600,y:0.3}))})"
+
   #echo "cleanChartMem();c.update()"
   echo "</script>"
   cat <<EOF
@@ -257,7 +259,7 @@ function replay() {
   document.getElementById("realtimeCheckbox").checked = false;
 
   replay_datasets = []
-  c.data.datasets.forEach((dataset) => {replay_datasets.push(dataset.data); dataset.data = []})
+  c.data.datasets.forEach((dataset) => {if (dataset.deviceName!='_') {replay_datasets.push(dataset.data); dataset.data = []}})
   replayInterval = setInterval(replayOne,500);
   replayOne()
 }
@@ -295,7 +297,7 @@ g=xhttp.responseText
 			if (dataset == undefined) {
 				dataset = {deviceName: deviceName, label: deviceName, backgroundColor:_colors[_colorIndex++], showLine:true,fill:false,borderWidth:1,data : []};
     				c.data.datasets.push(dataset);
-				c.data.datasets.sort((x,y)=>x.label>y.label)
+				c.data.datasets.sort((x,y)=>x.deviceName>y.deviceName)
 			}
 			if (reload) {
 				dataset.data = newData;
@@ -333,6 +335,7 @@ function realtime(checked) {
 		clearInterval(window.realtimeInterval);
 	} else {
 		realtimeInterval = setInterval(updateChart,5000)
+		updateChart()
 	}
 }
 
