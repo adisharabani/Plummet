@@ -86,6 +86,7 @@ if [ "$1" = "setup" ]; then
  command -v inotifywait > /dev/null || sudo apt-get install inotify-tools
  command -v screen > /dev/null || sudo apt-get install screen
  command -v cu > /dev/null || sudo apt-get install cu
+ command -v bc > /dev/null || sudo apt-get install bc
  command -v apache2 > /dev/null || ( sudo apt-get install apache2 && sudo a2enmod cgi  && sudo systemctl restart apache2 )
 
  if [ ! -d "$ARDLIB" ] ; then
