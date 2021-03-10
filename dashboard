@@ -1,7 +1,7 @@
 #! /bin/bash
-echo "Content-type: text/html"
-echo "Access-Control-Allow-Origin: *"
-echo ""
+#echo "Content-type: text/html"
+#echo "Access-Control-Allow-Origin: *"
+#echo ""
 #set -x 
 
 cd /home/pi/Plummet
@@ -16,7 +16,26 @@ value2=${p[1]}
 
 #echo "${morningCron[@]}"
 #echo "${nightCron[@]}"
+if [ "$key" = "download" ]; then
+  if [[ "$value" =~ ^[a-zA-Z0-9]+$ ]]; then
+    echo "Content-type: text/html"
+    echo "Access-Control-Allow-Origin: *"
+    echo  "Content-Disposition: attachment; filename=\"${value}.txt\""
+    echo ""
+    cat ${value}.record
+  else
+    echo "Content-type: text/html"
+    echo "Access-Control-Allow-Origin: *"
+    echo ""
+    echo bad file name
+  fi
+  exit 0
+fi
 
+
+echo "Content-type: text/html"
+echo "Access-Control-Allow-Origin: *"
+echo ""
 
 if [ "$key" = "update" ]; then
 	if [[ "$value" =~ ^/?,?[0-9]+,[0-9]+,_,[0-6]-[0-6]:/?,?[0-9]+,[0-9]+,_,[0-6]-[0-6]$ ]]; then
@@ -94,8 +113,6 @@ tail -100 ${ard}.record 2>/dev/null | cat -v| sed -e 's:~M\([^^]*^[^M]\)*[^^]*^M
   done
   [ $isFirst = "0" ] && echo -n "]"
   echo -n "}"
-
-
 else 
  morningCron=($(crontab -l 2>/dev/null | grep morningShow | sed 's:#:# :' | sed 's:^\s*[^#]:checked \0:' | sed 's/  */ /g' | cut -d" " -f 1,2,3,6 | tr "-" " " ))
  nightCron=($(crontab -l 2>/dev/null | grep nightShow | sed 's:#:# :' | sed 's:^\s*[^#]:checked \0:' | sed 's/  */ /g' | cut -d" " -f 1,2,3,6 | tr "-" " " ))
