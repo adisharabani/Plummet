@@ -91,7 +91,20 @@ elif [ "$key" = "command" ] ;then
 	if [ "$value" = "5" ]; then
 		./Plummet command "$masterArd" "5"
 	fi
-
+elif [ "$key" = "analyze" ] && [ "$value" = "datasets_pot" ]; then
+  echo -n "{"
+  isFirst=1
+  for device in $(./Plummet listDevices | sort); do
+    [ $isFirst = "0" ] && echo "],"
+    isFirst=0
+    ard="${device#*:}"
+    ardNumber=$(tac ${ard}.record 2>/dev/null  |grep -a -m 1 "I am" | cut -d# -f2 | tr -d " \r\n")
+    echo -n "\"#${ardNumber}:$ard\" : ["
+    tail -10000 ${ard}.record 2>/dev/null | cat -v | awk '{if (($1=="pot:")) {print (nF?",":"") $2; nF=1}}'|tr -d "\r\n" 
+    # awk 'BEGIN {n=-1} {if (($1=="pot:")&&(n<100)) {n=0; print $2} else if (n>-1) {n++}}'
+  done
+  [ $isFirst = "0" ] && echo -n "]"
+  echo -n "}"
 elif [ "$key" = "analyze" ] && [ "$value" = "datasets" ]; then
   echo -n "{"
   isFirst=1
@@ -238,7 +251,9 @@ if [ "$key" = "analyze" ]; then
     #echo -n "{deviceName: '#${ardNumber}:$ard', label: '$device$errors', backgroundColor:_colors[_colorIndex++], showLine:true,fill:false,borderWidth:1,data : []},"
   done
   echo "]}})"
-  echo "c.data.datasets.push({label:'', deviceName:'_', backgroundColor:'#eeeeee',borderWidth:2, pointRadius:0, showLine:true, fill:true, data:[...Array(33).keys()].map((i)=>({x:100*i-1600,y:0.3}))})"
+  if [ "$value" != "pot" ]; then 
+      echo "c.data.datasets.push({label:'', deviceName:'_', backgroundColor:'#eeeeee',borderWidth:2, pointRadius:0, showLine:true, fill:true, data:[...Array(33).keys()].map((i)=>({x:100*i-1600,y:0.3}))})"
+  fi
 
   #echo "cleanChartMem();c.update()"
   echo "</script>"
@@ -268,7 +283,6 @@ function toggleZoom() {
   }
     c.update()
 }
-toggleZoom();toggleZoom();
 
 replay_datasets = []
 function replay() {
@@ -299,7 +313,34 @@ function cleanChartMem() {
 
 }
 
+
+  function updatePotChartHelper(dashboardURL) {
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+g=xhttp.responseText
+		var datasets = JSON.parse(xhttp.responseText)
+		for (var deviceName in datasets) {
+			var newData = datasets[deviceName]
+			dataset = {deviceName: deviceName, label: deviceName, backgroundColor:_colors[_colorIndex++], showLine:true,fill:false,borderWidth:1,data : newData.map((x,i) => ({x:i, y:x})) };
+    			c.data.datasets.push(dataset);
+			c.data.datasets.sort((x,y)=>x.deviceName>y.deviceName)
+		}
+		c.update()
+	    }
+	}
+	xhttp.open("GET", dashboardURL+ "?analyze=datasets_pot", true);
+
+	xhttp.send();
+  }
+
+
+
   function updateChartHelper(dashboardURL, reload) {
+        if (document.location.search.match("analyze=pot")){
+		updatePotChartHelper(dashboardURL);
+		return;
+	}
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 	    if (this.readyState == 4 && this.status == 200) {
@@ -337,6 +378,7 @@ g=xhttp.responseText
   }
 
 function updateChart(reload) {
+        
 	updateChartHelper("",reload);
 	
 	otherURL=document.location.search.match("otherURL=([^&]*)");
@@ -357,6 +399,9 @@ function realtime(checked) {
 }
 
 
+if (!document.location.search.match("analyze=pot")){
+toggleZoom();toggleZoom();
+}
 updateChart(true);
 
   </script>
