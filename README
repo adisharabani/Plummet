@@ -15,13 +15,18 @@ stderr_logfile=/var/log/dataplicity.log
 
 ------
 
-You may want to change the hostname of the device via raspi-config
+You may want to enable ssh as well as change the hostname of the device via raspi-config
 
 Then restart the machine.
 
 
 set git keys: https://docs.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
-clone git code: git clone https://github.com/adisharabani/Plummet.git
+
+clone git code: git clone git@github.com:adisharabani/Plummet.git
+git config --global user.email "you@gmail.com"
+git config --global user.name "Your Name"
+
+
 
 edit ~/.bashrc to include:
 cd ~/Plummet
