@@ -71,6 +71,12 @@ elif [ "$key" = "command" ] ;then
 		echo done
 		exit
 	fi
+	if [ "$value" = "pot" ]; then
+		./Plummet command "" "p"
+		sleep 5
+		./Plummet command "" "p"
+		exit
+	fi
 	masterArd=$(./Plummet getMasterArd)
 	echo masterArd=$masterArd
 	if [ "$value" = "startup" ]; then
@@ -100,7 +106,7 @@ elif [ "$key" = "analyze" ] && [ "$value" = "datasets_pot" ]; then
     ard="${device#*:}"
     ardNumber=$(tac ${ard}.record 2>/dev/null  |grep -a -m 1 "I am" | cut -d# -f2 | tr -d " \r\n")
     echo -n "\"#${ardNumber}:$ard\" : ["
-    tail -10000 ${ard}.record 2>/dev/null | cat -v | awk '{if (($1=="pot:")) {print (nF?",":"") $2; nF=1}}'|tr -d "\r\n" 
+    tail -10000 ${ard}.record 2>/dev/null | cat -v | awk '(/^pot: [0-9]+ Servo:/ && ($2<1024)) { print (nF?",":"") $2; nF=1}'|tr -d "\r\n" 
     # awk 'BEGIN {n=-1} {if (($1=="pot:")&&(n<100)) {n=0; print $2} else if (n>-1) {n++}}'
   done
   [ $isFirst = "0" ] && echo -n "]"
@@ -153,10 +159,10 @@ function command(cmd) {
 
  var frames = [frm];
 
- if ((cmd=="clear") || (cmd=="showML")) frames = document.getElementsByTagName("iframe")
+ if ((cmd=="clear") || (cmd=="showML") || (cmd=="pot")) frames = document.getElementsByTagName("iframe")
 
  for (var f of frames) {
-   	f.onload = ()=>{t.disabled=false;if (cmd=="clear") {c.data.datasets=[];_colorIndex=0;c.update();toggleZoom();toggleZoom()}}
+   	f.onload = ()=>{t.disabled=false;if (cmd=="clear") {c.data.datasets=[];_colorIndex=0;c.update();toggleZoom();toggleZoom()};if (cmd=="pot"){setTimeout(function () {document.location.reload()}, 1000)}}
  	f.src = f.getAttribute("dashboard") + "?command="+cmd
  }
 }
@@ -226,6 +232,7 @@ if [ "$key" = "analyze" ]; then
   echo "<button onclick='replay()'>replay</button>"
   #echo "<button onclick='command(\"detached_record\")'>record</button>"
   echo "<button onclick='command(\"clear\")'>clear</button>"
+  echo "<button onclick='command(\"pot\")'>analyze POT</button>"
   echo "<button onclick='command(\"showML\")'>show ML data</button>"
   echo "<br><BR>"
   #echo "<script src='https://cdn.jsdelivr.net/npm/chart.js@2.8.0'></script>"
@@ -236,7 +243,7 @@ if [ "$key" = "analyze" ]; then
   echo "var _colorIndex = 0;"
   #echo "var c = new Chart(ctx, {type:'scatter', options:{scales:{xAxes: [{scaleLabel:{display:true, labelString:'as'}}]}, data:{datasets:["
   echo "var c = new Chart(ctx, {type:'scatter', options:{"
-  echo "plugins: {zoom: {pan: {enabled: true,mode:'xy'},zoom: {enabled: false, drag:true, mode: 'xy'}}},"
+  echo "plugins: {zoom: {pan: {enabled: true,mode:'xy'},zoom: {enabled: true, drag:false, mode: 'xy'}}},"
   echo "scales:{xAxes: [{scaleLabel:{display:true,labelString:'offset [ms]'}}], yAxes:[{scaleLabel:{display:true,labelString:'ropeAngle'}}]}}, data:{datasets:["
   #for device in $(./Plummet listDevicesHelper); do
   for device in $(./Plummet listDevices | sort); do

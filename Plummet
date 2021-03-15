@@ -18,6 +18,7 @@ whiptail --textbox Plummet.txt 25 78
 	 "Connect To Rasp1" "Connect to Rasp1." \
          "Export" "export timeline to local file." \
          "Upload" "Upload app to the connected Arduinos." \
+         "Restart" "Restart arduinos." \
          "Reorder" "Automatically reorder devices by connection order" \
          "Edit Playback" "Edit the playback file" \
          "Upload Loop" "Continuesly upload to Arduinos." \
@@ -40,7 +41,7 @@ whiptail --textbox Plummet.txt 25 78
      attach | record | editPlayback | joinAttached | attachMaster | uploadLoop | connectToRasp1 | history)
         $0 $cmd 
      ;;
-     upload | compile | setup | update | reorder)
+     upload | compile | setup | update | reorder | restart)
      	nDevices=$( $0 listDevices | wc -l )
      	cmdSuffix=" (${nDevices} arduino${nDevices:+s} connected)"
         
@@ -279,6 +280,16 @@ while [ $(screen -ls | grep '(' | wc -l) -gt 0 ]; do screen -S $(screen -ls | gr
 #killall screen
 fi
 
+if [ "$1" = "restart" ]; then
+ echo "Restarting devices";
+ ards=$($0 listDevices $2)
+ ./Plummet kill
+ for ard in $ards; do
+   echo "Restarting ${ard}."
+   python -c "import serial,sys; com=serial.Serial('/dev/${ard}', 1200); com.dtr=False; com.close()"
+ done
+ echo done
+fi
 
 if [ "$1" = "reorder" ]; then
  echo "Reordering Devices (this may take a few sec)"
