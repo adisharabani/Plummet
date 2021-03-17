@@ -98,6 +98,7 @@ elif [ "$key" = "command" ] ;then
 		./Plummet command "$masterArd" "5"
 	fi
 elif [ "$key" = "analyze" ] && [ "$value" = "datasets_pot" ]; then
+  [ "$key2" = "options" ] && [[ "$value2" == *"absolute"* ]] && absolute=1
   echo -n "{"
   isFirst=1
   for device in $(./Plummet listDevices | sort); do
@@ -106,7 +107,8 @@ elif [ "$key" = "analyze" ] && [ "$value" = "datasets_pot" ]; then
     ard="${device#*:}"
     ardNumber=$(tac ${ard}.record 2>/dev/null  |grep -a -m 1 "I am" | cut -d# -f2 | tr -d " \r\n")
     echo -n "\"#${ardNumber}:$ard\" : ["
-    tail -10000 ${ard}.record 2>/dev/null | cat -v | awk '(/^pot: [0-9]+ Servo:/ && ($2<1024)) { print (nF?",":"") $2; nF=1}'|tr -d "\r\n" 
+    tail -10000 ${ard}.record 2>/dev/null | cat -v | awk -v absolute=$absolute '(/^pot: [0-9]+ Servo: [^ ]* potAng: [^ ]* servoAng: [^ ]* ropeAng: [^ ]*/ && ($2<1024)) { print (nF?",":"") (absolute ? ($10): $2) * 1; nF=1}'| tr -d "\r\n"
+    #tail -10000 ${ard}.record 2>/dev/null | cat -v | awk '(/^pot: [0-9]+ Servo:/ && ($2<1024)) { print (nF?",":"") $2; nF=1}'|tr -d "\r\n" 
     # awk 'BEGIN {n=-1} {if (($1=="pot:")&&(n<100)) {n=0; print $2} else if (n>-1) {n++}}'
   done
   [ $isFirst = "0" ] && echo -n "]"
@@ -336,7 +338,8 @@ g=xhttp.responseText
 		c.update()
 	    }
 	}
-	xhttp.open("GET", dashboardURL+ "?analyze=datasets_pot", true);
+	var optionsMatch = document.location.search.match("options=([^&]*)");
+	xhttp.open("GET", dashboardURL+ "?analyze=datasets_pot" + (optionsMatch ? "&options="+optionsMatch[1] : ""), true);
 
 	xhttp.send();
   }
