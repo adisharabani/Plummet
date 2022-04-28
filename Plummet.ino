@@ -138,6 +138,7 @@ bool isAutoPlay = false;
 bool showClock = false;
 int recordingLoc;
 double clockShift = 1;
+long clockAdjust = 0;
 unsigned long clockShiftCalibration = 0;
 
 //servo
@@ -280,7 +281,9 @@ void setMode(mode_e m) {
 #define debugLog(x) {}
 
 unsigned long millis2() {
-	return clockShiftCalibration + (millis()-clockShiftCalibration) / clockShift;
+	//return clockShiftCalibration + (millis()-clockShiftCalibration) / clockShift;
+	unsigned long m = millis();
+	return (clockAdjust == 0) ? m : m + ((long)(m-clockShiftCalibration)) / clockAdjust;
 }
 
 ///////////////////////////
@@ -712,6 +715,7 @@ void printCurrentCalibration() {
   sprint(" pot150="); sprint(pot150);
   sprint(" loopTime="); sprint(defaultLoopTime);
   sprint(" clockS="); sprint2(clockShift,5);
+  sprint(" clockA="); sprint(clockAdjust);
   sprint(" isMaster="); sprintln(isMaster);
   printMLData(); 
 }
@@ -769,6 +773,8 @@ void readCalibration() {
 	if (version > 3) {
 		ereadfloat();
 		clockShift = ereadfloat();
+		if (clockShift == 1) {clockAdjust=0; }
+		else { clockAdjust = 1/ (1/clockShift - 1); }
 	}
 
 
@@ -1482,13 +1488,17 @@ syncLoopTime = atoi(CMD);
 	  } else if (CMD[0]=='B') {
 		clockShiftCalibration = millis();
 	  } else if (CMD[0]=='E') {
-		unsigned long dt = (millis()-clockShiftCalibration);
+		long dt = (millis()-clockShiftCalibration);
 		sprint (" ++="); sprint(dt);
 		clockShift = (millis()-clockShiftCalibration)/((double)100000.0);
 		if ((clockShift >1.1) || (clockShift < 0.9)) {
 			clockShift = 1;
+			clockAdjust = 0;
+		} else {
+			clockAdjust = (dt==100000) ? 0 : dt / (100000-dt);
 		}
 		sprint(" **="); sprint2(clockShift,5);
+		sprint(" "); sprint(clockAdjust);
 		sprintline();
 	  } else {
 	  	showClock = !showClock;
