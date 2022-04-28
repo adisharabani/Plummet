@@ -304,7 +304,8 @@ fi
 
 if [ "$1" = "prepForShutDown" ]; then
  $0 kill
- $0 command "$2" "P-\n9"
+ $0 command "$2" "P-"
+ $0 command "$2" "9"
  sleep 4
  $0 command "$2" _
  $0 kill
@@ -494,7 +495,8 @@ if [ "$1" = "morningShow" ]; then
 	masterArd=$($0 getMasterArd)
 	echo "Master=" $masterArd
 	# (echo Y+ ; echo P+; sleep 3) | cu -l /dev/$masterArd -s $BAUD_RATE  
-	$0 command "$masterArd" "Y+\nP+"
+	$0 command "$masterArd" "Y+"
+	$0 command "$masterArd" "P+"
 fi
 
 if [ "$1" = "nightShow" ]; then
