@@ -7,7 +7,7 @@ ARDLIB=/home/pi/arduino-1.8.10
 ARDTTY_PATTERN="tty(USB|ACM)"
 
 BAUD_RATE=9600
-BAUD_RATE=38400
+# BAUD_RATE=38400
 
 if [ $# -eq 0 ]; then
 whiptail --textbox Plummet.txt 25 78
@@ -315,7 +315,8 @@ fi
 
 if [ "$1" = "prepForShutDown" ]; then
  $0 kill
- $0 command "$2" "P-\n9"
+ $0 command "$2" "P-"
+ $0 command "$2" "9"
  sleep 4
  $0 command "$2" _
  $0 kill
@@ -502,10 +503,13 @@ fi
 if [ "$1" = "morningShow" ]; then
 	echo $(date) morningShow >> $LOGFILE
 	#$0 kill
+        $0 restart 
+        sleep 8
 	masterArd=$($0 getMasterArd)
 	echo "Master=" $masterArd
 	# (echo Y+ ; echo P+; sleep 3) | cu -l /dev/$masterArd -s $BAUD_RATE  
-	$0 command "$masterArd" "Y+\nP+"
+	$0 command "$masterArd" "Y+"
+	$0 command "$masterArd" "P+"
 fi
 
 if [ "$1" = "nightShow" ]; then
@@ -560,13 +564,18 @@ fi
 
 if [ "$1" = "command" ]; then
  if ! screen -list | grep -q ATTACH; then
-    #$0 kill
+    # $0 kill
     $0 detached;
  fi
  for ard in $($0 listDevices $2); do  
    #stty -F /dev/${ard} cs8 $BAUD_RATE ignbrk -brkint -icrnl -imaxbel -opost -ocrnl -onlret -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke -noflsh -ixon -crtscts
    #screen -d -m -t $ard /dev/$ard;
-   screen -X at $ard stuff "\n5555555555\n${3}\n";
+   echo "${3}"
+   screen -p 0 -X at $ard stuff "\n"
+   screen -p 0 -X at $ard stuff "5555555555\n"
+   sleep 0.1
+   screen -p 0 -X at $ard stuff "${3}\n";
+
    sleep 1 
    screen -X at $ard hardcopy -h /tmp/.hardcopy.$ard;
    tac /tmp/.hardcopy.$ard | awk 'NF {p=1} p' | sed '/5555555555/Q' | tac 

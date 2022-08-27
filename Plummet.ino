@@ -30,7 +30,7 @@
 #define PLUMMET_VERSION "0.30"
 
 #define BAUD_RATE 9600
-#define BAUD_RATE 38400
+// #define BAUD_RATE 38400
 
 ////// WHAT SERVO LIB TO USE
 #define USE_TIMER1
