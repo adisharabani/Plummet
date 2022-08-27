@@ -7,7 +7,7 @@ ARDLIB=/home/pi/arduino-1.8.10
 ARDTTY_PATTERN="tty(USB|ACM)"
 
 BAUD_RATE=9600
-BAUD_RATE=38400
+# BAUD_RATE=38400
 
 if [ $# -eq 0 ]; then
 whiptail --textbox Plummet.txt 25 78
