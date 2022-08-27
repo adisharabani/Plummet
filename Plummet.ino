@@ -107,7 +107,8 @@ boolean SERVO_VIA_TIMER1 = false;
 boolean SERVO_VIA_TIMER1 = true;
 #endif
 
-boolean printMeasures = false; 
+boolean printMeasures = false;
+unsigned long printMeasuresUntil = 0; 
 boolean enablePrint = true;
 boolean debug = false;
 boolean showShift = true;
@@ -1094,6 +1095,7 @@ void handleKeyboardInput() {
 	case 'p': // Print measurements (potentiometer, servo, etc.)
 	  if (CMD[0]=='\n') {
 		  printMeasures = !printMeasures;
+		  printMeasuresUntil = time + 1000*10;
 		  enablePrint = true;
 	  } else {
 	  	if (CMD[0]=='=') {
@@ -2051,6 +2053,7 @@ void loop(){
   minPotRead = min(potRead, minPotRead); 
   // Print measures
   if (printMeasures) {
+	if (time>printMeasuresUntil) printMeasures=false;
 	sprint("pot: "); sprint(potRead);
 	sprint(" Servo: "); sprint(currentServoPos);
 	sprint(" potAng: "); sprint(potAngle);
