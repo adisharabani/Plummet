@@ -8,6 +8,10 @@ ARDTTY_PATTERN="tty(USB|ACM)"
 
 BAUD_RATE=9600
 BAUD_RATE=38400
+if [ ! -e "log.baud" ] ; then
+    echo -n $BAUD_RATE > log.baud
+fi
+BAUD_RATE=`cat log.baud` 
 
 if [ $# -eq 0 ]; then
 whiptail --textbox Plummet.txt 25 78
@@ -58,6 +62,7 @@ whiptail --textbox Plummet.txt 25 78
         else
 		BAUD_RATE=9600;
 	fi
+	echo -n $BAUD_RATE > log.baud
      ;;
      *)
        whiptail --scrolltext --textbox /dev/stdin 25 78 <<<"$($0 $cmd | tr -d '\r')" 
