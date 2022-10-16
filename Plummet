@@ -105,7 +105,18 @@ if [ "$1" = "setup" ]; then
    tar -xf arduino-1.8.10-linuxarm.tar.xz 
    cd Plummet
  fi
-#sudo apt-get  install avahi-daemon
+ #sudo apt-get  install avahi-daemon
+
+ sudo systemctl enable ssh
+ sudo systemctl start ssh
+
+ sudo sed -i 's@\(user=.\?\|HOME=.\?/home/\)dataplicity@\1pi@gi'  /etc/supervisor/conf.d/tuxtunnel.conf
+ awk '!(/Plummet/) {print $0} END {print "";print "cd ~/Plummet"; print "./Plummet"}' ~/.bashrc  > /tmp/tbash && cp ~/.bashrc ~/.bashrc.bak; mv -f /tmp/tbash ~/.bashrc 
+ 
+ echo '#! /bin/bash@sudo -u pi /home/pi/Plummet/dashboard $QUERY_STRING@@' | tr "@" "\n" | sudo tee /usr/lib/cgi-bin/dashboard
+ sudo chmod +x /usr/lib/cgi-bin/dashboard
+ 
+ sudo sed -i -e 's@.*Plummet.*@@g' -e '$awww-data ALL=(pi) NOPASSWD: /home/pi/Plummet/dashboard' /etc/sudoers
 fi
 
 if [ "$1" = "compile" ] || [ "$1" = "revert" ]; then
