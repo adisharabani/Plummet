@@ -100,7 +100,8 @@ if [ "$1" = "setup" ]; then
 
  if [ ! -d "$ARDLIB" ] ; then
    cd ..
-   curl -L -o arduino-1.8.10-linuxarm.tar.xz https://www.arduino.cc/download.php?f=/arduino-1.8.10-linuxarm.tar.xz
+   curl -L -o arduino-1.8.10-linuxarm.tar.xz https://downloads.arduino.cc/arduino-1.8.10-linuxarm.tar.xz 
+#https://www.arduino.cc/download.php?f=/arduino-1.8.10-linuxarm.tar.xz
    tar -xf arduino-1.8.10-linuxarm.tar.xz 
    cd Plummet
  fi
