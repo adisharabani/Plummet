@@ -261,7 +261,7 @@ if [ "$key" = "analyze" ]; then
   done
   echo "]}})"
   if [ "$value" != "pot" ]; then 
-      echo "c.data.datasets.push({label:'', deviceName:'_', backgroundColor:'#eeeeee',borderWidth:2, pointRadius:0, showLine:true, fill:true, data:[...Array(33).keys()].map((i)=>({x:100*i-1600,y:0.3}))})"
+      echo "c.data.datasets.push({label:'', deviceName:'_', backgroundColor:'rgba(65,10,13,0.2)',borderWidth:2, pointRadius:0, showLine:true, fill:true, data:[...Array(33).keys()].map((i)=>({x:100*i-1600,y:0.3}))})"
   fi
 
   #echo "cleanChartMem();c.update()"
