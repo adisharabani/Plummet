@@ -881,7 +881,9 @@ char * forwardCommand() {
 		 	KB[0]=0; CMD=KB;
 		 }
 		 CMD = KB + index + 1;
-		 if (KB[1]=='e') {
+		 if (KB[1]=='a') {
+			nextSerialPrintln(KB);
+		 } else if (KB[1]=='e') {
 		 	KB[1] = 'o';
 		 	nextSerialPrintln(KB);
 		 } else if (KB[1]=='o') {
