@@ -485,7 +485,7 @@ if [ "$1" = export ]; then
 	screen -X at $masterScreen hardcopy -h /tmp/PP
 	sleep 1
 	mkdir -p Exports
-	cat /tmp/PP |tail  +$(cat /tmp/PP | awk '/Recorded Commands/ {i=NR} END {print i}') | grep ^RR > ${2:-$(date +Exports/Record_%Y_%m_%d-%H:%M.txt)}
+	cat /tmp/PP |tail  +$(cat /tmp/PP | awk '/Recorded Commands/ {i=NR} END {print i}') | grep ^RR | cut -d: -f 2- > ${2:-$(date +Exports/Record_%Y_%m_%d-%H:%M.txt)}
 fi
 
 if [ "$1" = import ]; then
@@ -495,7 +495,7 @@ if [ "$1" = import ]; then
 		echo "No Master Screen"
 		exit -7
 	fi
-	cat $fname | while read p; do
+	cat $fname | awk '{print "RR" (NR-1) ":" $0}' | while read p; do
 		if [[ "$p" = RR* ]]; then
 			echo "$p"
 			screen -X at $masterScreen stuff "${p}\n"
