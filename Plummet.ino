@@ -899,6 +899,23 @@ char * forwardCommand() {
                            KB[0] = 0; CMD=KB; //ignore command if you are not master
                         }
                  } else {
+                    int si = find(KB, '-');
+                    if ((si != 0) && (si < index)) {
+                         int id1 = atoi(KB+1);
+                         int id2 = atoi(KB+si+1);
+			 if (id1 > 0) {
+                           itoa(id1-1, KB+1, 10);
+			   KB[strlen(KB)] = ' '; // remove the null terminated created by itoa;
+                           KB[si] = '-';
+                         }
+                         if (id2 > 0) {
+                           itoa(id2-1, KB+si+1,  10);
+			   KB[strlen(KB)] = ' '; // remove the null terminated created by itoa;
+                           KB[index] = ':';
+                         }
+                         if (id2 > 0) { nextSerialPrintln(KB); }
+                         if (id1 > 0) { KB[0] = 0; CMD = KB; }
+                    } else {
 			 int id = atoi(KB+1);
 			 if (id>0){
 			   // id ==> id-1
@@ -912,6 +929,7 @@ char * forwardCommand() {
 			   // do not notify other arduinos
 			   //sprintln("Command is directed to me only");
 			 }
+                     }
 		 }
 	 }
 	 int s;
