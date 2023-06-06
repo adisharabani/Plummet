@@ -318,7 +318,7 @@ fi
 
 if [ "$1" = "reorder" ]; then
  echo "Reordering Devices (this may take a few sec)"
- for ard in $($0 listDevicesHelper | tr " " "\n" | sort | cut -d : -f 2-); do
+ for ard in $($0 listDevicesHelper | tr " " "\n" | tr -d "# " | sort -n | cut -d : -f 2-); do
    touch /dev/$ard
    sleep 0.5
  done
