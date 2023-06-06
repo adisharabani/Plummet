@@ -1815,7 +1815,7 @@ void updateAmpAndTime(bool runNow=false) {
 				tPhase = 0.75;
 				if (ropeAngle>syncRopeAngle - 0.08) {
 					loopTime = ML_loop_default - 100;
-					servoAmp = 70;
+					servoAmp = 80;
 					requestedNLoops = 2;
 				} else if (ropeAngle > 0.01){
 					loopTime = ML_loop_default-sLoopDelta;
