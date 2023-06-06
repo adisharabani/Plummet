@@ -900,7 +900,7 @@ char * forwardCommand() {
                         }
                  } else {
                     int si = find(KB, '-');
-                    if ((si != 0) && (si < index)) {
+                    if ((si != -1) && (si < index)) {
                          int id1 = atoi(KB+1);
                          int id2 = atoi(KB+si+1);
 			 if (id1 > 0) {
