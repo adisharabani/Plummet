@@ -191,7 +191,7 @@ double ML_angle_default;
 double avg_l, avg_x, avg_xx, avg_xl;
 double avg_r, avg_y, avg_yy, avg_yr;
 int ML_count=100;
-bool updateMachineLearning = false;
+bool updateMachineLearning = true;
 
 unsigned long initTime;
 
